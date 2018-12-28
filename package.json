@@ -1,0 +1,41 @@
+{
+  "name": "@dazejs/daze",
+  "version": "0.1.0",
+  "description": "daze.js application",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "DAZE_ENV=dev nodemon --exec babel-node src/index.js",
+    "build": "babel src --out-dir dist --copy-files",
+    "commit": "npx git-cz"
+  },
+  "keywords": [],
+  "author": "Zewail Chan",
+  "license": "MIT",
+  "dependencies": {
+    "@dazejs/framework": "^0.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-eslint": "^8.2.6",
+    "commitizen": "^3.0.5",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-compat": "^2.5.1",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "eslint-plugin-react": "^7.10.0",
+    "flow-bin": "^0.77.0",
+    "jest": "^23.4.2",
+    "nodemon": "^1.18.3"
+  }
+}
