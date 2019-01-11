@@ -15,26 +15,26 @@
 </div>
 
 
-## Developing
-🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
+> ## 🛠 Status: In Development
+> Dazejs is currently in development. It's on the fast track to a 1.0 release, so we encourage you to use it and give us your feedback, but there are things that haven't been finalized yet and you can expect some changes.
 
 ## Installation
 
-```shell
-$ npm install -g daze-cli
+```bash
+$ npm install -g @dazejs/cli
 ```
 
 ## Getting Started
 
-```shell
-$ daze init example
+```bash
+$ daze create example
 $ cd example
 $ npm start
 ```
 
 ## Docs & Community
 
-- [Documentations](https://dazejs.github.io/)
+- [Documentations](https://dazejs.org/)
 
 ## License
 
