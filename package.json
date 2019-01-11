@@ -4,7 +4,7 @@
   "description": "daze.js application",
   "scripts": {
     "start": "npm run dev",
-    "dev": "DAZE_ENV=dev nodemon --exec babel-node src/index.js",
+    "dev": "cross-env DAZE_ENV=dev nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist --copy-files",
     "commit": "npx git-cz"
   },

@@ -1,9 +1,17 @@
 /**
- * daze.js - A Javascript Framework For Nodejs
+ * Dazejs - A Javascript Framework For Nodejs
  *
  * @package  @dazejs/framework
  * @author   Chan Zewail <chanzewail@gmail.com>
  */
-const { Container } = require('@dazejs/framework')
+const { Application } = require('@dazejs/framework')
 
-Container.get('app', [__dirname]).run()
+/**
+ * Create The Application
+ */
+const app = new Application(__dirname)
+
+/**
+ * Run The Application
+ */
+app.run()
