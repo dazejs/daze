@@ -12,7 +12,7 @@
   "author": "Zewail Chan",
   "license": "MIT",
   "dependencies": {
-    "@dazejs/framework": "^0.2.0"
+    "@dazejs/framework": "^0.7.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
