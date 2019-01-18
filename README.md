@@ -11,7 +11,7 @@
     <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/logo.png">
   </a>  
   <h1>Daze.js</h1>
-  <4>Just use Javascript!</h4>
+  <h4>Just use Javascript!</h4>
 </div>
 
 
@@ -38,5 +38,5 @@ $ npm start
 
 ## License
 
-Daze is [MIT licensed](https://github.com/dazejs/daze/blob/master/LICENSE)
+Daze.js is [MIT licensed](https://github.com/dazejs/daze/blob/master/LICENSE)
 
