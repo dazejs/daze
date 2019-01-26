@@ -1,4 +1,4 @@
-class RootModule {
+class AppModule {
   modules = [];
 
   controllers = [
@@ -8,4 +8,4 @@ class RootModule {
   middlewares = [];
 }
 
-module.exports = RootModule
+module.exports = AppModule

@@ -47,7 +47,7 @@ module.exports = {
    */
   cluster: {
     enable: false,
-    workers: 0,
+    workers: 2,
     sticky: false,
   },
 
