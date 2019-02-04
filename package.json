@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/daze",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "daze.js application",
   "scripts": {
     "start": "npm run dev",
