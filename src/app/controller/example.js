@@ -4,7 +4,6 @@ const { Decorators, Controller } = require('@dazejs/framework')
 class Example extends Controller {
   @Decorators.Get('login')
   create() {
-    app('logger').info('im login %o', { xxx: 111 })
     return view('example/login')
   }
 
