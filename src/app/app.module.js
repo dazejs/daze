@@ -1,11 +1,15 @@
-class AppModule {
-  modules = [];
+const { Decorators } = require('@dazejs/framework')
 
-  controllers = [
-    '**',
+class AppModule {
+  modules = [
+    'user.module.js',
   ];
 
-  middlewares = [];
+  controllers = [
+    'hello.js',
+  ];
+
+  middlewares = ['axios'];
 }
 
 module.exports = AppModule

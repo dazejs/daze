@@ -1,6 +1,6 @@
 const { Decorators, Controller } = require('@dazejs/framework')
 
-@Decorators.Router('example')
+@Decorators.Controller('example')
 class Example extends Controller {
   @Decorators.Get('login')
   create() {
