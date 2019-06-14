@@ -1,15 +1,16 @@
-const { Decorators } = require('@dazejs/framework')
+const {
+  Module, CrossOrigin, useMiddleware,
+} = require('@dazejs/framework');
 
+@Module()
+@useMiddleware((request, next) => {
+  console.log(1111);
+  return next();
+})
 class AppModule {
-  modules = [
-    'user.module.js',
-  ];
-
-  controllers = [
-    'hello.js',
-  ];
-
-  middlewares = ['axios'];
+  resolve() {
+    this.run('hello.js');
+  }
 }
 
-module.exports = AppModule
+module.exports = AppModule;

@@ -9,7 +9,7 @@ module.exports = {
   path: '/',
 
   /** 设置是否对 Cookie 进行签名 */
-  signed: true,
+  signed: false,
 
   /** 生效的域名 */
   domain: '',
@@ -22,4 +22,4 @@ module.exports = {
 
   /** 设置只在 HTTPS 连接上传输 */
   secure: false,
-}
+};

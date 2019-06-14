@@ -1,12 +1,12 @@
 
-const { Decorators, Controller } = require('@dazejs/framework')
+const { Controller, Http } = require('@dazejs/framework');
 
-@Decorators.Controller('/aaa')
-class Aaa extends Controller {
-  @Decorators.Get()
-  index() {
-    return this.render('hello')
+@Controller('/')
+class Aaa {
+  @Http.Get('/favicon.ico')
+  favicon() {
+    return 'test';
   }
 }
 
-module.exports = Aaa
+module.exports = Aaa;

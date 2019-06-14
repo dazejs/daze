@@ -1,16 +1,17 @@
-const { Decorators, Controller } = require('@dazejs/framework')
+const { Http, Controller } = require('@dazejs/framework');
 
-@Decorators.Controller('example')
-class Example extends Controller {
-  @Decorators.Get('login')
+@Controller('example')
+class Example {
+  @Http.Get('login')
   create() {
-    return view('example/login')
+    return view('example/login');
   }
 
-  @Decorators.Post('login')
+  @Http.Post('login')
   store() {
-    return res().Created()
+    console.log(this.body);
+    return res().Created();
   }
 }
 
-module.exports = Example
+module.exports = Example;

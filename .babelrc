@@ -4,27 +4,15 @@
       "targets": {
         "node": "current"
       }
-    }],
-    "@babel/preset-flow"
+    }]
   ],
   "plugins": [
     [
       "@babel/plugin-proposal-decorators",
       {
-        "legacy": true
+        "decoratorsBeforeExport": false,
       }
     ],
-    [
-      "@babel/plugin-proposal-class-properties",
-      {
-        "loose": true
-      }
-    ]
+    "@babel/plugin-proposal-class-properties",
   ],
-  "env": {
-    "debug": {
-      "sourceMap": "inline",
-      "retainLines": true
-    }
-  }
 }

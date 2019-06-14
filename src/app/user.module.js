@@ -1,12 +1,16 @@
-class UserModule {
-  modules = [];
+const {
+  Module, CrossOrigin, useMiddleware,
+} = require('@dazejs/framework');
 
-  controllers = [
-    'example.js',
-    'aaa.js',
-  ];
+@Module()
+@useMiddleware((request, next) => {
+  console.log(222);
+  return next();
+})
+class AppModule {
+  resolve() {
 
-  middlewares = ['csrf'];
+  }
 }
 
-module.exports = UserModule
+module.exports = AppModule;

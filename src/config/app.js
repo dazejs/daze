@@ -1,8 +1,10 @@
+
+
 module.exports = {
   /**
    * HTTP service port
    */
-  port: 8000,
+  port: 8005,
 
   /**
    * Encryption Key
@@ -47,7 +49,7 @@ module.exports = {
    */
   cluster: {
     enable: false,
-    workers: 2,
+    workers: 0,
     sticky: false,
   },
 
@@ -79,6 +81,7 @@ module.exports = {
    * the headers specified in the request's Access-Control-Request-Headers header.
    */
   cors: {
+    enable: true,
     origin: '*',
     exposeHeaders: [],
     maxAge: 5,
@@ -98,4 +101,9 @@ module.exports = {
     max_file_size: 50 * 2014 * 1024,
   },
   body_limit: '5mb',
-}
+
+
+  // providers: [
+  //   require.resolve('../app/provider/middleware.provider'),
+  // ],
+};

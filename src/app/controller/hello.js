@@ -1,12 +1,17 @@
 
-const { Decorators, Controller } = require('@dazejs/framework')
+const {
+  Controller, Http, useService, HttpRequest, SessionValue,
+  CookieValue, useMiddleware, Response, CrossOrigin,
+} = require('@dazejs/framework');
 
-@Decorators.Controller()
-class Hello extends Controller {
-  @Decorators.Get()
-  index() {
-    return this.render('hello')
+@Controller()
+class Hello {
+  @Http.Get('hello')
+  @useService('user')
+  index(aaa) {
+    console.log(aaa, 'aaa');
+    return { name: 'dazejs' };
   }
 }
 
-module.exports = Hello
+module.exports = Hello;
