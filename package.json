@@ -1,19 +1,14 @@
 {
-  "name": "@dazejs/daze",
-  "version": "0.1.1",
-  "description": "daze.js application",
+  "private": true,
   "scripts": {
     "start": "npm run dev",
-    "dev": "cross-env DAZE_ENV=dev DEBUG=daze-framework:* nodemon --inspect --signal SIGTERM --exec babel-node src/index.js --source-map",
+    "dev": "cross-env DAZE_ENV=dev DEBUG=daze-framework:* nodemon --inspect --signal SIGTERM --exec babel-node src/index.js --source-map --preserve-symlinks",
     "build": "babel src --out-dir dist --copy-files --source-map",
+    "prod": "cross-env DAZE_ENV=prod node dist/index.js",
     "commit": "npx git-cz"
   },
-  "keywords": [],
-  "author": "Zewail Chan",
-  "license": "MIT",
   "dependencies": {
-    "@dazejs/framework": "^0.8.0",
-    "axios": "^0.18.0"
+    "@dazejs/framework": "^0.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
