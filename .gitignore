@@ -1,7 +1,3 @@
 dist
 node_modules
-logs/*.log
 .vscode
-package-lock.json
-isolate-*.log
-profile.txt
