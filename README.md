@@ -15,7 +15,7 @@
 
 ## Installation
 
-**使用 `@next` 安装, 尝鲜 `Beta` 版本！**
+** `Beta` 版本现已可用 **
 
 ```bash
 $ npm install -g @dazejs/cli@next
@@ -24,7 +24,7 @@ $ npm install -g @dazejs/cli@next
 ## Getting Started
 
 ```bash
-$ daze create example
+$ daze create example --next
 $ cd example
 $ npm start
 ```
