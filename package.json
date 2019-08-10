@@ -7,6 +7,9 @@
     "prod": "cross-env DAZE_ENV=prod node dist/index.js",
     "commit": "npx git-cz"
   },
+  "engines": {
+    "node": ">=10.15.0"
+  },
   "dependencies": {
     "@dazejs/framework": "^1.0.0-beta.1"
   },
