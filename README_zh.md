@@ -13,21 +13,21 @@
   <h4>Just use Javascript!</h4>
 </div>
 
-English | [中文](README_zh.md)
+中文 | [English](README.md)
 
-## Coding Style
+## 编码风格
 ![](https://raw.githubusercontent.com/dazejs/docs/master/assets/style.png)
 
-## Installation
+## 安装
 
-**`Beta` version is now available!**
+**`Beta` 版本现已可用!**
 
 ```bash
 $ npm install -g @dazejs/cli@next
 ```
 
 
-## Getting Started
+## 快速开始
 
 ```bash
 $ daze create example --next
@@ -35,11 +35,11 @@ $ cd example
 $ npm start
 ```
 
-visit `http://localhost:8005` to preview
+访问 `http://localhost:8005` 进行预览
 
-## Docs & Community
+## 文档 & 社区
 
-- [Documentations](https://dazejs.org/)
+- [中文文档](https://dazejs.org/zh/)
 
 ## License
 
