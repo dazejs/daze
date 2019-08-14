@@ -13,13 +13,18 @@
   <h4>Just use Javascript!</h4>
 </div>
 
+
+## Coding Style
+![](https://raw.githubusercontent.com/dazejs/docs/master/assets/style.png)
+
 ## Installation
 
-** `Beta` 版本现已可用 **
+**`Beta` version is now available!**
 
 ```bash
 $ npm install -g @dazejs/cli@next
 ```
+
 
 ## Getting Started
 
@@ -28,6 +33,8 @@ $ daze create example --next
 $ cd example
 $ npm start
 ```
+
+visit `http://localhost:8005` to preview
 
 ## Docs & Community
 
