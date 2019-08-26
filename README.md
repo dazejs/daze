@@ -10,7 +10,7 @@
     <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/logo.png">
   </a>  
   <h1>Daze.js</h1>
-  <h4>Just use Javascript!</h4>
+  <h4>Web framwork for Node.js</h4>
 </div>
 
 English | [中文](README_zh.md)
@@ -26,6 +26,8 @@ English | [中文](README_zh.md)
 ## Installation
 
 **`Beta` version is now available!**
+
+> Beta version is still being tested, welcome developers to download the test, we will collect your comments, and actively upgrade maintenance
 
 ```bash
 $ npm install -g @dazejs/cli@next

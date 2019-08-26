@@ -10,7 +10,7 @@
     <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/logo.png">
   </a>  
   <h1>Daze.js</h1>
-  <h4>Just use Javascript!</h4>
+  <h4>Node.js 的 Web 框架</h4>
 </div>
 
 中文 | [English](README.md)
@@ -26,10 +26,11 @@
 
 **`Beta` 版本现已可用!**
 
+> Beta 版本还在进行测试，欢迎各位开发者进行下载测试，我们会收集各位开发者的意见，并积极进行升级维护。
+
 ```bash
 $ npm install -g @dazejs/cli@next
 ```
-
 
 ## 快速开始
 
