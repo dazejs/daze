@@ -12,25 +12,13 @@
     "es6": true,
     "jest": true,
   },
-  "globals": {
-    "res": true,
-    "redirect": true,
-    "app": true,
-    "view": true
-  },
+  "globals": {},
   "rules": {
-    "no-restricted-syntax": [
-      0
-    ],
-    "class-methods-use-this": [
-      0
-    ],
-    "no-underscore-dangle": [
-      0
-    ],
-    "no-multi-assign": [
-      0
-    ],
-    "no-unused-vars": [0]
+    "no-restricted-syntax": [0],
+    "class-methods-use-this": [0],
+    "no-underscore-dangle": [0],
+    "no-multi-assign": [0],
+    "no-unused-vars": [0],
+    "global-require": [0],
   }
 }

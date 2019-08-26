@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "start": "npm run dev",
-    "dev": "cross-env DAZE_ENV=dev DEBUG=daze-framework:* nodemon --inspect --signal SIGTERM --exec babel-node src/index.js --source-map --preserve-symlinks",
-    "build": "babel src --out-dir dist --copy-files --source-map",
+    "dev": "cross-env DAZE_ENV=dev DEBUG=daze-framework:* nodemon --signal SIGTERM --exec babel-node src/index.js --source-map --preserve-symlinks",
+    "build": "babel src --out-dir dist --copy-files",
     "prod": "cross-env DAZE_ENV=prod node dist/index.js",
     "commit": "npx git-cz"
   },

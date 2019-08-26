@@ -59,51 +59,13 @@ module.exports = {
   debug: true,
 
   /**
-   * CORS
-   *
-   * cors.origin - Configures the Access-Control-Allow-Origin CORS header. expects a string.
-   * Can also be set to a function, which takes the ctx as the first parameter.
-   *
-   * cors.exposeHeaders - Configures the Access-Control-Expose-Headers CORS header.
-   * Expects a comma-delimited array.
-   *
-   * cors.maxAge - Configures the Access-Control-Max-Age CORS header. Expects a Number.
-   *
-   * cors.credentials - Configures the Access-Control-Allow-Credentials CORS header.
-   * Expects a Boolean.
-   *
-   * cors.allowMethods - Configures the Access-Control-Allow-Methods CORS header.
-   * Expects a comma-delimited array , If not specified
-   * default allowMethods is ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'].
-   *
-   * cors.allowHeaders - Configures the Access-Control-Allow-Headers CORS header.
-   * Expects a comma-delimited array . If not specified, defaults to reflecting
-   * the headers specified in the request's Access-Control-Request-Headers header.
-   */
-  cors: {
-    enable: true,
-    origin: '*',
-    exposeHeaders: [],
-    maxAge: 5,
-    credentials: false,
-    allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
-  },
-
-  /**
    * template
    */
   http_exception_template: {
-    /* ex: 404: 'errors/404.njk', root path /views */
+    /* ex: 404: 'errors/404.njk', root path: /views */
   },
 
-  form: {
-    max_file_size: 50 * 2014 * 1024,
-  },
-  body_limit: '5mb',
-
-
-  // providers: [
-  //   require.resolve('../app/provider/middleware.provider'),
-  // ],
+  providers: [
+    require.resolve('../provider/bootstrap'),
+  ],
 };
