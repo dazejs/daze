@@ -15,6 +15,10 @@
 
 中文 | [English](README.md)
 
+## 介绍
+
+`Daze.js` 是一款 `Node.js` 的 Web 开发框架
+
 ## 编码风格
 ![](https://raw.githubusercontent.com/dazejs/docs/master/assets/style.png)
 
