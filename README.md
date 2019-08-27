@@ -1,6 +1,7 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/dazejs/daze.svg)](https://github.com/dazejs/daze/issues)
 [![npm](https://img.shields.io/npm/v/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
+[![npm](https://img.shields.io/npm/v/@dazejs/framework/next.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![npm](https://img.shields.io/npm/dm/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![npm](https://travis-ci.com/dazejs/framework.svg?branch=master)](https://www.npmjs.com/package/dazejs)
 [![GitHub license](https://img.shields.io/github/license/dazejs/daze.svg)](https://github.com/dazejs/daze/blob/master/LICENSE)
