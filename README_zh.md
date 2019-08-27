@@ -3,7 +3,8 @@
 [![npm](https://img.shields.io/npm/v/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![npm](https://img.shields.io/npm/v/@dazejs/framework/next.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![npm](https://img.shields.io/npm/dm/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
-[![npm](https://travis-ci.com/dazejs/framework.svg?branch=master)](https://www.npmjs.com/package/dazejs)
+[![npm](https://travis-ci.com/dazejs/framework.svg?branch=master)](https://www.npmjs.com/package/dazejs/framework)
+[![codecov](https://codecov.io/gh/dazejs/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/dazejs/framework)
 [![GitHub license](https://img.shields.io/github/license/dazejs/daze.svg)](https://github.com/dazejs/daze/blob/master/LICENSE)
 
 <div align="center">
