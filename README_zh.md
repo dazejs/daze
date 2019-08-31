@@ -19,7 +19,7 @@
 
 ## 介绍
 
-`Daze.js` 是一款 `Node.js` 的 Web 开发框架
+`Daze.js` 是一款高效、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。
 
 ## 安装
 

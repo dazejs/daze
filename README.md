@@ -19,7 +19,7 @@ English | [中文](README_zh.md)
 
 ## Introduction
 
-`Daze.js` is a Web Framework for `Node.js`
+`Daze.js` is an efficient, highly extensible and powerful `Node.js` server-side Web development framework.
 
 
 ## Installation
