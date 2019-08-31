@@ -21,9 +21,6 @@
 
 `Daze.js` 是一款 `Node.js` 的 Web 开发框架
 
-## 编码风格
-![](https://raw.githubusercontent.com/dazejs/docs/master/assets/style.png)
-
 ## 安装
 
 **`Beta` 版本现已可用!**

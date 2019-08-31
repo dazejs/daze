@@ -1,10 +1,10 @@
 
 const {
-  Controller, Http,
+  Route, Http, Controller,
 } = require('@dazejs/framework');
 
-@Controller()
-class Hello {
+@Route()
+class Hello extends Controller {
   @Http.Get()
   index() {
     return this.render('hello', {

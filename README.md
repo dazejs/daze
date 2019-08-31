@@ -22,9 +22,6 @@ English | [中文](README_zh.md)
 `Daze.js` is a Web Framework for `Node.js`
 
 
-## Coding Style
-![](https://raw.githubusercontent.com/dazejs/docs/master/assets/style.png)
-
 ## Installation
 
 **`Beta` version is now available!**

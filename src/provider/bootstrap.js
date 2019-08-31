@@ -1,8 +1,7 @@
 
 const { Provider } = require('@dazejs/framework');
 
-@Provider()
-class Bootstrap {
+class Bootstrap extends Provider {
   register() {
     // ...
   }
