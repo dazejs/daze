@@ -11,11 +11,6 @@ class Hello extends Controller {
       name: 'Daze.js',
     });
   }
-
-  @Http.Post('/post')
-  store() {
-    return this.request.body || {};
-  }
 }
 
 
