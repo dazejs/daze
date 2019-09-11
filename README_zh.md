@@ -16,6 +16,9 @@
 
 中文 | [English](README.md)
 
+
+访问 [https://dazejs.org/](https://dazejs.org/) 了解更多
+
 ## 介绍
 
 `Daze.js` 是一款高效、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。

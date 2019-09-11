@@ -16,6 +16,9 @@
 
 English | [中文](README_zh.md)
 
+
+Visit [https://dazejs.org/](https://dazejs.org/) to learn more
+
 ## Introduction
 
 `Daze.js` is an efficient, highly extensible and powerful `Node.js` server-side Web development framework.
