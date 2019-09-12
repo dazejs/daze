@@ -23,7 +23,7 @@
 
 `Daze.js` 是一款高效、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。
 
-> 说明: 该仓库包含创建项目必须的项目代码. 如果你想了解更多核心代码, 可以访问 [核心仓库]](https://github.com/dazejs/framework).
+> 说明: 该仓库包含创建项目必须的项目代码. 如果你想了解更多核心代码, 可以访问 [核心仓库](https://github.com/dazejs/framework).
 
 ## 安装
 
