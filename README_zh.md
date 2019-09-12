@@ -27,23 +27,19 @@
 
 ## 安装
 
-**`Beta` 版本现已可用!**
-
-> Beta 版本还在进行测试，欢迎各位开发者进行下载测试，我们会收集各位开发者的意见，并积极进行升级维护。
-
 ```bash
-$ npm install -g @dazejs/cli@next
+$ npm install -g @dazejs/cli
 ```
 
 ## 快速开始
 
 ```bash
-$ daze create example --next
+$ daze create example
 $ cd example
 $ npm start
 ```
 
-访问 `http://localhost:8005` 进行预览
+访问 `http://localhost:8080` 进行预览
 
 ## 文档 & 社区
 
