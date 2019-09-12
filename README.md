@@ -23,6 +23,8 @@ Visit [https://dazejs.org/](https://dazejs.org/) to learn more
 
 `Daze.js` is an efficient, highly extensible and powerful `Node.js` server-side Web development framework.
 
+> Note: This repository contains the project necessary code of the Daze.js framework. If you want to read core code, visit the core [framework repository](https://github.com/dazejs/framework).
+
 
 ## Installation
 
