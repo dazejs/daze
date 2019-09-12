@@ -31,19 +31,19 @@ Visit [https://dazejs.org/](https://dazejs.org/) to learn more
 > Beta version is still being tested, welcome developers to download the test, we will collect your comments, and actively upgrade maintenance
 
 ```bash
-$ npm install -g @dazejs/cli@next
+$ npm install -g @dazejs/cli
 ```
 
 
 ## Getting Started
 
 ```bash
-$ daze create example --next
+$ daze create example
 $ cd example
 $ npm start
 ```
 
-visit `http://localhost:8005` to preview
+visit `http://localhost:8080` to preview
 
 ## Docs & Community
 

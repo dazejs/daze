@@ -4,7 +4,7 @@ module.exports = {
   /**
    * HTTP service port
    */
-  port: 8005,
+  port: 8080,
 
   /**
    * Encryption Key
