@@ -66,6 +66,6 @@ module.exports = {
   },
 
   providers: [
-    require.resolve('../provider/bootstrap'),
+    // require.resolve('../provider/bootstrap'),
   ],
 };
