@@ -14,17 +14,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: Dependences Install
       run: |
         npm install
         ./node_modules/.bin/lerna bootstrap
+    - name: Run Test
+      run: |
         npm run test:coverage
+    - name: Codecov
+      run: |
         npm install codecov
         ./node_modules/.bin/codecov
-      env:
-        CI: true
 
