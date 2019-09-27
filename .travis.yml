@@ -5,6 +5,7 @@ node_js:
  - '12'
 
 script:
+  - lerna bootstrap
   - npm run test:coverage
 
 after_script:
