@@ -1,0 +1,32 @@
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+  
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [8, 10, 11, 12]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Dependences Install
+      run: |
+        npm install
+        ./node_modules/.bin/lerna bootstrap
+    - name: Run Test
+      run: |
+        npm run test:coverage
+    - name: Codecov
+      run: |
+        npm install codecov
+        ./node_modules/.bin/codecov
+
