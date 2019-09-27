@@ -1,4 +1,4 @@
-name: nodejs
+name: Node CI
 
 on: [push, pull_request]
 
