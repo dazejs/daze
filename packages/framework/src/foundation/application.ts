@@ -7,7 +7,7 @@
 import path from 'path'
 import cluster from 'cluster'
 import util from 'util'
-import Keygrip from 'Keygrip'
+import Keygrip from 'keygrip'
 import is from 'core-util-is'
 import { Container } from '../container'
 import { Master, Worker } from '../cluster'
