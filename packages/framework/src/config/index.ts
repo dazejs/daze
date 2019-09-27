@@ -20,7 +20,7 @@ const envMap = new Map([
   ['production', 'prod'],
 ]);
 
-export class ConfigBase {
+export class Config {
   _app: any;
   _items: any;
   [key: string]: any;
@@ -33,10 +33,30 @@ export class ConfigBase {
      * @var {object} this._items configuration
      * */
     this._items = {};
-    // parse configuration files
-    // this[PARSE]();
+
+    /**
+     * proxy
+     */
+    return new Proxy(this, this.proxy())
   }
 
+  /**
+   * get proxy handler
+   */
+  private proxy(): ProxyHandler<this> {
+    return {
+      get(t, prop, receiver) {
+        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
+          return Reflect.get(t, prop, receiver);
+        }
+        return t.get(prop);
+      }
+    }
+  }
+
+  /**
+   * async initialize
+   */
   async initialize() {
     await this[PARSE]();
   }
@@ -122,13 +142,13 @@ export class ConfigBase {
   /**
    * The name of the configuration
    */
-  get(name?: string, def?: any) {
+  get(name?: string | number, def?: any) {
     let value = this._items;
     // Gets all the configuration when name is empty
     if (!name) {
       return value;
     }
-    const names = name.split('.');
+    const names = String(name).split('.');
     for (const n of names) {
       if (!Reflect.has(value, n)) {
         value = undefined;
@@ -156,21 +176,3 @@ export class ConfigBase {
     return process.env.DAZE_ENV || (process.env.NODE_ENV && envMap.get(process.env.NODE_ENV)) || process.env.NODE_ENV;
   }
 }
-
-/**
- * The agent Config class
- * Implement the attribute operator to get the parameter
- */
-export const Config = new Proxy(ConfigBase, {
-  construct(Target, args, extended) {
-    const instance = Reflect.construct(Target, args, extended);
-    return new Proxy(instance, {
-      get(t, prop, receiver) {
-        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
-          return Reflect.get(t, prop, receiver);
-        }
-        return t.get(prop);
-      },
-    });
-  },
-});

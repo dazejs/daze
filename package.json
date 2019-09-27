@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "dev": "lerna run dev",
     "build": "sh scripts/build.sh",
     "publish": "npm run build && lerna publish",
     "next": "npm run build && lerna publish --dist-tag next",

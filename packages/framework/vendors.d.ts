@@ -1,6 +1,6 @@
 
 
-declare module 'Keygrip' {
+declare module 'keygrip' {
   var x: any;
   export = x;
 }
@@ -10,10 +10,6 @@ declare module 'core-util-is' {
   export = x;
 }
 
-declare module 'toidentifier' {
-  var x: any;
-  export = x;
-}
 
 declare module 'cache-content-type' {
   var x: any;

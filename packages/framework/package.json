@@ -82,7 +82,6 @@
     "reflect-metadata": "^0.1.13",
     "statuses": "^1.5.0",
     "string-hash": "^1.1.3",
-    "toidentifier": "^1.0.0",
     "type-is": "^1.6.16",
     "uuid": "^3.3.2",
     "validator": "^11.0.0",

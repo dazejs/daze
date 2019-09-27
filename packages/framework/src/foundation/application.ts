@@ -34,7 +34,7 @@ export class Application extends Container {
 
   logPath: string = '';
 
-  keys: Keygrip
+  keys: any
 
   _server?: Server;
 

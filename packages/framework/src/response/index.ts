@@ -6,7 +6,6 @@
  */
 
 import assert from 'assert'
-import toIdentifier from 'toidentifier'
 import statuses from 'statuses'
 import getType from 'cache-content-type'
 import Stream from 'stream'
@@ -18,9 +17,10 @@ import { ViewFactory } from '../view/factory'
 import { IllegalArgumentError } from '../errors/illegal-argument-error'
 import { View } from '../view'
 import { Cookie } from '../cookie'
+import { Statusable } from './statusable'
 import { OutgoingHttpHeaders } from 'http'
 
-export class Response {
+export class Response extends Statusable {
 
   /**
    * response statusCode
@@ -42,6 +42,9 @@ export class Response {
    */
   protected cookies: Cookie[] = [];
 
+  /**
+   * is static server
+   */
   protected _isStaticServer = false;
 
   /**
@@ -49,6 +52,7 @@ export class Response {
    */
   [key: string]: any;
   constructor(data: any = null, code = 200, header = {}) {
+    super()
     /**
      * status code
      * @type
@@ -66,11 +70,6 @@ export class Response {
      * @type
      */
     this._data = data;
-
-    /**
-     * patch methods
-     */
-    this.patchCodeMethods();
   }
 
   /**
@@ -121,97 +120,11 @@ export class Response {
   }
 
   /**
-   * patch code methods
-   *
-   * SUCCESS
-   *
-   * 100 Continue
-   * 101 SwitchingProtocols
-   * 102 Processing
-   * 103 EarlyHints
-   * 200 OK
-   * 201 Created
-   * 202 Accepted
-   * 203 NonAuthoritativeInformation
-   * 204 NoContent
-   * 205 ResetContent
-   * 206 PartialContent
-   * 207 MultiStatus
-   * 208 AlreadyReported
-   * 226 IMUsed
-   * 300 MultipleChoices
-   * 301 MovedPermanently
-   * 302 Found
-   * 303 SeeOther
-   * 304 NotModified
-   * 305 UseProxy
-   * 306 Unused
-   * 307 TemporaryRedirect
-   * 308 PermanentRedirect
-   *
-   * ERROR
-   *
-   * 400 BadRequest
-   * 401 Unauthorized
-   * 402 PaymentRequired
-   * 403 Forbidden
-   * 404 NotFound
-   * 405 MethodNotAllowed
-   * 406 NotAcceptable
-   * 407 ProxyAuthenticationRequired
-   * 408 RequestTimeout
-   * 409 Conflict
-   * 410 Gone
-   * 411 LengthRequired
-   * 412 PreconditionFailed
-   * 413 PayloadTooLarge
-   * 414 URITooLong
-   * 415 UnsupportedMediaType
-   * 416 RangeNotSatisfiable
-   * 417 ExpectationFailed
-   * 418 ImATeapot
-   * 421 MisdirectedRequest
-   * 422 UnprocessableEntity
-   * 423 Locked
-   * 424 FailedDependency
-   * 425 UnorderedCollection
-   * 426 UpgradeRequired
-   * 428 PreconditionRequired
-   * 429 TooManyRequests
-   * 431 RequestHeaderFieldsTooLarge
-   * 451 UnavailableForLegalReasons
-   * 500 InternalServerError
-   * 501 NotImplemented
-   * 502 BadGateway
-   * 503 ServiceUnavailable
-   * 504 GatewayTimeout
-   * 505 HTTPVersionNotSupported
-   * 506 VariantAlsoNegotiates
-   * 507 InsufficientStorage
-   * 508 LoopDetected
-   * 509 BandwidthLimitExceeded
-   * 510 NotExtended
-   * 511 NetworkAuthenticationRequired
-   * @private
-   */
-  private patchCodeMethods() {
-    const { codes } = statuses;
-    for (const code of codes) {
-      const name = toIdentifier(statuses[code]);
-      if (code >= 400) {
-        this[name] = (message: any) => this.error(message || statuses[code], code);
-      } else {
-        this[name] = (data: any) => this.success(data || statuses[code], code);
-      }
-    }
-  }
-
-  /**
    * throw http exception with code and message
    * @param message exception message
    * @param code exception code
    */
-  error(message: any, code: number) {
+  error(message: any, code: number = 404) {
     this.setCode(code);
     this.setData(message);
     return this;

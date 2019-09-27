@@ -17,7 +17,7 @@ import { ValidateHttpError } from '../errors/validate-http-error'
 import { Session } from '../session'
 import { parseBody } from './utils/parse-body'
 
-class RequestBase {
+export class Request {
   app: any;
   req: any;
   res: any;
@@ -57,6 +57,25 @@ class RequestBase {
      * @type {Object} _accept accepts
      */
     this._accepts = null;
+
+    /**
+     * proxy instance
+     */
+    return new Proxy(this, this.proxy())
+  }
+
+  /**
+   * get proxy handler
+   */
+  private proxy(): ProxyHandler<this> {
+    return {
+      get(t, prop, receiver) {
+        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
+          return Reflect.get(t, prop, receiver);
+        }
+        return t.getParam(prop);
+      },
+    }
   }
 
   /**
@@ -512,7 +531,7 @@ class RequestBase {
    * Gets the parameter value based on the parameter name
    * Returns the default value when the parameter does not exist
    */
-  getParam(name: string, defaultValue?: any) {
+  getParam(name: string | number, defaultValue?: any) {
     if (!name) return undefined;
     return this.hasParam(name) ? this.mergedParams[name] : defaultValue;
   }
@@ -566,7 +585,7 @@ class RequestBase {
   /**
    * Determine whether the parameter exists
    */
-  hasParam(name: string) {
+  hasParam(name: string | number) {
     return Reflect.has(this.mergedParams, name);
   }
 
@@ -580,21 +599,3 @@ class RequestBase {
     }
   }
 }
-
-/**
- * The agent Request class
- * Implement the attribute operator to get the parameter
- */
-export const Request = new Proxy(RequestBase, {
-  construct(Target, args, extended) {
-    const instance = Reflect.construct(Target, args, extended);
-    return new Proxy(instance, {
-      get(t, prop, receiver) {
-        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
-          return Reflect.get(t, prop, receiver);
-        }
-        return t.getParam(prop);
-      },
-    });
-  },
-});
