@@ -75,14 +75,16 @@ export class Loader {
    * load file with filepath
    */
   async loadFile(filePath: string) {
-    // const realPath = require.resolve(filePath);
-    // eslint-disable-next-line
-    const target = (await import(filePath)).default;
-    if (!target || !target.prototype) return;
-    const isIgnore = Reflect.getMetadata('ignore', target.prototype);
-    if (isIgnore === true) return;
-    const type = Reflect.getMetadata('type', target.prototype);
-    this.parseModule(target, type);
+    try {
+      const target = (await import(filePath)).default;
+      if (!target || !target.prototype) return;
+      const isIgnore = Reflect.getMetadata('ignore', target.prototype);
+      if (isIgnore === true) return;
+      const type = Reflect.getMetadata('type', target.prototype);
+      this.parseModule(target, type);
+    } catch (err) {
+      console.warn(err)
+    }
   }
 
   /**
