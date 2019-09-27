@@ -3,6 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![npm](https://img.shields.io/npm/dm/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![travis](https://travis-ci.com/dazejs/daze.svg?branch=master)](https://travis-ci.org/dazejs/daze)
+[![actions](https://github.com/dazejs/daze/workflows/nodejs/badge.svg)](https://github.com/dazejs/daze/actions)
 [![codecov](https://codecov.io/gh/dazejs/daze/branch/master/graph/badge.svg)](https://codecov.io/gh/dazejs/daze)
 [![GitHub license](https://img.shields.io/github/license/dazejs/daze.svg)](https://github.com/dazejs/daze/blob/master/LICENSE)
 

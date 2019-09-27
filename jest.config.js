@@ -56,7 +56,6 @@ module.exports = {
   // globals: {},
   globals: {
     "ts-jest": {
-      diagnostics: false,
       tsConfig: "tsconfig.json"
     }
   },
@@ -141,7 +140,7 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "./packages/**/__test__ /**/*.spec.(js|ts)",
+    "./packages/**/__tests__ /**/*.spec.(js|ts)",
   ],
   // An array of regexp pattern strings
   //  that are matched against all test paths, matched tests are skipped

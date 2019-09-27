@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "dev": "lerna run dev",
+    "dev": "lerna run dev --parallel",
     "build": "sh scripts/build.sh",
     "publish": "npm run build && lerna publish",
     "next": "npm run build && lerna publish --dist-tag next",
@@ -42,6 +42,7 @@
     "rimraf": "^2.6.2",
     "supertest": "^3.4.2",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "cross-env": "^6.0.0"
   }
 }

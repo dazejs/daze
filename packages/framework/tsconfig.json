@@ -2,13 +2,14 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "commonjs"
   },
   "include": [
     "src/**/*.ts",
     "vendors.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules/**/*"
   ]
 }

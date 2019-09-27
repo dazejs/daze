@@ -4,7 +4,9 @@ import { Cookie } from '../../../src/cookie';
 import { Application } from '../../../src/foundation/application';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
-app.initialize();
+
+
+beforeAll(() => app.initialize())
 
 describe('Cookie', () => {
   describe('Cookie#getOptions', () => {

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Daze.js Error Trace Page</title>
+</head>
+<body>
+  <div class="container">
+    <div class="stack">
+      <header>
+         <div class="exception">
+          <div class="title">
+            {{ name }}
+            <div class="title-message">
+              {{ message }}
+            </div>
+            <div class="title-logo">
+              {{ logo | safe }}
+              <span style="vertical-align: top;line-height: 50px;margin-left: 10px;">Daze.js</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="left clearfix">
+        {% for stack in stacks %}
+          <div class="frame frame-{{ loop.index }} {% if loop.index === 1%}active{% endif %}" data-index="{{ loop.index }}">
+            <div class="frame-prop">
+              {% set functionName = stack.getFunctionName() %}
+              <span class="frame-index">{{ loop.index }}</span>
+              {% if functionName %}
+                <span class="frame-function">{{ functionName }} </span>
+              {% endif %}
+            </div>
+            <span class="frame-file" title="{{ stack.getFileName() }}">
+              {{ cutFileName(stack.getFileName()) }}:{{ stack.getLineNumber() }}:{{ stack.getColumnNumber() }}
+            </span>
+          </div>
+        {% else %}
+        {% endfor %}
+      </div>
+      <div class="right clearfix">
+        <div class="code-container">
+        {% for stack in stacks %}
+          {% if stack %}
+          {% set lineNumber = stack.getLineNumber() %}
+          <div class="frame-code frame-code-{{ loop.index }} {% if loop.index === 1%}active{% endif %}" data-current="{{ lineNumber }}">
+            <div class="frame-code-file">{{ stack.getFileName() }}</div>
+            <pre class="prettyprint linenums:{{ stack.startLineNumber }} lang-js">{{ stack.content }}</pre>
+          </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+        <div class="env-container">
+          <h2 class="env-head">Environment & Infomations</h2>
+          <div class="table-box">
+            <h3>Node.js Service</h3>
+            <table class="table">
+              <tr>
+                <td>Platform</td>
+                <td>{{ platform }}</td>
+              </tr>
+              <tr>
+                <td>Version</td>
+                <td>{{ version }}</td>
+              </tr>
+              <tr>
+                <td>Uptime</td>
+                <td>{{ uptime }} s</td>
+              </tr>
+              <tr>
+                <td>PID</td>
+                <td>{{ pid }}</td>
+              </tr>
+              <tr>
+                <td>PPID</td>
+                <td>{{ ppid }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="table-box">
+            <h3>Request Data</h3>
+            <table class="table">
+              <tr>
+                <td>IP</td>
+                <td>{{ request.ip }}</td>
+              </tr>
+              <tr>
+                <td>Method</td>
+                <td>{{ request.method }}</td>
+              </tr>
+              <tr>
+                <td>Protocol</td>
+                <td>{{ request.protocol }}</td>
+              </tr>
+              <tr>
+                <td>URL</td>
+                <td>{{ request.url }}</td>
+              </tr>
+              <tr>
+                <td>QueryString</td>
+                <td>{{ request.querystring }}</td>
+              </tr>
+              <tr>
+                <td>Headers</td>
+                <td>
+                  <table class="table">
+                    {% for header, index in request.headers %}
+                    <tr>
+                      <td>{{ header}}</td>
+                      <td>{{ index}}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>Body</td>
+                <td>
+                  <table class="table">
+                    {% for b, index in request.body %}
+                    <tr>
+                      <td>{{ b}}</td>
+                      <td>{{ index}}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

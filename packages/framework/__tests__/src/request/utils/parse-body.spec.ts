@@ -24,7 +24,7 @@ describe('Request#utils#parse-body', () => {
     const res = await request(app._server)
       .post('/example/post')
       .field('name', 'dazejs')
-      .attach('example', '__test__/common/assets/example.txt');
+      .attach('example', '__tests__/common/assets/example.txt');
     const { example } = res.body.files;
     const { name } = res.body.body;
     expect(example.name).toBe('example.txt');
@@ -36,7 +36,7 @@ describe('Request#utils#parse-body', () => {
       .post('/example/post')
       .field('name', 'dazejs')
       .field('name', 'dazejs2')
-      .attach('example', '__test__/common/assets/example.txt');
+      .attach('example', '__tests__/common/assets/example.txt');
     const { example } = res.body.files;
     const { name } = res.body.body;
     expect(example.name).toBe('example.txt');
@@ -48,7 +48,7 @@ describe('Request#utils#parse-body', () => {
       .post('/example/post')
       .field('name', ['dazejs'])
       .field('name', 'dazejs2')
-      .attach('example', '__test__/common/assets/example.txt');
+      .attach('example', '__tests__/common/assets/example.txt');
     const { example } = res.body.files;
     const { name } = res.body.body;
     expect(example.name).toBe('example.txt');
@@ -60,7 +60,7 @@ describe('Request#utils#parse-body', () => {
       .post('/example/post')
       .field('name', ['dazejs'])
       .field('name', ['dazejs2', 'dazejs3'])
-      .attach('example', '__test__/common/assets/example.txt');
+      .attach('example', '__tests__/common/assets/example.txt');
     const { example } = res.body.files;
     const { name } = res.body.body;
     expect(example.name).toBe('example.txt');

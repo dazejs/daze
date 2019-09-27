@@ -1,0 +1,192 @@
+@import "code";
+
+
+body {
+  font: 12px "Helvetica Neue", helvetica, arial, sans-serif;
+  color: #131313;
+  background: #eeeeee;
+  padding:0;
+  margin: 0;
+  max-height: 100%;
+  text-rendering: optimizeLegibility;
+}
+a {
+  text-decoration: none;
+}
+
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+
+header {
+  color: white;
+  box-sizing: border-box;
+  background-color: #2a2a2a;
+  padding: 35px 40px;
+  max-height: 180px;
+  overflow: hidden;
+}
+.title {
+  margin: 6px 0;
+  color: #bebebe;
+  font-size: 18px;
+  position: relative;
+}
+.title-message {
+  font-size: 20px;
+  word-wrap: break-word;
+  margin: 4px 0 0 0;
+  color: white;
+}
+
+.title-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 50px;
+  color: #fff;
+  font-size: 20px;
+}
+
+.left {
+  height: 100%;
+  overflow: auto;
+  float: left;
+  width: 30%;
+  background: #ded8d8;
+}
+
+.right {
+  height: 100%;
+  overflow: auto;
+  float: right;
+  width: 70%;
+  background: #fafafa;
+}
+
+.frame {
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  background: #eeeeee;
+  &.active {
+    box-shadow: inset -5px 0 0 0 #4288CE;
+    color: #09f;
+    background-color: rgba(42, 164, 245, 0.05);
+  }
+}
+
+.frame-index {
+  font-size: 11px;
+  color: #e95353;
+  background-color: rgba(0, 0, 0, .1);
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  border-radius: 100%;
+  text-align: center;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.frame-function {
+  font-size: 16px;
+}
+
+.frame-method {
+  font-size: 16px;
+  color: #e95353;
+}
+
+.frame-prop {
+  margin-bottom: 10px;
+}
+
+.frame-file {
+  word-wrap: break-word;
+  color: #666;
+}
+
+.frame-code {
+  padding: 30px 45px;
+  margin-bottom: 60px;
+  background: #303030;
+  display: none;
+  .frame-code-file {
+    color: #a29d9d;
+    padding: 12px 6px;
+    border-bottom: none;
+  }
+}
+.frame-code.active {
+  display: block;
+}
+.frame-code li.active {
+  background: rgba(255, 0, 100, .18);
+}
+.frame-code li.current {
+  background: rgba(255, 0, 100, .07);
+}
+pre.prettyprint {
+  white-space: pre-wrap;
+  padding: 20px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+ol.linenums {
+  margin-left: 10px;
+}
+
+.env-container {
+  padding: 20px 40px;
+  margin-bottom: 60px;
+}
+
+.env-head {
+  color: #09f;
+  font-weight: 300;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.table-box {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.table tr {
+  padding: 5px 0;
+}
+.table td:first-child {
+  /* width: 20%; */
+  min-width: 130px;
+  overflow: hidden;
+  font-weight: bold;
+  color: #463C54;
+  padding-right: 5px;
+}
+.table td:last-child {
+  width: 80%;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+.table tbody {
+  font: 13px "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+}
+.table-box h3 {
+  font-size: 16px;
+  color: #303030;
+  font-weight: bold;
+  margin: 10px 0;
+  display: block;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
