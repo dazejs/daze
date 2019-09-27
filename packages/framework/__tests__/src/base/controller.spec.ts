@@ -1,6 +1,4 @@
 import 'reflect-metadata';
-import '../../daze/src/app/controller/example';
-import '../../daze/src/provider/app';
 import path from 'path';
 import { Controller } from '../../../src/base/controller';
 import { Application } from '../../../src/foundation/application';

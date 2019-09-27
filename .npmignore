@@ -1,7 +1,7 @@
 node_modules
 src
 coverage
-__test__
+__tests__
 __debug__
 .idea
 .vscode
