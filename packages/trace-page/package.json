@@ -34,7 +34,9 @@
     "watch:ts": "tsc -w",
     "copy": "copyfiles -u 1 template/images/* dist/template",
     "test": "jest --verbose --runInBand",
-    "test:coverage": "jest --detectOpenHandles --runInBand --forceExit --coverage"
+    "test:coverage": "jest --detectOpenHandles --runInBand --forceExit --coverage",
+    "clean": "rimraf dist/*",
+    "build": " npm run clean && npm run copy && tsc && cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack --mode=production"
   },
   "bugs": {
     "url": "https://github.com/dazejs/daze/issues"
