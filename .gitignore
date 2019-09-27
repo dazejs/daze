@@ -1,4 +1,23 @@
-dist
-node_modules
-.vscode
-.clinic
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+*.code-workspace
+
+# dist
+packages/*/dist
+
+
+# logs
+logs/*.log
+**/logs/**.log
+
+# misc
+**DEPRECATED_*
+packages/*/__debug__
+
+# test
+packages/*/coverage

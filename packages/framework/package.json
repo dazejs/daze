@@ -1,0 +1,94 @@
+{
+  "name": "@dazejs/framework",
+  "version": "1.1.0",
+  "description": "Daze.js - A powerful web framework for Node.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "test": "jest --verbose --runInBand",
+    "copy": "copyfiles -u 1 src/**/*.njk dist",
+    "build": "npm run clean && npm run copy && tsc",
+    "dev": "npm run clean && npm run copy &&  tsc -w",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "test:coverage": "jest --detectOpenHandles --runInBand --forceExit --coverage",
+    "debugger": "node --inspect-brk node_modules/.bin/jest --runInBand --no-cache --no-watchman --detectOpenHandles"
+  },
+  "keywords": [
+    "dazejs",
+    "framework",
+    "nodejs",
+    "node",
+    "api",
+    "restful",
+    "es6",
+    "nodeframework",
+    "web",
+    "application",
+    "http",
+    "app",
+    "middleware",
+    "provider",
+    "decractor"
+  ],
+  "author": "Zewail Chan",
+  "contributors": [
+    {
+      "name": "chan zewail",
+      "email": "chanzewail@gmail.com"
+    }
+  ],
+  "homepage": "https://dazejs.org/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dazejs/framework"
+  },
+  "bugs": {
+    "url": "https://github.com/dazejs/daze/issues"
+  },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "@dazejs/trace-page": "^0.2.0",
+    "accepts": "^1.3.7",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cache-content-type": "^1.0.1",
+    "co-body": "^6.0.0",
+    "content-disposition": "^0.5.3",
+    "cookies": "^0.7.3",
+    "core-util-is": "^1.0.2",
+    "crc": "^3.8.0",
+    "csrf": "^3.0.6",
+    "debug": "^3.1.0",
+    "formidable": "^1.2.1",
+    "glob": "^7.1.3",
+    "keygrip": "^1.1.0",
+    "klaw-sync": "^5.0.0",
+    "lodash": "^4.17.11",
+    "log4js": "^3.0.5",
+    "mime": "^2.4.0",
+    "mime-types": "^2.1.24",
+    "minimatch": "^3.0.4",
+    "nunjucks": "^3.1.3",
+    "parseurl": "^1.3.2",
+    "path-to-regexp": "^2.4.0",
+    "redis": "^2.8.0",
+    "reflect-metadata": "^0.1.13",
+    "statuses": "^1.5.0",
+    "string-hash": "^1.1.3",
+    "toidentifier": "^1.0.0",
+    "type-is": "^1.6.16",
+    "uuid": "^3.3.2",
+    "validator": "^11.0.0",
+    "vary": "^1.1.2",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.1.0",
+    "winston-mongodb": "^5.0.0"
+  }
+}

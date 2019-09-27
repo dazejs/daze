@@ -1,0 +1,184 @@
+/**
+ * Copyright (c) 2018 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+
+import cluster from 'cluster'
+import net from 'net'
+import hash from 'string-hash'
+import debuger from 'debug'
+import { defer } from '../utils'
+import { parseOpts, getAlivedWorkers } from './helpers'
+import {
+  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT,
+} from './const'
+
+const debug = debuger('daze-framework:cluster')
+
+const defaultOptions = {
+  port: 0,
+  workers: 0,
+  sticky: false,
+};
+
+
+export class Master {
+
+  options: any;
+
+  connections: any;
+
+  constructor(opts: any) {
+    this.options = Object.assign({}, defaultOptions, parseOpts(opts));
+    this.connections = {};
+  }
+
+  // 工作进程的环境变量
+  // 待定
+  // Environment variables for the work process
+  get env() {
+    return {};
+  }
+
+  /**
+   * Fork a work process
+   */
+  forkWorker(env = {}) {
+    const worker: any = cluster.fork(env);
+    debug(`worker is forked, use pid: ${worker.process.pid}`);
+    const deferred = defer();
+    // Accepts the disconnection service signal sent by the work process,
+    // indicating that the work process is about to
+    // stop the service and needs to be replaced by a new work process
+    // 接受工作进程发送的断开服务信号，表示该工作进程即将停止服务，需要 fork 一个新的工作进程来替代
+    worker.on('message', (message: string) => {
+      if (worker[WORKER_DYING]) return;
+      if (message === WORKER_DISCONNECT) {
+        debug('refork worker, receive message \'daze-worker-disconnect\'');
+        worker[WORKER_DYING] = true;
+        // The signal that tells the worker process that it has fork after fork,
+        // and lets it end the service
+        // fork 完毕后通知工作进程已 fork 的信号，让其结束服务
+        this.forkWorker(env).then(() => worker.send(WORKER_DID_FORKED)).catch(() => {});
+      }
+    });
+    // Emitted after the worker IPC channel has disconnected
+    // Automatically fork a new work process after the IPC pipeline is detected to be disconnected
+    worker.once('disconnect', () => {
+      if (worker[WORKER_DYING]) return;
+      debug(`worker disconnect: ${worker.process.pid}`);
+      worker[WORKER_DYING] = true;
+      debug('worker will fork');
+      this.forkWorker(env);
+    });
+    // The cluster module will trigger an 'exit' event when any worker process is closed
+    worker.once('exit', (code: number, signal: string) => {
+      if (worker[WORKER_DYING]) return;
+      debug(`worker exit, code: ${code}, signal: ${signal}`);
+      worker[WORKER_DYING] = true;
+      this.forkWorker(env);
+    });
+    // listening event
+    worker.once('listening', (address: string) => {
+      debug(`listening, address: ${JSON.stringify(address)}`);
+      deferred.resolve({ worker, address });
+    });
+
+    return deferred.promise;
+  }
+
+  /**
+   * Work processes corresponding to the fork, depending on the configuration or number of cpus
+   * fork 对应的工作进程，取决于cpu的数量或配置参数
+   */
+  forkWorkers() {
+    const { workers } = this.options;
+    const promises = [];
+    const env = Object.assign({}, this.env);
+    for (let i = 0; i < workers; i += 1) {
+      promises.push(this.forkWorker(env));
+    }
+    return Promise.all(promises);
+  }
+
+  /**
+   * Create sticky sessions for websocket communication
+   * 创建粘性会话，适用于 websocket 通信
+   * reference https://github.com/uqee/sticky-cluster
+   */
+  cteateStickyServer() {
+    const deferred = defer();
+    const server = net.createServer({ pauseOnConnect: true }, (connection) => {
+      const signature = `${connection.remoteAddress}:${connection.remotePort}`;
+      this.connections[signature] = connection;
+      this.connections.on('close', () => {
+        delete this.connections[signature];
+      });
+      const index = hash(connection.remoteAddress || '') % this.options.works;
+      let current = -1;
+      getAlivedWorkers().some((worker: any) => {
+        // eslint-disable-next-line no-plusplus
+        if (index === ++current) {
+          worker.send('daze-sticky-connection', connection);
+          return true;
+        }
+        return false;
+      });
+    });
+    server.listen(this.options.port, () => {
+      this.forkWorkers().then((data) => {
+        deferred.resolve(data);
+      });
+    });
+    return deferred.promise;
+  }
+
+  /**
+   * Send a reload signal to all work processes
+   * 给所有工作进程发送 reload 信号
+   */
+  reloadWorkers() {
+    for (const worker of getAlivedWorkers()) {
+      worker.send(RELOAD_SIGNAL);
+    }
+    return this;
+  }
+
+  /**
+   * Capture all restart work process signals
+   * 捕获所有重启工作进程的信号
+   */
+  catchSignalToReload() {
+    // After the master process receives the reload signal
+    // it traverses the surviving worker processes
+    // and sends the reload instruction to each worker process
+    // 主进程接收到 reload 信号后，遍历存活的工作进程，给每个工作进程发送 reload 指令
+    process.once(RELOAD_SIGNAL, () => {
+      debug(`Start smooth restart, signal: ${RELOAD_SIGNAL}`);
+      this.reloadWorkers();
+    });
+    // Receives the daze-restart restart instruction
+    // sent by the work process to restart all the work processes
+    // 接收工作进程发送的 daze-restart 重启指令，重启所有工作进程
+    cluster.on('message', (_worker, message) => {
+      if (message !== 'daze-restart') return;
+      this.reloadWorkers();
+    });
+  }
+
+  /**
+   * Start the service
+   * 启动服务
+   */
+  run() {
+    const serverPromise = this.options.sticky ? this.cteateStickyServer() : this.forkWorkers();
+    return serverPromise.then((res: any) => {
+      // do something
+      this.catchSignalToReload();
+      return res;
+    });
+  }
+}
