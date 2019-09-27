@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://github.com/dazejs/daze">
-    <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/logo.png">
+    <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/assets/logo.png">
   </a>  
   <h1>Daze.js</h1>
   <h4>Node.js 的 Web 框架</h4>
