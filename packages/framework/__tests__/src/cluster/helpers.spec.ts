@@ -1,25 +1,30 @@
+import 'reflect-metadata'
 import os from 'os';
 import cluster from 'cluster';
-import { parseOpts, isAliveWorker, getAlivedWorkers } from '../../../src/cluster/helpers';
+import { parseMasterOpts, isAliveWorker, getAlivedWorkers } from '../../../src/cluster/helpers';
 import { WORKER_DYING } from '../../../src/cluster/const';
 
 describe('Cluster#helpers', () => {
   it('should set default cpus when no workers', () => {
     const options1 = {
       workers: 1,
+      port: 8888,
+      sticky: false,
     };
-    expect(parseOpts(options1)).toEqual({
+    expect(parseMasterOpts(options1)).toEqual({
       workers: 1,
+      port: 8888,
+      sticky: false,
     });
     const options2 = {
       workers: 0,
+      port: 8888,
+      sticky: false,
     };
-    expect(parseOpts(options2)).toEqual({
+    expect(parseMasterOpts(options2)).toEqual({
       workers: os.cpus().length,
-    });
-    const options3 = {};
-    expect(parseOpts(options3)).toEqual({
-      workers: os.cpus().length,
+      port: 8888,
+      sticky: false,
     });
   });
 
@@ -54,8 +59,8 @@ describe('Cluster#helpers', () => {
     });
 
     it('should return false when dying', () => {
-      const worker: { [key: string]: any } = cluster.fork();
-      worker[WORKER_DYING] = true;
+      const worker = cluster.fork();
+      Reflect.defineMetadata(WORKER_DYING, true, worker)
       expect(isAliveWorker(worker)).toBeFalsy();
       worker.process.kill();
     });

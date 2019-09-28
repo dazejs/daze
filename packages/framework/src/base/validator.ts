@@ -7,7 +7,7 @@
 import { Base } from './base'
 import { ComponentType } from '../symbol'
 
-export class Validator extends Base {
+export abstract class Validator extends Base {
 
 }
 

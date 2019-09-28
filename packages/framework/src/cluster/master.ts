@@ -10,15 +10,26 @@ import cluster from 'cluster'
 import net from 'net'
 import hash from 'string-hash'
 import debuger from 'debug'
-import { defer } from '../utils'
-import { parseOpts, getAlivedWorkers } from './helpers'
+import { Deferred } from '../foundation/support/defered'
+import { parseMasterOpts, getAlivedWorkers } from './helpers'
 import {
-  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT,
+  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT, STIKCY_CONNECTION
 } from './const'
 
 const debug = debuger('daze-framework:cluster')
 
-const defaultOptions = {
+type TServerData = {
+  worker: cluster.Worker,
+  address: string
+}
+
+export interface IMasterOptions {
+  port: number,
+  workers: number,
+  sticky: boolean
+}
+
+const defaultOptions: IMasterOptions = {
   port: 0,
   workers: 0,
   sticky: false,
@@ -27,13 +38,20 @@ const defaultOptions = {
 
 export class Master {
 
-  options: any;
+  /**
+   * master options
+   */
+  options: IMasterOptions;
 
-  connections: any;
+  /**
+   * server connections
+   */
+  connections: {
+    [key: string]: net.Socket
+  } = {};
 
-  constructor(opts: any) {
-    this.options = Object.assign({}, defaultOptions, parseOpts(opts));
-    this.connections = {};
+  constructor(opts: IMasterOptions) {
+    this.options = Object.assign({}, defaultOptions, parseMasterOpts(opts));
   }
 
   // 工作进程的环境变量
@@ -47,18 +65,20 @@ export class Master {
    * Fork a work process
    */
   forkWorker(env = {}) {
-    const worker: any = cluster.fork(env);
+    const worker = cluster.fork(env);
     debug(`worker is forked, use pid: ${worker.process.pid}`);
-    const deferred = defer();
+    const deferred = new Deferred<TServerData>();
     // Accepts the disconnection service signal sent by the work process,
     // indicating that the work process is about to
     // stop the service and needs to be replaced by a new work process
     // 接受工作进程发送的断开服务信号，表示该工作进程即将停止服务，需要 fork 一个新的工作进程来替代
     worker.on('message', (message: string) => {
-      if (worker[WORKER_DYING]) return;
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return
+      // if (worker[WORKER_DYING]) return;
       if (message === WORKER_DISCONNECT) {
         debug('refork worker, receive message \'daze-worker-disconnect\'');
-        worker[WORKER_DYING] = true;
+        Reflect.defineMetadata(WORKER_DYING, true, worker)
+        // worker[WORKER_DYING] = true;
         // The signal that tells the worker process that it has fork after fork,
         // and lets it end the service
         // fork 完毕后通知工作进程已 fork 的信号，让其结束服务
@@ -68,17 +88,21 @@ export class Master {
     // Emitted after the worker IPC channel has disconnected
     // Automatically fork a new work process after the IPC pipeline is detected to be disconnected
     worker.once('disconnect', () => {
-      if (worker[WORKER_DYING]) return;
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return
+      // if (worker[WORKER_DYING]) return;
       debug(`worker disconnect: ${worker.process.pid}`);
-      worker[WORKER_DYING] = true;
+      Reflect.defineMetadata(WORKER_DYING, true, worker)
+      // worker[WORKER_DYING] = true;
       debug('worker will fork');
       this.forkWorker(env);
     });
     // The cluster module will trigger an 'exit' event when any worker process is closed
     worker.once('exit', (code: number, signal: string) => {
-      if (worker[WORKER_DYING]) return;
+      // if (worker[WORKER_DYING]) return;
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return
       debug(`worker exit, code: ${code}, signal: ${signal}`);
-      worker[WORKER_DYING] = true;
+      Reflect.defineMetadata(WORKER_DYING, true, worker)
+      // worker[WORKER_DYING] = true;
       this.forkWorker(env);
     });
     // listening event
@@ -109,20 +133,20 @@ export class Master {
    * 创建粘性会话，适用于 websocket 通信
    * reference https://github.com/uqee/sticky-cluster
    */
-  cteateStickyServer() {
-    const deferred = defer();
+  cteateStickyServer()  {
+    const deferred = new Deferred<TServerData[]>();
     const server = net.createServer({ pauseOnConnect: true }, (connection) => {
       const signature = `${connection.remoteAddress}:${connection.remotePort}`;
       this.connections[signature] = connection;
-      this.connections.on('close', () => {
+      connection.on('close', () => {
         delete this.connections[signature];
       });
-      const index = hash(connection.remoteAddress || '') % this.options.works;
+      const index = hash(connection.remoteAddress || '') % this.options.workers;
       let current = -1;
-      getAlivedWorkers().some((worker: any) => {
+      getAlivedWorkers().some((worker) => {
         // eslint-disable-next-line no-plusplus
         if (index === ++current) {
-          worker.send('daze-sticky-connection', connection);
+          worker.send(STIKCY_CONNECTION, connection);
           return true;
         }
         return false;
@@ -173,9 +197,9 @@ export class Master {
    * Start the service
    * 启动服务
    */
-  run() {
+  async run() {
     const serverPromise = this.options.sticky ? this.cteateStickyServer() : this.forkWorkers();
-    return serverPromise.then((res: any) => {
+    return serverPromise.then((res) => {
       // do something
       this.catchSignalToReload();
       return res;

@@ -13,7 +13,7 @@ import { Container } from '../container'
 import { Master, Worker } from '../cluster'
 import * as providers from './providers'
 import { HttpError } from '../errors/http-error'
-
+import { httpServer } from './http-server'
 import { Server } from 'http'
 
 const DEFAULT_PORT = 8080;
@@ -226,7 +226,10 @@ export class Application extends Container {
     return new Worker({
       port: this.port,
       sticky: clusterConfig.sticky || false,
-      createServer: (...args: any[]) => this.startServer(...args),
+      createServer: (port: number) => {
+        this._server = this.startServer(port)
+        return this._server
+      },
     });
   }
 
@@ -315,9 +318,9 @@ export class Application extends Container {
     if (this.config.get('app.cluster.enable')) {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
-        this._server = this.clusterMaterInstance.run();
+        await this.clusterMaterInstance.run();
       } else {
-        this._server = this.clusterWorkerInstance.run();
+        await this.clusterWorkerInstance.run();
       }
     } else {
       // 以单线程工作方式运行应用
@@ -339,13 +342,13 @@ export class Application extends Container {
   /**
    * Start the HTTP service
    */
-  startServer(...args: any[]) {
-    return this.listen(...args);
+  startServer(port?: number) {
+    return this.listen(port);
   }
 
-  listen(...args: any[]) {
-    const server = this.get('httpServer');
-    return server.listen(...args);
+  listen(port?: number) {
+    const server: httpServer = this.get('httpServer');
+    return server.listen(port);
   }
 
 

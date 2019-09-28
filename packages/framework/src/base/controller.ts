@@ -11,7 +11,7 @@ import { Validate } from '../validate'
 import { ComponentType } from '../symbol'
 import { Request } from '../request'
 
-export class Controller extends Base {
+export abstract class Controller extends Base {
   /**
    * context cache
    */
@@ -113,7 +113,7 @@ export class Controller extends Base {
    * @param data
    * @param validator
    */
-  validate(data: any[], validator: any[]) {
+  validate(data: any[], validator: any[]): Validate {
     return new Validate(data, validator);
   }
 
@@ -122,7 +122,7 @@ export class Controller extends Base {
    * @param data
    * @param resourceName
    */
-  item(data: any[], resourceName: any) {
+  item(data: any[], resourceName: any): Resource.Item {
     return new Resource.Item(data, resourceName);
   }
 
@@ -131,7 +131,7 @@ export class Controller extends Base {
    * @param data
    * @param resourceName
    */
-  collection(data: any, resourceName: string) {
+  collection(data: any, resourceName: string): Resource.Collection {
     return new Resource.Collection(data, resourceName);
   }
 }

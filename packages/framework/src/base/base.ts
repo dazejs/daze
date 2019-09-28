@@ -9,15 +9,9 @@ import { Response } from '../response'
 import { Redirect } from '../response/redirect'
 import { Application } from '../foundation/application'
 import { Config } from '../config'
+import { Messenger } from '../cluster/messenger'
 
-export interface IBase {
-  [key: string]: any
-}
-export interface IBaseConstructor {
-  new(...args: any[]): IBase;
-}
-
-export class Base implements IBase {
+export abstract class Base{
   /**
    * Application instance getter
    */
@@ -35,7 +29,7 @@ export class Base implements IBase {
   /**
    * Message instance getter
    */
-  get messenger() {
+  get messenger(): Messenger {
     return Container.get('messenger');
   }
 

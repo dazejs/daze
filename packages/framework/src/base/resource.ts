@@ -8,13 +8,13 @@ import { Base } from './base'
 import { Item, Collection } from '../resource'
 import { ComponentType } from '../symbol'
 
-export class Resource extends Base {
+export abstract class Resource extends Base {
   /**
    * use collection resource
    * @param data resource data
    * @param  formatter resource formatter
    */
-  collection(data: any, formatter: any) {
+  collection(data: any, formatter: any): Collection {
     const resource = new Collection(data, formatter);
     return resource.withoutKey().output();
   }
@@ -24,7 +24,7 @@ export class Resource extends Base {
    * @param data resource data
    * @param formatter resource formatter
    */
-  item(data: any, formatter: any) {
+  item(data: any, formatter: any): Item {
     const resource = new Item(data, formatter);
     return resource.withoutKey().output();
   }
@@ -35,11 +35,11 @@ export class Resource extends Base {
    */
   resource(formatter: any) {
     return {
-      item(data: any) {
+      item(data: any): Item {
         const resource = new Item(data, formatter);
         return resource.withoutKey().output();
       },
-      collection(data: any) {
+      collection(data: any): Collection {
         const resource = new Collection(data, formatter);
         return resource.withoutKey().output();
       },
@@ -50,9 +50,7 @@ export class Resource extends Base {
    * default resolve method
    * @param data
    */
-  resolve(data: any) {
-    return data;
-  }
+  abstract resolve(data: object): object
 }
 
 Reflect.defineMetadata('type', ComponentType.Resource, Resource.prototype);

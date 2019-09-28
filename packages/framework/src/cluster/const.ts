@@ -21,3 +21,6 @@ export const WORKER_DID_FORKED = 'daze-worker-did-fork';
 // Signal that the work process is about to stop providing service to the main process
 // 工作进程即将停止提供服务通知主进程的信号
 export const WORKER_DISCONNECT = 'daze-worker-disconnect';
+
+// sticky sessions for websocket communication
+export const STIKCY_CONNECTION = 'daze-sticky-connection'

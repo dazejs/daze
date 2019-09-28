@@ -1,6 +1,6 @@
 import { Base } from './base'
 
 
-export class Provider extends Base {
+export abstract class Provider extends Base {
 
 }

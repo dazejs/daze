@@ -11,15 +11,13 @@ import { Container } from '../../container'
 import { Request} from '../../request'
 import { ErrorHandler} from '../../errors/handle'
 import { ResponseManager} from '../../response/manager'
+import { Application } from '../application'
 
 
 export class httpServer {
-  app: any;
-  constructor() {
-    this.app = Container.get('app');
-  }
+  app: Application = Container.get('app');;
 
-  listen(...args: any[]) {
+  listen(port?: number) {
     const server = http.createServer(async (req, res) => {
       const request = new Request(req, res);
       await request.initialize();
@@ -31,6 +29,6 @@ export class httpServer {
           return new ResponseManager(err.render()).output(request);
         });
     });
-    return server.listen(...args);
+    return server.listen(port);
   }
 }

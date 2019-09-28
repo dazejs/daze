@@ -8,7 +8,7 @@ import { Base } from './base'
 import { ComponentType } from '../symbol'
 
 
-export class Service extends Base {
+export abstract class Service extends Base {
 
 }
 

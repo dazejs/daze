@@ -13,27 +13,32 @@ beforeAll(() => app.initialize());
 
 describe('Base Class', () => {
   it('should return app instance with app prop', () => {
-    const base = new Base();
+    class Example extends Base {}
+    const base = new Example();
     expect(base.app).toBeInstanceOf(Application);
   });
 
   it('should return config instance with config prop', () => {
-    const base = new Base();
+    class Example extends Base { }
+    const base = new Example();
     expect(base.config).toBeInstanceOf(Config);
   });
 
   it('should return messenger instance with messenger prop', () => {
-    const base = new Base();
+    class Example extends Base { }
+    const base = new Example();
     expect(base.messenger).toBeInstanceOf(Messenger);
   });
 
   it('should return response instance with response method', () => {
-    const base = new Base();
+    class Example extends Base { }
+    const base = new Example();
     expect(base.response()).toBeInstanceOf(Response);
   });
 
   it('should return redirect instance with redirect method', () => {
-    const base = new Base();
+    class Example extends Base { }
+    const base = new Example();
     expect(base.redirect()).toBeInstanceOf(Redirect);
   });
 });

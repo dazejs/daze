@@ -8,7 +8,7 @@ import { Base } from './base'
 import { ComponentType } from '../symbol'
 
 
-export class Middleware extends Base {
+export abstract class Middleware extends Base {
 
 }
 

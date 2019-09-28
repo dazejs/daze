@@ -7,13 +7,20 @@
 
 import cluster from 'cluster'
 import debuger from 'debug'
-import { parseOpts } from './helpers'
+import net from 'net'
+import http from 'http'
 import {
-  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT,
+  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT, STIKCY_CONNECTION
 } from './const'
-import { defer } from '../utils'
+import { Deferred } from '../foundation/support/defered'
 
 const debug = debuger('daze-framework:cluster')
+
+export interface IWorkerOptions {
+  port: number,
+  sticky: boolean,
+  createServer: (...args: any[]) => http.Server
+}
 
 const defaultOptions = {
   port: 0,
@@ -21,19 +28,29 @@ const defaultOptions = {
   createServer: () => {},
 };
 
+/**
+ * @class
+ */
 export class Worker {
-  options: any;
-  server: any;
-  constructor(opts: any) {
-    this.options = Object.assign({}, defaultOptions, parseOpts(opts));
-    this.server = null;
+  /**
+   * worker options
+   */
+  options: IWorkerOptions;
+
+  /**
+   * worker server
+   */
+  server: net.Server;
+
+  constructor(opts: IWorkerOptions) {
+    this.options = Object.assign({}, defaultOptions, opts);
   }
 
   // disconnect worker
   disconnect(refork = true) {
-    const { worker }: { worker: any } = cluster;
-    if (worker[WORKER_DYING]) return;
-    worker[WORKER_DYING] = true;
+    const { worker } = cluster;
+    if (Reflect.getMetadata(WORKER_DYING, worker)) return
+    Reflect.defineMetadata(WORKER_DYING, true, worker)
     debug('worker disconnect');
     if (refork) {
       // You need to re-fork the new work process
@@ -60,7 +77,7 @@ export class Worker {
   close() {
     // Close the process timeout
     // 关闭进程超时时间
-    let timer: any = null;
+    let timer: NodeJS.Timeout;
     const killTimeout = 10 * 1000;
     if (killTimeout > 0) {
       timer = setTimeout(() => {
@@ -93,8 +110,8 @@ export class Worker {
    * Start the service
    * 启动服务
    */
-  run() {
-    const deferred = defer();
+  async run() {
+    const deferred = new Deferred<any>();
     this.catcheReloadSignal();
     if (!this.options.sticky) {
       this.server = this.options.createServer(this.options.port, () => {
@@ -105,7 +122,7 @@ export class Worker {
       });
     } else {
       process.on('message', (message, connection) => {
-        if (message !== 'daze-sticky-connection') return;
+        if (message !== STIKCY_CONNECTION) return;
         debug('WORKER #%d  got conn from %s', process.pid, connection.remoteAddress);
         // emulate a connection event on the server by emitting the
         // event with the connection master sent to us
