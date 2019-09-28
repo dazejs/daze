@@ -75,16 +75,12 @@ export class Loader {
    * load file with filepath
    */
   async loadFile(filePath: string) {
-    try {
-      const target = (await import(filePath)).default;
-      if (!target || !target.prototype) return;
-      const isIgnore = Reflect.getMetadata('ignore', target.prototype);
-      if (isIgnore === true) return;
-      const type = Reflect.getMetadata('type', target.prototype);
-      this.parseModule(target, type);
-    } catch (err) {
-      console.warn(err)
-    }
+    const target = (await import(filePath)).default;
+    if (!target || !target.prototype) return;
+    const isIgnore = Reflect.getMetadata('ignore', target.prototype);
+    if (isIgnore === true) return;
+    const type = Reflect.getMetadata('type', target.prototype);
+    this.parseModule(target, type);
   }
 
   /**
