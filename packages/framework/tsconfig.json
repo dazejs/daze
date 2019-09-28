@@ -6,11 +6,10 @@
     "module": "commonjs"
   },
   "include": [
-    "./src/**/*.ts",
-    "./vendors.d.ts"
+    "src/**/*.ts",
+    "vendors.d.ts"
   ],
   "exclude": [
-    "node_modules/**/*",
-    "__tests__/**/*"
+    "node_modules"
   ]
 }
