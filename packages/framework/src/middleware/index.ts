@@ -8,18 +8,13 @@
 import is from 'core-util-is'
 import { Container} from '../container'
 import { Pipeline } from '../pipeline'
+import { Application } from '../foundation/application'
+import { Request } from '../request'
 
 export class Middleware {
-  app: any;
-  middlewares: any[];
-  constructor() {
-    this.app = Container.get('app');
-
-    /**
-     * @type {Array} middlewares middlewares stack
-     */
-    this.middlewares = [];
-  }
+  app: Application = Container.get('app');
+  
+  middlewares: any[] = [];
 
   /**
    * register a middleware
@@ -36,7 +31,7 @@ export class Middleware {
   /**
    * combine another Middleware before this middlewares
    */
-  combineBefore(anotherMiddleware: any) {
+  combineBefore(anotherMiddleware: Middleware) {
     if (!(anotherMiddleware instanceof Middleware)) return this;
     this.middlewares.unshift(...anotherMiddleware.middlewares);
     return this;
@@ -45,7 +40,7 @@ export class Middleware {
   /**
    * combine another Middleware after this middlewares
    */
-  combineAfter(anotherMiddleware: any) {
+  combineAfter(anotherMiddleware: Middleware) {
     if (!(anotherMiddleware instanceof Middleware)) return this;
     this.middlewares.push(...anotherMiddleware.middlewares);
     return this;
@@ -85,10 +80,10 @@ export class Middleware {
   /**
    * handle request event
    */
-  async handle(request: any, dispatch: any) {
+  async handle(request: Request, dispatcher: (...args: any[]) => any) {
     return (new Pipeline())
       .send(request)
       .pipe(...this.middlewares)
-      .process(dispatch);
+      .process(dispatcher);
   }
 }

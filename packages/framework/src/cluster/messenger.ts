@@ -8,16 +8,25 @@ import EventEmitter from 'events'
 import cluster from 'cluster'
 import { getAlivedWorkers } from './helpers'
 import { Container } from '../container'
+import { Config } from '../config'
 
 const MESSENGER = 'daze-messenger';
 
+interface IPCData {
+  action: string,
+  channel: string,
+  data: any,
+  type: string | boolean
+}
+
 export class Messenger extends EventEmitter {
 
-  config: any;
+  config: Config = Container.get('config');
+
   events: any;
+
   constructor() {
     super();
-    this.config = Container.get('config');
     this.events = this.config.get('messenger', () => {});
     this.run();
     this.parseEvents();
@@ -29,7 +38,7 @@ export class Messenger extends EventEmitter {
   }
 
   // 生成进程间通信（IPC）内置通信数据格式
-  getMessage(channel: string, data: any, type: any = 'broadcast') {
+  getMessage(channel: string, data: any, type: string | boolean = 'broadcast'): IPCData {
     return {
       action: MESSENGER,
       channel,
@@ -54,7 +63,9 @@ export class Messenger extends EventEmitter {
           // 获取所有存活的工作进程
           const workers = getAlivedWorkers();
           // 给所有工作进程发送消息
-          workers.forEach(_worker => _worker.send(message));
+          for (const worker of workers) {
+            worker.send(message)
+          }
         }
       });
     } else { // 工作进程

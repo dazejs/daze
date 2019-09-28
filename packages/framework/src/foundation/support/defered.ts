@@ -1,9 +1,30 @@
+/**
+ * Copyright (c) 2019 Chan Zewail <chanzewail@gmail.com>
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 export class Deferred<T> {
-  
-  private readonly _promise: Promise<T>
+  /**
+   * promise
+   */
+  private _promise: Promise<T>
+
+
+  /**
+   * resolve func
+   */
   private _resolve: (value?: T | PromiseLike<T>) => void
+
+  /**
+   * reject func
+   */
   private _reject: (reason?: any) => void
 
+  /**
+   * Create Deferred
+   */
   constructor() {
     this._promise = new Promise<T>((resolve, reject) => {
       this._resolve = resolve
@@ -11,15 +32,26 @@ export class Deferred<T> {
     })
   }
 
+  /**
+   * promise getter
+   */
   get promise(): Promise<T> {
     return this._promise
   }
 
-  resolve = (value?: T | PromiseLike<T>): void => {
+  /**
+   * resolve promise
+   * @param value 
+   */
+  resolve (value?: T | PromiseLike<T>): void {
     this._resolve(value)
   }
 
-  reject = (reason?: any): void => {
+  /**
+   * reject promise
+   * @param reason 
+   */
+  reject (reason?: any): void {
     this._reject(reason)
   }
 }

@@ -14,16 +14,7 @@ export class Controller {
   /**
    * application instance
    */
-  private app: Application;
-  /**
-   * Create Controller Module
-   */
-  constructor() {
-    /**
-     * @var app Application
-     */
-    this.app = Container.get('app');
-  }
+  app: Application = Container.get('app');
 
   /**
    * register a controller

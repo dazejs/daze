@@ -9,13 +9,19 @@ import assert from 'assert'
 import is from 'core-util-is'
 import { IllegalArgumentError } from '../errors/illegal-argument-error'
 
+type TStage = (...args: any[]) => any
+type TProcesser = (...args: any[]) => any
+
 export class Pipeline {
-  stages: any[]
+
+  stages: TStage[]
+
   payload: any;
+
   /**
    * Create Pipeline Instance
    */
-  constructor(...stages: any[]) {
+  constructor(...stages: TStage[]) {
     /**
      * @type stages pipe stages
      */
@@ -25,7 +31,7 @@ export class Pipeline {
   /**
    * add pipe stage
    */
-  pipe(...stages: any[]) {
+  pipe(...stages: TStage[]) {
     for (const stage of stages) {
       assert(is.isFunction(stage), new IllegalArgumentError('pipe stage must be function'));
       this.stages.push(stage);
@@ -44,7 +50,7 @@ export class Pipeline {
   /**
    * run pipeline
    */
-  async process(processor: any) {
+  async process(processor: TProcesser) {
     if (this.stages.length > 0) {
       const callback = this.stages
         .reduceRight(

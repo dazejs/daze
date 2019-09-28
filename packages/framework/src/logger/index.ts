@@ -12,7 +12,7 @@ import { MongoDB } from 'winston-mongodb'
 import { Container } from '../container'
 import { IllegalArgumentError } from '../errors/illegal-argument-error'
 
-class LoggerBase {
+export class Logger {
   app: any;
   container: any;
   logger: any;
@@ -55,6 +55,19 @@ class LoggerBase {
       format.splat(),
       format.printf((info: any) => `[${info.timestamp}] [${info.level.toUpperCase()}] - ${info.message}`),
     );
+
+    return new Proxy(this, this.proxy())
+  }
+
+  proxy(): ProxyHandler<this> {
+    return {
+      get(t, prop, reveicer) {
+        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
+          return Reflect.get(t, prop, reveicer);
+        }
+        return t.logger[prop];
+      },
+    }
   }
 
   /**
@@ -234,17 +247,3 @@ class LoggerBase {
     return [new MongoDB(restOpts)];
   }
 }
-
-export const Logger = new Proxy(LoggerBase, {
-  construct(Target, args, extended) {
-    const instance = Reflect.construct(Target, args, extended);
-    return new Proxy(instance, {
-      get(t, prop) {
-        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
-          return t[prop];
-        }
-        return t.logger[prop];
-      },
-    });
-  },
-});

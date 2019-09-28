@@ -10,9 +10,7 @@ import path from 'path'
 import is from 'core-util-is'
 import { Container } from '../container'
 import { IllegalArgumentError } from '../errors/illegal-argument-error'
-
-const SET_VALUE = Symbol('Config#setValue');
-const PARSE = Symbol('Config#parse');
+import { Application } from '../foundation/application'
 
 const envMap = new Map([
   ['development', 'dev'],
@@ -21,19 +19,22 @@ const envMap = new Map([
 ]);
 
 export class Config {
-  _app: any;
-  _items: any;
-  [key: string]: any;
-  constructor() {
-    /**
-     * @var {object} this._app Application
-     */
-    this._app = Container.get('app');
-    /**
-     * @var {object} this._items configuration
-     * */
-    this._items = {};
+  /**
+   * @var {object} this._app Application
+   */
+  _app: Application = Container.get('app');
 
+  /**
+   * @var {object} this._items configuration
+   * */
+  _items: object = {};
+
+  /**
+   * for proxy
+   */
+  [key: string]: any;
+
+  constructor() {
     /**
      * proxy
      */
@@ -58,13 +59,13 @@ export class Config {
    * async initialize
    */
   async initialize() {
-    await this[PARSE]();
+    await this.parse();
   }
 
   /**
    * Parses configuration files to instance properties
    */
-  async [PARSE]() {
+  private async parse() {
     const currentEnv = this.env;
     const files = fs.readdirSync(this._app.configPath);
     for (const file of files) {
@@ -110,14 +111,14 @@ export class Config {
   /**
    * Sets the property value recursively based on the property name
    */
-  [SET_VALUE](names: any[], value: any, index = 0) {
+  setValue(names: any[], value: any, index = 0) {
     const res: any = {};
     const name = names[index];
     const {
       length,
     } = names;
     if (length > index + 1) {
-      res[name] = this[SET_VALUE](names, value, index + 1);
+      res[name] = this.setValue(names, value, index + 1);
     } else {
       res[name] = value;
     }
@@ -130,7 +131,7 @@ export class Config {
   set(name: string, value: any) {
     if (!is.isString(name)) throw new IllegalArgumentError('Config#set name must be String!');
     const names = name.split('.');
-    const nameValue = this[SET_VALUE](names, value);
+    const nameValue = this.setValue(names, value);
     // Merge configuration attributes
     this._items = {
       ...this._items,
@@ -143,7 +144,7 @@ export class Config {
    * The name of the configuration
    */
   get(name?: string | number, def?: any) {
-    let value = this._items;
+    let value: any = this._items
     // Gets all the configuration when name is empty
     if (!name) {
       return value;

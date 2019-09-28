@@ -9,12 +9,16 @@ import path from 'path'
 import glob from 'glob'
 import { VerifyCsrfToken } from '../foundation/middlewares'
 import { ComponentType } from '../symbol'
+import { Application } from '../foundation/application'
 
 export class Loader {
 
-  app: any;
+  app: Application;
+
   controllers: any[];
+
   middlewares: any[];
+  
   components: any[];
   /**
    * Create AutoScan Instance

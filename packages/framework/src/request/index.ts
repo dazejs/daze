@@ -11,52 +11,64 @@ import typeis from 'type-is'
 import Cookies from 'cookies'
 import accepts from 'accepts'
 import is from 'core-util-is'
+import http from 'http'
 import { Container } from '../container'
 import { Validate } from '../validate'
 import { ValidateHttpError } from '../errors/validate-http-error'
 import { Session } from '../session'
 import { parseBody } from './utils/parse-body'
+import { Application } from '../foundation/application'
+
+export interface IBody {
+  fields: any[],
+  files: any[]
+}
 
 export class Request {
-  app: any;
-  req: any;
-  res: any;
-  _cookies: any;
-  _session: any;
-  _accepts: any;
-  _body: any;
-  _params: any;
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
+
+  /**
+   * request req
+   */
+  req: http.IncomingMessage;
+
+  /**
+   * response res
+   */
+  res: http.ServerResponse;
+
+  /**
+   * cookies instance cache
+   */
+  private _cookies: Cookies;
+
+  /**
+   * session instance cache
+   */
+  private _session: Session;
+
+  /**
+   * accepts cache
+   */
+  private _accepts: accepts.Accepts;
+
+  /**
+   * request body cache
+   */
+  private _body: IBody;
+
+  /**
+   * request params cache
+   */
+  private _params: { [key: string]: any };
+
   [key: string]: any
-  constructor(req: any, res: any) {
-    /**
-     * @type {object} app Application
-     */
-    this.app = Container.get('app');
-
-    /**
-     * @type {http.IncomingMessage} req http.IncomingMessage
-     */
+  constructor(req: http.IncomingMessage, res: http.ServerResponse) {
     this.req = req;
-
-    /**
-     * @type {http.ServerResponse} res http.ServerResponse
-     */
     this.res = res;
-
-    /**
-     * @type {Object} _cookies Cookies instance
-     */
-    this._cookies = null;
-
-    /**
-     * @type {Session} _session Session instance
-     */
-    this._session = null;
-
-    /**
-     * @type {Object} _accept accepts
-     */
-    this._accepts = null;
 
     /**
      * proxy instance
@@ -70,7 +82,7 @@ export class Request {
   private proxy(): ProxyHandler<this> {
     return {
       get(t, prop, receiver) {
-        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
+        if (Reflect.has(t, prop) || typeof prop !== 'string') {
           return Reflect.get(t, prop, receiver);
         }
         return t.getParam(prop);
@@ -106,7 +118,7 @@ export class Request {
    * Return request header.
    */
   getHeader(name: string) {
-    if (!name) return this.req.headers;
+    if (!name) return ''
     const field = name.toLowerCase();
     switch (field) {
       case 'referer':
@@ -193,7 +205,7 @@ export class Request {
   get length() {
     const len = this.getHeader('Content-Length');
     if (!len) return undefined;
-    return len | 0; // eslint-disable-line no-bitwise
+    return Number(len) | 0; // eslint-disable-line no-bitwise
   }
 
   /**
@@ -235,10 +247,11 @@ export class Request {
    * Get request protocol
    */
   get protocol() {
+    // @ts-ignore
     if (this.socket.encrypted) return 'https';
     const proxy = this.app.get('config').get('app.proxy');
     if (!proxy) return 'http';
-    const xForwordedProto = this.getHeader('X-Forwarded-Proto');
+    const xForwordedProto = this.getHeader('X-Forwarded-Proto') as string;
     return xForwordedProto ? xForwordedProto.split(/\s*,\s*/, 1)[0] : 'http';
   }
 
@@ -255,10 +268,10 @@ export class Request {
   get host() {
     let host;
     const proxy = this.app.get('config').get('app.proxy');
-    if (proxy) host = this.getHeader('X-Forwarded-Host');
+    if (proxy) host = this.getHeader('X-Forwarded-Host') as string;
     if (!host) {
-      if (this.isHttp2) host = this.getHeader(':authority');
-      if (!host) host = this.getHeader('Host');
+      if (this.isHttp2) host = this.getHeader(':authority') as string;
+      if (!host) host = this.getHeader('Host') as string;
     }
     return host ? host.split(/\s*,\s*/, 1)[0] : '';
   }
@@ -289,7 +302,7 @@ export class Request {
    * Get request href
    */
   get href() {
-    if (/^https?:\/\//i.test(this.url)) return this.url;
+    if (this.url && /^https?:\/\//i.test(this.url)) return this.url;
     return this.origin + this.url;
   }
 
@@ -363,7 +376,7 @@ export class Request {
    * Get the request mime type
    */
   get type() {
-    const type = this.getHeader('Content-Type');
+    const type = this.getHeader('Content-Type') as string;
     if (!type) return '';
     return type.split(';')[0];
   }
@@ -482,7 +495,7 @@ export class Request {
    * Determine if the request is the result of an AJAX call.
    */
   get isAjax() {
-    const x = this.headers['x-requested-with'];
+    const x = this.headers['x-requested-with'] as string;
     if (x && x.toLowerCase() === 'xmlhttprequest') {
       return true;
     }
@@ -531,7 +544,7 @@ export class Request {
    * Gets the parameter value based on the parameter name
    * Returns the default value when the parameter does not exist
    */
-  getParam(name: string | number, defaultValue?: any) {
+  getParam(name: string, defaultValue?: any) {
     if (!name) return undefined;
     return this.hasParam(name) ? this.mergedParams[name] : defaultValue;
   }
@@ -585,7 +598,7 @@ export class Request {
   /**
    * Determine whether the parameter exists
    */
-  hasParam(name: string | number) {
+  hasParam(name: string) {
     return Reflect.has(this.mergedParams, name);
   }
 

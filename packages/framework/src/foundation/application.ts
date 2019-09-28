@@ -9,12 +9,14 @@ import cluster from 'cluster'
 import util from 'util'
 import Keygrip from 'keygrip'
 import is from 'core-util-is'
+import { Server } from 'http'
 import { Container } from '../container'
 import { Master, Worker } from '../cluster'
 import * as providers from './providers'
 import { HttpError } from '../errors/http-error'
 import { httpServer } from './http-server'
-import { Server } from 'http'
+import { Config } from '../config'
+import { Logger } from '../logger'
 
 const DEFAULT_PORT = 8080;
 
@@ -377,6 +379,11 @@ export class Application extends Container {
     this.tags[tag].push(abstract);
     return this;
   }
+
+  get(abstract: 'app', args?: any[], force?: boolean): Application
+  get(abstract: 'config', args?: any[], force?: boolean): Config
+  get(abstract: 'logger', args?: any[], force?: boolean): Logger
+  get(abstract: any, args?: any[], force?: boolean): any
 
   /**
    * Gets the binding dependency from the container

@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-
 export class Message {
 
   private message: any[] = []
