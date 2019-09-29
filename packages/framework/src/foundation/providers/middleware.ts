@@ -5,16 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 import { Middleware } from '../../middleware'
+import { Application } from '../application'
 
 export class MiddlewareProvider {
-  app: any;
+  app: Application;
   /**
    * create Middleware Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
-     * @var {Object} app Application
+     * @var app Application
      */
     this.app = app;
   }

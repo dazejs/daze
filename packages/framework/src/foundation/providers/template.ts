@@ -7,17 +7,27 @@
 
 import path from 'path'
 import nunjucks from 'nunjucks'
+import { Application } from '../application'
+import { Config } from '../../config'
 
 export class TemplateProvider {
-  app: any;
-  config: any;
+  /**
+   * application
+   */
+  app: Application;
+
+  /**
+   * config
+   */
+  config: Config;
 
   /**
    * create Config Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     this.app = app;
+    
     this.config = app.get('config');
   }
 

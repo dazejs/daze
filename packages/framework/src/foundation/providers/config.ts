@@ -6,14 +6,15 @@
  */
 
 import { Config } from '../../config'
+import { Application } from '../application'
 
 export class ConfigProvider {
-  app: any;
+  app: Application;
   /**
    * create Config Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
      * @var app Application
      */

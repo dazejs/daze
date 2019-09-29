@@ -6,10 +6,11 @@
  */
 
 import { Loader } from '../../loader'
+import { Application } from '../application'
 
 export class LoaderProvider {
-  app: any;
-  constructor(app: any) {
+  app: Application;
+  constructor(app: Application) {
     this.app = app;
   }
 

@@ -10,6 +10,11 @@ import { Container} from '../container'
 import { Pipeline } from '../pipeline'
 import { Application } from '../foundation/application'
 import { Request } from '../request'
+import { Response } from '../response'
+
+export type TNext = (...args: any[]) => Response | Promise<Response>
+
+export type TMiddlewareStage = (request: Request, next: TNext) => Response | Promise<Response>
 
 export class Middleware {
   app: Application = Container.get('app');

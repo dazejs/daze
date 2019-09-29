@@ -5,14 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 import { Controller } from '../../controller'
+import { Application } from '../application'
 
 export class ControllerProvider {
-  app: any;
+  app: Application;
   /**
    * create Controller Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
      * @var app Application
      */

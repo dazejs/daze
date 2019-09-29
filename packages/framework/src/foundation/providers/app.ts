@@ -6,12 +6,17 @@
  */
 import Tokens from 'csrf'
 import * as symbols from '../../symbol'
+import { Application } from '../application'
 
 // FIXME 不单单是这个文件，而是所有provider。建议加一个Provider基类作为类型，不然很多涉及到provider基类的地方无法做类型标记(譬如Application)
 
 export class AppProvider {
-  app: any;
-  constructor(app: any) {
+  /**
+   * application
+   */
+  app: Application;
+
+  constructor(app: Application) {
     this.app = app;
   }
 

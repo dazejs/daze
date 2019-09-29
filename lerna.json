@@ -9,6 +9,11 @@
       "npmClientArgs": [
         "--no-package-lock"
       ]
+    },
+    "publish": {
+      "ignoreChanges": [
+        "*.md"
+      ]
     }
   },
   "version": "independent"

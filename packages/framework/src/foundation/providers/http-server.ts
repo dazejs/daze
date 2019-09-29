@@ -6,15 +6,16 @@
  */
 
 import { httpServer } from '../http-server'
+import { Application } from '../application'
 
 
 export class HttpServerProvider {
-  app: any;
+  app: Application;
   /**
    * create Logger Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
      * @var app Application
      */

@@ -6,18 +6,19 @@
  */
 
 import { Cookie } from '../../cookie'
+import { Application } from '../application'
 
 export class CookieProvider {
   /**
    * @var app Application
    */
-  app: any;
+  app: Application;
 
   /**
    * create Cookie Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     this.app = app;
   }
 

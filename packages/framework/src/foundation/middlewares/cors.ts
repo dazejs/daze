@@ -9,6 +9,8 @@ import is from 'core-util-is'
 import { Response } from '../../response'
 import { Component } from '../../decorators'
 import { Middleware } from '../../base/middleware'
+import { Request } from '../../request'
+import { TNext } from '../../middleware'
 
 const defaultOptions = {
   origin: '*',
@@ -61,7 +63,7 @@ export class CORSMiddleware extends Middleware {
     return this.options.allowHeaders || ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'];
   }
 
-  async resolve(request: any, next: any) {
+  async resolve(request: Request, next: TNext): Promise<Response> {
     const requestOrigin = request.getHeader('Origin');
     if (!requestOrigin) return next();
     if (request.isOptions()) {

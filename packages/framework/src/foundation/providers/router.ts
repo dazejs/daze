@@ -5,14 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 import { Router } from '../../router'
+import { Application } from '../application'
 
 export class RouterProvider {
-  app: any;
+  app: Application;
   /**
    * create Router Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
      * @var app Application
      */

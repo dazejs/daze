@@ -6,16 +6,17 @@
  */
 
 import { Logger } from '../../logger'
+import { Application } from '../application'
 
 export class LoggerProvider {
-  app: any;
+  app: Application;
   /**
    * create Logger Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
-    * @var {Object} app Application
+    * @var app Application
     */
     this.app = app;
   }

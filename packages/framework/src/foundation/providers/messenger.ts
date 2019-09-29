@@ -6,14 +6,15 @@
  */
 
 import { Messenger } from '../../cluster/messenger'
+import { Application } from '../application'
 
 export class MessengerProvider {
-  app: any;
+  app: Application;
   /**
    * create Messenger Provider
    * @param app Application
    */
-  constructor(app: any) {
+  constructor(app: Application) {
     /**
      * @var app Application
      */

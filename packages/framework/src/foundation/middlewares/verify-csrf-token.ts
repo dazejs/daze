@@ -9,14 +9,14 @@ import minimatch from 'minimatch'
 import { Response} from '../../response'
 import { Component } from '../../decorators'
 import { Middleware } from '../../base/middleware'
+import { Request } from '../../request'
+import { TNext } from '../../middleware'
 
 const defaultExcludedMethods = ['HEAD', 'GET', 'OPTIONS'];
 const defaultInvalidTokenMessage = 'Invalid CSRF token';
 
 @Component('verify-csrf-token')
 export class VerifyCsrfToken extends Middleware {
-  app: any;
-
   get except(): any[] {
     return [];
   }
@@ -61,7 +61,7 @@ export class VerifyCsrfToken extends Middleware {
     return true;
   }
 
-  resolve(request: any, next: any) {
+  resolve(request: Request, next: TNext) {
     const session = request.session();
     if (!session.get('secret')) {
       session.set('secret', this.app.get('csrf').secretSync());
