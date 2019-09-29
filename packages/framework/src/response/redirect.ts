@@ -93,7 +93,7 @@ export class Redirect extends Response {
   with(name: any, value: any) {
     if (!name || !value) return this;
     if (!this.flashSessions) this.flashSessions = {};
-    if (is.isObject(name)) {
+    if (typeof name === 'object') {
       Object.keys(name).forEach((key) => {
         this.flashSessions[key] = name[key];
       });

@@ -50,7 +50,7 @@ export abstract class Resource extends Base {
    * default resolve method
    * @param data
    */
-  abstract resolve(data: object): object
+  abstract resolve(data: any): any
 }
 
 Reflect.defineMetadata('type', ComponentType.Resource, Resource.prototype);

@@ -197,9 +197,7 @@ export class Application extends Container {
         return this;
       }
       try {
-        const modulePath = require.resolve(Provider);
-        // eslint-disable-next-line
-        const Target = require(modulePath);
+        const Target = (await import(Provider)).default;
         await this.register(new Target(this));
       } catch (err) {
         throw new Error(`Can not find provider [${Provider}]!`);

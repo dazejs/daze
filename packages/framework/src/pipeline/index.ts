@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import assert from 'assert'
-import is from 'core-util-is'
-import { IllegalArgumentError } from '../errors/illegal-argument-error'
+// import assert from 'assert'
+// import is from 'core-util-is'
+// import { IllegalArgumentError } from '../errors/illegal-argument-error'
 
 type TStage = (...args: any[]) => any
 
@@ -34,7 +34,7 @@ export class Pipeline {
    */
   pipe(...stages: TStage[]) {
     for (const stage of stages) {
-      assert(is.isFunction(stage), new IllegalArgumentError('pipe stage must be function'));
+      // assert(is.isFunction(stage), new IllegalArgumentError('pipe stage must be function'));
       this.stages.push(stage);
     }
     return this;

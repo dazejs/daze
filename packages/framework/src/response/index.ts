@@ -5,22 +5,27 @@
  * https://opensource.org/licenses/MIT
  */
 
-import assert from 'assert'
 import statuses from 'statuses'
 import getType from 'cache-content-type'
 import Stream from 'stream'
 import { extname } from 'path'
-import is from 'core-util-is'
 import contentDisposition from 'content-disposition'
 import { Resource} from '../resource/resource'
 import { ViewFactory } from '../view/factory'
-import { IllegalArgumentError } from '../errors/illegal-argument-error'
+// import { IllegalArgumentError } from '../errors/illegal-argument-error'
 import { View } from '../view'
 import { Cookie } from '../cookie'
 import { Statusable } from './statusable'
+import { Application } from '../foundation/application'
 import { OutgoingHttpHeaders } from 'http'
+import { Container } from '../container'
+import { Request } from '../request'
 
 export class Response extends Statusable {
+  /**
+   * application
+   */
+  protected app: Application = Container.get('app')
 
   /**
    * response statusCode
@@ -110,7 +115,6 @@ export class Response extends Statusable {
    * @param headers
    */
   private parseHeaders(headers: OutgoingHttpHeaders) {
-    assert(is.isObject(headers), new IllegalArgumentError('header name must be object'));
     const keys = Object.keys(headers);
     const _headers: OutgoingHttpHeaders = {};
     for (const key of keys) {
@@ -145,7 +149,6 @@ export class Response extends Statusable {
    * get http header
    */
   getHeader(name: string) {
-    assert(is.isString(name), new IllegalArgumentError('header name must be string'));
     return this._header[name.toLowerCase()];
   }
 
@@ -157,7 +160,6 @@ export class Response extends Statusable {
    * @param value Response header parameter value
    */
   setHeader(name: any, value: any) {
-    assert(is.isString(name), new IllegalArgumentError('header name must be string'));
     this._header[name.toLowerCase()] = value;
     return this;
   }
@@ -175,7 +177,6 @@ export class Response extends Statusable {
    * @public
    */
   setHeaders(headers: any) {
-    assert(is.isObject(headers), new IllegalArgumentError('header name must be object'));
     const keys = Object.keys(headers);
     for (const key of keys) {
       this.setHeader(key.toLowerCase(), headers[key]);
@@ -424,7 +425,9 @@ export class Response extends Statusable {
     for (const _cookie of this.cookies) {
       request.cookies.set(_cookie.getName(), _cookie.getValue(), _cookie.getOptions());
     }
-    await request.session().autoCommit();
+    if (this.app.needsSession) {
+      await request.session().autoCommit();
+    }
   }
 
   prepareData(data: any) {
@@ -448,7 +451,7 @@ export class Response extends Statusable {
    * @param request
    * @public
    */
-  async send(request: any) {
+  async send(request: Request) {
     const data = this.handleData(request);
 
     const { req, res } = request;
@@ -460,11 +463,12 @@ export class Response extends Statusable {
 
       res.statusCode = code;
       if (req.httpVersionMajor < 2) {
-        res.statusMessage = statuses[code];
+        res.statusMessage = statuses[code] || '';
       }
 
       for (const key of Object.keys(headers)) {
-        res.setHeader(key, headers[key]);
+        const value = headers[key] || ''
+        res.setHeader(key, value);
       }
     }
 

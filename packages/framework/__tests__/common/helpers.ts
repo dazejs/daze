@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { Controller } from '../../src/base/controller'
 
 export function createController() {
-  class _Controller extends Controller {
+  return class extends Controller {
     get hello() {
       return 'hello';
     }
@@ -22,10 +22,6 @@ export function createController() {
 
     destory() { }
   }
-
-  Reflect.defineMetadata('type', 'controller', _Controller.prototype);
-
-  return _Controller;
 };
 
 export function createService() {

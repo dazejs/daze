@@ -5,9 +5,9 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import assert from 'assert'
+// import assert from 'assert'
 import { Container } from '../container'
-import { IllegalArgumentError} from '../errors/illegal-argument-error'
+// import { IllegalArgumentError} from '../errors/illegal-argument-error'
 import { Application } from '../foundation/application'
 
 export interface ICookieOptions {
@@ -45,7 +45,7 @@ export class Cookie {
    * Create Cookie instance
    */
   constructor(name: string, value: string, options: ICookieOptions = {}) {
-    assert(!(/\s|,|;/).test(name), new IllegalArgumentError('Cookie name is not valid!'));
+    // assert(!(/\s|,|;/).test(name), new IllegalArgumentError('Cookie name is not valid!'));
     /**
      * @var app Application
      */

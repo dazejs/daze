@@ -20,8 +20,8 @@ import { parseBody } from './utils/parse-body'
 import { Application } from '../foundation/application'
 
 export interface IBody {
-  fields: any[],
-  files: any[]
+  fields?: { [key: string]: any },
+  files?: { [key: string]: any },
 }
 
 export class Request {
@@ -43,27 +43,27 @@ export class Request {
   /**
    * cookies instance cache
    */
-  private _cookies: Cookies;
+  _cookies: Cookies;
 
   /**
    * session instance cache
    */
-  private _session: Session;
+  _session: Session;
 
   /**
    * accepts cache
    */
-  private _accepts: accepts.Accepts;
+  _accepts: accepts.Accepts;
 
   /**
    * request body cache
    */
-  private _body: IBody;
+  _body: IBody;
 
   /**
    * request params cache
    */
-  private _params: { [key: string]: any };
+  _params: { [key: string]: any };
 
   [key: string]: any
   constructor(req: http.IncomingMessage, res: http.ServerResponse) {
@@ -530,7 +530,6 @@ export class Request {
   getBody() {
     return this.body;
   }
-
   /**
    * request files getter
    */
@@ -567,7 +566,7 @@ export class Request {
   only(...args: any[]) {
     const res: any = {};
     for (const arg of args) {
-      if (is.isString(arg)) {
+      if (typeof arg === 'string') {
         if (this.hasParam(arg)) {
           res[arg] = this.getParam(arg);
         }
@@ -590,7 +589,7 @@ export class Request {
     let exceptKeys: any[] = [];
     let keys = Object.keys(this.mergedParams);
     for (const arg of args) {
-      if (is.isString(arg)) {
+      if (typeof arg === 'string') {
         exceptKeys.push(arg);
       } else if (Array.isArray(arg)) {
         exceptKeys = exceptKeys.concat(arg);

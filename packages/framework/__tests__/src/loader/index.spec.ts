@@ -35,13 +35,22 @@ describe('Loader', () => {
     class ExampleService extends Service { }
 
     @Component('example')
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Resource {
+      resolve(data: any) {
+        return data
+      }
+     }
 
     @Component('example')
     class ExampleValidator extends Validator { }
 
     @Component('example')
-    class ExampleMiddleware extends Middleware { }
+    class ExampleMiddleware extends Middleware {
+      // @ts-ignore
+      resolve(request: any, next: any) {
+        return next()
+      }
+     }
 
     @Component('example')
     class ExampleComponent { }
