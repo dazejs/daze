@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es6",
+    "lib": ["es6"],
+    "module": "commonjs",
+    "sourceMap": false,
+    "declaration": false
+  },
+  "include": [
+    "./**/*.ts",
+    "./index.ts",
+    "globals.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
