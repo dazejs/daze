@@ -10,32 +10,19 @@ import { Container } from '../container'
 import { Dispatcher } from './dispatcher'
 import { Trie } from './trie'
 import { CORSMiddleware } from '../foundation/middlewares'
+import { Application } from '../foundation/application'
+import { Request } from '../request'
 
 export class Router {
-  app: any;
-  collection: any;
-  trie: any;
-  /**
-   * Create Router
-   */
-  constructor() {
-    /**
-     * @type app Application instance
-     */
-    this.app = Container.get('app');
+  app: Application = Container.get('app');
 
-    /**
-     * @type collection Router Collection instance
-     */
-    this.trie = new Trie();
-  }
+  trie: Trie = new Trie();
 
   resolve() {
-    return async (request: any) => {
+    return async (request: Request) => {
       const metchedRoute = this.trie.match(request);
       const dispatcher = new Dispatcher(request, metchedRoute);
       return dispatcher.resolve();
-      // return new ResponseFactory(res).output(request);
     };
   }
 

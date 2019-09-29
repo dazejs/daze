@@ -14,6 +14,9 @@ import { Response } from '../response'
 import { NotFoundHttpError } from '../errors/not-found-http-error'
 import { HttpError } from '../errors/http-error'
 import { ResponseManager } from '../response/manager'
+import { Application } from '../foundation/application'
+import { Request } from '../request'
+import { Route } from './route'
 
 
 function type(file: string, ext: string) {
@@ -28,12 +31,15 @@ const defaultPublicOptions = {
 
 
 export class Dispatcher {
-  app: any;
-  request: any;
-  route: any;
+  app: Application = Container.get('app');
+
+  request: Request;
+
+  route: Route;
+
   publicOptions: any;
-  constructor(request: any, route: any) {
-    this.app = Container.get('app');
+
+  constructor(request: Request, route: Route) {
     this.request = request;
     this.route = route;
     this.publicOptions = {
@@ -121,7 +127,7 @@ export class Dispatcher {
    * return the static server file path
    */
   getStaticFilePath() {
-    const requestPath = this.request.path;
+    const requestPath: string = this.request.getPath();
     const filePath = decodeURIComponent(requestPath.substr(path.parse(requestPath).root.length));
     return path.resolve(this.app.publicPath, filePath);
   }
@@ -132,12 +138,6 @@ export class Dispatcher {
   isStaticServerRequest() {
     return this.request.isHead() || this.request.isGet();
   }
-
-  // errorCatch(error) {
-  //   this.app.emit('error', error);
-  //   const err = new ErrorHandler(this.request, error);
-  //   return this.output(this.request, err.render());
-  // }
 
   /**
    * dispatch request to controller
@@ -150,9 +150,6 @@ export class Dispatcher {
         await response.commitCookies(this.request);
         return this.output(this.request, response);
       });
-    // .catch((error) => {
-    //   this.errorCatch(error);
-    // });
   }
 
   responseFilter() {

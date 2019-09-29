@@ -19,7 +19,7 @@ export class Redirect extends Response {
   /**
    *  @var errors in session
    */
-  errors: any = null;
+  errors: any;
 
   /**
    *  @var sessions in session
@@ -128,7 +128,7 @@ export class Redirect extends Response {
 
     if (this.errors) {
       if (this.errors instanceof Validate) {
-        request.session().flash(symbols.SESSION.ERRORS, this.errors.errors.format());
+        request.session().flash(symbols.SESSION.ERRORS, this.errors.message.format());
       } else {
         request.session().flash(symbols.SESSION.ERRORS, this.errors);
       }

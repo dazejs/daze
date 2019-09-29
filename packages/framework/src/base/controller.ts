@@ -113,7 +113,7 @@ export abstract class Controller extends Base {
    * @param data
    * @param validator
    */
-  validate(data: any[], validator: any[]): Validate {
+  validate(data: any, validator: any): Validate {
     return new Validate(data, validator);
   }
 

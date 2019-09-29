@@ -19,7 +19,7 @@ export class Middleware {
   /**
    * register a middleware
    */
-  register(middleware: any, args: any[]) {
+  register(middleware: any, args: any[] = []) {
     if (is.isString(middleware)) {
       this.parseStringMiddleware(middleware, args);
     } else if (is.isFunction(middleware)) {

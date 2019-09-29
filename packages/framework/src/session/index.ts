@@ -4,6 +4,17 @@ import is from 'core-util-is'
 import { Container } from '../container'
 import { decode, encode } from './helpers'
 import * as symbols from '../symbol'
+import { Application } from '../foundation/application'
+import { Request } from '../request'
+
+export interface ISessionOptions {
+  store: string,
+  key: string,
+  httpOnly: boolean,
+  signed: boolean,
+  autoCommit: boolean,
+  [key: string]: any
+}
 
 const defaultOpts = {
   store: 'cookie',
@@ -19,23 +30,41 @@ const EXTRA_STROES = new Set([
 ]);
 
 export class Session {
-  app: any;
-  request: any;
-  options: any;
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
+
+  /**
+   * request
+   */
+  request: Request;
+
+  /**
+   * session options
+   */
+  options: ISessionOptions;
+
+  /**
+   * session store
+   */
   store: any;
-  session: any;
-  id: any;
+
+  /**
+   * sessions
+   */
+  session: { [key: string]: any } = {};
+
+  /**
+   * session id
+   */
+  id: string = '';
   /**
    * Create Session instance
    * @param request
    * @param options
    */
-  constructor(request: any, options: any = {}) {
-    /**
-     * @type app Application instance
-     */
-    this.app = Container.get('app');
-
+  constructor(request: Request, options = {}) {
     /**
      * @type request Request instance
      */
@@ -46,21 +75,6 @@ export class Session {
      */
     this.options = Object.assign(defaultOpts, this.app.get('config').get('session', {}), options);
 
-    /**
-     * @type store the other store
-     */
-    this.store = null;
-
-    /**
-     * @type session session Object
-     */
-    this.session = {};
-
-    /**
-     * @type  sessionID session id
-     */
-    this.id = '';
-
     // initialize Store
     this.initializeStore();
   }
@@ -68,10 +82,10 @@ export class Session {
   /**
    * initialize Store
    */
-  initializeStore() {
+  async initializeStore() {
     if (!this.options.store || this.options.store === 'cookie' || !EXTRA_STROES.has(this.options.store)) return;
     // eslint-disable-next-line
-    const Store = require(`./stores/${this.options.store.toLowerCase()}`).default;
+    const Store = (await import(`./stores/${this.options.store.toLowerCase()}`)).default;
     this.store = new Store(this.app);
   }
 
@@ -79,6 +93,9 @@ export class Session {
    * load session from store or cookie
    */
   async loadSession() {
+
+    await this.initializeStore();
+
     if (this.store) {
       await this.loadFromExtraStore();
       return;

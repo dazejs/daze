@@ -11,7 +11,7 @@ import { Application } from '../foundation/application'
 import { Config } from '../config'
 import { Messenger } from '../cluster/messenger'
 
-export abstract class Base{
+export abstract class Base {
   /**
    * Application instance getter
    */
@@ -37,7 +37,7 @@ export abstract class Base{
    * create response instance
    * @param params response constructor params
    */
-  response(...params: any[]): Response {
+  response(...params: any[]) {
     return new Response(...params);
   }
 
@@ -45,7 +45,7 @@ export abstract class Base{
    * create redirect instance
    * @param params redirect constructor params
    */
-  redirect(...params: any[]): Redirect {
+  redirect(...params: any[]) {
     return new Redirect(...params);
   }
 }

@@ -3,6 +3,7 @@ import path from 'path';
 import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
 import { Application } from '../../../src/foundation/application';
+import { Validator as ValidatorBase } from '../../../src/base/validator'
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -33,8 +34,7 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is Validator instance', () => {
-      const Validator = class {};
-      Reflect.defineMetadata('type', 'validator', Validator.prototype);
+      const Validator = class extends ValidatorBase {};
       Reflect.defineMetadata('validator', [
         {
           field: 'field',
@@ -93,8 +93,7 @@ describe('Validate', () => {
     });
 
     it('should return empty array when rules is Validator instance without rules', () => {
-      const Validator = class {};
-      Reflect.defineMetadata('type', 'validator', Validator.prototype);
+      const Validator = class extends ValidatorBase {};
       const instance = new Validate({
         field: 'xxx@xxx.com',
       }, new Validator());
@@ -108,13 +107,6 @@ describe('Validate', () => {
       const instance = new Validate({
         field: 'xxx@xxx.com',
       }, 'example2');
-      expect(instance.rules).toEqual([]);
-    });
-
-    it('should return empty array when rules is err type', () => {
-      const instance = new Validate({
-        field: 'xxx@xxx.com',
-      }, 111);
       expect(instance.rules).toEqual([]);
     });
 
@@ -178,15 +170,6 @@ describe('Validate', () => {
       expect(instance.message.messages.length).toBe(1);
     });
 
-    it('should return false and no message when no rule param', () => {
-      const instance = new Validate({
-        username: 'xxx',
-      }, {});
-      const res = instance.validateField({});
-      expect(res).toBeFalsy();
-      expect(instance.message.messages.length).toBe(0);
-    });
-
     it('should return false and message when handler err', () => {
       
       const rule = {
@@ -198,7 +181,7 @@ describe('Validate', () => {
         },
       };
       const instance = new Validate({
-        username: 11111,
+        username: 'xxxxx',
       });
       const res = instance.validateField(rule);
       expect(res).toBeFalsy();
@@ -209,9 +192,9 @@ describe('Validate', () => {
   describe('Validate#passes', () => {
     it('should return true when rules passed', () => {
       const instance = new Validate({
-        username: 'xxxxxxxxxxxx',
+        passed: 'xxxxxxxxxxxx',
       }, {
-        username: [
+          passed: [
           ['length', [10, 20]],
         ],
       });
@@ -220,9 +203,9 @@ describe('Validate', () => {
 
     it('should return false when rules failed', () => {
       const instance = new Validate({
-        username: 'xxx',
+        passes: 'xxx',
       }, {
-        username: [
+          passes: [
           ['length', [10, 20]],
         ],
       });
@@ -233,9 +216,9 @@ describe('Validate', () => {
   describe('Validate#fails', () => {
     it('should return false when rules passed', () => {
       const instance = new Validate({
-        username: 'xxxxxxxxxxxx',
+        failed: 'xxxxxxxxxxxx',
       }, {
-        username: [
+          failed: [
           ['length', [10, 20]],
         ],
       });
@@ -244,9 +227,9 @@ describe('Validate', () => {
 
     it('should return true when rules failed', () => {
       const instance = new Validate({
-        username: 'xxx',
+        failed: 'xxx',
       }, {
-        username: [
+          failed: [
           ['length', [10, 20]],
         ],
       });

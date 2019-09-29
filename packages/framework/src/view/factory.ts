@@ -5,15 +5,26 @@
  * https://opensource.org/licenses/MIT
  */
 import { Container } from '../container'
+import { Application } from '../foundation/application'
+import { View } from '.'
+import { Request } from '../request'
 
 export class ViewFactory {
-  app = Container.get('app');
-  view: any;
-  constructor(view: any) {
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
+
+  /**
+   * view
+   */
+  view: View;
+
+  constructor(view: View) {
     this.view = view;
   }
 
-  combineVars(request: any) {
+  combineVars(request: Request) {
     const defaultVars = {
       session_value(key: string) {
         return request.session().get(key);
@@ -25,7 +36,7 @@ export class ViewFactory {
     return Object.assign({}, defaultVars, this.view.getVars());
   }
 
-  output(request: any) {
+  output(request: Request) {
     const template = this.app.get('templateEngine');
     const vars = this.combineVars(request);
     return template.render(this.view.getTemplate(), vars);

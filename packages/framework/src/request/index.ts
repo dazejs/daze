@@ -140,7 +140,7 @@ export class Request {
    * Get request method.
    */
   get method() {
-    return this.req.method;
+    return this.req.method || '';
   }
 
   /**
@@ -317,7 +317,7 @@ export class Request {
    * Get request Path
    */
   get path() {
-    return parse(this.req)!.pathname;
+    return parse(this.req)!.pathname || '';
   }
 
   /**

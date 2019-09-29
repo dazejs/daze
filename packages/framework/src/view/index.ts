@@ -7,19 +7,31 @@
 import path from 'path'
 import is from 'core-util-is'
 import { Container } from '../container'
+import { Application } from '../foundation/application'
 
 const FINAL_VARS = Symbol('View#finalVars');
 
 export class View {
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
 
-  app: any;
-  vars: any = {};
+  /**
+   * view vars
+   */
+  vars: { [key: string]: any } = {};
 
-  template: any = '';
+  /**
+   * view template name
+   */
+  template: string = '';
 
   constructor(template = '', vars = {}) {
-    this.app = Container.get('app');
-    this.render(template, vars);
+
+    this.template = template
+
+    this.vars = vars
   }
 
   /**
@@ -48,12 +60,12 @@ export class View {
    * @param template template path and name
    * @param vars template variables
    */
-  render(template: string | object = '', vars: any = {}) {
+  render(template: string | object = '', vars: { [key: string]: any } = {}) {
     // When parsing the controller, return it if you take this parameter
     // 解析控制器时，如果带此参数则直接 return 出去
     let newTemplate = template;
     let newVars = vars;
-    if (is.isObject(newTemplate)) {
+    if (newTemplate && typeof newTemplate === 'object') {
       newVars = newTemplate;
       newTemplate = '';
     }

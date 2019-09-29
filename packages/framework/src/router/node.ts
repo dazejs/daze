@@ -1,11 +1,28 @@
 
 import { isMatchNodeWithType } from './helpers'
+import { Route } from './route'
 
 export class Node {
+  /**
+   * node key
+   */
   key?: string;
+
+  /**
+   * node type
+   */
   type?: string;
-  children: Node[]
-  route: any;
+
+  /**
+   * node children
+   */
+  children: Node[] = []
+
+  /**
+   * node route
+   */
+  route: Route;
+
   constructor(key?: string, type?: string) {
     /**
      * @type node key: part of request path
@@ -16,16 +33,6 @@ export class Node {
      * @type static | reg
      */
     this.type = type;
-
-    /**
-     * @type child node alist
-     */
-    this.children = [];
-
-    /**
-     * binded route
-     */
-    this.route = null;
   }
 
   /**
@@ -61,7 +68,7 @@ export class Node {
    * @param pieces path parts obj: has type and key porps
    * @param height parts index
    */
-  insert(route: any, pieces: any[] = [], height = 0) {
+  insert(route: Route, pieces: any[] = [], height = 0) {
     if (pieces.length === height) {
       this.route = route;
       return;

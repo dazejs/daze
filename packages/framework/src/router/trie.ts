@@ -1,13 +1,19 @@
 import { Node } from './node'
 import { parsePattern} from './helpers'
+import { Route } from './route'
+import { Request } from '../request'
 
 export class Trie {
-  routes: Map<string, any>
-  constructor() {
-    this.routes = new Map();
-  }
+  /**
+   * route trie cache map
+   */
+  routes: Map<string, any> = new Map()
 
-  add(route: any) {
+  /**
+   * add a route
+   * @param route
+   */
+  add(route: Route) {
     for (const method of route.methods) {
       if (!this.routes.has(method)) {
         this.routes.set(method, new Node());
@@ -16,15 +22,25 @@ export class Trie {
     }
   }
 
-  register(rootNode: any, route: any) {
+  /**
+   * register route node
+   * @param rootNode 
+   * @param route 
+   */
+  register(rootNode: Node, route: Route) {
     rootNode.insert(route, route.pieces, 0);
   }
 
-  match(request: any) {
-    const { method, path } = request;
-    const rootNode = this.routes.get(method);
+  /**
+   * match route by request
+   * @param request
+   */
+  match(request: Request) {
+    const _method = request.getMethod()
+    const _path = request.getPath()
+    const rootNode = this.routes.get(_method);
     if (!rootNode) return null;
-    const keys = parsePattern(path);
+    const keys = parsePattern(_path);
     const result = rootNode.search(keys, 0);
     if (result) return result.route || null;
     return null;

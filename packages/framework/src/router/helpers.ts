@@ -1,13 +1,14 @@
 
+import { Node } from './node'
 
 /**
  * match trie node with type
  */
-export function isMatchNodeWithType(node: any, key: string) {
-  if (node.type === 'static') {
+export function isMatchNodeWithType(node: Node, key: string) {
+  if (node.key && node.type === 'static') {
     return node.key === key;
   }
-  if (node.type === 'reg') {
+  if (node.key && node.type === 'reg') {
     return (new RegExp(node.key).test(key));
   }
   return false;

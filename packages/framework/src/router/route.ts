@@ -12,16 +12,51 @@ import { Container } from '../container'
 import { Middleware } from '../middleware'
 import { Response } from '../response'
 import { parsePattern } from './helpers'
+import { Application } from '../foundation/application'
+import { Request } from '../request'
 
 export class Route {
-  app: any;
-  keys: any;
-  uri: any;
-  methods: any;
-  regexp: any;
+
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
+
+  /**
+   * route params keys
+   */
+  keys: pathToRegExp.Key[] = [];
+
+  /**
+   * request uri
+   */
+  uri: string;
+
+  /**
+   * route methods
+   */
+  methods: string[];
+
+  /**
+   * route regexp
+   */
+  regexp: RegExp;
+
+  /**
+   * route controller
+   */
   controller: any;
-  action: any;
-  middleware: any;
+
+  /**
+   * route controller action
+   */
+  action: string;
+
+  /**
+   * route middleware instance
+   */
+  middleware: Middleware = new Middleware();
+
   /**
    * Create Route
    * @param uri route URI
@@ -31,12 +66,6 @@ export class Route {
    * @param middlewares route middlewares
    */
   constructor(uri: string, methods: string[] = [], controller: any = null, action: string = '', middlewares: any[] = []) {
-    this.app = Container.get("app");
-    /**
-     * @type keys route params keys
-     */
-    this.keys = [];
-
     /**
      * @type uri URI
      */
@@ -63,18 +92,11 @@ export class Route {
     this.action = action;
 
     /**
-     * @type middleware Middleware instance
-     */
-    this.middleware = new Middleware();
-
-    /**
      * patch HEAD method with GET method
      */
-    if (this.methods.includes("GET") && !this.methods.includes("HEAD")) {
-      this.methods.push("HEAD");
+    if (this.methods.includes('GET') && !this.methods.includes('HEAD')) {
+      this.methods.push('HEAD');
     }
-
-    // this.registerDefaultMiddlewares();
 
     this.registerControllerMiddlewares(middlewares);
   }
@@ -99,14 +121,6 @@ export class Route {
     return res;
   }
 
-  // /**
-  //  * register default route middlewares
-  //  */
-  // registerDefaultMiddlewares() {
-  //   // this.middleware.register(LoadSessionMiddleware);
-  //   // this.middleware.register(VerifyCsrfTokenMiddleware);
-  // }
-
   /**
    * register route middleware
    * @param middleware
@@ -127,7 +141,7 @@ export class Route {
   }
 
 
-  parseMethods(methods: any[] = []) {
+  parseMethods(methods: string[] = []) {
     const _methods = [];
     for (const method of methods) {
       const _method = method.toUpperCase();
@@ -163,7 +177,7 @@ export class Route {
     return this.regexp.test(requestPath);
   }
 
-  async resolve(request: any) {
+  async resolve(request: Request) {
     const controller = this.app.get(this.controller, [request]);
     const routeParams = this.getParams(request.path);
     const res = await controller[this.action](...routeParams);
