@@ -95,9 +95,14 @@ export class Request {
    */
   async initialize() {
     // init body
-    this._body = await parseBody(this);
+    if (this.app.needsParseBody) {
+      this._body = await parseBody(this)
+    };
+    
     // init session
-    await this.session().loadSession();
+    if (this.app.needsSession) {
+      await this.session().loadSession()
+    };
   }
 
   /**

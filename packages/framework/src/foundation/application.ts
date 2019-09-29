@@ -26,29 +26,45 @@ export class Application extends Container {
    */
   rootPath: string = '';
 
+  /**
+   * The app workspace path
+   */
   appPath: string = '';
 
+  /**
+   * The config file path
+   */
   configPath: string = '';
 
+  /**
+   * The views file path
+   */
   viewPath: string = '';
 
+  /**
+   * The public file path
+   */
   publicPath: string = '';
 
+  /**
+   * The log file path
+   */
   logPath: string = '';
 
-  keys: any
-
-  _server?: Server;
+  /**
+   * keygrip keys
+   */
+  keys: any[]
 
   /**
-   * The Dazejs Framework Version
+   * http Server
    */
-  VERSION: string = '1.0.0';
+  _server?: Server;
 
   /**
    * The config instance
    */
-  config: any;
+  config: Config;
 
   /**
    * application run port
@@ -59,6 +75,16 @@ export class Application extends Container {
    * debug enabled?
    */
   isDebug: boolean = false;
+
+  /**
+   * needs to parse body
+   */
+  needsParseBody: boolean = true;
+
+  /**
+   * needs session
+   */
+  needsSession: boolean = true;
 
   /**
    * provider launch calls
@@ -109,6 +135,20 @@ export class Application extends Container {
     this.isDebug = this.config.get('app.debug', false);
 
     return this;
+  }
+
+  /**
+   * disable body parser
+   */
+  disableBodyParser() {
+    this.needsParseBody = false;
+  }
+
+  /**
+   * disable session
+   */
+  disableSession() {
+    this.needsSession = false;
   }
 
   /**
@@ -208,12 +248,12 @@ export class Application extends Container {
    * getter for Configuration cluster.enabled
    */
   get isCluster() {
-    return this.config.get('app.cluster.enable');
+    return this.config.get('app.cluster.enable', false);
   }
 
   // 获取集群主进程实例
   get clusterMaterInstance() {
-    const clusterConfig = this.config.get('app.cluster');
+    const clusterConfig = this.config.get('app.cluster', {});
     return new Master({
       port: this.port,
       workers: clusterConfig.workers || 0,
@@ -224,7 +264,7 @@ export class Application extends Container {
 
   // 获取集群工作进程实例
   get clusterWorkerInstance() {
-    const clusterConfig = this.config.get('app.cluster');
+    const clusterConfig = this.config.get('app.cluster', {});
     return new Worker({
       port: this.port,
       sticky: clusterConfig.sticky || false,
@@ -257,12 +297,19 @@ export class Application extends Container {
     return this;
   }
 
+  /**
+   * load default listener
+   */
   loadListeners() {
     if (!this.listenerCount('error')) {
       this.on('error', this.onerror);
     }
   }
 
+  /**
+   * app error listener
+   * @param err 
+   */
   onerror(err: any) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
     if (err instanceof HttpError) return;
@@ -274,6 +321,9 @@ export class Application extends Container {
     console.error();
   }
 
+  /**
+   * register Keygrip keys
+   */
   registerKeys() {
     const keys = this.config.get('app.keys', ['DAZE_KEY_1']);
     const algorithm = this.config.get('app.algorithm', 'sha1');
@@ -296,7 +346,7 @@ export class Application extends Container {
 
     this.registerKeys();
 
-    const clusterConfig = this.config.get('app.cluster');
+    const clusterConfig = this.config.get('app.cluster', {});
     // 在集群模式下，主进程不运行业务代码
     if (!clusterConfig.enable || !cluster.isMaster) {
       await this.registerDefaultProviders();
@@ -317,7 +367,7 @@ export class Application extends Container {
     // Initialization application
     await this.initialize();
     // check app.cluster.enabled
-    if (this.config.get('app.cluster.enable')) {
+    if (this.config.get('app.cluster.enable', false)) {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
         await this.clusterMaterInstance.run();
@@ -331,6 +381,9 @@ export class Application extends Container {
     return this._server;
   }
 
+  /**
+   * close server
+   */
   close() {
     return new Promise((resolve, reject) => {
       if (!this._server) return reject(new Error('app does not running!'));
