@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import is from 'core-util-is'
 import { Response } from './'
 import * as symbols from '../symbol'
 import { Validate } from '../validate'
