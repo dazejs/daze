@@ -7,6 +7,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dazejs/framework": "^1.2.0"
+    "express": "^4.17.1"
   }
 }

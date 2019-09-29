@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./",
     "target": "es6",
     "lib": ["es6"],
     "module": "commonjs",
@@ -9,8 +9,7 @@
     "declaration": false
   },
   "include": [
-    "./**/*.ts",
-    "./index.ts",
+    "./src/**/*.ts",
     "globals.d.ts"
   ],
   "exclude": [

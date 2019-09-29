@@ -21,6 +21,7 @@ lerna-debug.log
 npm-debug.log
 yarn-error.log
 packages/*/__debug__
+.clinic
 
 # test
 packages/*/coverage
