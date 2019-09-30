@@ -48,6 +48,7 @@ async function run(lib: string, url: string) {
 
   benchmarksMDStream.write('\n')
   benchmarksMDStream.write(`--------------- ${lib} ---------------\n`)
+  benchmarksMDStream.write('\n')
 
   const { requests, throughput } = await autocannon({
     ...opt,
@@ -60,6 +61,7 @@ async function run(lib: string, url: string) {
     ['Req/Sec', requests.average, requests.stddev, requests.min],
     ['Bytes/Sec', size(throughput.average), size(requests.stddev), size(requests.min)]
   ]))
+  benchmarksMDStream.write('\n')
   benchmarksMDStream.write('\n')
 }
 
