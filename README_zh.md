@@ -26,10 +26,6 @@
 
 ## 快速开始
 
-我们提供了多种创建工程的方式：
-
-#### 1. 使用我们提供的 `cli` 工具
-
 ##### 安装工具
 
 ```bash
@@ -41,24 +37,6 @@ $ npm install -g @dazejs/cli
 ```bash
 $ daze create example
 $ cd example
-$ npm start
-```
-
-#### 2. 克隆我们的初始化仓库
-  
-##### 使用 `typescript`
-
-```bash
-$ git clone https://github.com/dazejs/typescript-starter
-$ cd typescript-starter
-$ npm start
-```
-
-##### 使用 `javascript`
-
-```bash
-$ git clone https://github.com/dazejs/javascript-starter
-$ cd typescript-starter
 $ npm start
 ```
 
