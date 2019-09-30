@@ -12,14 +12,14 @@ describe('cross origin', () => {
   it('should add options route with cross origin', async () => {
     await request(app._server)
       .options('/cross')
-      .expect(200);
+      .expect(200)
   });
 
   it('should return 204 code when Preflight Request', async () => {
     await request(app._server)
       .options('/cross')
-      .set('Origin', 'localhost')
-      .set('Access-Control-Request-Method', 'Get,Post')
-      .expect(204);
+      .set('Access-Control-Request-Method', 'Get')
+      .set('Origin', 'http://localhost:8888/')
+      .expect(204)
   });
 });
