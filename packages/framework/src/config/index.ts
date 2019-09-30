@@ -66,6 +66,7 @@ export class Config {
    * Parses configuration files to instance properties
    */
   private async parse() {
+    if (!fs.existsSync(this._app.configPath)) return;
     const currentEnv = this.env;
     const files = fs.readdirSync(this._app.configPath);
     for (const file of files) {

@@ -6,6 +6,7 @@
  */
 
 import path from 'path'
+import fs from 'fs'
 import glob from 'glob'
 import { VerifyCsrfToken } from '../foundation/middlewares'
 import { ComponentType } from '../symbol'
@@ -52,10 +53,10 @@ export class Loader {
    * auto scan app dir
    */
   async autoLoadApp() {
-    const appFiles = glob.sync(path.resolve(this.app.appPath, '**'), {
+    if (!fs.existsSync(this.app.appPath)) return;
+    const appFiles = glob.sync(path.join(this.app.appPath, '**'), {
       nodir: true,
     });
-
     for (const file of appFiles) {
       await this.loadFile(file);
     }

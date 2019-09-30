@@ -361,9 +361,11 @@ export class Application extends Container {
   /**
    * Start the application
    */
-  async run() {
+  async run(port?: number) {
     // Initialization application
     await this.initialize();
+    // reload port if necessary
+    if (port) this.port = port
     // check app.cluster.enabled
     if (this.config.get('app.cluster.enable', false)) {
       // 以集群工作方式运行应用
@@ -395,11 +397,11 @@ export class Application extends Container {
   /**
    * Start the HTTP service
    */
-  startServer(port?: number) {
+  startServer(port: number) {
     return this.listen(port);
   }
 
-  listen(port?: number) {
+  listen(port: number) {
     const server: httpServer = this.get('httpServer');
     return server.listen(port);
   }

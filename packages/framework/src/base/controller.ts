@@ -10,6 +10,7 @@ import * as Resource from '../resource'
 import { Validate } from '../validate'
 import { ComponentType } from '../symbol'
 import { Request } from '../request'
+import { ResponseManager } from '../response/manager'
 
 export abstract class Controller extends Base {
   /**
@@ -133,6 +134,13 @@ export abstract class Controller extends Base {
    */
   collection(data: any, resourceName: string): Resource.Collection {
     return new Resource.Collection(data, resourceName);
+  }
+
+  /**
+   * send response
+   */
+  send(data: any) {
+    return new ResponseManager(data).output(this.request);
   }
 }
 

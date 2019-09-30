@@ -17,12 +17,13 @@ import { Application } from '../application'
 export class httpServer {
   app: Application = Container.get('app');;
 
-  listen(port?: number) {
+  listen(port: number) {
+    const routerHandler = this.app.get('router').resolve();
+    const middleware = this.app.get('middleware')
     const server = http.createServer(async (req, res) => {
       const request = new Request(req, res);
       await request.initialize();
-      const routerHandler = this.app.get('router').resolve();
-      return this.app.get('middleware')
+      return middleware
         .handle(request, routerHandler).catch((error: any) => {
           this.app.emit('error', error);
           const err = new ErrorHandler(request, error);

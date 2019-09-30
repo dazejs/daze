@@ -87,7 +87,6 @@ export class CORSMiddleware extends Middleware {
       }
 
       response.setHeader('Access-Control-Allow-Headers', this.allowHeaders || request.getHeader('Access-Control-Request-Headers'));
-
       return response.NoContent();
     }
 

@@ -7,7 +7,6 @@
 
 import statuses from 'statuses'
 import getType from 'cache-content-type'
-import Stream from 'stream'
 import { extname } from 'path'
 import contentDisposition from 'content-disposition'
 import { Resource} from '../resource/resource'
@@ -20,6 +19,12 @@ import { Application } from '../foundation/application'
 import { OutgoingHttpHeaders } from 'http'
 import { Container } from '../container'
 import { Request } from '../request'
+
+const defaultContentTypes = {
+  JSON: 'application/json; charset=utf-8',
+  PLAIN: 'text/plain; charset=utf-8',
+  OCTET: 'application/octet-stream'
+}
 
 export class Response extends Statusable {
   /**
@@ -40,7 +45,7 @@ export class Response extends Statusable {
   /**
    * response data
    */
-  protected _data: { [key: string]: any };
+  protected _data: any;
 
   /**
    * response cookies
@@ -56,7 +61,7 @@ export class Response extends Statusable {
    * patched methods
    */
   [key: string]: any;
-  constructor(data: any = null, code = 200, header = {}) {
+  constructor(data?: any, code: number = 200, header: OutgoingHttpHeaders = {}) {
     super()
     /**
      * status code
@@ -165,6 +170,15 @@ export class Response extends Statusable {
   }
 
   /**
+   * remove header from response
+   * @param name 
+   */
+  removeHeader(name: any) {
+    delete this._header[name.toLowerCase()]
+    return this
+  }
+
+  /**
    * getHeader alias
    * @public
    */
@@ -233,7 +247,7 @@ export class Response extends Statusable {
    * @param data Returned data
    */
   setData(data: any) {
-    if (data) this._data = data;
+    this._data = data;
     return this;
   }
 
@@ -366,13 +380,14 @@ export class Response extends Statusable {
    */
   handleData(request: any) {
     const data = this.getData();
+    if (!data) return data;
     if (data instanceof Resource) {
       return data.output();
     }
     if (data instanceof View) {
       return (new ViewFactory(data)).output(request);
     }
-    return this.prepareData(data);
+    return data;
   }
 
   /**
@@ -430,21 +445,6 @@ export class Response extends Statusable {
     }
   }
 
-  prepareData(data: any) {
-    const shouldSetType = !this.getHeader('content-type');
-    if (Buffer.isBuffer(data)) {
-      if (shouldSetType) this.setType('bin');
-      this.setLength(data.length);
-    } else if (typeof data === 'string') {
-      if (shouldSetType) this.setType(/^\s*</.test(data) ? 'html' : 'text');
-      this.setLength(Buffer.byteLength(data));
-    } else if (data instanceof Stream) {
-      if (shouldSetType) this.setType('bin');
-    } else {
-      this.setType('json');
-    }
-    return data;
-  }
 
   /**
    * send data
@@ -452,41 +452,59 @@ export class Response extends Statusable {
    * @public
    */
   async send(request: Request) {
-    const data = this.handleData(request);
-
     const { req, res } = request;
+    const data = this.handleData(request);
+    const shouldSetType = !this.getHeader('content-type');
 
     // headers
-    if (!res.headersSent) {
-      const headers = this.getHeaders();
-      const code = this.getCode();
-
-      res.statusCode = code;
-      if (req.httpVersionMajor < 2) {
-        res.statusMessage = statuses[code] || '';
-      }
-
-      for (const key of Object.keys(headers)) {
-        const value = headers[key] || ''
-        res.setHeader(key, value);
-      }
+    const headers = this.getHeaders();
+    const code = this.getCode();
+    res.statusCode = code;
+    if (req.httpVersionMajor < 2) {
+      res.statusMessage = statuses[code] || '';
+    }
+    for (const key of Object.keys(headers)) {
+      const value = headers[key] || ''
+      res.setHeader(key, value);
     }
 
-    if (Buffer.isBuffer(data) || typeof data === 'string') {
+
+    if (!data) {
+      this.setCode(204)
+      if (!res.headersSent) {
+        res.removeHeader('content-type')
+        res.removeHeader('content-length')
+        res.removeHeader('transfer-encoding')
+      }
+      return res.end(data)
+    }
+
+
+    // string
+    if (typeof data === 'string') {
+      // getType(/^\s*</.test(data) ? 'html' : 'text')
+      if (shouldSetType) res.setHeader('content-type', defaultContentTypes.PLAIN)
+      res.setHeader('content-length', Buffer.byteLength(data))
       return res.end(data);
     }
 
-    if (data instanceof Stream) {
+    // buffer
+    if (Buffer.isBuffer(data)) {
+      if (shouldSetType) res.setHeader('content-type', defaultContentTypes.OCTET)
+      res.setHeader('content-length', data.length)
+      return res.end(data);
+    }
+
+    // stream
+    if (typeof data.pipe === 'function') {
+      if (shouldSetType) res.setHeader('content-type', defaultContentTypes.OCTET)
       return data.pipe(res);
     }
 
     // json
     const jsonData = JSON.stringify(data);
-    if (!res.headersSent) {
-      res.setHeader('Content-Length', Buffer.byteLength(jsonData));
-    }
-
-    res.end(jsonData);
-    return undefined;
+    if (shouldSetType) res.setHeader('content-type', defaultContentTypes.JSON)
+    res.setHeader('content-length', Buffer.byteLength(jsonData));
+    return res.end(jsonData);
   }
 }

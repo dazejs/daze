@@ -31,7 +31,6 @@ export class Router {
     const route = new Route(uri, methods, controller, action, middlewares);
     const controllerCrossOrigin = Reflect.getMetadata('controllerCrossOrigin', controller.prototype);
     const routeCrossOrigin = Reflect.getMetadata('routeCrossOrigin', controller.prototype) || {};
-
     if (controllerCrossOrigin) {
       route.addMethod('OPTIONS').registerMiddleware(CORSMiddleware, [controllerCrossOrigin]);
     } else if (routeCrossOrigin[action]) {
