@@ -1,49 +1,49 @@
 # Benchmarks
 
---------------- daze-without-routes ---------------
+### daze-without-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 53162.19 | 4147.32 | 45514    |
-| Bytes/Sec | 7.71 MB  | 4.05 KB | 44.45 KB |
+| Req/Sec   | 60821.82 | 5326.47 | 44250    |
+| Bytes/Sec | 8.82 MB  | 5.2 KB  | 43.21 KB |
 
 
---------------- express-without-routes ---------------
-
-| Stat      | Avg     | Stdev   | Min      |
-| --------- | ------- | ------- | -------- |
-| Req/Sec   | 27518.4 | 3468.78 | 18443    |
-| Bytes/Sec | 5.64 MB | 3.39 KB | 18.01 KB |
-
-
---------------- koa-without-routes ---------------
+### express-without-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 49985.46 | 4122.65 | 39900    |
-| Bytes/Sec | 7.25 MB  | 4.03 KB | 38.96 KB |
+| Req/Sec   | 30063.28 | 3241.45 | 19836    |
+| Bytes/Sec | 6.16 MB  | 3.17 KB | 19.37 KB |
 
 
---------------- daze-with-1000-routes ---------------
+### koa-without-routes
 
-| Stat      | Avg     | Stdev   | Min      |
-| --------- | ------- | ------- | -------- |
-| Req/Sec   | 31941.1 | 2675.43 | 24218    |
-| Bytes/Sec | 4.63 MB | 2.61 KB | 23.65 KB |
+| Stat      | Avg      | Stdev   | Min      |
+| --------- | -------- | ------- | -------- |
+| Req/Sec   | 53426.91 | 4157.8  | 43021    |
+| Bytes/Sec | 7.74 MB  | 4.06 KB | 42.01 KB |
 
 
---------------- express-with-1000-routes ---------------
+### daze-with-1000-routes
+
+| Stat      | Avg      | Stdev   | Min      |
+| --------- | -------- | ------- | -------- |
+| Req/Sec   | 33122.91 | 2705.63 | 25830    |
+| Bytes/Sec | 4.8 MB   | 2.64 KB | 25.22 KB |
+
+
+### express-with-1000-routes
 
 | Stat      | Avg      | Stdev   | Min     |
 | --------- | -------- | ------- | ------- |
-| Req/Sec   | 10615.46 | 1748.86 | 6001    |
-| Bytes/Sec | 2.18 MB  | 1.71 KB | 5.86 KB |
+| Req/Sec   | 11809.64 | 1232.99 | 8115    |
+| Bytes/Sec | 2.42 MB  | 1.2 KB  | 7.92 KB |
 
 
---------------- koa-with-1000-routes ---------------
+### koa-with-1000-routes
 
-| Stat      | Avg      | Stdev  | Min     |
-| --------- | -------- | ------ | ------- |
-| Req/Sec   | 6578.8   | 572.71 | 5284    |
-| Bytes/Sec | 976.3 KB | 573 B  | 5.16 KB |
+| Stat      | Avg        | Stdev  | Min     |
+| --------- | ---------- | ------ | ------- |
+| Req/Sec   | 6851.46    | 571.17 | 5103    |
+| Bytes/Sec | 1016.86 KB | 571 B  | 4.98 KB |
 

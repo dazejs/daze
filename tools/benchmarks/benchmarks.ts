@@ -47,7 +47,7 @@ async function run(lib: string, url: string) {
   await sleep(2000)
 
   benchmarksMDStream.write('\n')
-  benchmarksMDStream.write(`--------------- ${lib} ---------------\n`)
+  benchmarksMDStream.write(`### ${lib}\n`)
   benchmarksMDStream.write('\n')
 
   const { requests, throughput } = await autocannon({
