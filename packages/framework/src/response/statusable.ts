@@ -81,41 +81,41 @@
 
 
 export abstract class Statusable {
-  abstract success(data: any, code: number): this
+  abstract success(data?: any, code?: number): this
 
-  abstract error(data: any, code: number): this
+  abstract error(data?: any, code?: number): this
 
   // AMRK: SUCCESS
 
-  Continue(data: any) {
+  Continue(data?: any) {
     return this.success(data || 'Continue', 100)
   }
 
-  SwitchingProtocols(data: any) {
+  SwitchingProtocols(data?: any) {
     return this.success(data || 'Switching Protocols', 101)
   }
 
-  Processing(data: any) {
+  Processing(data?: any) {
     return this.success(data || 'Processing', 102)
   }
 
-  EarlyHints(data: any) {
+  EarlyHints(data?: any) {
     return this.success(data || 'Early Hints', 103)
   }
 
-  OK(data: any) {
+  OK(data?: any) {
     return this.success(data || 'OK', 200)
   }
 
-  Created(data: any) {
+  Created(data?: any) {
     return this.success(data || 'Created', 201)
   }
 
-  Accepted(data: any) {
+  Accepted(data?: any) {
     return this.success(data || 'Accepted', 202)
   }
 
-  NonAuthoritativeInformation(data: any) {
+  NonAuthoritativeInformation(data?: any) {
     return this.success(data || 'Non Authoritative Information', 203)
   }
 
@@ -123,225 +123,225 @@ export abstract class Statusable {
     return this.success(null, 204)
   }
 
-  ResetContent(data: any) {
+  ResetContent(data?: any) {
     return this.success(data || 'Reset Content', 205)
   }
 
-  PartialContent(data: any) {
+  PartialContent(data?: any) {
     return this.success(data || 'Partial Content', 206)
   }
 
-  MultiStatus(data: any) {
+  MultiStatus(data?: any) {
     return this.success(data || 'Multi Status', 207)
   }
 
-  AlreadyReported(data: any) {
+  AlreadyReported(data?: any) {
     return this.success(data || 'Already Reported', 208)
   }
 
-  IMUsed(data: any) {
+  IMUsed(data?: any) {
     return this.success(data || 'IM Used', 226)
   }
 
-  MultipleChoices(data: any) {
+  MultipleChoices(data?: any) {
     return this.success(data || 'Multiple Choices', 300)
   }
 
-  MovedPermanently(data: any) {
+  MovedPermanently(data?: any) {
     return this.success(data || 'Moved Permanently', 301)
   }
 
-  Found(data: any) {
+  Found(data?: any) {
     return this.success(data || 'Found', 302)
   }
 
-  SeeOther(data: any) {
+  SeeOther(data?: any) {
     return this.success(data || 'See Other', 303)
   }
 
-  NotModified(data: any) {
+  NotModified(data?: any) {
     return this.success(data || 'Not Modified', 304)
   }
 
-  UseProxy(data: any) {
+  UseProxy(data?: any) {
     return this.success(data || 'Use Proxy', 305)
   }
 
-  Unused(data: any) {
+  Unused(data?: any) {
     return this.success(data || 'Unused', 306)
   }
 
-  TemporaryRedirect(data: any) {
+  TemporaryRedirect(data?: any) {
     return this.success(data || 'Temporary Redirect', 307)
   }
 
-  PermanentRedirect(data: any) {
+  PermanentRedirect(data?: any) {
     return this.success(data || 'Permanent Redirect', 308)
   }
 
   // MARK: ERROR
 
-  BadRequest(data: any) {
+  BadRequest(data?: any) {
     return this.error(data || 'Bad Request', 400)
   }
 
-  Unauthorized(data: any) {
+  Unauthorized(data?: any) {
     return this.error(data || 'Unauthorized', 401)
   }
 
-  PaymentRequired(data: any) {
+  PaymentRequired(data?: any) {
     return this.error(data || 'Payment Required', 402)
   }
 
-  Forbidden(data: any) {
+  Forbidden(data?: any) {
     return this.error(data || 'Forbidden', 403)
   }
 
-  NotFound(data: any) {
+  NotFound(data?: any) {
     return this.error(data || 'Not Found', 404)
   }
 
-  MethodNotAllowed(data: any) {
+  MethodNotAllowed(data?: any) {
     return this.error(data || 'Method Not Allowed', 405)
   }
 
-  NotAcceptable(data: any) {
+  NotAcceptable(data?: any) {
     return this.error(data || 'Not Acceptable', 406)
   }
 
-  ProxyAuthenticationRequired(data: any) {
+  ProxyAuthenticationRequired(data?: any) {
     return this.error(data || 'Proxy Authentication Required', 407)
   }
 
-  RequestTimeout(data: any) {
+  RequestTimeout(data?: any) {
     return this.error(data || 'Request Timeout', 408)
   }
 
-  Conflict(data: any) {
+  Conflict(data?: any) {
     return this.error(data || 'Conflict', 409)
   }
 
-  Gone(data: any) {
+  Gone(data?: any) {
     return this.error(data || 'Gone', 410)
   }
 
-  LengthRequired(data: any) {
+  LengthRequired(data?: any) {
     return this.error(data || 'Length Required', 411)
   }
 
-  PreconditionFailed(data: any) {
+  PreconditionFailed(data?: any) {
     return this.error(data || 'Precondition Failed', 412)
   }
 
-  PayloadTooLarge(data: any) {
+  PayloadTooLarge(data?: any) {
     return this.error(data || 'Payload TooLarge', 413)
   }
 
-  URITooLong(data: any) {
+  URITooLong(data?: any) {
     return this.error(data || 'URI Too Long', 414)
   }
 
-  UnsupportedMediaType(data: any) {
+  UnsupportedMediaType(data?: any) {
     return this.error(data || 'Unsupported Media Type', 415)
   }
 
-  RangeNotSatisfiable(data: any) {
+  RangeNotSatisfiable(data?: any) {
     return this.error(data || 'Range Not Satisfiable', 416)
   }
 
-  ExpectationFailed(data: any) {
+  ExpectationFailed(data?: any) {
     return this.error(data || 'Expectation Failed', 417)
   }
 
-  ImATeapot(data: any) {
+  ImATeapot(data?: any) {
     return this.error(data || 'Im A Teapot', 418)
   }
 
-  MisdirectedRequest(data: any) {
+  MisdirectedRequest(data?: any) {
     return this.error(data || 'Misdirected Request', 421)
   }
 
-  UnprocessableEntity(data: any) {
+  UnprocessableEntity(data?: any) {
     return this.error(data || 'Unprocessable Entity', 422)
   }
 
-  Locked(data: any) {
+  Locked(data?: any) {
     return this.error(data || 'Locked', 423)
   }
 
-  FailedDependency(data: any) {
+  FailedDependency(data?: any) {
     return this.error(data || 'Failed Dependency', 424)
   }
 
-  UnorderedCollection(data: any) {
+  UnorderedCollection(data?: any) {
     return this.error(data || 'Unordered Collection', 425)
   }
 
-  UpgradeRequired(data: any) {
+  UpgradeRequired(data?: any) {
     return this.error(data || 'Upgrade Required', 426)
   }
 
-  PreconditionRequired(data: any) {
+  PreconditionRequired(data?: any) {
     return this.error(data || 'Precondition Required', 428)
   }
 
-  TooManyRequests(data: any) {
+  TooManyRequests(data?: any) {
     return this.error(data || 'Too Many Requests', 429)
   }
 
-  RequestHeaderFieldsTooLarge(data: any) {
+  RequestHeaderFieldsTooLarge(data?: any) {
     return this.error(data || 'Request Header Fields Too Large', 431)
   }
 
-  UnavailableForLegalReasons(data: any) {
+  UnavailableForLegalReasons(data?: any) {
     return this.error(data || 'Unavailable For Legal Reasons', 451)
   }
 
-  InternalServerError(data: any) {
+  InternalServerError(data?: any) {
     return this.error(data || 'Internal Server Error', 500)
   }
 
-  NotImplemented(data: any) {
+  NotImplemented(data?: any) {
     return this.error(data || 'Not Implemented', 501)
   }
 
-  BadGateway(data: any) {
+  BadGateway(data?: any) {
     return this.error(data || 'Bad Gateway', 502)
   }
 
-  ServiceUnavailable(data: any) {
+  ServiceUnavailable(data?: any) {
     return this.error(data || 'Service Unavailable', 503)
   }
 
-  GatewayTimeout(data: any) {
+  GatewayTimeout(data?: any) {
     return this.error(data || 'Gateway Timeout', 504)
   }
 
-  HTTPVersionNotSupported(data: any) {
+  HTTPVersionNotSupported(data?: any) {
     return this.error(data || 'HTTP Version Not Supported', 505)
   }
 
-  VariantAlsoNegotiates(data: any) {
+  VariantAlsoNegotiates(data?: any) {
     return this.error(data || 'Variant Also Negotiates', 506)
   }
 
-  InsufficientStorage(data: any) {
+  InsufficientStorage(data?: any) {
     return this.error(data || 'Insufficient Storage', 507)
   }
 
-  LoopDetected(data: any) {
+  LoopDetected(data?: any) {
     return this.error(data || 'Loop Detected', 508)
   }
 
-  BandwidthLimitExceeded(data: any) {
+  BandwidthLimitExceeded(data?: any) {
     return this.error(data || 'Bandwidth Limit Exceeded', 509)
   }
 
-  NotExtended(data: any) {
+  NotExtended(data?: any) {
     return this.error(data || 'Not Extended', 510)
   }
 
-  NetworkAuthenticationRequired(data: any) {
+  NetworkAuthenticationRequired(data?: any) {
     return this.error(data || 'Network Authentication Required', 511)
   }
 
