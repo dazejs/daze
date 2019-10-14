@@ -45,6 +45,9 @@ visit `http://localhost:8080` to preview
 
 - [Documentations](https://dazejs.org/)
 
+## Benchmarks
+The benchmark compares a number of other frameworks, mainly with no routes and with 1000 routes defined, see [benchmarks](benchmarks/README.md)
+
 ## License
 
 Daze.js is [MIT licensed](https://github.com/dazejs/daze/blob/master/LICENSE)

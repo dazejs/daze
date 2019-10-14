@@ -46,6 +46,10 @@ $ npm start
 
 - [中文文档](https://dazejs.org/zh/)
 
+## 基准测试
+
+基准测试对比了一些其他的框架，主要通过没有路由与定义1000个路由的情况下进行比较，详见[benchmarks](benchmarks/README.md)
+
 ## License
 
 Daze.js is [MIT licensed](https://github.com/dazejs/daze/blob/master/LICENSE)
