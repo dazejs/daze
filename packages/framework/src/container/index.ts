@@ -157,16 +157,8 @@ export class Container extends EventEmitter {
     const bindParams = [];
     // 需要构造方法注入参数
     const constructorInjectors = Reflect.getMetadata(
-      symbols.INJECTABLE_KINDS.CONSTRUCTOR, Concrete.prototype,
+      'injectparams', Concrete.prototype,
     ) || [];
-    // 需要成员方法注入参数
-    const methodInjectors = Reflect.getMetadata(
-      symbols.INJECTABLE_KINDS.METHOD, Concrete.prototype,
-    ) || {};
-    // 需要成员变量注入参数
-    const propertyInjectors = Reflect.getMetadata(
-      symbols.INJECTABLE_KINDS.PROPERTY, Concrete.prototype,
-    ) || {};
 
     for (const [type, params = []] of constructorInjectors) {
       const injectedParam = this.make(type, [...params, ...args]);
@@ -178,13 +170,16 @@ export class Container extends EventEmitter {
         instance.__context__ = args;
         return new Proxy(instance, {
           get(__target, __name, __receiver) {
-            if (__name === 'name' || __name === 'constructor' || typeof __name === 'symbol') return Reflect.get(__target, __name, __receiver);
+            if (__name === 'name' || __name === 'constructor' || typeof __name !== 'string') return Reflect.get(__target, __name, __receiver);
             if (typeof __target[__name] === 'function') {
               return new Proxy(__target[__name], {
                 apply(target, thisBinding, methodArgs) {
                   const bindMethodParams = [];
-                  const methodParams = methodInjectors[__name] || [];
-                  for (const [type, params = []] of methodParams) {
+                  // 需要成员方法注入参数
+                  const methodInjectors = Reflect.getMetadata(
+                    'injectparams', Concrete, __name,
+                  ) || [];
+                  for (const [type, params = []] of methodInjectors) {
                     const injectedParam = that.make(type, [...params, ...args]);
                     bindMethodParams.push(injectedParam);
                   }
@@ -192,7 +187,11 @@ export class Container extends EventEmitter {
                 },
               });
             }
-            const [type = '', params = []] = propertyInjectors[__name] || [];
+            // 需要成员变量注入参数
+            const propertyInjectors = Reflect.getMetadata(
+              'injectparams', Concrete, __name,
+            ) || [];
+            const [type = '', params = []] = propertyInjectors[0] || []
             return type
               ? that.make(type, [...params, ...args])
               : Reflect.get(__target, __name, __receiver);

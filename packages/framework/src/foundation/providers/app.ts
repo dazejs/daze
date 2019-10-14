@@ -77,6 +77,13 @@ export class AppProvider {
       true,
     );
 
+    // for @HttpQuery
+    this.app.multiton(
+      symbols.INJECTORS.QUERY,
+      (key: string, request: any) => request.getQuery(key),
+      true,
+    );
+
     // for @HttpBody
     this.app.multiton(
       symbols.INJECTORS.BODY,

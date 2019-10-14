@@ -1,7 +1,6 @@
 
 import 'reflect-metadata';
 import { Container } from '../../../src/container';
-import * as symbols from '../../../src/symbol';
 
 it('Container.setInstance', () => {
   const App = class { };
@@ -104,7 +103,7 @@ it('Container inject class', () => {
     prop: any;
     constructor(param: any) {
       this.param = param;
-      this.prop = null;
+      this.prop = '';
     }
 
     index(param: any) {
@@ -114,21 +113,21 @@ it('Container inject class', () => {
   Container.bind(App, App);
   Container.bind('request', (r: any) => r, false, true);
   Reflect.defineMetadata('injectable', true, App.prototype);
-  Reflect.defineMetadata(symbols.INJECTABLE_KINDS.CONSTRUCTOR, [
+  Reflect.defineMetadata('injectable', true, App, 'prop');
+  Reflect.defineMetadata('injectable', true, App, 'index');
+  Reflect.defineMetadata('injectparams', [
     ['request', ['request']],
   ], App.prototype);
-  Reflect.defineMetadata(symbols.INJECTABLE_KINDS.PROPERTY, {
-    prop: ['request', ['request']],
-  }, App.prototype);
-  Reflect.defineMetadata(symbols.INJECTABLE_KINDS.METHOD, {
-    index: [
-      ['request', ['request']],
-    ],
-  }, App.prototype);
+  Reflect.defineMetadata('injectparams', [
+    ['request', ['request']]
+  ], App, 'prop');
+  Reflect.defineMetadata('injectparams', [
+    ['request', ['request']],
+  ], App, 'index');
 
   const app = Container.get(App);
 
   expect(app.param).toBe('request');
-  expect(app.prop).toBe('request');
   expect(app.index()).toBe('request');
+  expect(app.prop).toBe('request');
 });

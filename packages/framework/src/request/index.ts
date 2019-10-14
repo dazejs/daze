@@ -373,8 +373,8 @@ export class Request {
   /**
    * 获取解析的查询字符串, 当没有查询字符串时，返回一个空对象
    */
-  getQuery() {
-    return this.query;
+  getQuery(key?: string) {
+    return key ? this.query[key] : this.query;
   }
 
   /**
