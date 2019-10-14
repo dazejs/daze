@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "cross-env DAZE_ENV=dev DEBUG=daze-framework:* nodemon --signal SIGTERM --exec ts-node src/index.ts --source-map --preserve-symlinks",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prod": "cross-env DAZE_ENV=prod node dist/index.js"
+  },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "dependencies": {
+    "@dazejs/framework": "1.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.2.0",
+    "nodemon": "^1.18.3",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}
