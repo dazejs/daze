@@ -24,14 +24,14 @@ Visit [https://dazejs.org/](https://dazejs.org/) to learn more
 `Daze.js` is an efficient, highly extensible and powerful `Node.js` server-side Web development daze.
 
 
-## Installation
+## Getting Started
 
+#### Install cli tool
 ```bash
 $ npm install -g @dazejs/cli
 ```
 
-
-## Getting Started
+#### Create application
 
 ```bash
 $ daze create example
@@ -44,6 +44,9 @@ visit `http://localhost:8080` to preview
 ## Docs & Community
 
 - [Documentations](https://dazejs.org/)
+
+## Benchmarks
+The benchmark compares a number of other frameworks, mainly with no routes and with 1000 routes defined, see [benchmarks](benchmarks/README.md)
 
 ## License
 

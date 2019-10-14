@@ -21,15 +21,18 @@
 
 ## 介绍
 
-`Daze.js` 是一款高效、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。
+`Daze.js` 是一款高性能、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。
 
-## 安装
+
+## 快速开始
+
+##### 安装工具
 
 ```bash
 $ npm install -g @dazejs/cli
 ```
 
-## 快速开始
+##### 创建工程
 
 ```bash
 $ daze create example
@@ -42,6 +45,10 @@ $ npm start
 ## 文档 & 社区
 
 - [中文文档](https://dazejs.org/zh/)
+
+## 基准测试
+
+基准测试对比了一些其他的框架，主要通过没有路由与定义1000个路由的情况下进行比较，详见[benchmarks](benchmarks/README.md)
 
 ## License
 
