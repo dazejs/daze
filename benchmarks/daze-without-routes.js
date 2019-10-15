@@ -5,9 +5,7 @@ const app = new Application(__dirname)
 
 class RoutesProvider extends Provider {
   launch() {
-    this.app.get('middleware').register((request) => {
-      return (new Response()).OK('Hello World').send(request)
-    })
+    this.app.get('middleware').register(() => (new Response()).OK('Hello World'))
   }
 }
 

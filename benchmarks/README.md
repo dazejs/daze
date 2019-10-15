@@ -4,46 +4,46 @@
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 60821.82 | 5326.47 | 44250    |
-| Bytes/Sec | 8.82 MB  | 5.2 KB  | 43.21 KB |
+| Req/Sec   | 58043.64 | 4066.93 | 46501    |
+| Bytes/Sec | 8.41 MB  | 3.97 KB | 45.41 KB |
 
 
 ### express-without-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 30063.28 | 3241.45 | 19836    |
-| Bytes/Sec | 6.16 MB  | 3.17 KB | 19.37 KB |
+| Req/Sec   | 29775.28 | 3289.5  | 19431    |
+| Bytes/Sec | 6.11 MB  | 3.21 KB | 18.98 KB |
 
 
 ### koa-without-routes
 
-| Stat      | Avg      | Stdev   | Min      |
-| --------- | -------- | ------- | -------- |
-| Req/Sec   | 53426.91 | 4157.8  | 43021    |
-| Bytes/Sec | 7.74 MB  | 4.06 KB | 42.01 KB |
+| Stat      | Avg     | Stdev   | Min      |
+| --------- | ------- | ------- | -------- |
+| Req/Sec   | 50829.1 | 3821.45 | 40130    |
+| Bytes/Sec | 7.37 MB | 3.73 KB | 39.19 KB |
 
 
 ### daze-with-1000-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 33122.91 | 2705.63 | 25830    |
-| Bytes/Sec | 4.8 MB   | 2.64 KB | 25.22 KB |
+| Req/Sec   | 42110.55 | 3208.82 | 34461    |
+| Bytes/Sec | 6.1 MB   | 3.13 KB | 33.65 KB |
 
 
 ### express-with-1000-routes
 
-| Stat      | Avg      | Stdev   | Min     |
-| --------- | -------- | ------- | ------- |
-| Req/Sec   | 11809.64 | 1232.99 | 8115    |
-| Bytes/Sec | 2.42 MB  | 1.2 KB  | 7.92 KB |
+| Stat      | Avg     | Stdev   | Min     |
+| --------- | ------- | ------- | ------- |
+| Req/Sec   | 9908.19 | 1359.86 | 6076    |
+| Bytes/Sec | 2.03 MB | 1.33 KB | 5.93 KB |
 
 
 ### koa-with-1000-routes
 
-| Stat      | Avg        | Stdev  | Min     |
-| --------- | ---------- | ------ | ------- |
-| Req/Sec   | 6851.46    | 571.17 | 5103    |
-| Bytes/Sec | 1016.86 KB | 571 B  | 4.98 KB |
+| Stat      | Avg       | Stdev  | Min    |
+| --------- | --------- | ------ | ------ |
+| Req/Sec   | 6444.4    | 600.87 | 4920   |
+| Bytes/Sec | 956.42 KB | 601 B  | 4.8 KB |
 
