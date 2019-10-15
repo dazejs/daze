@@ -24,7 +24,11 @@ export class httpServer {
       const request = new Request(req, res);
       await request.initialize();
       return middleware
-        .handle(request, routerHandler).catch((error: any) => {
+        .handle(request, routerHandler)
+        .then((response: any) => {
+          return new ResponseManager(response).output(request);
+        })
+        .catch((error: any) => {
           this.app.emit('error', error);
           const err = new ErrorHandler(request, error);
           return new ResponseManager(err.render()).output(request);

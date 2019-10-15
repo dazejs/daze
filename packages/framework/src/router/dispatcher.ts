@@ -99,8 +99,8 @@ export class Dispatcher {
         }
         response.setHeader('Content-Type', mime.lookup(type(filePath, encodingExt)));
         response.setData(fs.createReadStream(filePath));
-        // return response;
-        return new ResponseManager(response).output(this.request);
+        return response;
+        // return new ResponseManager(response).output(this.request);
       }
     }
     throw this.createNotFountError();
@@ -146,10 +146,10 @@ export class Dispatcher {
     return this.route.middleware
       .handle(this.request, async (request: any) => this.route.resolve(request))
       .then(this.responseFilter())
-      .then(async (response: any) => {
-        await response.commitCookies(this.request);
-        return this.output(this.request, response);
-      });
+      // .then(async (response: any) => {
+      //   await response.commitCookies(this.request);
+      //   return this.output(this.request, response);
+      // });
   }
 
   responseFilter() {

@@ -478,6 +478,7 @@ export class Response extends Statusable {
       return res.end(data)
     }
 
+    await this.commitCookies(request)
 
     // string
     if (typeof data === 'string') {
