@@ -10,6 +10,7 @@ import { Redirect } from '../response/redirect'
 import { Application } from '../foundation/application'
 import { Config } from '../config'
 import { Messenger } from '../cluster/messenger'
+import { OutgoingHttpHeaders } from 'http'
 
 export abstract class Base {
   /**
@@ -37,15 +38,15 @@ export abstract class Base {
    * create response instance
    * @param params response constructor params
    */
-  response(...params: any[]) {
-    return new Response(...params);
+  response(data?: any, code: number = 200, header: OutgoingHttpHeaders = {}): Response {
+    return new Response(data, code, header);
   }
 
   /**
    * create redirect instance
    * @param params redirect constructor params
    */
-  redirect(...params: any[]) {
-    return new Redirect(...params);
+  redirect(url?: string, code: number = 200, header: OutgoingHttpHeaders = {}): Redirect {
+    return new Redirect(url, code, header);
   }
 }
