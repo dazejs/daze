@@ -183,7 +183,7 @@ export class Container extends EventEmitter {
                     const injectedParam = that.make(type, [...params, ...args]);
                     bindMethodParams.push(injectedParam);
                   }
-                  return Reflect.apply(target, thisBinding, [...bindMethodParams, ...methodArgs]);
+                  return Reflect.apply(target, thisBinding, [...bindMethodParams.reverse(), ...methodArgs]);
                 },
               });
             }

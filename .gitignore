@@ -25,3 +25,6 @@ packages/*/__debug__
 
 # test
 packages/*/coverage
+
+# future
+FUTURE_*
