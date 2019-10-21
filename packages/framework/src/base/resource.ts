@@ -16,7 +16,7 @@ export abstract class Resource extends Base {
    */
   collection(data: any, formatter: any): Collection {
     const resource = new Collection(data, formatter);
-    return resource.withoutKey().output();
+    return resource.withoutKey().output(false);
   }
 
   /**
@@ -26,7 +26,7 @@ export abstract class Resource extends Base {
    */
   item(data: any, formatter: any): Item {
     const resource = new Item(data, formatter);
-    return resource.withoutKey().output();
+    return resource.withoutKey().output(false);
   }
 
   /**
@@ -37,11 +37,11 @@ export abstract class Resource extends Base {
     return {
       item(data: any): Item {
         const resource = new Item(data, formatter);
-        return resource.withoutKey().output();
+        return resource.withoutKey().output(false);
       },
       collection(data: any): Collection {
         const resource = new Collection(data, formatter);
-        return resource.withoutKey().output();
+        return resource.withoutKey().output(false);
       },
     };
   }

@@ -54,7 +54,7 @@ export class Resource {
   /**
    * Create Resource
    */
-  constructor(data?: any, formatter: any = null, key: any = null) {
+  constructor(data?: any, formatter: any = null, key?: any) {
     this.data = data;
     if (key) this.key = key;
     if (formatter) this.formatter = formatter;
@@ -206,7 +206,7 @@ export class Resource {
     * serialize Rource data
     * @param isWrapCollection is collection use wrap key
     */
-  protected serializeResourceData(isWrapCollection = true) {
+  protected serializeResourceData(isOverstore = true) {
     const data = this.transformResourceData();
     if (this.type === EResourceTypeList.Collection) {
       if (this.key) {
@@ -214,7 +214,7 @@ export class Resource {
           [this.key]: data,
         };
       }
-      return isWrapCollection ? {
+      return isOverstore ? {
         data,
       } : data;
     }
@@ -247,10 +247,9 @@ export class Resource {
   /**
    * transform data
    */
-  public transform() {
-    const data = this.serializeResourceData();
+  public transform(isOverstore: boolean = true) {
+    const data = this.serializeResourceData(isOverstore);
     const meta = this.serializeResourceMeta();
-
     if (meta) {
       return { data, meta };
     }
@@ -260,7 +259,7 @@ export class Resource {
   /**
    * output result
    */
-  public output() {
-    return this.transform();
+  public output(isOverstore = true) {
+    return this.transform(isOverstore);
   }
 }
