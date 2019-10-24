@@ -20,6 +20,14 @@ import { Logger } from '../logger'
 
 const DEFAULT_PORT = 8080;
 
+export interface IApplicationPathsOptions {
+  app?: string,
+  config?: string,
+  view?: string,
+  public?: string,
+  log?: string,
+}
+
 export class Application extends Container {
   /**
    * The base path for the Application installation.
@@ -99,7 +107,7 @@ export class Application extends Container {
   /**
    * Create a Dazejs Application insstance
    */
-  constructor(rootPath: string, paths: any = {}) {
+  constructor(rootPath: string, paths: IApplicationPathsOptions = {}) {
     super();
     if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
 
@@ -113,7 +121,7 @@ export class Application extends Container {
   /**
    *  Set the paths for the application.
    */
-  setPaths<T extends {[key: string]: any}>(paths: T): this {
+  setPaths(paths: IApplicationPathsOptions): this {
     /** app workspace path */
     this.appPath = path.resolve(this.rootPath, paths.app || 'app');
     /** config file path */
