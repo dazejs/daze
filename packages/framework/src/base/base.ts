@@ -49,4 +49,12 @@ export abstract class Base {
   redirect(url?: string, code: number = 200, header: OutgoingHttpHeaders = {}): Redirect {
     return new Redirect(url, code, header);
   }
+
+  /**
+   * create database instance
+   * @param name connection name
+   */
+  db(name?: string) {
+    return this.app.get('db').connection(name)
+  }
 }

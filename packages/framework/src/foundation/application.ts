@@ -179,6 +179,7 @@ export class Application extends Container {
     await this.register(new providers.MiddlewareProvider(this));
     await this.register(new providers.RouterProvider(this));
     await this.register(new providers.TemplateProvider(this));
+    await this.register(new providers.DatabaseProvider(this));
   }
 
   /**
