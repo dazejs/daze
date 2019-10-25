@@ -145,25 +145,25 @@ export class Dispatcher {
   async dispatchToRoute() {
     return this.route.middleware
       .handle(this.request, async (request: any) => this.route.resolve(request))
-      .then(this.responseFilter())
+      // .then(this.responseFilter())
       // .then(async (response: any) => {
       //   await response.commitCookies(this.request);
       //   return this.output(this.request, response);
       // });
   }
 
-  responseFilter() {
-    return (response: any) => {
-      const code = response.getCode();
-      const data = response.getData();
-      const headers = response.getHeaders();
+  // responseFilter() {
+  //   return (response: any) => {
+  //     const code = response.getCode();
+  //     const data = response.getData();
+  //     const headers = response.getHeaders();
 
-      if (code >= 400) {
-        throw new HttpError(code, data, headers);
-      }
-      return response;
-    };
-  }
+  //     if (code >= 400) {
+  //       throw new HttpError(code, data, headers);
+  //     }
+  //     return response;
+  //   };
+  // }
 
   async output(request: any, response: any) {
     return new ResponseManager(response).output(request);

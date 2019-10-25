@@ -12,6 +12,7 @@ import { Request} from '../../request'
 import { ErrorHandler} from '../../errors/handle'
 import { ResponseManager} from '../../response/manager'
 import { Application } from '../application'
+import { HttpError } from '../../errors/http-error'
 
 
 export class httpServer {
@@ -27,6 +28,16 @@ export class httpServer {
         .handle(request, routerHandler)
         .then((response: any) => {
           return new ResponseManager(response).output(request);
+        })
+        .then((response: any) => {
+          const code = response.getCode();
+          const data = response.getData();
+          const headers = response.getHeaders();
+
+          if (code >= 400) {
+            throw new HttpError(code, data, headers);
+          }
+          return response;
         })
         .catch((error: any) => {
           this.app.emit('error', error);
