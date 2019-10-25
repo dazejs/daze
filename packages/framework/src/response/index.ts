@@ -451,6 +451,7 @@ export class Response extends Statusable {
    * @param res
    */
   sendHeaders(res: ServerResponse) {
+    if (res.headersSent) return this
     const code = this.getCode()
     const headers = this.getHeaders();
     res.writeHead(code, headers)

@@ -145,6 +145,9 @@ export class Dispatcher {
   async dispatchToRoute() {
     return this.route.middleware
       .handle(this.request, async (request: any) => this.route.resolve(request))
+      .catch((err) => {
+        throw err
+      })
       // .then(this.responseFilter())
       // .then(async (response: any) => {
       //   await response.commitCookies(this.request);
