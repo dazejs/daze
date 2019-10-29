@@ -11,6 +11,8 @@ import { Application } from '../foundation/application'
 import { Config } from '../config'
 import { Messenger } from '../cluster/messenger'
 import { OutgoingHttpHeaders } from 'http'
+import { AbstractConnection } from '../database/connection/connection.abstract'
+import { Builder } from '../database/builder'
 
 export abstract class Base {
   /**
@@ -54,7 +56,7 @@ export abstract class Base {
    * create database instance
    * @param name connection name
    */
-  db(name?: string) {
+  db(name?: string): AbstractConnection & Builder {
     return this.app.get('db').connection(name)
   }
 }

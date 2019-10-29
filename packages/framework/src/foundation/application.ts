@@ -17,6 +17,7 @@ import { HttpError } from '../errors/http-error'
 import { httpServer } from './http-server'
 import { Config } from '../config'
 import { Logger } from '../logger'
+import { Database } from '../database'
 
 const DEFAULT_PORT = 8080;
 
@@ -445,6 +446,7 @@ export class Application extends Container {
   get(abstract: 'app', args?: any[], force?: boolean): Application
   get(abstract: 'config', args?: any[], force?: boolean): Config
   get(abstract: 'logger', args?: any[], force?: boolean): Logger
+  get(abstract: 'db', args?: any[], force?: boolean): Database
   get(abstract: any, args?: any[], force?: boolean): any
 
   /**
