@@ -55,12 +55,12 @@ describe('Loader', () => {
     @Component('example')
     class ExampleComponent { }
 
-    loader.parseModule(ExampleController, symbols.ComponentType.Controller);
-    loader.parseModule(ExampleService, symbols.ComponentType.Service);
-    loader.parseModule(ExampleResource, symbols.ComponentType.Resource);
-    loader.parseModule(ExampleMiddleware, symbols.ComponentType.Middleware);
-    loader.parseModule(ExampleValidator, symbols.ComponentType.Validator);
-    loader.parseModule(ExampleComponent, symbols.ComponentType.Component);
+    loader.load(ExampleController);
+    loader.load(ExampleService);
+    loader.load(ExampleResource);
+    loader.load(ExampleMiddleware);
+    loader.load(ExampleValidator);
+    loader.load(ExampleComponent);
 
     expect(loader.controllers.includes(ExampleController)).toBeTruthy();
     expect(loader.middlewares.includes(ExampleMiddleware)).toBeTruthy();

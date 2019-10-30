@@ -50,19 +50,6 @@ export class Loader {
   }
 
   /**
-   * auto scan app dir
-   */
-  async autoLoadApp() {
-    if (!fs.existsSync(this.app.appPath)) return;
-    const appFiles = glob.sync(path.join(this.app.appPath, '**'), {
-      nodir: true,
-    });
-    for (const file of appFiles) {
-      await this.loadFile(file);
-    }
-  }
-
-  /**
    * resolve auto scan
    */
   async resolve() {
@@ -77,21 +64,28 @@ export class Loader {
   }
 
   /**
-   * load file with filepath
+   * auto scan app dir
    */
-  async loadFile(filePath: string) {
-    const target = (await import(filePath)).default;
-    if (!target || !target.prototype) return;
-    const isIgnore = Reflect.getMetadata('ignore', target.prototype);
-    if (isIgnore === true) return;
-    const type = Reflect.getMetadata('type', target.prototype);
-    this.parseModule(target, type);
+  async autoLoadApp() {
+    if (!fs.existsSync(this.app.appPath)) return;
+    const appFiles = glob.sync(path.join(this.app.appPath, '**'), {
+      nodir: true,
+    });
+    for (const file of appFiles) {
+      const target = (await import(file)).default;
+      this.load(target);
+    }
   }
 
   /**
    * parse file module
    */
-  parseModule(target: any, type: ComponentType) {
+  load(target: any) {
+    if (!target || !target.prototype) return;
+    const isIgnore = Reflect.getMetadata('ignore', target.prototype);
+    if (isIgnore === true) return;
+    const type: ComponentType = Reflect.getMetadata('type', target.prototype);
+
     switch (type) {
       case ComponentType.Controller:
         this.controllers.push(target);
