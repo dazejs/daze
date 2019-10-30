@@ -8,23 +8,10 @@ import { Service } from '../../../src/base/service';
 import { Validator } from '../../../src/base/validator';
 import { Resource } from '../../../src/base/resource';
 import { Route, Component } from '../../../src/decorators';
-import * as symbols from '../../../src/symbol'
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
 describe('Loader', () => {
-  it('should auto load specil file', async () => {
-    const loader = new Loader(app);
-    const res: any[] = [];
-    // @ts-ignore
-    loader.loadFile = (filePath) => {
-      res.push(filePath);
-    };
-    await loader.autoLoadApp();
-    expect(res.includes(require.resolve('../../daze/src/app/controller/example.ts'))).toBeTruthy();
-    expect(res.includes(require.resolve('../../daze/src/app/service/examle.ts'))).toBeTruthy();
-  });
-
   it('should parse module each type', () => {
     const loader = new Loader(app);
 
