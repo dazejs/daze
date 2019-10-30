@@ -1,6 +1,5 @@
 
 import { Builder } from '../builder'
-import { Str } from '../../foundation/support/str'
 
 export class Parser {
   components: string[] = [
@@ -33,16 +32,40 @@ export class Parser {
   parseComponents(builder: Builder): string[] {
     const sqls = [];
     for (const component of this.components) {
-      if (Reflect.has(builder, `_${component}`)) {
-        const method = `parse${Str.upperCamelCase(component)}` as keyof Parser
-        if (typeof this[method] === 'function') {
-          sqls.push(
-            (this[method] as Function)(builder)
-          )
-        }
-      }
+      sqls.push(
+        this.parseComponent(builder, component)
+      )
     }
     return sqls;
+  }
+
+  parseComponent(builder: Builder, part: string) {
+    switch(part) {
+      case 'aggregate':
+        return this.parseAggregate(builder)
+      case 'columns':
+        return this.parseColumns(builder)
+      case 'from':
+        return this.parseFrom(builder)
+      case 'joins':
+        return this.parseJoins(builder)
+      case 'wheres':
+        return this.parseWheres(builder)
+      case 'groups':
+        return this.parseGroups(builder)
+      case 'havings':
+        return this.parseHavings(builder)
+      case 'orders':
+        return this.parseOrders(builder)
+      case 'limit':
+        return this.parseLimit(builder)
+      case 'offset':
+        return this.parseOffset(builder)
+      case 'lock':
+        return this.parseLock(builder)
+      default:
+        return ''
+    }
   }
 
   /**
@@ -50,6 +73,7 @@ export class Parser {
    * @param builder 
    */
   parseAggregate(builder: Builder) {
+    if (!builder._aggregate) return '';
     let { column } = builder._aggregate
     // 需要去重
     if (builder._distinct === true && column !== '*') {
@@ -65,7 +89,7 @@ export class Parser {
    * @param builder 
    */
   parseColumns(builder: Builder) {
-    if (builder._aggregate) return ''
+    if (builder._aggregate) return '';
     const select = builder._distinct ? 'select distinct' : 'select'
     if (!builder._columns.length) return `${select} *`
     return `${select} ${this.columnDelimite(builder._columns)}`
@@ -77,6 +101,14 @@ export class Parser {
    */
   parseFrom(builder: Builder) {
     return `from ${builder._from}`
+  }
+
+  /**
+   * parse groups
+   * @param builder 
+   */
+  parseGroups(builder: Builder) {
+    return `group by ${this.columnDelimite(builder._groups)}`
   }
 
   /**
@@ -158,7 +190,11 @@ export class Parser {
     }
     return `having ${havings.join(' ')}`
   }
-  
+
+  parseunions(builder: Builder) {
+
+  }
+
   columnDelimite(columns: string[]) {
     return columns.join(', ')
   }

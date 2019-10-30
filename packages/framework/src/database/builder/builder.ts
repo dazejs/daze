@@ -29,6 +29,11 @@ interface IAggregateOption {
   column: string,
 }
 
+interface IUnionOption {
+  builder: Builder,
+  isAll: boolean,
+}
+
 interface IOrderOption {
   column: string,
   direction: string,
@@ -97,6 +102,11 @@ export class Builder {
   _havings: IHavingDescribeOption[] = []
 
   /**
+   * The unions
+   */
+  _unions: IUnionOption[] = [];
+
+  /**
    * grammar parser instance
    */
   parser: Parser;
@@ -129,6 +139,13 @@ export class Builder {
     return this
   }
 
+  /**
+   * where
+   * @param column 
+   * @param operator 
+   * @param value 
+   * @param symlink 
+   */
   where(column: string, operator: any, value?: any, symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'value';
@@ -140,6 +157,13 @@ export class Builder {
     return this
   }
 
+  /**
+   * where for column
+   * @param column 
+   * @param operator 
+   * @param value 
+   * @param symlink 
+   */
   whereColumn(column: string, operator: string, value?: string, symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'column'
@@ -347,6 +371,13 @@ export class Builder {
     return this.join(table, column, operator, value, 'right')
   }
 
+  /**
+   * having
+   * @param column 
+   * @param operator 
+   * @param value 
+   * @param symlink 
+   */
   having(column: string, operator: any, value?: any, symlink: TSymlink = 'and') {
     const _symlink = this._havings.length > 0 ? symlink : '';
     const type = 'value';
@@ -356,6 +387,33 @@ export class Builder {
       this._havings.push({ type, column, operator: '=', value: operator, symlink: _symlink })
     }
     return this
+  }
+
+  /**
+   * union
+   * @param builder 
+   * @param isAll 
+   */
+  union(builder: Builder | ((union: Builder) => Builder), isAll: boolean = false) {
+    let _builder = builder as Builder;
+    if (typeof builder === 'function') {
+      _builder = builder(
+        new Builder(this.collection)
+      )
+    }
+    this._unions.push({
+      builder: _builder,
+      isAll,
+    })
+    return this;
+  }
+
+  /**
+   * union all
+   * @param builder 
+   */
+  unionAll(builder: Builder | ((union: Builder) => Builder)) {
+    return this.union(builder, true)
   }
 
   toSql() {
