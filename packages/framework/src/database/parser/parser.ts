@@ -103,8 +103,8 @@ export class Parser {
    */
   parseColumns(builder: Builder) {
     if (builder._aggregate) return '';
-    const select = builder.hasDistinct ? 'select distinct' : 'select'
-    if (!builder.hasColumns) return `${select} *`
+    const select = builder._distinct ? 'select distinct' : 'select'
+    if (!builder._columns.length) return `${select} *`
     return `${select} ${this.columnDelimite(builder._columns)}`
   }
 
@@ -129,14 +129,29 @@ export class Parser {
    * @param builder 
    */
   parseWheres(builder: Builder, conjunction: string = 'where') {
-    if (!builder.hasWheres) return ''
+    if (!builder._wheres.length) return ''
     const wheres = []
     for (const where of builder._wheres) {
       const leadSymlink = where.symlink ? `${where.symlink} ` : ''
-      const value = where.type === 'value' ? this.placeholder(where.value) : where.value;
-      wheres.push(
-        `${leadSymlink}${where.column} ${where.operator} ${value}`
-      )
+      // value type
+      if (where.type === 'value') {
+        wheres.push(
+          //where.value
+          `${leadSymlink}${where.column} ${where.operator} ${this.placeholder()}`
+        )
+      }
+      // column type
+      if (where.type === 'column') {
+        wheres.push(
+          `${leadSymlink}${where.column} ${where.operator} ${where.value}`
+        )
+      }
+
+      if (where.type === 'sql') {
+        wheres.push(
+          `${leadSymlink}${where.value}`
+        )
+      }
     }
     return `${conjunction} ${wheres.join(' ')}`
   }
@@ -146,7 +161,7 @@ export class Parser {
    * @param builder 
    */
   parseOrders(builder: Builder) {
-    if (!builder.hasOrders) return '';
+    if (!builder._orders.length) return '';
     const flatOrders = builder._orders.map(order => `${order.column} ${order.direction}`)
     return `order by ${flatOrders.join(', ')}`
   }
@@ -156,14 +171,14 @@ export class Parser {
    * @param builder 
    */
   parseLimit(builder: Builder) {
-    return builder.hasLimit ? `limit ${builder._limit}` : ''
+    return builder._limit >= 0 ? `limit ${builder._limit}` : ''
   }
 
   /**
    * parse offset
    */
   parseOffset(builder: Builder) {
-    return builder.hasOffset ? `offset ${builder._offset}` : ''
+    return builder._offset >= 0 ? `offset ${builder._offset}` : ''
   }
 
   /**
@@ -180,7 +195,7 @@ export class Parser {
    * @param builder 
    */
   parseJoins(builder: Builder) {
-    if (!builder.hasJoins) return ''
+    if (!builder._joins.length) return ''
     const joins = [];
     for (const join of builder._joins) {
       joins.push(
@@ -195,7 +210,7 @@ export class Parser {
    * @param builder 
    */
   parseHavings(builder: Builder) {
-    if (!builder.hasHavings) return ''
+    if (!builder._havings.length) return ''
     const havings = []
     for (const having of builder._havings) {
       const leadSymlink = having.symlink ? `${having.symlink} ` : ''
@@ -208,7 +223,7 @@ export class Parser {
 
   parseUnions(builder: Builder) {
     let sqls: string[] = []
-    if (!builder.hasUnions) return ''
+    if (!builder._unions.length) return ''
     for (const union of builder._unions) {
       sqls.push(
         `${union.isAll ? 'union all' : 'union'} (${union.builder.toSql()})`
@@ -217,7 +232,7 @@ export class Parser {
     return `${sqls.join(' ')}`
   }
 
-  placeholder(value: any) {
+  placeholder() {
     return '?'
   }
 

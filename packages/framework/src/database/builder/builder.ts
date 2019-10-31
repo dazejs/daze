@@ -9,9 +9,9 @@ export type TSymlink = 'and' | 'or' | ''
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
 
 interface IWhereDescribeOption {
-  type: 'value' | 'column',
-  column: string,
-  operator: string,
+  type: 'value' | 'column' | 'sql',
+  column?: string,
+  operator?: string,
   value: any,
   symlink: TSymlink
 }
@@ -137,62 +137,12 @@ export class Builder {
     this._aggregate = undefined
     return this
   }
-
-  get hasDistinct() {
-    if (typeof this._distinct === 'boolean') return this._distinct
-    if (Array.isArray(this._distinct)) return this._distinct.length > 0
-    return false
-  }
-
-  get hasAggregate() {
-    return !!this._aggregate
-  }
-
-  get hasColumns() {
-    return this._columns.length > 0
-  }
-
-  get hasFrom() {
-    return !!this._from
-  }
-
-  get hasWheres() {
-    return this._wheres.length > 0
-  }
-
-  get hasOrders() {
-    return this._orders.length > 0
-  }
-
-  get hasLimit() {
-    return this._limit >= 0
-  }
-
-  get hasLock() {
-    return typeof this._lock === 'boolean' || !!this._lock
-  }
-
-  get hasOffset() {
-    return this._offset >= 0
-  }
-
-  get hasGroups() {
-    return this._groups.length > 0
-  }
-
-  get hasJoins() {
-    return this._joins.length > 0
-  }
-
-  get hasHavings() {
-    return this._havings.length > 0
-  }
-
-  get hasUnions() {
-    return this._unions.length > 0
-  }
-
-  field(...columns: (string | string[])[]) {
+  
+  /**
+   * show columns
+   * @param columns 
+   */
+  columns(...columns: (string | string[])[]) {
     for (const column of columns) {
       if (typeof column === 'string') {
         this._columns.push(column)
@@ -201,6 +151,14 @@ export class Builder {
       }
     }
     return this
+  }
+
+  /**
+   * alias colums
+   * @param columns 
+   */
+  fields(...columns: (string | string[])[]) {
+    return this.columns(...columns)
   }
 
   /**
@@ -230,6 +188,14 @@ export class Builder {
       this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink })
       this.addParams(operator)
     }
+    return this
+  }
+
+  whereRaw(sql: string, params: any[] = [], symlink: TSymlink = 'and') {
+    const _symlink = this._wheres.length > 0 ? symlink : '';
+    const type = 'sql';
+    this._wheres.push({ type, value: sql, symlink: _symlink})
+    this.addParams(params)
     return this
   }
 
@@ -353,13 +319,13 @@ export class Builder {
    * @param column 
    * @param columns 
    */
-  distinct(column?: string | boolean, ...columns: string[]) {
+  distinct(column: string | boolean = false, ...columns: string[]) {
     if (typeof column === 'boolean') {
       this._distinct = column
       return this
     }
     if (columns.length > 0) {
-      this._distinct = columns
+      this._distinct = [column, ...columns]
       return this
     }
     this._distinct = true
@@ -523,10 +489,25 @@ export class Builder {
     return this.parser.parseSelect(this)
   }
 
+
+  logSql() {
+    console.log('sql:', this.toSql())
+    console.log('params:', this.getParams())
+    return this
+  }
+
+  /**
+   * find one
+   * @param id 
+   */
   async find(id?: any) {
     const sql = id ? this.take(1).where('id', id).toSql() : this.take(1).toSql();
     const params = this.getParams()
     const results = await this.collection.select(sql, params)
     return results[0]
+  }
+
+  async first() {
+    return this.find()
   }
 }
