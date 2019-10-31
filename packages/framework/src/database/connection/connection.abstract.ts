@@ -21,7 +21,7 @@ export abstract class AbstractConnection {
   }
 
   table(table: string, as?: string): Builder {
-    return this.builder().from(table, as);
+    return this.builder().table(table, as);
   }
 
   abstract select(query: string, bindings: any[]): Promise<any[]>

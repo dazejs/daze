@@ -20,23 +20,36 @@ export class Parser {
    * parse select query builkder
    * @param builder 
    */
-  parseSelect(builder: Builder) {
-    const sqls = this.parseComponents(builder)
-    console.log(sqls.filter(sql => !!sql).join(' '))
+  parseSelect(builder: Builder): string {
+    // 当聚合函数与 union 一起使用时，使用临时表名包裹
+    if (builder._aggregate && builder._unions.length) {
+      const _sql = `${this.parseAggregate(builder)}`
+      return `${_sql} from (${this.parseSelect(builder.removeAggregate())}) as temp`
+    }
+
+    // select sql
+    const sql = this.parseComponents(builder)
+
+    // 当使用了 union, 将 union sql 合并
+    if (builder._unions.length) {
+      return `(${sql}) ${this.parseUnions(builder)}`
+    }
+    return sql
   }
 
   /**
    * parser query components
    * @param builder 
    */
-  parseComponents(builder: Builder): string[] {
+  parseComponents(builder: Builder): string {
     const sqls = [];
     for (const component of this.components) {
-      sqls.push(
-        this.parseComponent(builder, component)
-      )
+      const sql = this.parseComponent(builder, component)
+      if (sql) {
+        sqls.push(sql)
+      }
     }
-    return sqls;
+    return sqls.join(' ');
   }
 
   parseComponent(builder: Builder, part: string) {
@@ -90,8 +103,8 @@ export class Parser {
    */
   parseColumns(builder: Builder) {
     if (builder._aggregate) return '';
-    const select = builder._distinct ? 'select distinct' : 'select'
-    if (!builder._columns.length) return `${select} *`
+    const select = builder.hasDistinct ? 'select distinct' : 'select'
+    if (!builder.hasColumns) return `${select} *`
     return `${select} ${this.columnDelimite(builder._columns)}`
   }
 
@@ -100,7 +113,7 @@ export class Parser {
    * @param builder 
    */
   parseFrom(builder: Builder) {
-    return `from ${builder._from}`
+    return builder._from ? `from ${builder._from}` : ''
   }
 
   /**
@@ -108,7 +121,7 @@ export class Parser {
    * @param builder 
    */
   parseGroups(builder: Builder) {
-    return `group by ${this.columnDelimite(builder._groups)}`
+    return builder._groups.length ? `group by ${this.columnDelimite(builder._groups)}`: ''
   }
 
   /**
@@ -116,15 +129,15 @@ export class Parser {
    * @param builder 
    */
   parseWheres(builder: Builder, conjunction: string = 'where') {
-    if (!builder._wheres) return ''
+    if (!builder.hasWheres) return ''
     const wheres = []
     for (const where of builder._wheres) {
       const leadSymlink = where.symlink ? `${where.symlink} ` : ''
+      const value = where.type === 'value' ? this.placeholder(where.value) : where.value;
       wheres.push(
-        `${leadSymlink}${where.column} ${where.operator} ${where.value}`
+        `${leadSymlink}${where.column} ${where.operator} ${value}`
       )
     }
-
     return `${conjunction} ${wheres.join(' ')}`
   }
 
@@ -133,7 +146,7 @@ export class Parser {
    * @param builder 
    */
   parseOrders(builder: Builder) {
-    if (!builder._orders.length) return '';
+    if (!builder.hasOrders) return '';
     const flatOrders = builder._orders.map(order => `${order.column} ${order.direction}`)
     return `order by ${flatOrders.join(', ')}`
   }
@@ -143,14 +156,14 @@ export class Parser {
    * @param builder 
    */
   parseLimit(builder: Builder) {
-    return `limit ${builder._limit}`
+    return builder.hasLimit ? `limit ${builder._limit}` : ''
   }
 
   /**
    * parse offset
    */
   parseOffset(builder: Builder) {
-    return `offset ${builder._offset}`
+    return builder.hasOffset ? `offset ${builder._offset}` : ''
   }
 
   /**
@@ -167,10 +180,11 @@ export class Parser {
    * @param builder 
    */
   parseJoins(builder: Builder) {
+    if (!builder.hasJoins) return ''
     const joins = [];
     for (const join of builder._joins) {
       joins.push(
-        `${join.type} join ${join.table} ${this.parseWheres(join.builder, 'on')}`
+        `${join.joinType} join ${join._from} ${this.parseWheres(join.builder, 'on')}`
       )
     }
     return joins.join(' ')
@@ -181,6 +195,7 @@ export class Parser {
    * @param builder 
    */
   parseHavings(builder: Builder) {
+    if (!builder.hasHavings) return ''
     const havings = []
     for (const having of builder._havings) {
       const leadSymlink = having.symlink ? `${having.symlink} ` : ''
@@ -191,8 +206,19 @@ export class Parser {
     return `having ${havings.join(' ')}`
   }
 
-  parseunions(builder: Builder) {
+  parseUnions(builder: Builder) {
+    let sqls: string[] = []
+    if (!builder.hasUnions) return ''
+    for (const union of builder._unions) {
+      sqls.push(
+        `${union.isAll ? 'union all' : 'union'} (${union.builder.toSql()})`
+      )
+    }
+    return `${sqls.join(' ')}`
+  }
 
+  placeholder(value: any) {
+    return '?'
   }
 
   columnDelimite(columns: string[]) {

@@ -49,7 +49,7 @@ export class Builder {
   /**
    * The aggregate desc
    */
-  _aggregate: IAggregateOption;
+  _aggregate?: IAggregateOption;
 
   /**
    * The columns
@@ -107,15 +107,89 @@ export class Builder {
   _unions: IUnionOption[] = [];
 
   /**
+   * binding params
+   */
+  params: any[] = [];
+
+  /**
    * grammar parser instance
    */
   parser: Parser;
 
+  /**
+   * connection instance
+   */
   collection: AbstractConnection;
 
+  /**
+   * Create Builder instance
+   * @param collection 
+   */
   constructor(collection: AbstractConnection) {
     this.collection = collection;
     this.parser = this.collection.parser
+  }
+
+  /**
+   * Remove aggregate func
+   */
+  removeAggregate() {
+    this._aggregate = undefined
+    return this
+  }
+
+  get hasDistinct() {
+    if (typeof this._distinct === 'boolean') return this._distinct
+    if (Array.isArray(this._distinct)) return this._distinct.length > 0
+    return false
+  }
+
+  get hasAggregate() {
+    return !!this._aggregate
+  }
+
+  get hasColumns() {
+    return this._columns.length > 0
+  }
+
+  get hasFrom() {
+    return !!this._from
+  }
+
+  get hasWheres() {
+    return this._wheres.length > 0
+  }
+
+  get hasOrders() {
+    return this._orders.length > 0
+  }
+
+  get hasLimit() {
+    return this._limit >= 0
+  }
+
+  get hasLock() {
+    return typeof this._lock === 'boolean' || !!this._lock
+  }
+
+  get hasOffset() {
+    return this._offset >= 0
+  }
+
+  get hasGroups() {
+    return this._groups.length > 0
+  }
+
+  get hasJoins() {
+    return this._joins.length > 0
+  }
+
+  get hasHavings() {
+    return this._havings.length > 0
+  }
+
+  get hasUnions() {
+    return this._unions.length > 0
   }
 
   field(...columns: (string | string[])[]) {
@@ -134,7 +208,7 @@ export class Builder {
    * @param table 
    * @param as 
    */
-  from(table: string, as?: string) {
+  table(table: string, as?: string) {
     this._from = as ? `${table} as ${as}` : table;
     return this
   }
@@ -151,8 +225,10 @@ export class Builder {
     const type = 'value';
     if (value !== undefined) {
       this._wheres.push({ type, column, operator, value, symlink: _symlink })
+      this.addParams(value)
     } else {
       this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink })
+      this.addParams(operator)
     }
     return this
   }
@@ -294,7 +370,7 @@ export class Builder {
    * Lock the selected rows
    * @param value 
    */
-  lock(value: boolean | string = true) {
+  lock(value: boolean | string) {
     this._lock = value
     return this
   }
@@ -336,15 +412,17 @@ export class Builder {
    * @param value 
    * @param type 
    */
-  join(table: string, column: string | ((join: Join) => Join | void), operator?: any, value?: any, type: TJoinType = 'inner') {
-    const join = new Join(new Builder(this.collection), table, type)
-    if (typeof column === 'string') {
+  join(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any, type: TJoinType = 'inner') {
+    const join = new Join(new Builder(this.collection), type) as Join & Builder
+    if (typeof table === 'string' && column) {
       this._joins.push(
-        join.on(column, operator, value)
+        join.table(table).on(column, operator, value)
       )
-    } else if (typeof column === 'function') {
-      column(join)
+      this.addParams(join.getParams())
+    } else if (typeof table === 'function') {
+      table(join)
       this._joins.push(join)
+      this.addParams(join.getParams())
     }
     return this
   }
@@ -356,7 +434,7 @@ export class Builder {
    * @param operator 
    * @param value 
    */
-  leftJoin(table: string, column: string | ((join: Join) => Join | void), operator?: any, value?: any) {
+  leftJoin(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any) {
     return this.join(table, column, operator, value, 'left')
   }
 
@@ -367,7 +445,7 @@ export class Builder {
    * @param operator 
    * @param value 
    */
-  rightJoin(table: string, column: string | ((join: Join) => Join | void), operator?: any, value?: any) {
+  rightJoin(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any) {
     return this.join(table, column, operator, value, 'right')
   }
 
@@ -394,17 +472,19 @@ export class Builder {
    * @param builder 
    * @param isAll 
    */
-  union(builder: Builder | ((union: Builder) => Builder), isAll: boolean = false) {
+  union(builder: Builder | ((union: Builder) => Builder | void), isAll: boolean = false) {
     let _builder = builder as Builder;
     if (typeof builder === 'function') {
-      _builder = builder(
-        new Builder(this.collection)
+      _builder = new Builder(this.collection)
+      builder(
+        _builder
       )
     }
     this._unions.push({
       builder: _builder,
       isAll,
     })
+    this.addParams(_builder.getParams())
     return this;
   }
 
@@ -416,8 +496,37 @@ export class Builder {
     return this.union(builder, true)
   }
 
-  toSql() {
-    this.parser.parseSelect(this)
+  /**
+   * add param to params
+   * @param value 
+   */
+  addParams(value: any) {
+    if (Array.isArray(value)) {
+      this.params.push(...value)
+      return this
+    }
+    this.params.push(value)
+    return this
   }
 
+  /**
+   * get all params
+   */
+  getParams() {
+    return this.params
+  }
+
+  /**
+   * gen sql string
+   */
+  toSql() {
+    return this.parser.parseSelect(this)
+  }
+
+  async find(id?: any) {
+    const sql = id ? this.take(1).where('id', id).toSql() : this.take(1).toSql();
+    const params = this.getParams()
+    const results = await this.collection.select(sql, params)
+    return results[0]
+  }
 }
