@@ -191,12 +191,37 @@ export class Builder {
     return this
   }
 
+  /**
+   * where use or tymlink
+   * @param column 
+   * @param operator 
+   * @param value 
+   */
+  orWhere(column: string, operator: any, value?: any) {
+    return this.where(column, operator, value, 'or')
+  }
+
+  /**
+   * raw where
+   * @param sql 
+   * @param params 
+   * @param symlink 
+   */
   whereRaw(sql: string, params: any[] = [], symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'sql';
     this._wheres.push({ type, value: sql, symlink: _symlink})
     this.addParams(params)
     return this
+  }
+
+  /**
+   * or raw where
+   * @param sql 
+   * @param params 
+   */
+  orWhereRaw(sql: string, params: any[] = []) {
+    return this.whereRaw(sql, params, 'or')
   }
 
   /**
@@ -215,6 +240,16 @@ export class Builder {
       this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink })
     }
     return this
+  }
+
+  /**
+   * or where column
+   * @param column 
+   * @param operator 
+   * @param value 
+   */
+  orWhereColumn(column: string, operator: string, value?: string) {
+    return this.whereColumn(column, operator, value, 'or')
   }
 
   /**
@@ -489,7 +524,9 @@ export class Builder {
     return this.parser.parseSelect(this)
   }
 
-
+  /**
+   * load sql and params
+   */
   logSql() {
     console.log('sql:', this.toSql())
     console.log('params:', this.getParams())
@@ -497,17 +534,44 @@ export class Builder {
   }
 
   /**
-   * find one
+   * query multiple records from database,
+   */
+  async find() {
+    const sql = this.toSql()
+    const params = this.getParams()
+    const results = await this.collection.select(sql, params)
+    return results
+  }
+
+  /**
+   * query one record from database
    * @param id 
    */
-  async find(id?: any) {
-    const sql = id ? this.take(1).where('id', id).toSql() : this.take(1).toSql();
+  async get(id: string) {
+    const sql = this.where('id', id).take(1).toSql()
     const params = this.getParams()
     const results = await this.collection.select(sql, params)
     return results[0]
   }
 
+  /**
+   * query first record from database
+   */
   async first() {
-    return this.find()
+    const sql = this.take(1).toSql()
+    const params = this.getParams()
+    const results = await this.collection.select(sql, params)
+    return results[0]
+  }
+
+  /**
+   * query last record from database width id desc
+   * @param order 
+   */
+  async last(order: string = 'id') {
+    const sql = this.take(1).orderBy(order, 'desc').toSql()
+    const params = this.getParams()
+    const results = await this.collection.select(sql, params)
+    return results[0]
   }
 }
