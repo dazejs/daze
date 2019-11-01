@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import validator from 'validator'
-import isType from 'core-util-is'
+import validator from 'validator';
+import isType from 'core-util-is';
 
 // MARK: Custom
 

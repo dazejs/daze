@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Container} from '../container'
-import { Application } from '../foundation/application'
-import { ComponentType } from '../symbol'
+import { Container} from '../container';
+import { Application } from '../foundation/application';
+import { ComponentType } from '../symbol';
 
 export class Controller {
   /**

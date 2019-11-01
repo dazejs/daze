@@ -35,7 +35,9 @@ describe('Descrators/factory/create-inject-decorator', () => {
     it('should patch injectable and types in method', () => {
       class Klass {
         @createInjectDecorator('request')('a', 'b')
-        index() {}
+        index() {
+          //
+        }
       };
       expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
       expect(Reflect.getMetadata('injectparams', Klass, 'index')).toEqual([

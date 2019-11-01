@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import path from 'path'
+import path from 'path';
 import * as winston from 'winston';
-import { MongoDB } from 'winston-mongodb'
+import { MongoDB } from 'winston-mongodb';
 // import DailyRotateFile from 'winston-daily-rotate-file';
-import { Container } from '../container'
-import { IllegalArgumentError } from '../errors/illegal-argument-error'
+import { Container } from '../container';
+import { IllegalArgumentError } from '../errors/illegal-argument-error';
 
 export class Logger {
   app: any;
@@ -56,7 +56,7 @@ export class Logger {
       format.printf((info: any) => `[${info.timestamp}] [${info.level.toUpperCase()}] - ${info.message}`),
     );
 
-    return new Proxy(this, this.proxy())
+    return new Proxy(this, this.proxy());
   }
 
   proxy(): ProxyHandler<this> {
@@ -67,7 +67,7 @@ export class Logger {
         }
         return t.logger[prop];
       },
-    }
+    };
   }
 
   /**
@@ -157,7 +157,7 @@ export class Logger {
    * get channel configure
    * @private
    */
-  getChannelConfigure<T extends { driver: string, [key: string]: any }>(channelName: string): T {
+  getChannelConfigure<T extends { driver: string; [key: string]: any }>(channelName: string): T {
     return this.app.get('config').get(`logger.channels.${channelName}`);
   }
 
@@ -205,7 +205,6 @@ export class Logger {
   /**
    * dailyFile driver creator
    */
-  // @ts-ignore
   dailyFileDriverCreator(options: any) {
     const { driver, ...restOpts } = options;
     return [new (require('winston-daily-rotate-file'))(restOpts)];

@@ -1,8 +1,8 @@
-import { Application } from '../foundation/application'
-import { IllegalArgumentError } from '../errors/illegal-argument-error'
-import { MysqlConnection } from './connection/mysql-connection'
-import { Container } from '../container'
-import { MysqlConnector } from './connector/mysql-connector'
+import { Application } from '../foundation/application';
+import { IllegalArgumentError } from '../errors/illegal-argument-error';
+import { MysqlConnection } from './connection/mysql-connection';
+import { Container } from '../container';
+import { MysqlConnector } from './connector/mysql-connector';
 
 export class Database {
   /**
@@ -30,25 +30,25 @@ export class Database {
       get(target: any, p: string | number | symbol, receiver: any) {
         if (typeof p === 'string') {
           if (Reflect.has(target, p)) {
-            return Reflect.get(target, p, receiver)
+            return Reflect.get(target, p, receiver);
           }
-          return target.connection()[p]
+          return target.connection()[p];
         }
-        return Reflect.get(target, p, receiver)
+        return Reflect.get(target, p, receiver);
       }
-    }
+    };
   }
 
   /**
    * Auto connection 
    * @param name 
    */
-  connection(name: string = 'default') {
+  connection(name = 'default') {
     if (!this.connections.has(name)) {
-      const config = this.getConnectioncConfigure(name)
-      this.connections.set(name, this.createConnection(config))
+      const config = this.getConnectioncConfigure(name);
+      this.connections.set(name, this.createConnection(config));
     }
-    return this.connections.get(name)
+    return this.connections.get(name);
   }
 
   /**
@@ -69,6 +69,6 @@ export class Database {
    * @param name connection name
    */
   getConnectioncConfigure(name: string) {
-    return this.app.get('config').get(`database.${name}`)
+    return this.app.get('config').get(`database.${name}`);
   }
 }

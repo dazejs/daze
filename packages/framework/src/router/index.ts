@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Route } from './route'
-import { Container } from '../container'
-import { Dispatcher } from './dispatcher'
-import { Trie } from './trie'
-import { CORSMiddleware } from '../foundation/middlewares'
-import { Application } from '../foundation/application'
-import { Request } from '../request'
+import { Route } from './route';
+import { Container } from '../container';
+import { Dispatcher } from './dispatcher';
+import { Trie } from './trie';
+import { CORSMiddleware } from '../foundation/middlewares';
+import { Application } from '../foundation/application';
+import { Request } from '../request';
 
 export class Router {
   app: Application = Container.get('app');

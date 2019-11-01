@@ -7,13 +7,13 @@
 */
 
 
-import 'reflect-metadata'
+import 'reflect-metadata';
 
-export * from './foundation/application'
-export * from './container'
-export * from './response'
-export * from './response/redirect'
-export * from './view'
-export * from './cookie'
-export * from './decorators'
-export * from './base'
+export * from './foundation/application';
+export * from './container';
+export * from './response';
+export * from './response/redirect';
+export * from './view';
+export * from './cookie';
+export * from './decorators';
+export * from './base';

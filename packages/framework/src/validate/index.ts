@@ -4,20 +4,20 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Message } from '../foundation/support/message'
-import * as validators from './validators'
-import { Container } from '../container'
-import { Application } from '../foundation/application'
+import { Message } from '../foundation/support/message';
+import * as validators from './validators';
+import { Container } from '../container';
+import { Application } from '../foundation/application';
 
-export interface IRule {
-  field: string,
-  handler: (...args: any[]) => any,
-  args: any[],
-  options: { [key: string]: any },
+export interface RuleData {
+  field: string;
+  handler: (...args: any[]) => any;
+  args: any[];
+  options: { [key: string]: any };
 }
 
-export interface IRuleIndependences {
-  [key: string]: [keyof typeof validators, any[]?, { [key2: string]: any }?][]
+export interface RuleIndependences {
+  [key: string]: [keyof typeof validators, any[]?, { [key2: string]: any }?][];
 }
 
 export class Validate {
@@ -29,12 +29,12 @@ export class Validate {
   /**
    * validate data
    */
-  data: { [key:string]: any };
+  data: { [key: string]: any };
 
   /**
    * validate rules
    */
-  rules: IRule[];
+  rules: RuleData[];
 
   /**
    * validate message
@@ -63,7 +63,7 @@ export class Validate {
    * @param rules rules
    */
   parseValidator(validator?: any) {
-    if (!validator) return []
+    if (!validator) return [];
     // if object type
     if (typeof validator === 'object') {
       // if @Validator rules
@@ -87,13 +87,13 @@ export class Validate {
    * @param rules rules
    */
   parseIndependenceRules(rules: { [key: string]: any[] }) {
-    const _rules: IRuleIndependences = rules
+    const _rules: RuleIndependences = rules;
     const res = [];
     const fields = Object.keys(_rules);
     for (const field of fields) {
       const fieldRules = _rules[field] || [];
       for (const rule of fieldRules) {
-        const handler = validators[rule[0]]
+        const handler = validators[rule[0]];
         if (handler) {
           res.push({
             field,
@@ -120,7 +120,7 @@ export class Validate {
    * @param value field value
    * @param rule stuct rule
    */
-  replaceSpecialMessageFields(value: any, rule: IRule) {
+  replaceSpecialMessageFields(value: any, rule: RuleData) {
     const {
       field,
       args,
@@ -137,7 +137,7 @@ export class Validate {
    * validate a field
    * @param rule rule
    */
-  validateField(rule: IRule) {
+  validateField(rule: RuleData) {
     if (!rule) return false;
     const {
       field, args, handler,

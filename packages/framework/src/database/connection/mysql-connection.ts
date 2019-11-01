@@ -1,6 +1,6 @@
-import { Connection } from 'mysql'
-import { AbstractConnection } from './connection.abstract'
-import { MysqlParser } from '../parser'
+import { Connection } from 'mysql';
+import { AbstractConnection } from './connection.abstract';
+import { MysqlParser } from '../parser';
 
 export class MysqlConnection extends AbstractConnection {
 
@@ -14,12 +14,12 @@ export class MysqlConnection extends AbstractConnection {
    * @param connection 
    */
   constructor(connection: Connection) {
-    super()
-    this.connection = connection
+    super();
+    this.connection = connection;
   }
 
   getDefaultParser() {
-    return new MysqlParser()
+    return new MysqlParser();
   }
 
   /**
@@ -28,7 +28,7 @@ export class MysqlConnection extends AbstractConnection {
    * @param bindings
    */
   async select(query: string, bindings: any[] = []): Promise<any[]> {
-    return this.query(query, bindings)
+    return this.query(query, bindings);
   }
 
   /**
@@ -37,7 +37,7 @@ export class MysqlConnection extends AbstractConnection {
    * @param bindings
    */
   async insert(query: string, bindings: any[] = []): Promise<number> {
-    return this.query(query, bindings).then((result: any) => result.insertId)
+    return this.query(query, bindings).then((result: any) => result.insertId);
   }
 
   /**
@@ -46,7 +46,7 @@ export class MysqlConnection extends AbstractConnection {
    * @param bindings
    */
   async update(query: string, bindings: any[] = []): Promise<number> {
-    return this.query(query, bindings).then((result: any) => result.affectedRows)
+    return this.query(query, bindings).then((result: any) => result.affectedRows);
   }
 
   /**
@@ -55,7 +55,7 @@ export class MysqlConnection extends AbstractConnection {
    * @param bindings
    */
   async delete(query: string, bindings: any[] = []): Promise<number> {
-    return this.query(query, bindings).then((result: any) => result.affectedRows)
+    return this.query(query, bindings).then((result: any) => result.affectedRows);
   }
 
   /**
@@ -66,9 +66,9 @@ export class MysqlConnection extends AbstractConnection {
   query(query: string, bindings: any[] = []): any {
     return new Promise((resolve, reject) => {
       this.connection.query(query, bindings, (error, results) => {
-        if (error) return reject(error)
-        resolve(results)
-      })
-    })
+        if (error) return reject(error);
+        resolve(results);
+      });
+    });
   }
 }

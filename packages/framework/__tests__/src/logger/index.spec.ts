@@ -6,7 +6,7 @@ import { IllegalArgumentError } from '../../../src/errors/illegal-argument-error
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
-beforeAll(() => app.initialize())
+beforeAll(() => app.initialize());
 
 const log = new Logger();
 describe('src/logger', () => {

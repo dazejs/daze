@@ -27,16 +27,16 @@ export class Deferred<T> {
    */
   constructor() {
     this._promise = new Promise<T>((resolve, reject) => {
-      this._resolve = resolve
-      this._reject = reject
-    })
+      this._resolve = resolve;
+      this._reject = reject;
+    });
   }
 
   /**
    * promise getter
    */
   get promise(): Promise<T> {
-    return this._promise
+    return this._promise;
   }
 
   /**
@@ -44,7 +44,7 @@ export class Deferred<T> {
    * @param value 
    */
   resolve (value?: T | PromiseLike<T>): void {
-    this._resolve(value)
+    this._resolve(value);
   }
 
   /**
@@ -52,6 +52,6 @@ export class Deferred<T> {
    * @param reason 
    */
   reject (reason?: any): void {
-    this._reject(reason)
+    this._reject(reason);
   }
 }

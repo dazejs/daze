@@ -4,60 +4,60 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import path from 'path'
-import cluster from 'cluster'
-import util from 'util'
-import Keygrip from 'keygrip'
-import { Server } from 'http'
-import { Container } from '../container'
-import { Master, Worker } from '../cluster'
-import * as providers from './providers'
-import { HttpError } from '../errors/http-error'
-import { httpServer } from './http-server'
-import { Config } from '../config'
-import { Logger } from '../logger'
-import { Database } from '../database'
+import path from 'path';
+import cluster from 'cluster';
+import util from 'util';
+import Keygrip from 'keygrip';
+import { Server } from 'http';
+import { Container } from '../container';
+import { Master, Worker } from '../cluster';
+import * as providers from './providers';
+import { HttpError } from '../errors/http-error';
+import { HttpServer } from './http-server';
+import { Config } from '../config';
+import { Logger } from '../logger';
+import { Database } from '../database';
 
 const DEFAULT_PORT = 8080;
 
-export interface IApplicationPathsOptions {
-  app?: string,
-  config?: string,
-  view?: string,
-  public?: string,
-  log?: string,
+export interface ApplicationPathsOptions {
+  app?: string;
+  config?: string;
+  view?: string;
+  public?: string;
+  log?: string;
 }
 
 export class Application extends Container {
   /**
    * The base path for the Application installation.
    */
-  rootPath: string = '';
+  rootPath = '';
 
   /**
    * The app workspace path
    */
-  appPath: string = '';
+  appPath = '';
 
   /**
    * The config file path
    */
-  configPath: string = '';
+  configPath = '';
 
   /**
    * The views file path
    */
-  viewPath: string = '';
+  viewPath = '';
 
   /**
    * The public file path
    */
-  publicPath: string = '';
+  publicPath = '';
 
   /**
    * The log file path
    */
-  logPath: string = '';
+  logPath = '';
 
   /**
    * keygrip keys
@@ -77,22 +77,22 @@ export class Application extends Container {
   /**
    * application run port
    */
-  port: number = 0;
+  port = 0;
 
   /**
    * debug enabled?
    */
-  isDebug: boolean = false;
+  isDebug = false;
 
   /**
    * needs to parse body
    */
-  needsParseBody: boolean = true;
+  needsParseBody = true;
 
   /**
    * needs session
    */
-  needsSession: boolean = true;
+  needsSession = true;
 
   /**
    * provider launch calls
@@ -107,7 +107,7 @@ export class Application extends Container {
   /**
    * Create a Dazejs Application insstance
    */
-  constructor(rootPath: string, paths: IApplicationPathsOptions = {}) {
+  constructor(rootPath: string, paths: ApplicationPathsOptions = {}) {
     super();
     if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
 
@@ -121,7 +121,7 @@ export class Application extends Container {
   /**
    *  Set the paths for the application.
    */
-  setPaths(paths: IApplicationPathsOptions): this {
+  setPaths(paths: ApplicationPathsOptions): this {
     /** app workspace path */
     this.appPath = path.resolve(this.rootPath, paths.app || 'app');
     /** config file path */
@@ -138,7 +138,7 @@ export class Application extends Container {
 
   async setProperties(): Promise<this> {
     this.config = this.get('config');
-    await this.config.initialize()
+    await this.config.initialize();
     this.port = this.config.get('app.port', DEFAULT_PORT);
     this.isDebug = this.config.get('app.debug', false);
 
@@ -276,8 +276,8 @@ export class Application extends Container {
       port: this.port,
       sticky: clusterConfig.sticky || false,
       createServer: (port: number) => {
-        this._server = this.startServer(port)
-        return this._server
+        this._server = this.startServer(port);
+        return this._server;
       },
     });
   }
@@ -374,7 +374,7 @@ export class Application extends Container {
     // Initialization application
     await this.initialize();
     // reload port if necessary
-    if (port) this.port = port
+    if (port) this.port = port;
     // check app.cluster.enabled
     if (this.config.get('app.cluster.enable', false)) {
       // 以集群工作方式运行应用
@@ -411,7 +411,7 @@ export class Application extends Container {
   }
 
   listen(port: number) {
-    const server: httpServer = this.get('httpServer');
+    const server: HttpServer = this.get('httpServer');
     return server.listen(port);
   }
 
@@ -469,27 +469,5 @@ export class Application extends Container {
    */
   has(abstract: any) {
     return this.bound(abstract);
-  }
-
-  /**
-   * bind and get file path
-   */
-  craft(abstract: any, shared = true) {
-    if (typeof abstract === 'string') {
-      if (require.resolve(abstract)) {
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        const Res = require(abstract);
-        if (!this.has(Res)) {
-          this.bind(Res, Res, shared);
-        }
-        return this.get(Res);
-      }
-    } else {
-      if (!this.has(abstract)) {
-        this.bind(abstract, abstract, shared);
-      }
-      return this.get(abstract);
-    }
-    return undefined;
   }
 }

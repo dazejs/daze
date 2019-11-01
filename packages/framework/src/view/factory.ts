@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Container } from '../container'
-import { Application } from '../foundation/application'
-import { View } from '.'
-import { Request } from '../request'
+import { Container } from '../container';
+import { Application } from '../foundation/application';
+import { View } from '.';
+import { Request } from '../request';
 
 export class ViewFactory {
   /**
@@ -26,7 +26,7 @@ export class ViewFactory {
 
   combineVars(request: Request) {
     const defaultVars = {
-      session_value(key: string) {
+      sessionValue(key: string) {
         return request.session().get(key);
       },
       get __token__() {

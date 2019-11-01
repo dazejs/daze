@@ -1,42 +1,42 @@
 
-import { Parser } from '../parser'
+import { Parser } from '../parser';
 import { IllegalArgumentError } from '../../errors/illegal-argument-error';
-import { AbstractConnection } from '../connection/connection.abstract'
-import { Join } from './join'
+import { AbstractConnection } from '../connection/connection.abstract';
+import { Join } from './join';
 
 export type TSymlink = 'and' | 'or' | ''
 
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
 
-interface IWhereDescribeOption {
-  type: 'value' | 'column' | 'sql',
-  column?: string,
-  operator?: string,
-  value: any,
-  symlink: TSymlink
+interface WhereDescribeOption {
+  type: 'value' | 'column' | 'sql';
+  column?: string;
+  operator?: string;
+  value: any;
+  symlink: TSymlink;
 }
 
-interface IHavingDescribeOption {
-  type: 'value',
-  column: string,
-  operator: string,
-  value: any,
-  symlink: TSymlink
+interface HavingDescribeOption {
+  type: 'value';
+  column: string;
+  operator: string;
+  value: any;
+  symlink: TSymlink;
 }
 
-interface IAggregateOption {
-  func: string,
-  column: string,
+interface AggregateOption {
+  func: string;
+  column: string;
 }
 
-interface IUnionOption {
-  builder: Builder,
-  isAll: boolean,
+interface UnionOption {
+  builder: Builder;
+  isAll: boolean;
 }
 
-interface IOrderOption {
-  column: string,
-  direction: string,
+interface OrderOption {
+  column: string;
+  direction: string;
 }
 
 export class Builder {
@@ -49,7 +49,7 @@ export class Builder {
   /**
    * The aggregate desc
    */
-  _aggregate?: IAggregateOption;
+  _aggregate?: AggregateOption;
 
   /**
    * The columns
@@ -64,12 +64,12 @@ export class Builder {
   /**
    * The where constraints
    */
-  _wheres: IWhereDescribeOption[] = [];
+  _wheres: WhereDescribeOption[] = [];
 
   /**
    * The orders
    */
-  _orders: IOrderOption[] = [];
+  _orders: OrderOption[] = [];
 
   /**
    * The maximum number of records
@@ -99,12 +99,12 @@ export class Builder {
   /**
    * The Having
    */
-  _havings: IHavingDescribeOption[] = []
+  _havings: HavingDescribeOption[] = []
 
   /**
    * The unions
    */
-  _unions: IUnionOption[] = [];
+  _unions: UnionOption[] = [];
 
   /**
    * binding params
@@ -127,15 +127,15 @@ export class Builder {
    */
   constructor(collection: AbstractConnection) {
     this.collection = collection;
-    this.parser = this.collection.parser
+    this.parser = this.collection.parser;
   }
 
   /**
    * Remove aggregate func
    */
   removeAggregate() {
-    this._aggregate = undefined
-    return this
+    this._aggregate = undefined;
+    return this;
   }
   
   /**
@@ -145,12 +145,12 @@ export class Builder {
   columns(...columns: (string | string[])[]) {
     for (const column of columns) {
       if (typeof column === 'string') {
-        this._columns.push(column)
+        this._columns.push(column);
       } else if (Array.isArray(column)) {
-        this._columns.push(...column)
+        this._columns.push(...column);
       }
     }
-    return this
+    return this;
   }
 
   /**
@@ -158,7 +158,7 @@ export class Builder {
    * @param columns 
    */
   fields(...columns: (string | string[])[]) {
-    return this.columns(...columns)
+    return this.columns(...columns);
   }
 
   /**
@@ -168,7 +168,7 @@ export class Builder {
    */
   table(table: string, as?: string) {
     this._from = as ? `${table} as ${as}` : table;
-    return this
+    return this;
   }
 
   /**
@@ -182,13 +182,13 @@ export class Builder {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'value';
     if (value !== undefined) {
-      this._wheres.push({ type, column, operator, value, symlink: _symlink })
-      this.addParams(value)
+      this._wheres.push({ type, column, operator, value, symlink: _symlink });
+      this.addParams(value);
     } else {
-      this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink })
-      this.addParams(operator)
+      this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink });
+      this.addParams(operator);
     }
-    return this
+    return this;
   }
 
   /**
@@ -198,7 +198,7 @@ export class Builder {
    * @param value 
    */
   orWhere(column: string, operator: any, value?: any) {
-    return this.where(column, operator, value, 'or')
+    return this.where(column, operator, value, 'or');
   }
 
   /**
@@ -210,9 +210,9 @@ export class Builder {
   whereRaw(sql: string, params: any[] = [], symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'sql';
-    this._wheres.push({ type, value: sql, symlink: _symlink})
-    this.addParams(params)
-    return this
+    this._wheres.push({ type, value: sql, symlink: _symlink});
+    this.addParams(params);
+    return this;
   }
 
   /**
@@ -221,7 +221,7 @@ export class Builder {
    * @param params 
    */
   orWhereRaw(sql: string, params: any[] = []) {
-    return this.whereRaw(sql, params, 'or')
+    return this.whereRaw(sql, params, 'or');
   }
 
   /**
@@ -233,13 +233,13 @@ export class Builder {
    */
   whereColumn(column: string, operator: string, value?: string, symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
-    const type = 'column'
+    const type = 'column';
     if (value !== undefined) {
-      this._wheres.push({ type, column, operator, value, symlink: _symlink })
+      this._wheres.push({ type, column, operator, value, symlink: _symlink });
     } else {
-      this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink })
+      this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink });
     }
-    return this
+    return this;
   }
 
   /**
@@ -249,7 +249,7 @@ export class Builder {
    * @param value 
    */
   orWhereColumn(column: string, operator: string, value?: string) {
-    return this.whereColumn(column, operator, value, 'or')
+    return this.whereColumn(column, operator, value, 'or');
   }
 
   /**
@@ -260,8 +260,8 @@ export class Builder {
     this._aggregate = {
       func: 'count',
       column,
-    }
-    return this
+    };
+    return this;
   }
 
   /**
@@ -272,8 +272,8 @@ export class Builder {
     this._aggregate = {
       func: 'max',
       column,
-    }
-    return this
+    };
+    return this;
   }
 
   /**
@@ -284,8 +284,8 @@ export class Builder {
     this._aggregate = {
       func: 'min',
       column,
-    }
-    return this
+    };
+    return this;
   }
 
   /**
@@ -296,8 +296,8 @@ export class Builder {
     this._aggregate = {
       func: 'sum',
       column,
-    }
-    return this
+    };
+    return this;
   }
 
   /**
@@ -306,13 +306,13 @@ export class Builder {
    * @param direction 
    */
   orderBy(column: string, direction = 'asc') {
-    const _direction = direction.toLowerCase()
-    if (!['asc', 'desc'].includes(_direction)) throw new IllegalArgumentError('Order direction must be "asc" or "desc"')
+    const _direction = direction.toLowerCase();
+    if (!['asc', 'desc'].includes(_direction)) throw new IllegalArgumentError('Order direction must be "asc" or "desc"');
     this._orders.push({
       column,
       direction: _direction,
-    })
-    return this
+    });
+    return this;
   }
 
   /**
@@ -329,7 +329,7 @@ export class Builder {
    * @param value 
    */
   take(value: number) {
-    return this.limit(value)
+    return this.limit(value);
   }
 
   /**
@@ -338,7 +338,7 @@ export class Builder {
    */
   offset(value: number) {
     this._offset = value >= 0 ? value : 0;
-    return this
+    return this;
   }
 
   /**
@@ -346,7 +346,7 @@ export class Builder {
    * @param value 
    */
   skip(value: number) {
-    return this.offset(value)
+    return this.offset(value);
   }
 
   /**
@@ -356,15 +356,15 @@ export class Builder {
    */
   distinct(column: string | boolean = false, ...columns: string[]) {
     if (typeof column === 'boolean') {
-      this._distinct = column
-      return this
+      this._distinct = column;
+      return this;
     }
     if (columns.length > 0) {
-      this._distinct = [column, ...columns]
-      return this
+      this._distinct = [column, ...columns];
+      return this;
     }
-    this._distinct = true
-    return this
+    this._distinct = true;
+    return this;
   }
 
   /**
@@ -372,22 +372,22 @@ export class Builder {
    * @param value 
    */
   lock(value: boolean | string) {
-    this._lock = value
-    return this
+    this._lock = value;
+    return this;
   }
 
   /**
    * Share lock the selected rows
    */
   sharedLock() {
-    return this.lock(false)
+    return this.lock(false);
   }
   
   /**
    * Lock the selected rows for updating
    */
   lockForUpdate() {
-    return this.lock(true)
+    return this.lock(true);
   }
 
   /**
@@ -397,12 +397,12 @@ export class Builder {
   groupBy(...columns: string[] | string[][]) {
     for (const column of columns) {
       if (typeof column === 'string') {
-        this._groups.push(column)
+        this._groups.push(column);
       } else if (Array.isArray(column)) {
-        this._groups.push(...column)
+        this._groups.push(...column);
       }
     }
-    return this
+    return this;
   }
 
   /**
@@ -414,18 +414,18 @@ export class Builder {
    * @param type 
    */
   join(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any, type: TJoinType = 'inner') {
-    const join = new Join(new Builder(this.collection), type) as Join & Builder
+    const join = new Join(new Builder(this.collection), type) as Join & Builder;
     if (typeof table === 'string' && column) {
       this._joins.push(
         join.table(table).on(column, operator, value)
-      )
-      this.addParams(join.getParams())
+      );
+      this.addParams(join.getParams());
     } else if (typeof table === 'function') {
-      table(join)
-      this._joins.push(join)
-      this.addParams(join.getParams())
+      table(join);
+      this._joins.push(join);
+      this.addParams(join.getParams());
     }
-    return this
+    return this;
   }
 
   /**
@@ -436,7 +436,7 @@ export class Builder {
    * @param value 
    */
   leftJoin(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any) {
-    return this.join(table, column, operator, value, 'left')
+    return this.join(table, column, operator, value, 'left');
   }
 
   /**
@@ -447,7 +447,7 @@ export class Builder {
    * @param value 
    */
   rightJoin(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any) {
-    return this.join(table, column, operator, value, 'right')
+    return this.join(table, column, operator, value, 'right');
   }
 
   /**
@@ -461,11 +461,11 @@ export class Builder {
     const _symlink = this._havings.length > 0 ? symlink : '';
     const type = 'value';
     if (value !== undefined) {
-      this._havings.push({ type, column, operator, value, symlink: _symlink })
+      this._havings.push({ type, column, operator, value, symlink: _symlink });
     } else {
-      this._havings.push({ type, column, operator: '=', value: operator, symlink: _symlink })
+      this._havings.push({ type, column, operator: '=', value: operator, symlink: _symlink });
     }
-    return this
+    return this;
   }
 
   /**
@@ -473,19 +473,19 @@ export class Builder {
    * @param builder 
    * @param isAll 
    */
-  union(builder: Builder | ((union: Builder) => Builder | void), isAll: boolean = false) {
+  union(builder: Builder | ((union: Builder) => Builder | void), isAll = false) {
     let _builder = builder as Builder;
     if (typeof builder === 'function') {
-      _builder = new Builder(this.collection)
+      _builder = new Builder(this.collection);
       builder(
         _builder
-      )
+      );
     }
     this._unions.push({
       builder: _builder,
       isAll,
-    })
-    this.addParams(_builder.getParams())
+    });
+    this.addParams(_builder.getParams());
     return this;
   }
 
@@ -494,7 +494,7 @@ export class Builder {
    * @param builder 
    */
   unionAll(builder: Builder | ((union: Builder) => Builder)) {
-    return this.union(builder, true)
+    return this.union(builder, true);
   }
 
   /**
@@ -503,44 +503,44 @@ export class Builder {
    */
   addParams(value: any) {
     if (Array.isArray(value)) {
-      this.params.push(...value)
-      return this
+      this.params.push(...value);
+      return this;
     }
-    this.params.push(value)
-    return this
+    this.params.push(value);
+    return this;
   }
 
   /**
    * get all params
    */
   getParams() {
-    return this.params
+    return this.params;
   }
 
   /**
    * gen sql string
    */
   toSql() {
-    return this.parser.parseSelect(this)
+    return this.parser.parseSelect(this);
   }
 
   /**
    * load sql and params
    */
   logSql() {
-    console.log('sql:', this.toSql())
-    console.log('params:', this.getParams())
-    return this
+    console.log('sql:', this.toSql());
+    console.log('params:', this.getParams());
+    return this;
   }
 
   /**
    * query multiple records from database,
    */
   async find() {
-    const sql = this.toSql()
-    const params = this.getParams()
-    const results = await this.collection.select(sql, params)
-    return results
+    const sql = this.toSql();
+    const params = this.getParams();
+    const results = await this.collection.select(sql, params);
+    return results;
   }
 
   // /**
@@ -558,20 +558,20 @@ export class Builder {
    * query first record from database
    */
   async first() {
-    const sql = this.take(1).toSql()
-    const params = this.getParams()
-    const results = await this.collection.select(sql, params)
-    return results[0]
+    const sql = this.take(1).toSql();
+    const params = this.getParams();
+    const results = await this.collection.select(sql, params);
+    return results[0];
   }
 
   /**
    * query last record from database width id desc
    * @param order 
    */
-  async last(order: string = 'id') {
-    const sql = this.take(1).orderBy(order, 'desc').toSql()
-    const params = this.getParams()
-    const results = await this.collection.select(sql, params)
-    return results[0]
+  async last(order = 'id') {
+    const sql = this.take(1).orderBy(order, 'desc').toSql();
+    const params = this.getParams();
+    const results = await this.collection.select(sql, params);
+    return results[0];
   }
 }

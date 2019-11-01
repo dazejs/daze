@@ -9,7 +9,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Get()
-      index() {}
+      index() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.index).toEqual([
@@ -24,7 +26,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Post(':id')
-      store() { }
+      store() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.store).toEqual([
@@ -39,7 +43,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Put(':id')
-      put() { }
+      put() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.put).toEqual([
@@ -54,7 +60,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Options(':id')
-      options() { }
+      options() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.options).toEqual([
@@ -69,7 +77,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Head(':id')
-      head() { }
+      head() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.head).toEqual([
@@ -84,7 +94,9 @@ describe('verb Decorator', () => {
     @Route('users')
     class Example {
       @Http.Delete(':id')
-      del() { }
+      del() {
+        //
+      }
     }
     const routes = Reflect.getMetadata('routes', Example);
     expect(routes.del).toEqual([

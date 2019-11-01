@@ -1,7 +1,7 @@
-import { Node } from './node'
-import { parsePattern} from './helpers'
-import { Route } from './route'
-import { Request } from '../request'
+import { Node } from './node';
+import { parsePattern} from './helpers';
+import { Route } from './route';
+import { Request } from '../request';
 
 export class Trie {
   /**
@@ -36,8 +36,8 @@ export class Trie {
    * @param request
    */
   match(request: Request) {
-    const _method = request.getMethod()
-    const _path = request.getPath()
+    const _method = request.getMethod();
+    const _path = request.getPath();
     const rootNode = this.routes.get(_method);
     if (!rootNode) return null;
     const keys = parsePattern(_path);

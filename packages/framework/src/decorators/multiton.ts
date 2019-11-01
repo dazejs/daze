@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { MULTITON } from '../symbol'
+import { MULTITON } from '../symbol';
 
 
 function createMultitonClass(target: any) {
@@ -15,7 +15,7 @@ function createMultitonClass(target: any) {
 
 function handle(args: any[]) {
   if (args.length === 1) {
-    const [target] = args
+    const [target] = args;
     return createMultitonClass(target);
   }
   throw new Error('@Multiton must be decorate on Class');

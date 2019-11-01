@@ -1,19 +1,19 @@
 
-import uuid from 'uuid/v4'
-import is from 'core-util-is'
-import { Container } from '../container'
-import { decode, encode } from './helpers'
-import * as symbols from '../symbol'
-import { Application } from '../foundation/application'
-import { Request } from '../request'
+import uuid from 'uuid/v4';
+import is from 'core-util-is';
+import { Container } from '../container';
+import { decode, encode } from './helpers';
+import * as symbols from '../symbol';
+import { Application } from '../foundation/application';
+import { Request } from '../request';
 
-export interface ISessionOptions {
-  store: string,
-  key: string,
-  httpOnly: boolean,
-  signed: boolean,
-  autoCommit: boolean,
-  [key: string]: any
+export interface SessionOptions {
+  store: string;
+  key: string;
+  httpOnly: boolean;
+  signed: boolean;
+  autoCommit: boolean;
+  [key: string]: any;
 }
 
 const defaultOpts = {
@@ -43,7 +43,7 @@ export class Session {
   /**
    * session options
    */
-  options: ISessionOptions;
+  options: SessionOptions;
 
   /**
    * session store
@@ -58,7 +58,7 @@ export class Session {
   /**
    * session id
    */
-  id: string = '';
+  id = '';
   /**
    * Create Session instance
    * @param request

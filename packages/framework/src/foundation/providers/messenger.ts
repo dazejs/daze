@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Messenger } from '../../cluster/messenger'
-import { Application } from '../application'
+import { Messenger } from '../../cluster/messenger';
+import { Application } from '../application';
 
 export class MessengerProvider {
   app: Application;

@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Router } from '../../router'
-import { Application } from '../application'
+import { Router } from '../../router';
+import { Application } from '../application';
 
 export class RouterProvider {
   app: Application;

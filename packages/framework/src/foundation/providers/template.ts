@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import path from 'path'
-import nunjucks from 'nunjucks'
-import { Application } from '../application'
-import { Config } from '../../config'
+import path from 'path';
+import nunjucks from 'nunjucks';
+import { Application } from '../application';
+import { Config } from '../../config';
 
 export class TemplateProvider {
   /**

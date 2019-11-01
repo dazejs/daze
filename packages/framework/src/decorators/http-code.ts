@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { HTTP_CODE } from '../symbol'
+import { HTTP_CODE } from '../symbol';
 
 function injectedMethod(target: any, name: string, descriptor: any, code: number) {
   target[name][HTTP_CODE] = code;
@@ -14,12 +14,12 @@ function injectedMethod(target: any, name: string, descriptor: any, code: number
 
 function handle(args: any[], code: number) {
   if (args.length > 1) {
-    const [target, name, descriptor] = args
+    const [target, name, descriptor] = args;
     return injectedMethod(target, name, descriptor, code);
   }
   throw new Error('@HttpCode must be decorate on method');
 }
 
-export function HttpCode(code: number = 200) {
+export function HttpCode(code = 200) {
   return (...args: any[]) => handle(args, code);
 };

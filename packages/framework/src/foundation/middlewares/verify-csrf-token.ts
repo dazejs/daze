@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import minimatch from 'minimatch'
-import { Response} from '../../response'
-import { Component } from '../../decorators'
-import { Middleware } from '../../base/middleware'
-import { Request } from '../../request'
-import { TNext } from '../../middleware'
+import minimatch from 'minimatch';
+import { Response} from '../../response';
+import { Component } from '../../decorators';
+import { Middleware } from '../../base/middleware';
+import { Request } from '../../request';
+import { TNext } from '../../middleware';
 
 const defaultExcludedMethods = ['HEAD', 'GET', 'OPTIONS'];
 const defaultInvalidTokenMessage = 'Invalid CSRF token';

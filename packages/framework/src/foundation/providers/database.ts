@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Application } from '../application'
-import { Database } from '../../database'
+import { Application } from '../application';
+import { Database } from '../../database';
 
 export class DatabaseProvider {
   /**

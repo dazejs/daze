@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Cookie } from '../../cookie'
-import { Application } from '../application'
+import { Cookie } from '../../cookie';
+import { Application } from '../application';
 
 export class CookieProvider {
   /**

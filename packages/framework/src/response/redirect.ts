@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Response } from './'
-import * as symbols from '../symbol'
-import { Validate } from '../validate'
+import { Response } from './';
+import * as symbols from '../symbol';
+import { Validate } from '../validate';
 
 export class Redirect extends Response {
   /**
    * @var needWithInput
    */
-  needWithInput: boolean = false;
+  needWithInput = false;
 
   /**
    *  @var errors in session
@@ -35,7 +35,7 @@ export class Redirect extends Response {
    */
   forceBack = false;
 
-  constructor(url: string = '', code = 302, header = {}) {
+  constructor(url = '', code = 302, header = {}) {
     super(url, code, header);
     this.cacheControl('no-cache,must-revalidate');
   }

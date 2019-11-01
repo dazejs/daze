@@ -1,7 +1,7 @@
 
 import 'reflect-metadata';
 import { Container } from '../../../src/container';
-import { Injectable } from '../../../src/decorators'
+import { Injectable } from '../../../src/decorators';
 
 it('Container.setInstance', () => {
   const App = class { };
@@ -84,7 +84,7 @@ it('instance replace', () => {
   const app = new App();
   app.singleton('app', App);
   expect(app.make('app')).toBeInstanceOf(App);
-  Container.instance = null
+  Container.instance = null;
 });
 
 

@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Container } from '../container'
-import { Application } from '../foundation/application'
+import { Container } from '../container';
+import { Application } from '../foundation/application';
 
 const DEFAULT_KEY = 'data';
 
@@ -247,7 +247,7 @@ export class Resource {
   /**
    * transform data
    */
-  public transform(isOverstore: boolean = true) {
+  public transform(isOverstore = true) {
     const data = this.serializeResourceData(isOverstore);
     const meta = this.serializeResourceMeta();
     if (meta) {

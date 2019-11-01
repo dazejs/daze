@@ -5,5 +5,5 @@
  * https://opensource.org/licenses/MIT
  */
 
-export * from './master'
-export * from './worker'
+export * from './master';
+export * from './worker';

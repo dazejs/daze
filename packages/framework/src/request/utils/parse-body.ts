@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import buddy from 'co-body'
-import formidable from 'formidable'
+import buddy from 'co-body';
+import formidable from 'formidable';
 
 function parseForm(req: any) {
   return new Promise(((resolve, reject) => {

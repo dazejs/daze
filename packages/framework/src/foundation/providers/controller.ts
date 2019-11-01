@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Controller } from '../../controller'
-import { Application } from '../application'
+import { Controller } from '../../controller';
+import { Application } from '../application';
 
 export class ControllerProvider {
   app: Application;

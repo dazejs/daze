@@ -10,7 +10,7 @@
 function handle(args: any[], params: any, type: string) {
 
   if (args.length === 1) {
-    const [target] = args
+    const [target] = args;
     Reflect.defineMetadata('injectable', true, target);
     const injectors = Reflect.getMetadata('injectparams', target) || [];
     Reflect.defineMetadata('injectparams', [
@@ -19,7 +19,7 @@ function handle(args: any[], params: any, type: string) {
     ], target);
     return target;
   }
-  const [target, key] = args
+  const [target, key] = args;
   Reflect.defineMetadata('injectable', true, target.constructor);
   const injectors = Reflect.getMetadata('injectparams', target.constructor, key) || [];
   Reflect.defineMetadata('injectparams', [

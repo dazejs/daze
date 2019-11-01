@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Resource, EResourceTypeList } from './resource'
+import { Resource, EResourceTypeList } from './resource';
 
 export class Item extends Resource {
   constructor(data: any, formatter: any = null, key?: any) {

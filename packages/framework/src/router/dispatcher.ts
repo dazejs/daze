@@ -5,18 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
-import fs from 'fs'
-import path from 'path'
-import { promisify } from 'util'
-import mime from 'mime-types'
-import { Container } from '../container'
-import { Response } from '../response'
-import { NotFoundHttpError } from '../errors/not-found-http-error'
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
+import mime from 'mime-types';
+import { Container } from '../container';
+import { Response } from '../response';
+import { NotFoundHttpError } from '../errors/not-found-http-error';
 // import { HttpError } from '../errors/http-error'
 // import { ResponseManager } from '../response/manager'
-import { Application } from '../foundation/application'
-import { Request } from '../request'
-import { Route } from './route'
+import { Application } from '../foundation/application';
+import { Request } from '../request';
+import { Route } from './route';
 
 
 function type(file: string, ext: string) {
@@ -147,8 +147,8 @@ export class Dispatcher {
     return this.route.middleware
       .handle(this.request, async (request: Request) => this.route.resolve(request))
       .catch((err) => {
-        throw err
-      })
+        throw err;
+      });
       // .then(this.handleResponse())
   }
 

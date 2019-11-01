@@ -5,5 +5,5 @@
  * https://opensource.org/licenses/MIT
  */
 
-export * from './cors'
-export * from './verify-csrf-token'
+export * from './cors';
+export * from './verify-csrf-token';

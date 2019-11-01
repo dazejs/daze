@@ -1,3 +1,3 @@
 export interface ConnectorInterface {
-  connect(options: any): any
+  connect(options: any): any;
 }

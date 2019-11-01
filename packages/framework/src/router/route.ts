@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import http from 'http'
-import pathToRegExp from 'path-to-regexp'
-import is from 'core-util-is'
-import { Container } from '../container'
-import { Middleware } from '../middleware'
-import { Response } from '../response'
-import { parsePattern } from './helpers'
-import { Application } from '../foundation/application'
-import { Request } from '../request'
+import http from 'http';
+import pathToRegExp from 'path-to-regexp';
+import is from 'core-util-is';
+import { Container } from '../container';
+import { Middleware } from '../middleware';
+import { Response } from '../response';
+import { parsePattern } from './helpers';
+import { Application } from '../foundation/application';
+import { Request } from '../request';
 
 export class Route {
 
@@ -65,7 +65,7 @@ export class Route {
    * @param action controller action
    * @param middlewares route middlewares
    */
-  constructor(uri: string, methods: string[] = [], controller: any = null, action: string = '', middlewares: any[] = []) {
+  constructor(uri: string, methods: string[] = [], controller: any = null, action = '', middlewares: any[] = []) {
     /**
      * @type uri URI
      */

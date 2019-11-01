@@ -24,7 +24,7 @@ describe('Loader', () => {
     @Component('example')
     class ExampleResource extends Resource {
       resolve(data: any) {
-        return data
+        return data;
       }
      }
 
@@ -33,9 +33,8 @@ describe('Loader', () => {
 
     @Component('example')
     class ExampleMiddleware extends Middleware {
-      // @ts-ignore
       resolve(request: any, next: any) {
-        return next()
+        return next();
       }
      }
 

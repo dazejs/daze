@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Logger } from '../../logger'
-import { Application } from '../application'
+import { Logger } from '../../logger';
+import { Application } from '../application';
 
 export class LoggerProvider {
   app: Application;

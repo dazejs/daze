@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import EventEmitter from 'events'
-import * as symbols from '../symbol'
+import EventEmitter from 'events';
+import * as symbols from '../symbol';
 
-const BIND = Symbol('Container#bind')
+const BIND = Symbol('Container#bind');
 
 /**
  * The Container
@@ -160,7 +160,6 @@ export class Container extends EventEmitter {
       'injectparams', Concrete,
     ) || [];
 
-    
 
     for (const [type, params = []] of constructorInjectors) {
       const injectedParam = this.make(type, [...params, ...args]);
@@ -194,7 +193,7 @@ export class Container extends EventEmitter {
             const propertyInjectors = Reflect.getMetadata(
               'injectparams', Concrete, __name,
             ) || [];
-            const [type = '', params = []] = propertyInjectors[0] || []
+            const [type = '', params = []] = propertyInjectors[0] || [];
             return type
               ? that.make(type, [...params, ...args])
               : Reflect.get(__target, __name, __receiver);

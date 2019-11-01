@@ -1,5 +1,5 @@
 
-import { Node } from './node'
+import { Node } from './node';
 
 /**
  * match trie node with type

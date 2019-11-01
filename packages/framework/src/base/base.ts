@@ -4,15 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Container } from '../container'
-import { Response } from '../response'
-import { Redirect } from '../response/redirect'
-import { Application } from '../foundation/application'
-import { Config } from '../config'
-import { Messenger } from '../cluster/messenger'
-import { OutgoingHttpHeaders } from 'http'
-import { AbstractConnection } from '../database/connection/connection.abstract'
-import { Builder } from '../database/builder'
+import { OutgoingHttpHeaders } from 'http';
+import { Container } from '../container';
+import { Response } from '../response';
+import { Redirect } from '../response/redirect';
+import { Application } from '../foundation/application';
+import { Config } from '../config';
+import { Messenger } from '../cluster/messenger';
+import { AbstractConnection } from '../database/connection/connection.abstract';
+import { Builder } from '../database/builder';
 
 export abstract class Base {
   /**
@@ -40,7 +40,7 @@ export abstract class Base {
    * create response instance
    * @param params response constructor params
    */
-  response(data?: any, code: number = 200, header: OutgoingHttpHeaders = {}): Response {
+  response(data?: any, code = 200, header: OutgoingHttpHeaders = {}): Response {
     return new Response(data, code, header);
   }
 
@@ -48,7 +48,7 @@ export abstract class Base {
    * create redirect instance
    * @param params redirect constructor params
    */
-  redirect(url?: string, code: number = 200, header: OutgoingHttpHeaders = {}): Redirect {
+  redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}): Redirect {
     return new Redirect(url, code, header);
   }
 
@@ -57,6 +57,6 @@ export abstract class Base {
    * @param name connection name
    */
   db(name?: string): AbstractConnection & Builder {
-    return this.app.get('db').connection(name)
+    return this.app.get('db').connection(name);
   }
 }

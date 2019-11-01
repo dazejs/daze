@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Response } from './index'
+import { Response } from './index';
 
 export class ResponseManager {
   response: any;

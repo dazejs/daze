@@ -1,8 +1,11 @@
   {
-    "parser": "@typescript-eslint/parser",
     "extends": [
       "plugin:@typescript-eslint/recommended"
     ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module"
@@ -12,10 +15,7 @@
         "error",
         "always"
       ],
-      "quotes": [
-        "error",
-        "double"
-      ],
+      "@typescript-eslint/no-this-alias": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "off"
     }

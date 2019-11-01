@@ -24,10 +24,10 @@ function decoratorMethod(target: any, name: string, descriptor: any, middleware:
 
 function handle(args: any[], middleware: any) {
   if (args.length === 1) {
-    const [target] = args
+    const [target] = args;
     return decoratorClass(target, middleware);
   }
-  const [target, name, descriptor] = args
+  const [target, name, descriptor] = args;
   return decoratorMethod(target, name, descriptor, middleware);
 }
 

@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import path from 'path'
-import fs from 'fs'
-import glob from 'glob'
-import { VerifyCsrfToken } from '../foundation/middlewares'
-import { ComponentType } from '../symbol'
-import { Application } from '../foundation/application'
+import path from 'path';
+import fs from 'fs';
+import glob from 'glob';
+import { VerifyCsrfToken } from '../foundation/middlewares';
+import { ComponentType } from '../symbol';
+import { Application } from '../foundation/application';
 
 export class Loader {
 

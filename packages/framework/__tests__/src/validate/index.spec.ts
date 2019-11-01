@@ -3,8 +3,8 @@ import path from 'path';
 import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
 import { Application } from '../../../src/foundation/application';
-import { Validator as ValidatorBase } from '../../../src/base/validator'
-import { IsEmail } from '../../../src/decorators/validates'
+import { Validator as ValidatorBase } from '../../../src/base/validator';
+import { IsEmail } from '../../../src/decorators/validates';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

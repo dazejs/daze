@@ -5,23 +5,23 @@
  * https://opensource.org/licenses/MIT
  */
 
-import parse from 'parseurl'
-import qs from 'querystring'
-import typeis from 'type-is'
-import Cookies from 'cookies'
-import accepts from 'accepts'
-import is from 'core-util-is'
-import http from 'http'
-import { Container } from '../container'
-import { Validate } from '../validate'
-import { ValidateHttpError } from '../errors/validate-http-error'
-import { Session } from '../session'
-import { parseBody } from './utils/parse-body'
-import { Application } from '../foundation/application'
+import parse from 'parseurl';
+import qs from 'querystring';
+import typeis from 'type-is';
+import Cookies from 'cookies';
+import accepts from 'accepts';
+import is from 'core-util-is';
+import http from 'http';
+import { Container } from '../container';
+import { Validate } from '../validate';
+import { ValidateHttpError } from '../errors/validate-http-error';
+import { Session } from '../session';
+import { parseBody } from './utils/parse-body';
+import { Application } from '../foundation/application';
 
-export interface IBody {
-  fields?: { [key: string]: any },
-  files?: { [key: string]: any },
+export interface BodyData {
+  fields?: { [key: string]: any };
+  files?: { [key: string]: any };
 }
 
 export class Request {
@@ -58,7 +58,7 @@ export class Request {
   /**
    * request body cache
    */
-  _body: IBody;
+  _body: BodyData;
 
   /**
    * request params cache
@@ -73,7 +73,7 @@ export class Request {
     /**
      * proxy instance
      */
-    return new Proxy(this, this.proxy())
+    return new Proxy(this, this.proxy());
   }
 
   /**
@@ -87,7 +87,7 @@ export class Request {
         }
         return t.getParam(prop);
       },
-    }
+    };
   }
 
   /**
@@ -96,12 +96,12 @@ export class Request {
   async initialize() {
     // init body
     if (this.app.needsParseBody) {
-      this._body = await parseBody(this)
+      this._body = await parseBody(this);
     };
     
     // init session
     if (this.app.needsSession) {
-      await this.session().loadSession()
+      await this.session().loadSession();
     };
   }
 
@@ -123,7 +123,7 @@ export class Request {
    * Return request header.
    */
   getHeader(name: string) {
-    if (!name) return ''
+    if (!name) return '';
     const field = name.toLowerCase();
     switch (field) {
       case 'referer':
@@ -252,6 +252,7 @@ export class Request {
    * Get request protocol
    */
   get protocol() {
+    // eslint-disable-next-line
     // @ts-ignore
     if (this.socket.encrypted) return 'https';
     const proxy = this.app.get('config').get('app.proxy');
@@ -322,7 +323,8 @@ export class Request {
    * Get request Path
    */
   get path() {
-    return parse(this.req)!.pathname || '';
+    const parsedReq = parse(this.req);
+    return parsedReq && parsedReq.pathname || '';
   }
 
   /**
@@ -336,7 +338,8 @@ export class Request {
    * 根据 ? 获取原始查询字符串（不包含 ?）
    */
   get querystring(): any {
-    return parse(this.req)!.query || '';
+    const parsedReq = parse(this.req);
+    return parsedReq && parsedReq.query || '';
   }
 
   /**

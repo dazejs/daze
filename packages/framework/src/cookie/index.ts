@@ -6,19 +6,19 @@
  */
 
 // import assert from 'assert'
-import { Container } from '../container'
+import { Container } from '../container';
 // import { IllegalArgumentError} from '../errors/illegal-argument-error'
-import { Application } from '../foundation/application'
+import { Application } from '../foundation/application';
 
-export interface ICookieOptions {
-  maxAge?: number,
-  expires?: number,
-  path?: string,
-  signed?: boolean,
-  domain?: string,
-  httpOnly?: boolean,
-  overwrite?: boolean,
-  secure?: boolean,
+export interface CookieOptions {
+  maxAge?: number;
+  expires?: number;
+  path?: string;
+  signed?: boolean;
+  domain?: string;
+  httpOnly?: boolean;
+  overwrite?: boolean;
+  secure?: boolean;
 }
 
 export class Cookie {
@@ -40,11 +40,11 @@ export class Cookie {
   /**
    * cookie options
    */
-  options: ICookieOptions;
+  options: CookieOptions;
   /**
    * Create Cookie instance
    */
-  constructor(name: string, value: string, options: ICookieOptions = {}) {
+  constructor(name: string, value: string, options: CookieOptions = {}) {
     // assert(!(/\s|,|;/).test(name), new IllegalArgumentError('Cookie name is not valid!'));
     /**
      * @var app Application
@@ -69,7 +69,7 @@ export class Cookie {
   /**
    * get current cookie options
    */
-  getOptions(): ICookieOptions {
+  getOptions(): CookieOptions {
     return this.options;
   }
 
@@ -132,7 +132,7 @@ export class Cookie {
   /**
    * set cookie options - maxAge
    */
-  setMaxAge(expiry: number = 0): this {
+  setMaxAge(expiry = 0): this {
     this.options.maxAge = expiry;
     return this;
   }
@@ -140,7 +140,7 @@ export class Cookie {
   /**
    * set cookie options - domain
    */
-  setDomain(pattern: string = ''): this {
+  setDomain(pattern = ''): this {
     this.options.domain = pattern;
     return this;
   }
@@ -148,7 +148,7 @@ export class Cookie {
   /**
    * set cookie options - path
    */
-  setPath(uri: string = '/'): this {
+  setPath(uri = '/'): this {
     this.options.path = uri;
     return this;
   }
@@ -156,7 +156,7 @@ export class Cookie {
   /**
    * set cookie options - secure
    */
-  setSecure(flag: boolean = false): this {
+  setSecure(flag = false): this {
     this.options.secure = flag;
     return this;
   }

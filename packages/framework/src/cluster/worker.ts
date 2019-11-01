@@ -5,21 +5,21 @@
  * https://opensource.org/licenses/MIT
  */
 
-import cluster from 'cluster'
-import debuger from 'debug'
-import net from 'net'
-import http from 'http'
+import cluster from 'cluster';
+import debuger from 'debug';
+import net from 'net';
+import http from 'http';
 import {
   RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT, STIKCY_CONNECTION
-} from './const'
-import { Deferred } from '../foundation/support/defered'
+} from './const';
+import { Deferred } from '../foundation/support/defered';
 
-const debug = debuger('daze-framework:cluster')
+const debug = debuger('daze-framework:cluster');
 
-export interface IWorkerOptions {
-  port: number,
-  sticky: boolean,
-  createServer: (...args: any[]) => http.Server
+export interface WorkerOptions {
+  port: number;
+  sticky: boolean;
+  createServer: (...args: any[]) => http.Server;
 }
 
 const defaultOptions = {
@@ -35,22 +35,22 @@ export class Worker {
   /**
    * worker options
    */
-  options: IWorkerOptions;
+  options: WorkerOptions;
 
   /**
    * worker server
    */
   server: net.Server;
 
-  constructor(opts: IWorkerOptions) {
+  constructor(opts: WorkerOptions) {
     this.options = Object.assign({}, defaultOptions, opts);
   }
 
   // disconnect worker
   disconnect(refork = true) {
     const { worker } = cluster;
-    if (Reflect.getMetadata(WORKER_DYING, worker)) return
-    Reflect.defineMetadata(WORKER_DYING, true, worker)
+    if (Reflect.getMetadata(WORKER_DYING, worker)) return;
+    Reflect.defineMetadata(WORKER_DYING, true, worker);
     debug('worker disconnect');
     if (refork) {
       // You need to re-fork the new work process

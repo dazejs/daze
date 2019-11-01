@@ -4,19 +4,19 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import EventEmitter from 'events'
-import cluster from 'cluster'
-import { getAlivedWorkers } from './helpers'
-import { Container } from '../container'
-import { Config } from '../config'
+import EventEmitter from 'events';
+import cluster from 'cluster';
+import { getAlivedWorkers } from './helpers';
+import { Container } from '../container';
+import { Config } from '../config';
 
 const MESSENGER = 'daze-messenger';
 
-interface IPCData {
-  action: string,
-  channel: string,
-  data: any,
-  type: string | boolean
+interface MessageData {
+  action: string;
+  channel: string;
+  data: any;
+  type: string | boolean;
 }
 
 export class Messenger extends EventEmitter {
@@ -38,7 +38,7 @@ export class Messenger extends EventEmitter {
   }
 
   // 生成进程间通信（IPC）内置通信数据格式
-  getMessage(channel: string, data: any, type: string | boolean = 'broadcast'): IPCData {
+  getMessage(channel: string, data: any, type: string | boolean = 'broadcast'): MessageData {
     return {
       action: MESSENGER,
       channel,
@@ -64,7 +64,7 @@ export class Messenger extends EventEmitter {
           const workers = getAlivedWorkers();
           // 给所有工作进程发送消息
           for (const worker of workers) {
-            worker.send(message)
+            worker.send(message);
           }
         }
       });

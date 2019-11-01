@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { HttpError} from './http-error'
+import { HttpError} from './http-error';
 
 export class ValidateHttpError extends HttpError {
   validate: any;

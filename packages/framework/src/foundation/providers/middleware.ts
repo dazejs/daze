@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Middleware } from '../../middleware'
-import { Application } from '../application'
+import { Middleware } from '../../middleware';
+import { Application } from '../application';
 
 export class MiddlewareProvider {
   app: Application;

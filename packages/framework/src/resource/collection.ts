@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Resource, EResourceTypeList } from './resource'
+import { Resource, EResourceTypeList } from './resource';
 
 export class Collection extends Resource {
   constructor(data: any, formatter: string | ((...args: any[]) => any), key?: string) {

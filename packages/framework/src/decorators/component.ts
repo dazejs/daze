@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { ComponentType } from '../symbol'
+import { ComponentType } from '../symbol';
 
-export function Component(name: string = ''): ClassDecorator {
+export function Component(name = ''): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
     if (!Reflect.hasMetadata('type', constructor)) {

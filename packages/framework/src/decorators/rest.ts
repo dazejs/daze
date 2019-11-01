@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { formatPrefix } from './helpers'
+import { formatPrefix } from './helpers';
 
 const rest = {
   index: [{ uri: '/', method: 'get' }],
@@ -29,12 +29,12 @@ function injectClass(target: any, prefix: string) {
 
 function handle(args: any[], prefix: string) {
   if (args.length === 1) {
-    const [target] = args
+    const [target] = args;
     return injectClass(target, prefix);
   }
   throw new Error('@Rest must be decorate on Class');
 }
 
-export function Rest(prefix: string = '') {
+export function Rest(prefix = '') {
   return (...args: any) => handle(args, prefix);
 };

@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import path from 'path'
-import is from 'core-util-is'
-import { Container } from '../container'
-import { Application } from '../foundation/application'
+import path from 'path';
+import is from 'core-util-is';
+import { Container } from '../container';
+import { Application } from '../foundation/application';
 
 const FINAL_VARS = Symbol('View#finalVars');
 
@@ -25,13 +25,13 @@ export class View {
   /**
    * view template name
    */
-  template: string = '';
+  template = '';
 
   constructor(template = '', vars = {}) {
 
-    this.template = template
+    this.template = template;
 
-    this.vars = vars
+    this.vars = vars;
   }
 
   /**

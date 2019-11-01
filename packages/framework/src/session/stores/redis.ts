@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { promisify } from 'util'
-import * as redis from 'redis'
+import { promisify } from 'util';
+import * as redis from 'redis';
 
 export default class RedisSessionStore {
   app: any;

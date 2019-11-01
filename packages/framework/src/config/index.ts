@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import fs from 'fs'
-import path from 'path'
-import is from 'core-util-is'
-import { Container } from '../container'
-import { IllegalArgumentError } from '../errors/illegal-argument-error'
-import { Application } from '../foundation/application'
+import fs from 'fs';
+import path from 'path';
+import is from 'core-util-is';
+import { Container } from '../container';
+import { IllegalArgumentError } from '../errors/illegal-argument-error';
+import { Application } from '../foundation/application';
 
 const envMap = new Map([
   ['development', 'dev'],
@@ -38,7 +38,7 @@ export class Config {
     /**
      * proxy
      */
-    return new Proxy(this, this.proxy())
+    return new Proxy(this, this.proxy());
   }
 
   /**
@@ -52,7 +52,7 @@ export class Config {
         }
         return t.get(prop);
       }
-    }
+    };
   }
 
   /**
@@ -70,7 +70,7 @@ export class Config {
     const currentEnv = this.env;
     const files = fs.readdirSync(this._app.configPath);
     for (const file of files) {
-      const extname = path.extname(file)
+      const extname = path.extname(file);
       const normalBasename = path.basename(file, extname);
       const envBasename = path.basename(file, `.${currentEnv}${extname}`);
       const currentConfig = (await import(path.join(this._app.configPath, file))).default;
@@ -145,7 +145,7 @@ export class Config {
    * The name of the configuration
    */
   get(name?: string | number, def?: any) {
-    let value: any = this._items
+    let value: any = this._items;
     // Gets all the configuration when name is empty
     if (!name) {
       return value;

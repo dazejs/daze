@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import is from 'core-util-is'
-import { validatorFactory } from './factory'
-import * as validators from '../../validate/validators'
+import is from 'core-util-is';
+import { validatorFactory } from './factory';
+import * as validators from '../../validate/validators';
 
 // MARK: Custom
 

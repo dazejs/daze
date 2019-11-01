@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import os from 'os'
-import cluster from 'cluster'
-import { WORKER_DYING } from './const'
-import { IMasterOptions } from './master'
+import os from 'os';
+import cluster from 'cluster';
+import { WORKER_DYING } from './const';
+import { MasterOptions } from './master';
 
 const cpus = os.cpus().length;
 
@@ -17,7 +17,7 @@ const cpus = os.cpus().length;
  * 解析 Cluster 模块的参数
  * 添加工作进程数量数量到参数中
  */
-export function parseMasterOpts(opts: IMasterOptions) {
+export function parseMasterOpts(opts: MasterOptions) {
   opts.workers = opts.workers || cpus;
   return opts;
 };
@@ -47,6 +47,6 @@ export function getAlivedWorkers(): cluster.Worker[] {
  */
 export function isAliveWorker(worker: cluster.Worker) {
   if (!worker.isConnected() || worker.isDead()) return false;
-  if (Reflect.getMetadata(WORKER_DYING, worker)) return false
+  if (Reflect.getMetadata(WORKER_DYING, worker)) return false;
   return true;
 };

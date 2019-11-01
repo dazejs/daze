@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Loader } from '../../loader'
-import { Application } from '../application'
+import { Loader } from '../../loader';
+import { Application } from '../application';
 
 export class LoaderProvider {
   app: Application;

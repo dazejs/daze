@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { HttpError } from './http-error'
+import { HttpError } from './http-error';
 
 
 export class NotFoundHttpError extends HttpError {

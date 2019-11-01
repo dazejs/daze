@@ -6,25 +6,25 @@
  */
 
 // import statuses from 'statuses'
-import getType from 'cache-content-type'
-import { extname } from 'path'
-import contentDisposition from 'content-disposition'
-import { Resource} from '../resource/resource'
-import { ViewFactory } from '../view/factory'
+import getType from 'cache-content-type';
+import { extname } from 'path';
+import contentDisposition from 'content-disposition';
+import { Resource} from '../resource/resource';
+import { ViewFactory } from '../view/factory';
 // import { IllegalArgumentError } from '../errors/illegal-argument-error'
-import { View } from '../view'
-import { Cookie } from '../cookie'
-import { Statusable } from './statusable'
-import { Application } from '../foundation/application'
-import { OutgoingHttpHeaders, ServerResponse } from 'http'
-import { Container } from '../container'
-import { Request } from '../request'
+import { View } from '../view';
+import { Cookie } from '../cookie';
+import { Statusable } from './statusable';
+import { Application } from '../foundation/application';
+import { OutgoingHttpHeaders, ServerResponse } from 'http';
+import { Container } from '../container';
+import { Request } from '../request';
 
 const defaultContentTypes = {
   JSON: 'application/json; charset=utf-8',
   PLAIN: 'text/plain; charset=utf-8',
   OCTET: 'application/octet-stream'
-}
+};
 
 export class Response extends Statusable {
   /**
@@ -61,8 +61,8 @@ export class Response extends Statusable {
    * patched methods
    */
   [key: string]: any;
-  constructor(data?: any, code: number = 200, header: OutgoingHttpHeaders = {}) {
-    super()
+  constructor(data?: any, code = 200, header: OutgoingHttpHeaders = {}) {
+    super();
     /**
      * status code
      * @type
@@ -133,7 +133,7 @@ export class Response extends Statusable {
    * @param message exception message
    * @param code exception code
    */
-  error(message: any, code: number = 404) {
+  error(message: any, code = 404) {
     this.setCode(code);
     this.setData(message);
     return this;
@@ -144,7 +144,7 @@ export class Response extends Statusable {
    * @param  data data
    * @param code http code
    */
-  success(data: any, code: number = 200) {
+  success(data: any, code = 200) {
     this.setCode(code);
     this.setData(data);
     return this;
@@ -174,8 +174,8 @@ export class Response extends Statusable {
    * @param name 
    */
   removeHeader(name: any) {
-    delete this._header[name.toLowerCase()]
-    return this
+    delete this._header[name.toLowerCase()];
+    return this;
   }
 
   /**
@@ -219,7 +219,7 @@ export class Response extends Statusable {
    * @public
    * @param code status
    */
-  setCode(code: number = 200) {
+  setCode(code = 200) {
     if (code) this._code = code;
     return this;
   }
@@ -360,7 +360,7 @@ export class Response extends Statusable {
    * @param filename
    * @returns this
    */
-  attachment(filename: string = '', options: any) {
+  attachment(filename = '', options: any) {
     if (filename) this.type = extname(filename);
     this.setHeader('Content-Disposition', contentDisposition(filename, options));
     return this;
@@ -371,7 +371,7 @@ export class Response extends Statusable {
    * @public
    * @param filename
    */
-  download(data: any, filename: string = '', options: any) {
+  download(data: any, filename = '', options: any) {
     return this.setData(data).attachment(filename, options);
   }
 
@@ -385,7 +385,7 @@ export class Response extends Statusable {
       return data.output();
     }
     if (data instanceof View) {
-      this.setType('html')
+      this.setType('html');
       return (new ViewFactory(data)).output(request);
     }
     return data;
@@ -451,11 +451,11 @@ export class Response extends Statusable {
    * @param res
    */
   sendHeaders(res: ServerResponse) {
-    if (res.headersSent) return this
-    const code = this.getCode()
+    if (res.headersSent) return this;
+    const code = this.getCode();
     const headers = this.getHeaders();
-    res.writeHead(code, headers)
-    return this
+    res.writeHead(code, headers);
+    return this;
   }
 
 
@@ -471,45 +471,45 @@ export class Response extends Statusable {
 
     // if no content
     if (!data) {
-      this.setCode(204)
-      this.removeHeader('content-type')
-      this.removeHeader('content-length')
-      this.removeHeader('transfer-encoding')
-      this.sendHeaders(res)
-      return res.end(data)
+      this.setCode(204);
+      this.removeHeader('content-type');
+      this.removeHeader('content-length');
+      this.removeHeader('transfer-encoding');
+      this.sendHeaders(res);
+      return res.end(data);
     }
 
-    await this.commitCookies(request)
+    await this.commitCookies(request);
 
     // string
     if (typeof data === 'string') {
       // getType(/^\s*</.test(data) ? 'html' : 'text')
-      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.PLAIN)
-      this.setHeader('content-length', Buffer.byteLength(data))
-      this.sendHeaders(res)
+      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.PLAIN);
+      this.setHeader('content-length', Buffer.byteLength(data));
+      this.sendHeaders(res);
       return res.end(data);
     }
 
     // buffer
     if (Buffer.isBuffer(data)) {
-      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET)
-      this.setHeader('content-length', data.length)
-      this.sendHeaders(res)
+      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET);
+      this.setHeader('content-length', data.length);
+      this.sendHeaders(res);
       return res.end(data);
     }
 
     // stream
     if (typeof data.pipe === 'function') {
-      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET)
-      this.sendHeaders(res)
+      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET);
+      this.sendHeaders(res);
       return data.pipe(res);
     }
 
     // json
     const jsonData = JSON.stringify(data);
-    if (shouldSetType) this.setHeader('content-type', defaultContentTypes.JSON)
+    if (shouldSetType) this.setHeader('content-type', defaultContentTypes.JSON);
     this.setHeader('content-length', Buffer.byteLength(jsonData));
-    this.sendHeaders(res)
+    this.sendHeaders(res);
     return res.end(jsonData);
   }
 }

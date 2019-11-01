@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { httpServer } from '../http-server'
-import { Application } from '../application'
+import { HttpServer } from '../http-server';
+import { Application } from '../application';
 
 
 export class HttpServerProvider {
@@ -27,6 +27,6 @@ export class HttpServerProvider {
    */
   register() {
     // bind Logger in container
-    this.app.singleton('httpServer', httpServer);
+    this.app.singleton('httpServer', HttpServer);
   }
 }

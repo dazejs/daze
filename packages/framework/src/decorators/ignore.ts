@@ -12,7 +12,7 @@ function decorateClass(target: any) {
 
 function handle(args: any[]) {
   if (args.length === 1) {
-    const [target] = args
+    const [target] = args;
     return decorateClass(target);
   }
   throw new Error('@Ignore must be decorate on Class');

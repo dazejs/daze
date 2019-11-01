@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Base } from './base'
-import { ComponentType } from '../symbol'
-import { Request } from '../request'
-import { Response } from '../response'
-import { TNext } from '../middleware'
+import { Base } from './base';
+import { ComponentType } from '../symbol';
+import { Request } from '../request';
+import { Response } from '../response';
+import { TNext } from '../middleware';
 
 
 @Reflect.metadata('type', ComponentType.Middleware)

@@ -4,7 +4,7 @@ import { Config } from '../../../src/config';
 import appConfig from '../../daze/src/config/app';
 import appConfig2 from '../../daze/src/config/app.test';
 import customConfig from '../../daze/src/config/custom';
-import { Application } from '../../../src/foundation/application'
+import { Application } from '../../../src/foundation/application';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -13,7 +13,7 @@ beforeAll(() => app.initialize());
 describe('Config', () => {
   it('Config#get', async () => {
     const configInstance = new Config();
-    await configInstance.initialize()
+    await configInstance.initialize();
     expect(configInstance.get('app')).toEqual({
       ...appConfig,
       ...appConfig2,
@@ -29,7 +29,7 @@ describe('Config', () => {
 
   it('Config#has', async () => {
     const configInstance = new Config();
-    await configInstance.initialize()
+    await configInstance.initialize();
     expect(configInstance.has('app')).toBeTruthy();
     expect(configInstance.has('app.cluster.workers')).toBeTruthy();
     expect(configInstance.has('app.cluster.undefineProp')).toBeFalsy();
@@ -40,7 +40,7 @@ describe('Config', () => {
 
   it('Config#set', async () => {
     const configInstance = new Config();
-    await configInstance.initialize()
+    await configInstance.initialize();
     configInstance.set('app.port', 9999);
     configInstance.set('custom.a.b.d', 'd');
     expect(configInstance.get('custom.a.b.d')).toBe('d');
@@ -49,7 +49,7 @@ describe('Config', () => {
 
   it('Config#prop', async () => {
     const configInstance = new Config();
-    await configInstance.initialize()
+    await configInstance.initialize();
     expect(configInstance.app.port).toBe(8888);
   });
 });

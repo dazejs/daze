@@ -4,13 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Base } from './base'
-import { View } from '../view'
-import * as Resource from '../resource'
-import { Validate } from '../validate'
-import { ComponentType } from '../symbol'
-import { Request } from '../request'
-import { ResponseManager } from '../response/manager'
+import { Base } from './base';
+import { View } from '../view';
+import * as Resource from '../resource';
+import { Validate } from '../validate';
+import { ComponentType } from '../symbol';
+import { Request } from '../request';
+import { ResponseManager } from '../response/manager';
 
 @Reflect.metadata('type', ComponentType.Controller)
 export abstract class Controller extends Base {
@@ -28,14 +28,14 @@ export abstract class Controller extends Base {
    * context setter
    */
   set __context__(context: any[]) {
-    this.__context = context
+    this.__context = context;
   }
 
   /**
    * context getter
    */
   get __context__() {
-    return this.__context
+    return this.__context;
   }
   
   /**
@@ -49,7 +49,7 @@ export abstract class Controller extends Base {
    * render view template
    * @param params
    */
-  render(...params:any[]): View {
+  render(...params: any[]): View {
     if (!this._view) {
       this._view = new View(...params);
     }

@@ -23,4 +23,4 @@ export const WORKER_DID_FORKED = 'daze-worker-did-fork';
 export const WORKER_DISCONNECT = 'daze-worker-disconnect';
 
 // sticky sessions for websocket communication
-export const STIKCY_CONNECTION = 'daze-sticky-connection'
+export const STIKCY_CONNECTION = 'daze-sticky-connection';

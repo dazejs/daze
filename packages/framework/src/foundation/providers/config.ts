@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Config } from '../../config'
-import { Application } from '../application'
+import { Config } from '../../config';
+import { Application } from '../application';
 
 export class ConfigProvider {
   app: Application;

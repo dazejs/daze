@@ -13,7 +13,7 @@ export const Http = {
   Code: HttpCode,
   ...Vberbs,
   ...HttpContext
-}
+};
 export * from './route';
 export * from './rest';
 export * from './multiton';

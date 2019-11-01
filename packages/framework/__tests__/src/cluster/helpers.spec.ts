@@ -1,4 +1,4 @@
-import 'reflect-metadata'
+import 'reflect-metadata';
 import os from 'os';
 import cluster from 'cluster';
 import { parseMasterOpts, isAliveWorker, getAlivedWorkers } from '../../../src/cluster/helpers';
@@ -60,7 +60,7 @@ describe('Cluster#helpers', () => {
 
     it('should return false when dying', () => {
       const worker = cluster.fork();
-      Reflect.defineMetadata(WORKER_DYING, true, worker)
+      Reflect.defineMetadata(WORKER_DYING, true, worker);
       expect(isAliveWorker(worker)).toBeFalsy();
       worker.process.kill();
     });

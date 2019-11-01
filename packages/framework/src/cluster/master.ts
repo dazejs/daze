@@ -6,30 +6,30 @@
  */
 
 
-import cluster from 'cluster'
-import net from 'net'
-import hash from 'string-hash'
-import debuger from 'debug'
-import { Deferred } from '../foundation/support/defered'
-import { parseMasterOpts, getAlivedWorkers } from './helpers'
+import cluster from 'cluster';
+import net from 'net';
+import hash from 'string-hash';
+import debuger from 'debug';
+import { Deferred } from '../foundation/support/defered';
+import { parseMasterOpts, getAlivedWorkers } from './helpers';
 import {
   RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT, STIKCY_CONNECTION
-} from './const'
+} from './const';
 
-const debug = debuger('daze-framework:cluster')
+const debug = debuger('daze-framework:cluster');
 
 type TServerData = {
-  worker: cluster.Worker,
-  address: string
+  worker: cluster.Worker;
+  address: string;
 }
 
-export interface IMasterOptions {
-  port: number,
-  workers: number,
-  sticky: boolean
+export interface MasterOptions {
+  port: number;
+  workers: number;
+  sticky: boolean;
 }
 
-const defaultOptions: IMasterOptions = {
+const defaultOptions: MasterOptions = {
   port: 0,
   workers: 0,
   sticky: false,
@@ -41,16 +41,16 @@ export class Master {
   /**
    * master options
    */
-  options: IMasterOptions;
+  options: MasterOptions;
 
   /**
    * server connections
    */
   connections: {
-    [key: string]: net.Socket
+    [key: string]: net.Socket;
   } = {};
 
-  constructor(opts: IMasterOptions) {
+  constructor(opts: MasterOptions) {
     this.options = Object.assign({}, defaultOptions, parseMasterOpts(opts));
   }
 
@@ -73,11 +73,11 @@ export class Master {
     // stop the service and needs to be replaced by a new work process
     // 接受工作进程发送的断开服务信号，表示该工作进程即将停止服务，需要 fork 一个新的工作进程来替代
     worker.on('message', (message: string) => {
-      if (Reflect.getMetadata(WORKER_DYING, worker)) return
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return;
       // if (worker[WORKER_DYING]) return;
       if (message === WORKER_DISCONNECT) {
         debug('refork worker, receive message \'daze-worker-disconnect\'');
-        Reflect.defineMetadata(WORKER_DYING, true, worker)
+        Reflect.defineMetadata(WORKER_DYING, true, worker);
         // worker[WORKER_DYING] = true;
         // The signal that tells the worker process that it has fork after fork,
         // and lets it end the service
@@ -88,10 +88,10 @@ export class Master {
     // Emitted after the worker IPC channel has disconnected
     // Automatically fork a new work process after the IPC pipeline is detected to be disconnected
     worker.once('disconnect', () => {
-      if (Reflect.getMetadata(WORKER_DYING, worker)) return
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return;
       // if (worker[WORKER_DYING]) return;
       debug(`worker disconnect: ${worker.process.pid}`);
-      Reflect.defineMetadata(WORKER_DYING, true, worker)
+      Reflect.defineMetadata(WORKER_DYING, true, worker);
       // worker[WORKER_DYING] = true;
       debug('worker will fork');
       this.forkWorker(env);
@@ -99,9 +99,9 @@ export class Master {
     // The cluster module will trigger an 'exit' event when any worker process is closed
     worker.once('exit', (code: number, signal: string) => {
       // if (worker[WORKER_DYING]) return;
-      if (Reflect.getMetadata(WORKER_DYING, worker)) return
+      if (Reflect.getMetadata(WORKER_DYING, worker)) return;
       debug(`worker exit, code: ${code}, signal: ${signal}`);
-      Reflect.defineMetadata(WORKER_DYING, true, worker)
+      Reflect.defineMetadata(WORKER_DYING, true, worker);
       // worker[WORKER_DYING] = true;
       this.forkWorker(env);
     });

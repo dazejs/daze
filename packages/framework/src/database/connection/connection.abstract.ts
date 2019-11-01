@@ -1,23 +1,23 @@
-import { Parser } from '../parser/parser'
-import { Builder } from '../builder'
+import { Parser } from '../parser/parser';
+import { Builder } from '../builder';
 
 export abstract class AbstractConnection {
   parser: Parser;
 
   constructor() {
-    this.useDefaultParser()
+    this.useDefaultParser();
   }
 
   useDefaultParser() {
-    this.parser = this.getDefaultParser()
+    this.parser = this.getDefaultParser();
   }
 
   getDefaultParser() {
-    return new Parser()
+    return new Parser();
   }
 
   builder() {
-    return new Builder(this)
+    return new Builder(this);
   }
 
   table(table: string, as?: string): Builder {

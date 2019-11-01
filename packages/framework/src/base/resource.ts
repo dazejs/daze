@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Base } from './base'
-import { Item, Collection } from '../resource'
-import { ComponentType } from '../symbol'
+import { Base } from './base';
+import { Item, Collection } from '../resource';
+import { ComponentType } from '../symbol';
 
 @Reflect.metadata('type', ComponentType.Resource)
 export abstract class Resource extends Base {
