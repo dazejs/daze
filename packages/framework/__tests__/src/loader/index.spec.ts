@@ -26,7 +26,7 @@ describe('Loader', () => {
       resolve(data: any) {
         return data;
       }
-     }
+    }
 
     @Component('example')
     class ExampleValidator extends Validator { }
@@ -36,7 +36,7 @@ describe('Loader', () => {
       resolve(request: any, next: any) {
         return next();
       }
-     }
+    }
 
     @Component('example')
     class ExampleComponent { }

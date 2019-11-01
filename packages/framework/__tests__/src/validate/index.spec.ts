@@ -183,7 +183,7 @@ describe('Validate', () => {
       const instance = new Validate({
         passed: 'xxxxxxxxxxxx',
       }, {
-          passed: [
+        passed: [
           ['length', [10, 20]],
         ],
       });
@@ -194,7 +194,7 @@ describe('Validate', () => {
       const instance = new Validate({
         passes: 'xxx',
       }, {
-          passes: [
+        passes: [
           ['length', [10, 20]],
         ],
       });
@@ -207,7 +207,7 @@ describe('Validate', () => {
       const instance = new Validate({
         failed: 'xxxxxxxxxxxx',
       }, {
-          failed: [
+        failed: [
           ['length', [10, 20]],
         ],
       });
@@ -218,7 +218,7 @@ describe('Validate', () => {
       const instance = new Validate({
         failed: 'xxx',
       }, {
-          failed: [
+        failed: [
           ['length', [10, 20]],
         ],
       });
