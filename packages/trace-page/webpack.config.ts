@@ -1,9 +1,9 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import path from 'path'
-import webpack from 'webpack'
-import autoprefixer from 'autoprefixer'
+import path from 'path';
+import webpack from 'webpack';
+import autoprefixer from 'autoprefixer';
 
 const config: webpack.Configuration = {
   entry: {
@@ -65,9 +65,10 @@ const config: webpack.Configuration = {
       inlineSource: '.(js|css)$',
       chunks: ['main']
     }),
+    // eslint-disable-next-line
     // @ts-ignore
     new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
   ]
-}
+};
 
-export default config
+export default config;
