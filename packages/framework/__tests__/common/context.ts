@@ -11,4 +11,3 @@ export function context(_req?: object, _res?: object) {
   req.socket.remoteAddress = req.socket.remoteAddress || '127.0.0.1';
   return { req, res };
 };
-``;
