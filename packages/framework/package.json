@@ -71,7 +71,7 @@
     "keygrip": "^1.1.0",
     "klaw-sync": "^5.0.0",
     "lodash": "^4.17.11",
-    "log4js": "^3.0.5",
+    "log4js": "^5.3.0",
     "mime": "^2.4.0",
     "mime-types": "^2.1.24",
     "minimatch": "^3.0.4",
