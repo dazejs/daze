@@ -40,7 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
     "autocannon": "^4.1.1",
-    "commitizen": "^3.0.5",
+    "commitizen": "^4.0.3",
     "copyfiles": "^2.1.1",
     "cross-env": "^6.0.0",
     "eslint": "^5.15.3",
