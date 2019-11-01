@@ -8,7 +8,6 @@ import path from 'path'
 import cluster from 'cluster'
 import util from 'util'
 import Keygrip from 'keygrip'
-import is from 'core-util-is'
 import { Server } from 'http'
 import { Container } from '../container'
 import { Master, Worker } from '../cluster'
@@ -201,7 +200,7 @@ export class Application extends Container {
    * load a registed provider with key or provider function
    */
   async load(Provider: any): Promise<this> {
-    if (is.isString(Provider)) {
+    if (typeof Provider === 'string') {
       if (this.has(Provider)) {
         await this.register(this.get(Provider));
         return this;
@@ -214,8 +213,8 @@ export class Application extends Container {
       }
       return this;
     }
-    if (is.isFunction(Provider)) {
-      const type = Reflect.getMetadata('type', Provider.prototype);
+    if (typeof Provider === 'function') {
+      const type = Reflect.getMetadata('type', Provider);
       if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a provider!`);
       await this.register(new Provider(this));
       return this;

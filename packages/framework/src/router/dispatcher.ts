@@ -13,7 +13,7 @@ import { Container } from '../container'
 import { Response } from '../response'
 import { NotFoundHttpError } from '../errors/not-found-http-error'
 // import { HttpError } from '../errors/http-error'
-import { ResponseManager } from '../response/manager'
+// import { ResponseManager } from '../response/manager'
 import { Application } from '../foundation/application'
 import { Request } from '../request'
 import { Route } from './route'
@@ -103,6 +103,7 @@ export class Dispatcher {
         // return new ResponseManager(response).output(this.request);
       }
     }
+
     throw this.createNotFountError();
     // return this.errorCatch(error);
   }
@@ -144,19 +145,15 @@ export class Dispatcher {
    */
   async dispatchToRoute() {
     return this.route.middleware
-      .handle(this.request, async (request: any) => this.route.resolve(request))
+      .handle(this.request, async (request: Request) => this.route.resolve(request))
       .catch((err) => {
         throw err
       })
-      // .then(this.responseFilter())
-      // .then(async (response: any) => {
-      //   await response.commitCookies(this.request);
-      //   return this.output(this.request, response);
-      // });
+      // .then(this.handleResponse())
   }
 
-  // responseFilter() {
-  //   return (response: any) => {
+  // handleResponse() {
+  //   return (response: Response) => {
   //     const code = response.getCode();
   //     const data = response.getData();
   //     const headers = response.getHeaders();
@@ -164,13 +161,9 @@ export class Dispatcher {
   //     if (code >= 400) {
   //       throw new HttpError(code, data, headers);
   //     }
-  //     return response;
+  //     return response
   //   };
   // }
-
-  async output(request: any, response: any) {
-    return new ResponseManager(response).output(request);
-  }
 
   createNotFountError() {
     return new NotFoundHttpError('Not Found');

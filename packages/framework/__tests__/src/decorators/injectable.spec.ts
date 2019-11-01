@@ -5,6 +5,6 @@ describe('Injectable Decorator', () => {
   it('should patch Injectable by @Injectable', () => {
     @Injectable()
     class Example { }
-    expect(Reflect.getMetadata('injectable', Example.prototype)).toBeTruthy();
+    expect(Reflect.getMetadata('injectable', Example)).toBeTruthy();
   });
 });

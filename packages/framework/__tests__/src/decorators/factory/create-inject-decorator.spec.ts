@@ -11,8 +11,8 @@ describe('Descrators/factory/create-inject-decorator', () => {
           this.testname = '';
         }
       };
-      expect(Reflect.getMetadata('injectable', Klass.prototype)).toBeTruthy();
-      expect(Reflect.getMetadata('injectparams', Klass.prototype)).toEqual([
+      expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
+      expect(Reflect.getMetadata('injectparams', Klass)).toEqual([
         ['request', ['a', 'b']],
       ]);
     });

@@ -6,19 +6,19 @@
  */
 
 function decoratorClass(target: any, middleware: any) {
-  const middlewares = Reflect.getMetadata('controllerMiddlewares', target.prototype) || [];
+  const middlewares = Reflect.getMetadata('controllerMiddlewares', target) || [];
   middlewares.push(middleware);
-  Reflect.defineMetadata('controllerMiddlewares', middlewares, target.prototype);
+  Reflect.defineMetadata('controllerMiddlewares', middlewares, target);
   return target;
 }
 
 function decoratorMethod(target: any, name: string, descriptor: any, middleware: any) {
-  const middlewares = Reflect.getMetadata('routeMiddlewares', target) || {};
+  const middlewares = Reflect.getMetadata('routeMiddlewares', target.constructor) || {};
   if (!middlewares[name]) {
     middlewares[name] = [];
   }
   middlewares[name].push(middleware);
-  Reflect.defineMetadata('routeMiddlewares', middlewares, target);
+  Reflect.defineMetadata('routeMiddlewares', middlewares, target.constructor);
   return descriptor;
 }
 

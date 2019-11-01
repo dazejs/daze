@@ -12,6 +12,7 @@ import { ComponentType } from '../symbol'
 import { Request } from '../request'
 import { ResponseManager } from '../response/manager'
 
+@Reflect.metadata('type', ComponentType.Controller)
 export abstract class Controller extends Base {
   /**
    * context cache
@@ -144,6 +145,4 @@ export abstract class Controller extends Base {
     return new ResponseManager(data).output(this.request);
   }
 }
-
-Reflect.defineMetadata('type', ComponentType.Controller, Controller.prototype);
 

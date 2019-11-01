@@ -67,8 +67,8 @@ export class Validate {
     // if object type
     if (typeof validator === 'object') {
       // if @Validator rules
-      if (Reflect.getMetadata('type', validator) === 'validator') {
-        return Reflect.getMetadata('validator', validator) || [];
+      if (Reflect.getMetadata('type', validator.constructor) === 'validator') {
+        return Reflect.getMetadata('rules', validator.constructor) || [];
       }
       // independence object rules
       return this.parseIndependenceRules(validator);
@@ -77,7 +77,7 @@ export class Validate {
     if (typeof validator === 'string') {
       const containerKey = `validator.${validator}`;
       if (!this.app.has(containerKey)) return [];
-      return Reflect.getMetadata('validator', this.app.get(`validator.${validator}`)) || [];
+      return Reflect.getMetadata('rules', this.app.get(`validator.${validator}`).constructor) || [];
     }
     return [];
   }

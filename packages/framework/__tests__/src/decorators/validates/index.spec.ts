@@ -9,7 +9,7 @@ describe('validate decrators', () => {
       @Decrators.Passed()
       example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.passed,
@@ -28,7 +28,7 @@ describe('validate decrators', () => {
       @Decrators.Accepted(options)
       example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.accepted,
@@ -46,7 +46,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Is('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.is,
@@ -64,7 +64,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Required(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.required,
@@ -82,7 +82,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Equals('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.equals,
@@ -100,7 +100,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsEmpty(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isEmpty,
@@ -118,7 +118,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNotEmpty(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNotEmpty,
@@ -136,7 +136,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsDivisibleBy(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isDivisibleBy,
@@ -167,7 +167,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsPositive(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isPositive,
@@ -185,7 +185,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNegative(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNegative,
@@ -203,7 +203,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Min(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.min,
@@ -221,7 +221,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Max(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.max,
@@ -240,7 +240,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.AfterDate(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.afterDate,
@@ -258,7 +258,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.BeforeDate(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.beforeDate,
@@ -276,7 +276,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsBoolean(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isBoolean,
@@ -294,7 +294,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsDate(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isDate,
@@ -312,7 +312,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsString(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isString,
@@ -330,7 +330,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNumber(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNumber,
@@ -348,7 +348,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsArray(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isArray,
@@ -366,7 +366,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsError(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isError,
@@ -384,7 +384,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsFunction(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isFunction,
@@ -402,7 +402,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsBuffer(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isBuffer,
@@ -420,7 +420,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsObject(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isObject,
@@ -438,7 +438,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsRegExp(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isRegExp,
@@ -456,7 +456,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsSymbol(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isSymbol,
@@ -474,7 +474,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNullOrUndefined(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNullOrUndefined,
@@ -492,7 +492,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNull(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNull,
@@ -510,7 +510,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsUndefined(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isUndefined,
@@ -528,7 +528,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsDateString(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isDateString,
@@ -546,7 +546,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsBooleanString(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isBooleanString,
@@ -564,7 +564,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsNumberString(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isNumberString,
@@ -582,7 +582,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Contains('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.contains,
@@ -600,7 +600,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.NotContains('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.notContains,
@@ -618,7 +618,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsAlpha('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isAlpha,
@@ -636,7 +636,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsAlphanumeric('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isAlphanumeric,
@@ -654,7 +654,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsAscii(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isAscii,
@@ -672,7 +672,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsBase64(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isBase64,
@@ -690,7 +690,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsByteLength('test', 'test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isByteLength,
@@ -708,7 +708,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsCreditCard(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isCreditCard,
@@ -726,7 +726,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsCurrency(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isCurrency,
@@ -744,7 +744,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsEmail(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isEmail,
@@ -762,7 +762,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsFQDN(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isFQDN,
@@ -780,7 +780,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsFullWidth(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isFullWidth,
@@ -798,7 +798,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsHalfWidth(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isHalfWidth,
@@ -816,7 +816,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsHexColor(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isHexColor,
@@ -834,7 +834,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsHexadecimal(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isHexadecimal,
@@ -852,7 +852,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsIP('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isIP,
@@ -870,7 +870,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsISBN('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isISBN,
@@ -888,7 +888,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsISSN(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isISSN,
@@ -906,7 +906,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsISIN(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isISIN,
@@ -924,7 +924,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsISO8601(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isISO8601,
@@ -942,7 +942,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsJSON(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isJSON,
@@ -960,7 +960,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsLowercase(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isLowercase,
@@ -978,7 +978,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsMobilePhone('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isMobilePhone,
@@ -996,7 +996,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsMongoId(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isMongoId,
@@ -1014,7 +1014,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsMultibyte(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isMultibyte,
@@ -1032,7 +1032,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsSurrogatePair(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isSurrogatePair,
@@ -1050,7 +1050,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsURL(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isURL,
@@ -1068,7 +1068,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsUUID('test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isUUID,
@@ -1086,7 +1086,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.IsUppercase(options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.isUppercase,
@@ -1104,7 +1104,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Length(1, 10, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.length,
@@ -1122,7 +1122,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.MinLength(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.minLength,
@@ -1139,7 +1139,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.MaxLength(1, options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.maxLength,
@@ -1156,7 +1156,7 @@ describe('validate decrators', () => {
     class Example {
       @Decrators.Matches('test', 'test', options) example: any;
     }
-    expect(Reflect.getMetadata('rules', Example.prototype)).toEqual([
+    expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
         field: 'example',
         handler: Validators.matches,

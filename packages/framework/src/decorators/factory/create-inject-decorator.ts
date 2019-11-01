@@ -11,12 +11,12 @@ function handle(args: any[], params: any, type: string) {
 
   if (args.length === 1) {
     const [target] = args
-    Reflect.defineMetadata('injectable', true, target.prototype);
-    const injectors = Reflect.getMetadata('injectparams', target.prototype) || [];
+    Reflect.defineMetadata('injectable', true, target);
+    const injectors = Reflect.getMetadata('injectparams', target) || [];
     Reflect.defineMetadata('injectparams', [
       ...injectors,
       [type, params],
-    ], target.prototype);
+    ], target);
     return target;
   }
   const [target, key] = args
@@ -27,25 +27,6 @@ function handle(args: any[], params: any, type: string) {
     [type, params],
   ], target.constructor, key);
   return target; 
-
-  
-
-  // if (args.length === 1) {
-  //   const [target] = args
-  //   const decorator = patchClass(type, params);
-  //   return decorator(target)
-  // }
-  // if (args.length == 3) {
-  //   const [target, propertyKey, descriptor] = args
-  //   if (descriptor) {
-  //     const decorator = patchMethod(type, params);
-  //     return decorator(target, propertyKey, descriptor)
-  //   } else {
-  //     const [target, propertyKey] = args
-  //     const decorator = patchProperty(type, params);
-  //     return decorator(target, propertyKey)
-  //   }
-  // }
 }
 
 export function createInjectDecorator(type: string){

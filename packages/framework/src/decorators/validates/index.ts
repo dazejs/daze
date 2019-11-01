@@ -240,7 +240,8 @@ export function IsBooleanString (options?: any) {
 };
 
 export function IsNumberString (options?: any) {
-  return validatorFactory(validators.isNumberString, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isNumberString, _options, {
     message: '$field must be a number string value',
     ...options,
   });
@@ -320,21 +321,24 @@ export function IsCreditCard (options?: any) {
 };
 
 export function IsCurrency (options?: any) {
-  return validatorFactory(validators.isCurrency, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isCurrency, _options, {
     message: '$field must be a currency',
     ...options,
   });
 };
 
 export function IsEmail (options?: any) {
-  return validatorFactory(validators.isEmail, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isEmail, _options, {
     message: '$field must be an email',
     ...options,
   });
 };
 
 export function IsFQDN (options?: any) {
-  return validatorFactory(validators.isFQDN, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isFQDN, _options, {
     message: '$field must be a valid domain name',
     ...options,
   });
@@ -397,7 +401,8 @@ export function IsISBN(version?: any, options?: any) {
 };
 
 export function IsISSN (options?: any) {
-  return validatorFactory(validators.isISSN, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isISSN, _options, {
     message: '$field must be an ISSN',
     ...options,
   });
@@ -463,7 +468,8 @@ export function IsSurrogatePair (options?: any) {
 };
 
 export function IsURL (options?: any) {
-  return validatorFactory(validators.isURL, [options], {
+  const _options = options ? [options] : [];
+  return validatorFactory(validators.isURL, _options, {
     message: '$field must be an URL address',
     ...options,
   });

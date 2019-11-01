@@ -5,10 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import is from 'core-util-is'
 import { Container} from '../container'
-import { IllegalArgumentError} from '../errors/illegal-argument-error'
 import { Application } from '../foundation/application'
+import { ComponentType } from '../symbol'
 
 export class Controller {
   /**
@@ -20,18 +19,10 @@ export class Controller {
    * register a controller
    */
   public register(controller: any) {
-    if (!is.isFunction(controller)) throw new IllegalArgumentError('controller must be a class!');
-    this.parseController(controller);
-    return this;
-  }
-
-  /**
-   * parse a controller
-   */
-  private parseController(controller: any) {
-    if (Reflect.getMetadata('type', controller.prototype) !== 'controller') throw new IllegalArgumentError('controller class must use @Controller decorator!');
-    this.app.multiton(controller, controller);
-    this.resolve(controller);
+    if (Reflect.getMetadata('type', controller) === ComponentType.Controller) {
+      this.app.multiton(controller, controller);
+      this.resolve(controller);
+    }
     return this;
   }
 
@@ -39,10 +30,10 @@ export class Controller {
    * resolve this controller
    */
   public resolve(controller: any) {
-    const routes = Reflect.getMetadata('routes', controller.prototype) || {};
-    const prefix = Reflect.getMetadata('prefix', controller.prototype) || '';
-    const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller.prototype) || [];
-    const routeMiddlewares = Reflect.getMetadata('routeMiddlewares', controller.prototype) || {};
+    const routes = Reflect.getMetadata('routes', controller) || {};
+    const prefix = Reflect.getMetadata('prefix', controller) || '';
+    const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller) || [];
+    const routeMiddlewares = Reflect.getMetadata('routeMiddlewares', controller) || {};
     this.registerRoutes(controller, routes, prefix, controllerMiddlewares, routeMiddlewares);
   }
 

@@ -11,7 +11,7 @@ beforeAll(() => app.initialize());
 describe('Base Controller Class', () => {
   it('should return request instance with request getter', () => {
     const request = {};
-    Reflect.defineMetadata('injectable', true, Controller.prototype)
+    Reflect.defineMetadata('injectable', true, Controller)
     app.bind(Controller, Controller);
     const controller = app.get(Controller, [request]);
     expect(controller.request).toBe(request);

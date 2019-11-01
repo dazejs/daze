@@ -1,6 +1,7 @@
 
 import 'reflect-metadata';
 import { Container } from '../../../src/container';
+import { Injectable } from '../../../src/decorators'
 
 it('Container.setInstance', () => {
   const App = class { };
@@ -98,7 +99,8 @@ it('Container#callable', () => {
 });
 
 it('Container inject class', () => {
-  const App = class {
+  @Injectable()
+  class App {
     param: any;
     prop: any;
     constructor(param: any) {
@@ -112,12 +114,9 @@ it('Container inject class', () => {
   };
   Container.bind(App, App);
   Container.bind('request', (r: any) => r, false, true);
-  Reflect.defineMetadata('injectable', true, App.prototype);
-  Reflect.defineMetadata('injectable', true, App, 'prop');
-  Reflect.defineMetadata('injectable', true, App, 'index');
   Reflect.defineMetadata('injectparams', [
     ['request', ['request']],
-  ], App.prototype);
+  ], App);
   Reflect.defineMetadata('injectparams', [
     ['request', ['request']]
   ], App, 'prop');

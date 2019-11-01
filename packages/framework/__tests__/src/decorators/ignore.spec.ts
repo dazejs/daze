@@ -5,6 +5,6 @@ describe('Ignore Decorator', () => {
   it('should patch Ignore by @Ignore', () => {
     @Ignore()
     class Example { }
-    expect(Reflect.getMetadata('ignore', Example.prototype)).toBeTruthy();
+    expect(Reflect.getMetadata('ignore', Example)).toBeTruthy();
   });
 });

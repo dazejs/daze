@@ -6,7 +6,7 @@
  */
 
 function decorateClass(target: any) {
-  Reflect.defineMetadata('injectable', true, target.prototype);
+  Reflect.defineMetadata('injectable', true, target);
   return target;
 }
 

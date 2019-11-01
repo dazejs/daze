@@ -9,8 +9,8 @@ import { ComponentType } from '../symbol'
 
 export function Route(prefix: string = ''): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('injectable', true, constructor.prototype);
-    Reflect.defineMetadata('type', ComponentType.Controller, constructor.prototype);
-    Reflect.defineMetadata('prefix', formatPrefix(prefix), constructor.prototype);
+    Reflect.defineMetadata('injectable', true, constructor);
+    Reflect.defineMetadata('type', ComponentType.Controller, constructor);
+    Reflect.defineMetadata('prefix', formatPrefix(prefix), constructor);
   };
 };

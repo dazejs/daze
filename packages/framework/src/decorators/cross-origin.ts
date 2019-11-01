@@ -7,16 +7,16 @@
 function decoratorClass(target: any, options: any) {
   Reflect.defineMetadata('controllerCrossOrigin', {
     ...options,
-  }, target.prototype);
+  }, target);
   return target;
 }
 
 function decoratorMethod(target: any, name: string, descriptor: any, options: any) {
-  const corses = Reflect.getMetadata('routeCrossOrigin', target) || {};
+  const corses = Reflect.getMetadata('routeCrossOrigin', target.constructor) || {};
   corses[name] = {
     ...options,
   };
-  Reflect.defineMetadata('routeCrossOrigin', corses, target);
+  Reflect.defineMetadata('routeCrossOrigin', corses, target.constructor);
   return descriptor;
 }
 

@@ -9,6 +9,7 @@
 import http from 'http'
 import { Container } from '../../container'
 import { Request} from '../../request'
+import { Response} from '../../response'
 import { ErrorHandler} from '../../errors/handle'
 import { ResponseManager} from '../../response/manager'
 import { Application } from '../application'
@@ -26,20 +27,19 @@ export class httpServer {
       await request.initialize();
       return middleware
         .handle(request, routerHandler)
-        .then((response: any) => {
-          return new ResponseManager(response).output(request);
-        })
-        .then((response: any) => {
+        .then((response: Response) => {
           const code = response.getCode();
           const data = response.getData();
           const headers = response.getHeaders();
-
           if (code >= 400) {
             throw new HttpError(code, data, headers);
           }
           return response;
         })
-        .catch((error: any) => {
+        .then((response: Response) => {
+          return new ResponseManager(response).output(request);
+        })
+        .catch((error: Error) => {
           this.app.emit('error', error);
           const err = new ErrorHandler(request, error);
           return new ResponseManager(err.render()).output(request);

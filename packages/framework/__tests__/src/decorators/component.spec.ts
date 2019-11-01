@@ -5,7 +5,7 @@ describe('Component Decorator', () => {
   it('should patch injectable and name in Component', () => {
     @Component('example') 
     class Example { };
-    expect(Reflect.getMetadata('injectable', Example.prototype)).toBeTruthy();
-    expect(Reflect.getMetadata('name', Example.prototype)).toBe('example');
+    expect(Reflect.getMetadata('injectable', Example)).toBeTruthy();
+    expect(Reflect.getMetadata('name', Example)).toBe('example');
   });
 });

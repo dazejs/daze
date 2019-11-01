@@ -543,16 +543,16 @@ export class Builder {
     return results
   }
 
-  /**
-   * query one record from database
-   * @param id 
-   */
-  async get(id: string) {
-    const sql = this.where('id', id).take(1).toSql()
-    const params = this.getParams()
-    const results = await this.collection.select(sql, params)
-    return results[0]
-  }
+  // /**
+  //  * query one record from database
+  //  * @param id 
+  //  */
+  // async get(id: string) {
+  //   const sql = this.where('id', id).take(1).toSql()
+  //   const params = this.getParams()
+  //   const results = await this.collection.select(sql, params)
+  //   return results[0]
+  // }
 
   /**
    * query first record from database

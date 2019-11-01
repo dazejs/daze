@@ -7,8 +7,8 @@
 import { Base } from './base'
 import { ComponentType } from '../symbol'
 
+@Reflect.metadata('type', ComponentType.Validator)
 export abstract class Validator extends Base {
 
 }
 
-Reflect.defineMetadata('type', ComponentType.Validator, Validator.prototype);

@@ -82,9 +82,9 @@ export class Loader {
    */
   load(target: any) {
     if (!target || !target.prototype) return;
-    const isIgnore = Reflect.getMetadata('ignore', target.prototype);
+    const isIgnore = Reflect.getMetadata('ignore', target);
     if (isIgnore === true) return;
-    const type: ComponentType = Reflect.getMetadata('type', target.prototype);
+    const type: ComponentType = Reflect.getMetadata('type', target);
 
     switch (type) {
       case ComponentType.Controller:
@@ -108,7 +108,7 @@ export class Loader {
    * load Middleware
    */
   loadMiddleware(target: any) {
-    const name = Reflect.getMetadata('name', target.prototype);
+    const name = Reflect.getMetadata('name', target);
     if (!name) return;
     this.app.bind(`middleware.${name}`, target);
   }
@@ -136,8 +136,8 @@ export class Loader {
    */
   registerComponents() {
     for (const component of this.components) {
-      const name = Reflect.getMetadata('name', component.prototype);
-      const type = Reflect.getMetadata('type', component.prototype);
+      const name = Reflect.getMetadata('name', component);
+      const type = Reflect.getMetadata('type', component);
       if (name && type) {
         this.app.bind(`${type}.${name}`, component);
       }

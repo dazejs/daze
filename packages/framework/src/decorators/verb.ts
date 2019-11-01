@@ -8,7 +8,7 @@ import http from 'http'
 import { formatPrefix } from './helpers'
 
 function decorateMethod(target: any, name: string, descriptor: any, methods: any, uri: string) {
-  const routes = Reflect.getMetadata('routes', target) || {};
+  const routes = Reflect.getMetadata('routes', target.constructor) || {};
   if (!routes[name]) routes[name] = [];
   for (const method of methods) {
     routes[name].push({
@@ -16,7 +16,7 @@ function decorateMethod(target: any, name: string, descriptor: any, methods: any
       method,
     });
   }
-  Reflect.defineMetadata('routes', routes, target);
+  Reflect.defineMetadata('routes', routes, target.constructor);
   return descriptor;
 }
 

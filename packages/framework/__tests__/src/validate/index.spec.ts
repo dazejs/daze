@@ -4,6 +4,7 @@ import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
 import { Application } from '../../../src/foundation/application';
 import { Validator as ValidatorBase } from '../../../src/base/validator'
+import { IsEmail } from '../../../src/decorators/validates'
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -34,17 +35,10 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is Validator instance', () => {
-      const Validator = class extends ValidatorBase {};
-      Reflect.defineMetadata('validator', [
-        {
-          field: 'field',
-          handler: validators.isEmail,
-          args: [],
-          options: {
-            message: '$field must be email',
-          },
-        },
-      ], Validator.prototype);
+      class Validator extends ValidatorBase {
+        @IsEmail()
+        field: string;
+      };
       const instance = new Validate({
         field: 'xxx@xxx.com',
       }, new Validator());
@@ -53,22 +47,17 @@ describe('Validate', () => {
         handler: validators.isEmail,
         args: [],
         options: {
-          message: '$field must be email',
+          message: '$field must be an email',
         },
       }]);
     });
 
     it('should return structuring object array when rules is string', () => {
-      const Validator = class {};
-      Reflect.defineMetadata('type', 'validator', Validator.prototype);
-      Reflect.defineMetadata('validator', [{
-        field: 'field',
-        handler: validators.isEmail,
-        args: [],
-        options: {
-          message: '$field must be email',
-        },
-      }], Validator.prototype);
+      class Validator extends ValidatorBase {
+        @IsEmail()
+        field: string;
+      };
+
       app.bind('validator.example', Validator);
       const instance = new Validate({
         field: 'xxx@xxx.com',
@@ -78,7 +67,7 @@ describe('Validate', () => {
         handler: validators.isEmail,
         args: [],
         options: {
-          message: '$field must be email',
+          message: '$field must be an email',
         },
       }]);
     });
@@ -102,7 +91,7 @@ describe('Validate', () => {
 
     it('should return empty array when rules is conatiner instance without rules', () => {
       const Validator = class {};
-      Reflect.defineMetadata('type', 'validator', Validator.prototype);
+      Reflect.defineMetadata('type', 'validator', Validator);
       app.bind('validator.example2', Validator);
       const instance = new Validate({
         field: 'xxx@xxx.com',

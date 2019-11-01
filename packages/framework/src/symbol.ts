@@ -5,13 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-export enum ComponentType {
+export const enum ComponentType {
   Controller =  'controller',
   Component = 'component',
   Service = 'service',
   Resource = 'resource',
   Validator = 'validator',
-  Middleware = 'middleware'
+  Middleware = 'middleware',
+  Model = 'model',
+  Provider = 'provider'
 }
 
 
@@ -50,4 +52,5 @@ export const INJECTORS = {
   RESOURCE: '__DAZE_INJECT_RESOURCE_',
   COMPONENT: '__DAZE_INJECT_COMPONENT__',
   VALIDATOR: '__DAZE_INJECT_VALIDATOR__',
+  MODEL: '__DAZE_INJECT_MODEL__',
 };

@@ -8,6 +8,7 @@ import { Base } from './base'
 import { Item, Collection } from '../resource'
 import { ComponentType } from '../symbol'
 
+@Reflect.metadata('type', ComponentType.Resource)
 export abstract class Resource extends Base {
   /**
    * use collection resource
@@ -53,4 +54,3 @@ export abstract class Resource extends Base {
   abstract resolve(data: any): any
 }
 
-Reflect.defineMetadata('type', ComponentType.Resource, Resource.prototype);

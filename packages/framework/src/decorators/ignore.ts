@@ -6,7 +6,7 @@
  */
 
 function decorateClass(target: any) {
-  Reflect.defineMetadata('ignore', true, target.prototype);
+  Reflect.defineMetadata('ignore', true, target);
   return target;
 }
 

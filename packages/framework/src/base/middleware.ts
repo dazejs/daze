@@ -11,9 +11,9 @@ import { Response } from '../response'
 import { TNext } from '../middleware'
 
 
+@Reflect.metadata('type', ComponentType.Middleware)
 export abstract class Middleware extends Base {
   abstract resolve(request: Request, next: TNext): Response | Promise<Response>
 }
 
-Reflect.defineMetadata('type', ComponentType.Middleware, Middleware.prototype);
 

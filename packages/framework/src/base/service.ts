@@ -8,8 +8,7 @@ import { Base } from './base'
 import { ComponentType } from '../symbol'
 
 
+@Reflect.metadata('type', ComponentType.Service)
 export abstract class Service extends Base {
 
 }
-
-Reflect.defineMetadata('type', ComponentType.Service, Service.prototype);

@@ -66,7 +66,7 @@ export class Middleware {
    */
   parseFunctionMiddleware(middleware: any, args: any[] = []) {
     // 使用了 @Middleware 装饰器
-    if (middleware.prototype && Reflect.getMetadata('type', middleware.prototype) === 'middleware') {
+    if (middleware.prototype && Reflect.getMetadata('type', middleware) === 'middleware') {
       const MiddlewareClass = middleware;
       const _middleware = new MiddlewareClass(...args);
       this.parseClassInstanceMiddleware(_middleware);

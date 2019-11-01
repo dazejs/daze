@@ -7,13 +7,13 @@
 
 export function validatorFactory(validatorMethod: any, args: any[] = [], options: any = {}): PropertyDecorator {
   return (target, name) => {
-    const rules = Reflect.getMetadata('rules', target) || [];
+    const rules = Reflect.getMetadata('rules', target.constructor) || [];
     rules.push({
       field: name,
       handler: validatorMethod,
       args,
       options,
     });
-    Reflect.defineMetadata('rules', rules, target);
+    Reflect.defineMetadata('rules', rules, target.constructor);
   };
 };

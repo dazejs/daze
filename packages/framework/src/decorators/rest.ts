@@ -17,13 +17,13 @@ const rest = {
 };
 
 function injectClass(target: any, prefix: string) {
-  Reflect.defineMetadata('injectable', true, target.prototype);
-  Reflect.defineMetadata('prefix', formatPrefix(prefix), target.prototype);
-  const routes = Reflect.getMetadata('routes', target.prototype);
+  Reflect.defineMetadata('injectable', true, target);
+  Reflect.defineMetadata('prefix', formatPrefix(prefix), target);
+  const routes = Reflect.getMetadata('routes', target);
   Reflect.defineMetadata('routes', {
     ...rest,
     ...routes,
-  }, target.prototype);
+  }, target);
   return target;
 }
 
