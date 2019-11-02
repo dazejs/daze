@@ -46,7 +46,7 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
-    "filesize": "^4.2.1",
+    "filesize": "^6.0.0",
     "jest": "^24.8.0",
     "koa": "^2.8.2",
     "koa-router": "^7.4.0",
