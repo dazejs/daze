@@ -19,6 +19,6 @@ export class LoaderProvider {
   }
 
   async launch() {
-    await this.app.get('loader').resolve();
+    await this.app.get<Loader>('loader').autoScanApp();
   }
 }

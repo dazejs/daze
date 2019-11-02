@@ -3,5 +3,6 @@ import { ComponentType } from '../symbol';
 
 @Reflect.metadata('type', ComponentType.Model)
 export abstract class Model extends Base {
- 
+  connection: string;
+  table: string;
 }

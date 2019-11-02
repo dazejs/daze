@@ -175,7 +175,7 @@ export class Application extends Container {
   async registerDefaultProviders(): Promise<void> {
     await this.register(new providers.AppProvider(this));
     await this.register(new providers.ControllerProvider(this));
-    // await this.register(new providers.Component(this));
+    await this.register(new providers.ModelProvider(this));
     await this.register(new providers.MiddlewareProvider(this));
     await this.register(new providers.RouterProvider(this));
     await this.register(new providers.TemplateProvider(this));
@@ -235,12 +235,11 @@ export class Application extends Container {
     }
   }
 
-  async fireLaunchCalls(...args: any[]): Promise<void> {
-    const results = [];
+  async fireLaunchCalls(...args: any[]): Promise<this> {
     for (const launch of this.launchCalls) {
-      results.push(launch(...args, this));
+      await launch(...args, this);
     }
-    await Promise.all(results);
+    return this;
   }
 
   /**
@@ -359,8 +358,14 @@ export class Application extends Container {
       await this.registerDefaultProviders();
       await this.registerVendorProviders();
       await this.registerHttpServerProvider();
+      // resolver must load after all provider
+      await this.registerResolverProvider();
       await this.fireLaunchCalls();
     }
+  }
+
+  async registerResolverProvider() {
+    await this.register(new providers.ResolverProvider(this));
   }
 
   async registerHttpServerProvider() {
@@ -429,7 +434,7 @@ export class Application extends Container {
     if (!this.tags[tag]) return [];
     return this.tags[tag];
     // if (!shouldMake) return this.tags[tag];
-    // return this.tags[tag].map(t => this.make(t, args));
+    // return this.tags[tag].map((abstract: any) => this.make(abstract, args));
   }
 
   /**
@@ -446,6 +451,7 @@ export class Application extends Container {
   get(abstract: 'config', args?: any[], force?: boolean): Config
   get(abstract: 'logger', args?: any[], force?: boolean): Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
+  get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 
   /**

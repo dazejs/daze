@@ -4,10 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { ControllerManager } from '../../controller/manager';
+import { Resolver } from '../../resolver';
+import { Loader } from '../../loader';
 import { Application } from '../application';
 
-export class ControllerProvider {
+export class ResolverProvider {
   app: Application;
   /**
    * create Controller Provider
@@ -24,7 +25,11 @@ export class ControllerProvider {
    * Provider register Hook
    */
   register() {
-    // bind controller in container
-    this.app.singleton('controller-manager', ControllerManager);
+    this.app.singleton('resolver', Resolver);
+  }
+
+  launch() {
+    const loader = this.app.get<Loader>('loader');
+    this.app.get<Resolver>('resolver', [loader]).resolveAllModules();
   }
 }
