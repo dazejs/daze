@@ -44,6 +44,7 @@ export class Resolver {
 
   resolveControllers() {
     const { controllers } = this.loader;
+    console.log(controllers);
     for (const Controller of controllers) {
       this.app.multiton(Controller, Controller);
       this.app.get<ControllerManager>('controller-manager').register(Controller);
