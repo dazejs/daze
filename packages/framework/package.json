@@ -61,7 +61,7 @@
     "cache-content-type": "^1.0.1",
     "co-body": "^6.0.0",
     "content-disposition": "^0.5.3",
-    "cookies": "^0.7.3",
+    "cookies": "^0.8.0",
     "core-util-is": "^1.0.2",
     "crc": "^3.8.0",
     "csrf": "^3.0.6",
