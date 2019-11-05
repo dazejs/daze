@@ -2,11 +2,7 @@
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
 import { ControllerManager } from '../controller';
-import { ComponentType } from '../symbol';
-import {
-  Controller,
-  Middleware
-} from '../base';
+import { ModelManager } from '../model';
 
 
 export class Resolver {
@@ -30,6 +26,7 @@ export class Resolver {
     this.resolveResources();
     this.resolveValidators();
     this.resolveComponents();
+    this.resolveModels();
     this.resolveControllers();
   }
 
@@ -44,7 +41,6 @@ export class Resolver {
 
   resolveControllers() {
     const { controllers } = this.loader;
-    console.log(controllers);
     for (const Controller of controllers) {
       this.app.multiton(Controller, Controller);
       this.app.get<ControllerManager>('controller-manager').register(Controller);
@@ -54,13 +50,22 @@ export class Resolver {
 
   resolveModels() {
     const { models } = this.loader;
+    for (const Model of models) {
+      this.app.singleton(Model, Model);
+      this.app.get<ModelManager>('model-manager').register(Model);
+    }
   }
 
   resolveServices() {
     const { services } = this.loader;
     for (const Service of services) {
       const name = Reflect.getMetadata('name', Service);
-      if (name) this.app.bind(`service.${name}`, Service);
+      this.app.singleton(Service, Service);
+      if (name) {
+        this.app.multiton(`service.${name}`, (...args: any[]) => {
+          return this.app.get(Service, args);
+        }, true);
+      }
     }
   }
 

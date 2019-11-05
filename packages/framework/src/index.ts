@@ -17,3 +17,4 @@ export * from './view';
 export * from './cookie';
 export * from './decorators';
 export * from './base';
+export * from './model';

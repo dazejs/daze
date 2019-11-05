@@ -8,7 +8,6 @@ import { ComponentType } from '../symbol';
 
 export function Component(name = ''): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('injectable', true, constructor);
     if (!Reflect.hasMetadata('type', constructor)) {
       Reflect.defineMetadata('type', ComponentType.Component, constructor);
     }

@@ -8,7 +8,6 @@
 // import { patchClass, patchProperty, patchMethod } from './patch-decorator'
 
 function handle(args: any[], params: any, type: string) {
-
   if (args.length === 1) {
     const [target] = args;
     Reflect.defineMetadata('injectable', true, target);

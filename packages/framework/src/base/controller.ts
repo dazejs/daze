@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { Base } from './base';
+// import { Service } from './service';
 import { View } from '../view';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
@@ -13,6 +14,7 @@ import { Request } from '../request';
 import { ResponseManager } from '../response/manager';
 
 @Reflect.metadata('type', ComponentType.Controller)
+@Reflect.metadata('injectable', true)
 export abstract class Controller extends Base {
   /**
    * context cache
@@ -93,13 +95,20 @@ export abstract class Controller extends Base {
     };
   }
 
+
+  // service<T extends Service>(service: T, args?: any[]): T;
+  // service<T = any>(service: string, args?: any[]): T;
+
   /**
    * get service
    * @param serviceName
    * @param args
    */
-  service(serviceName: string, args: any[] = []) {
-    return this.app.get(`service.${serviceName}`, args);
+  service<T = any>(service: string | { new(): T }, args: any[] = []): T {
+    if (typeof service === 'string') {
+      return this.app.get(`service.${service}`, args);
+    };
+    return this.app.get<T>(service, args) as T;
   }
 
   /**

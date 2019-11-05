@@ -9,6 +9,7 @@ import { ComponentType } from '../symbol';
 
 
 @Reflect.metadata('type', ComponentType.Service)
+@Reflect.metadata('injectable', true)
 export abstract class Service extends Base {
 
 }

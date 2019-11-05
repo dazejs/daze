@@ -9,6 +9,7 @@ import { Item, Collection } from '../resource';
 import { ComponentType } from '../symbol';
 
 @Reflect.metadata('type', ComponentType.Resource)
+@Reflect.metadata('injectable', true)
 export abstract class Resource extends Base {
   /**
    * use collection resource

@@ -13,7 +13,10 @@ import { Config } from '../config';
 import { Messenger } from '../cluster/messenger';
 import { AbstractConnection } from '../database/connection/connection.abstract';
 import { Builder } from '../database/builder';
+// import { Model } from './model';
+import { Database } from '../database';
 
+@Reflect.metadata('injectable', true)
 export abstract class Base {
   /**
    * Application instance getter
@@ -56,7 +59,13 @@ export abstract class Base {
    * create database instance
    * @param name connection name
    */
-  db(name?: string): AbstractConnection & Builder {
-    return this.app.get('db').connection(name);
+  db(name?: string) {
+    return this.app.get<Database>('db').connection(name) as AbstractConnection & Builder;
+  }
+
+  model<T>(name: string): T & Builder
+  model(name: string): Builder
+  model(name: string) {
+    return this.app.get(`model.${name}`);
   }
 }

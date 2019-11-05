@@ -12,6 +12,7 @@ import { TNext } from '../middleware';
 
 
 @Reflect.metadata('type', ComponentType.Middleware)
+@Reflect.metadata('injectable', true)
 export abstract class Middleware extends Base {
   abstract resolve(request: Request, next: TNext): Response | Promise<Response>
 }

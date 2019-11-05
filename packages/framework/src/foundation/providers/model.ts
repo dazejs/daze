@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-// import { ModelManager } from '../../FUTURE_model';
+import { ModelManager } from '../../model';
 import { Application } from '../application';
 
 export class ModelProvider {
@@ -28,6 +28,6 @@ export class ModelProvider {
    */
   register() {
     // bind controller in container
-    // this.app.singleton('model-manager', ModelManager);
+    this.app.singleton('model-manager', ModelManager);
   }
 }

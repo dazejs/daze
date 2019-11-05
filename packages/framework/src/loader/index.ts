@@ -13,12 +13,12 @@ import { ComponentType } from '../symbol';
 import { Application } from '../foundation/application';
 import {
   Controller,
-  Model,
   Service,
   Validator,
   Resource,
   Middleware,
 } from '../base';
+import { Model } from '../model';
 
 export class Loader {
   /**
