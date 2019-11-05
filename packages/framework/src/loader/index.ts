@@ -87,21 +87,7 @@ export class Loader {
     }
     return this;
   }
-
-  // /**
-  //  * resolve auto scan
-  //  */
-  // async resolve() {
-  //   // register middlewares
-  //   // middlewares must be registed before controller
-  //   this.registerMiddlewares();
-  //   // register components
-  //   this.registerComponents();
-  //   // register controllers
-  //   this.registerControllers();
-  //   this.registerModels();
-  // }
-
+  
   /**
    * parse file module
    */
@@ -138,55 +124,4 @@ export class Loader {
     }
     return this;
   }
-
-  // /**
-  //  * load Middleware
-  //  */
-  // loadMiddleware(target: any) {
-  //   const name = Reflect.getMetadata('name', target);
-  //   if (!name) return;
-  //   this.app.bind(`middleware.${name}`, target);
-  // }
-
-  // /**
-  //  * register middlewares
-  //  */
-  // registerMiddlewares() {
-  //   for (const middleware of this.middlewares) {
-  //     this.loadMiddleware(middleware);
-  //   }
-  // }
-
-  // /**
-  //  * register controllers
-  //  */
-  // registerControllers() {
-  //   for (const controller of this.controllers) {
-  //     this.app.get('controller').register(controller);
-  //   }
-  // }
-
-  // /**
-  //  * register controllers
-  //  */
-  // registerModels() {
-  //   for (const Model of this.models) {
-  //     this.app.get('model-manager').register(
-  //       new Model()
-  //     );
-  //   }
-  // }
-
-  // /**
-  //  * register components
-  //  */
-  // registerComponents() {
-  //   for (const component of this.components) {
-  //     const name = Reflect.getMetadata('name', component);
-  //     const type = Reflect.getMetadata('type', component);
-  //     if (name && type) {
-  //       this.app.bind(`${type}.${name}`, component);
-  //     }
-  //   }
-  // }
 }
