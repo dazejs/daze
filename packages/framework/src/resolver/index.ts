@@ -81,7 +81,12 @@ export class Resolver {
     const { resources } = this.loader;
     for (const Resource of resources) {
       const name = Reflect.getMetadata('name', Resource);
-      if (name) this.app.bind(`resource.${name}`, Resource);
+      this.app.singleton(Resource, Resource);
+      if (name) {
+        this.app.multiton(`resource.${name}`, (...args: any[]) => {
+          return this.app.get(Resource, args);
+        }, true);
+      }
     }
   }
 

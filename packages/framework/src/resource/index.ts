@@ -5,5 +5,5 @@
  * https://opensource.org/licenses/MIT
  */
 
-export * from './collection';
 export * from './item';
+export * from './collection';

@@ -7,13 +7,17 @@
 
 import { Container } from '../container';
 import { Application } from '../foundation/application';
+import { Resource as BaseResource } from '../base/resource';
+import { ComponentType } from '../symbol';
 
 const DEFAULT_KEY = 'data';
 
-export enum EResourceTypeList {
+export const enum EResourceTypeList {
   Item = 'item',
   Collection = 'collection'
 }
+
+export type FormatterType = string | { new(): BaseResource } | ((...args: any[]) => any)
 
 export class Resource {
   /**
@@ -34,7 +38,7 @@ export class Resource {
   /**
    * @var formatter resource data formatter
    */
-  public formatter: string | ((...args: any[]) => any);
+  public formatter: FormatterType;
 
   /**
    * @var formatter resource meta data formatter
@@ -54,7 +58,7 @@ export class Resource {
   /**
    * Create Resource
    */
-  constructor(data?: any, formatter: any = null, key?: any) {
+  constructor(data?: any, formatter?: FormatterType, key?: any) {
     this.data = data;
     if (key) this.key = key;
     if (formatter) this.formatter = formatter;
@@ -188,18 +192,59 @@ export class Resource {
    * @param formatter resource formatter
    * @param data resource meta or data
    */
-  protected useTransformer(formatter: any, data: any) {
+  protected useTransformer(formatter: FormatterType, data: any) {
     if (!data) return null;
     // 如果是字符串
     if (typeof formatter === 'string') {
-      const Transformer = this.app.get(`resource.${formatter}`);
-      return Transformer.resolve(data);
+      return this.useStringFormatter(formatter, data);
     }
-    // 如果是回调函数
+    // 如果是资源类
+    if (this.isResourceFormatter(formatter)) {
+      return this.useResourceFormatter(formatter, data);
+    }
+    // 如果是回调函数/类
     if (typeof formatter === 'function') {
-      return formatter(data);
+      // 容器中已绑定
+      return this.useCallbackFormatter(formatter, data);
     }
     return data;
+  }
+
+  /**
+   * check if is resource component
+   * @param formatter 
+   */
+  protected isResourceFormatter(formatter: { new(): BaseResource } | ((...args: any[]) => any)): formatter is { new(): BaseResource }  {
+    return Reflect.getMetadata('type', formatter) === ComponentType.Resource;
+  }
+
+  /**
+   * use string type formatter
+   * @param formatter 
+   * @param data 
+   */
+  protected useStringFormatter(formatter: string, data: any) {
+    const Transformer = this.app.get(`resource.${formatter}`);
+    return Transformer.resolve(data);
+  }
+
+  /**
+   * use resource type formatter
+   * @param formatter 
+   * @param data 
+   */
+  protected useResourceFormatter(formatter: { new(): BaseResource }, data: any) {
+    const Transformer = this.app.get(formatter);
+    return Transformer.resolve(data);
+  }
+
+  /**
+   * use function formatter
+   * @param formatter 
+   * @param data 
+   */
+  protected useCallbackFormatter(formatter: (...args: any[]) => any, data: any) {
+    return formatter(data);
   }
 
   /**

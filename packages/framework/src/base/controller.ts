@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { Base } from './base';
-// import { Service } from './service';
+import { Resource as BaseResource } from './resource';
 import { View } from '../view';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
@@ -84,13 +84,13 @@ export abstract class Controller extends Base {
    * get resource methods
    * @param resourceName
    */
-  resource(resourceName: string) {
+  resource(resource: string | { new(): BaseResource }) {
     return {
       item(data: any): Resource.Item {
-        return new Resource.Item(data, resourceName);
+        return new Resource.Item(data, resource);
       },
       collection(data: any): Resource.Collection {
-        return new Resource.Collection(data, resourceName);
+        return new Resource.Collection(data, resource);
       },
     };
   }
@@ -134,8 +134,8 @@ export abstract class Controller extends Base {
    * @param data
    * @param resourceName
    */
-  item(data: any[], resourceName: any): Resource.Item {
-    return new Resource.Item(data, resourceName);
+  item(data: any, resource: string | { new(): BaseResource }): Resource.Item {
+    return new Resource.Item(data, resource);
   }
 
   /**
@@ -143,8 +143,8 @@ export abstract class Controller extends Base {
    * @param data
    * @param resourceName
    */
-  collection(data: any, resourceName: string): Resource.Collection {
-    return new Resource.Collection(data, resourceName);
+  collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
+    return new Resource.Collection(data, resource);
   }
 
   /**
