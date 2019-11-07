@@ -6,8 +6,8 @@ describe('Multiton Decorator', () => {
   it('should patch Multiton flag in Multiton', () => {
     @Multiton()
     class Example {
-      static [MULTITON]: any
+     
     };
-    expect(Example[MULTITON]).toBeTruthy();
+    expect(Reflect.getMetadata(MULTITON, Example)).toBeTruthy();
   });
 });

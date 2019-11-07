@@ -1,15 +1,14 @@
 import {
-  Controller, Route, Http, useService,
+  Controller, Route, Http,
 } from '../../../../../src';
 
 
 @Route('/example')
 export default class extends Controller {
-  @useService('example') userService: any;
 
   @Http.Get()
   index() {
-    return this.userService.sayHello();
+    return this.service('example').sayHello();
   }
 
   @Http.Post('post')
