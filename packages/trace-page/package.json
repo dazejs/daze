@@ -53,7 +53,7 @@
     "@types/stack-trace": "0.0.29",
     "@types/webpack": "^4.39.1",
     "autoprefixer": "^9.6.1",
-    "concurrently": "^4.1.2",
+    "concurrently": "^5.0.0",
     "copyfiles": "^2.1.1",
     "cross-env": "^6.0.0",
     "css-loader": "^3.2.0",
