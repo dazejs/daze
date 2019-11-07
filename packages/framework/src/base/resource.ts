@@ -52,6 +52,6 @@ export abstract class Resource extends Base {
    * default resolve method
    * @param data
    */
-  abstract resolve(data: any): any
+  abstract resolve(...args: any[]): any
 }
 

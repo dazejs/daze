@@ -71,7 +71,7 @@ export class Resolver {
     const { models } = this.loader;
     for (const Model of models) {
       const name = Reflect.getMetadata('name', Model);
-      this.app.singleton(Model, Model);
+      this.app.multiton(Model, Model);
       if (name) {
         this.app.multiton(`model.${name}`, (...args: any[]) => {
           return this.app.get(Model, args);
@@ -87,7 +87,7 @@ export class Resolver {
     const { services } = this.loader;
     for (const Service of services) {
       const name = Reflect.getMetadata('name', Service);
-      this.app.singleton(Service, Service);
+      this.app.multiton(Service, Service);
       if (name) {
         this.app.multiton(`service.${name}`, (...args: any[]) => {
           return this.app.get(Service, args);
@@ -103,7 +103,7 @@ export class Resolver {
     const { validators } = this.loader;
     for (const Validator of validators) {
       const name = Reflect.getMetadata('name', Validator);
-      this.app.singleton(Validator, Validator);
+      this.app.multiton(Validator, Validator);
       if (name) {
         this.app.multiton(`validator.${name}`, (...args: any[]) => {
           return this.app.get(Validator, args);
@@ -119,7 +119,7 @@ export class Resolver {
     const { resources } = this.loader;
     for (const Resource of resources) {
       const name = Reflect.getMetadata('name', Resource);
-      this.app.singleton(Resource, Resource);
+      this.app.multiton(Resource, Resource);
       if (name) {
         this.app.multiton(`resource.${name}`, (...args: any[]) => {
           return this.app.get(Resource, args);
@@ -132,7 +132,7 @@ export class Resolver {
     const { components } = this.loader;
     for (const Component of components) {
       const name = Reflect.getMetadata('name', Component);
-      this.app.singleton(Component, Component);
+      this.app.multiton(Component, Component);
       if (name) {
         this.app.multiton(`component.${name}`, (...args: any[]) => {
           return this.app.get(Component, args);

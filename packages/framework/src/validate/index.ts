@@ -94,14 +94,12 @@ export class Validate {
       const fieldRules = _rules[field] || [];
       for (const rule of fieldRules) {
         const handler = validators[rule[0]];
-        if (handler) {
-          res.push({
-            field,
-            handler,
-            args: rule[1] || [],
-            options: rule[2] || {},
-          });
-        }
+        res.push({
+          field,
+          handler,
+          args: rule[1] || [],
+          options: rule[2] || {},
+        });
       }
     }
     return res;

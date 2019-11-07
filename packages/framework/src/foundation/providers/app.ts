@@ -105,10 +105,10 @@ export class AppProvider {
       true,
     );
 
-    this.app.multiton(symbols.INJECTORS.SERVICE, (key: string) => this.app.get(`service.${key}`), true);
-    this.app.multiton(symbols.INJECTORS.VALIDATOR, (key: string) => this.app.get(`validator.${key}`), true);
-    this.app.multiton(symbols.INJECTORS.COMPONENT, (key: string) => this.app.get(`component.${key}`), true);
-    this.app.multiton(symbols.INJECTORS.RESOURCE, (key: string) => this.app.get(`resource.${key}`), true);
+    // this.app.multiton(symbols.INJECTORS.SERVICE, (key: string) => this.app.get(`service.${key}`), true);
+    // this.app.multiton(symbols.INJECTORS.VALIDATOR, (key: string) => this.app.get(`validator.${key}`), true);
+    // this.app.multiton(symbols.INJECTORS.COMPONENT, (key: string) => this.app.get(`component.${key}`), true);
+    // this.app.multiton(symbols.INJECTORS.RESOURCE, (key: string) => this.app.get(`resource.${key}`), true);
     // this.app.multiton(symbols.INJECTORS.MODEL, (key: string) => this.app.get(`model.${key}`), true);
   }
 }

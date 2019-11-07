@@ -17,6 +17,7 @@ export const Http = {
 export * from './route';
 export * from './rest';
 export * from './multiton';
+export * from './singleton';
 export * from './component';
 export * from './ignore';
 export * from './use-middleware';

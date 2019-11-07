@@ -78,7 +78,12 @@ export class Container extends EventEmitter {
    */
   [BIND](abstract: any, concrete: any, shared = false, callable = false) {
     if (!abstract || !concrete) return;
-    const isShared = concrete[symbols.MULTITON] === true ? false : shared;
+    let isShared = shared;
+    if (Reflect.getMetadata(symbols.MULTITON, concrete) === true) {
+      isShared = true;
+    } else if (Reflect.getMetadata(symbols.SINGLETON, concrete) === true) {
+      isShared = false;
+    }
     if (typeof concrete === 'function') {
       this.binds.set(abstract, {
         concrete,

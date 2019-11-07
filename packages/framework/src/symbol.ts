@@ -19,6 +19,7 @@ export const enum ComponentType {
 
 // 容器实例多例标识 - used
 export const MULTITON = Symbol('DAZE#multiton');
+export const SINGLETON = Symbol('DAZE#singleton');
 // Session Symboles - used
 export const SESSION = {
   NEW_FLASHS: 'daze__new_flashes',
@@ -49,8 +50,8 @@ export const INJECTORS = {
   SERVICE: '__DAZE_INJECT_SERVICE__',
   COOKIE: '__DAZE_INJECT_COOKIE__',
   SESSION: '__DAZE_INJECT_SESSION__',
-  RESOURCE: '__DAZE_INJECT_RESOURCE_',
-  COMPONENT: '__DAZE_INJECT_COMPONENT__',
-  VALIDATOR: '__DAZE_INJECT_VALIDATOR__',
-  MODEL: '__DAZE_INJECT_MODEL__',
+  // RESOURCE: '__DAZE_INJECT_RESOURCE_',
+  // COMPONENT: '__DAZE_INJECT_COMPONENT__',
+  // VALIDATOR: '__DAZE_INJECT_VALIDATOR__',
+  // MODEL: '__DAZE_INJECT_MODEL__',
 };

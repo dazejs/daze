@@ -86,11 +86,13 @@ export abstract class Controller extends Base {
    */
   resource(resource: string | { new(): BaseResource }) {
     return {
-      item(data: any): Resource.Item {
-        return new Resource.Item(data, resource);
+      item: (data: any) => {
+        return (new Resource.Item(data, resource))
+          .setContext(this.__context__);
       },
-      collection(data: any): Resource.Collection {
-        return new Resource.Collection(data, resource);
+      collection: (data: any) => {
+        return (new Resource.Collection(data, resource))
+          .setContext(this.__context__);
       },
     };
   }
@@ -104,11 +106,11 @@ export abstract class Controller extends Base {
    * @param serviceName
    * @param args
    */
-  service<T = any>(service: string | { new(): T }, args: any[] = []): T {
+  service<T = any>(service: string | { new(): T }): T {
     if (typeof service === 'string') {
-      return this.app.get(`service.${service}`, args);
+      return this.app.get(`service.${service}`, this.__context__);
     };
-    return this.app.get<T>(service, args) as T;
+    return this.app.get<T>(service, this.__context__) as T;
   }
 
   /**
@@ -116,8 +118,11 @@ export abstract class Controller extends Base {
    * @param {String} componentName
    * @param {Array} args
    */
-  component(componentName: string, args: any[] = []) {
-    return this.app.get(`component.${componentName}`, args);
+  component<T = any>(component: string | { new(): T }) {
+    if (typeof component === 'string') {
+      return this.app.get(`component.${component}`, this.__context__);
+    };
+    return this.app.get<T>(component, this.__context__) as T;
   }
 
   /**
@@ -135,7 +140,7 @@ export abstract class Controller extends Base {
    * @param resourceName
    */
   item(data: any, resource: string | { new(): BaseResource }): Resource.Item {
-    return new Resource.Item(data, resource);
+    return (new Resource.Item(data, resource)).setContext(this.__context__);
   }
 
   /**
@@ -144,7 +149,7 @@ export abstract class Controller extends Base {
    * @param resourceName
    */
   collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
-    return new Resource.Collection(data, resource);
+    return (new Resource.Collection(data, resource).setContext(this.__context__));
   }
 
   /**
