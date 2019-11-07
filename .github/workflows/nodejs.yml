@@ -28,5 +28,5 @@ jobs:
         npm run test:coverage
     - name: Codecov
       run: |
-        ./node_modules/.bin/codecov
+        ./node_modules/.bin/codecov -t a6e4e876-8964-4524-b1b9-87804a54f2ba
 
