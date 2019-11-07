@@ -21,12 +21,12 @@ jobs:
     - name: Dependences Install
       run: |
         npm install
+        npm install codecov
         ./node_modules/.bin/lerna bootstrap
     - name: Run Test
       run: |
         npm run test:coverage
     - name: Codecov
       run: |
-        npm install codecov
         ./node_modules/.bin/codecov
 

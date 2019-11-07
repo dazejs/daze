@@ -1,4 +1,5 @@
 
+
 import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
@@ -6,6 +7,7 @@ import fs from 'fs'
 import autocannon from 'autocannon'
 // @ts-ignore
 import table from 'markdown-table'
+// @ts-ignore
 import size from 'filesize'
 
 const basePath = path.resolve(__dirname, '../../benchmarks')

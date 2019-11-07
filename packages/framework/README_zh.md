@@ -4,6 +4,7 @@
 [![npm](https://img.shields.io/npm/dm/@dazejs/framework.svg)](https://www.npmjs.com/package/@dazejs/framework)
 [![actions](https://github.com/dazejs/daze/workflows/Node%20CI/badge.svg)](https://github.com/dazejs/daze/actions)
 [![codecov](https://codecov.io/gh/dazejs/daze/branch/master/graph/badge.svg)](https://codecov.io/gh/dazejs/daze)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/09d6f0f7a58d406c9c9b8ec4abaab2a6)](https://www.codacy.com/manual/dazejs/daze?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dazejs/daze&amp;utm_campaign=Badge_Grade)
 [![GitHub license](https://img.shields.io/github/license/dazejs/daze.svg)](https://github.com/dazejs/daze/blob/master/LICENSE)
 
 <div align="center">
