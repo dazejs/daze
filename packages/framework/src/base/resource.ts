@@ -4,13 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Base } from './base';
+import { Injectable } from './injectable';
 import { Item, Collection } from '../resource';
 import { ComponentType } from '../symbol';
 
 @Reflect.metadata('type', ComponentType.Resource)
-@Reflect.metadata('injectable', true)
-export abstract class Resource extends Base {
+export abstract class Resource extends Injectable {
   /**
    * use collection resource
    * @param data resource data
