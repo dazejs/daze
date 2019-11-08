@@ -4,22 +4,23 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import getType from 'cache-content-type';
+import contentDisposition from 'content-disposition';
+import { OutgoingHttpHeaders, ServerResponse } from 'http';
+import { extname } from 'path';
+
+import { Container } from '../container';
+import { Cookie } from '../cookie';
+import { Application } from '../foundation/application';
+import { Request } from '../request';
+import { Resource } from '../resource/resource';
+import { View } from '../view';
+import { ViewFactory } from '../view/factory';
+import { Statusable } from './statusable';
+
 
 // import statuses from 'statuses'
-import getType from 'cache-content-type';
-import { extname } from 'path';
-import contentDisposition from 'content-disposition';
-import { Resource} from '../resource/resource';
-import { ViewFactory } from '../view/factory';
 // import { IllegalArgumentError } from '../errors/illegal-argument-error'
-import { View } from '../view';
-import { Cookie } from '../cookie';
-import { Statusable } from './statusable';
-import { Application } from '../foundation/application';
-import { OutgoingHttpHeaders, ServerResponse } from 'http';
-import { Container } from '../container';
-import { Request } from '../request';
-
 const defaultContentTypes = {
   JSON: 'application/json; charset=utf-8',
   PLAIN: 'text/plain; charset=utf-8',

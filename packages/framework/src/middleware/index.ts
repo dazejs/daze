@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import is from 'core-util-is';
-import { Container} from '../container';
-import { Pipeline } from '../pipeline';
+
+import { Container } from '../container';
 import { Application } from '../foundation/application';
+import { Pipeline } from '../pipeline';
 import { Request } from '../request';
 import { Response } from '../response';
+
 
 export type TNext = (...args: any[]) => Response | Promise<Response>
 

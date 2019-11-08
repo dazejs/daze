@@ -1,5 +1,5 @@
-
 import { Builder } from '../builder';
+
 
 export class Parser {
   components: string[] = [

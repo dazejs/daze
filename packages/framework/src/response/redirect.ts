@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import { Response } from './';
 import * as symbols from '../symbol';
 import { Validate } from '../validate';
+import { Response } from './';
+
 
 export class Redirect extends Response {
   /**

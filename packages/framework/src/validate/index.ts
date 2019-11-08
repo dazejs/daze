@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Message } from '../foundation/support/message';
-import * as validators from './validators';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
+import { Message } from '../foundation/support/message';
+import * as validators from './validators';
 
 export interface RuleData {
   field: string;

@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import { HTTP_CODE } from '../symbol';
+
 
 function injectedMethod(target: any, name: string, descriptor: any, code: number) {
   target[name][HTTP_CODE] = code;

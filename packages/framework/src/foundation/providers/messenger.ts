@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import { Messenger } from '../../cluster/messenger';
 import { Application } from '../application';
+
 
 export class MessengerProvider {
   app: Application;

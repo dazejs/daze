@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import EventEmitter from 'events';
+
 import * as symbols from '../symbol';
 
 const BIND = Symbol('Container#bind');

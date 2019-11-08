@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import { HttpServer } from '../http-server';
 import { Application } from '../application';
+import { HttpServer } from '../http-server';
+
 
 
 export class HttpServerProvider {

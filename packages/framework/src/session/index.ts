@@ -1,11 +1,12 @@
-
-import uuid from 'uuid/v4';
 import is from 'core-util-is';
+import uuid from 'uuid/v4';
+
 import { Container } from '../container';
-import { decode, encode } from './helpers';
-import * as symbols from '../symbol';
 import { Application } from '../foundation/application';
 import { Request } from '../request';
+import * as symbols from '../symbol';
+import { decode, encode } from './helpers';
+
 
 export interface SessionOptions {
   store: string;

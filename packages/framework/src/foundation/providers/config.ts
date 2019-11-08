@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import { Config } from '../../config';
 import { Application } from '../application';
+
 
 export class ConfigProvider {
   app: Application;

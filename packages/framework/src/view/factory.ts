@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { View } from '.';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { View } from '.';
 import { Request } from '../request';
 
 export class ViewFactory {

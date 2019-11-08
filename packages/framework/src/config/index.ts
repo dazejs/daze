@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
+import is from 'core-util-is';
 import fs from 'fs';
 import path from 'path';
-import is from 'core-util-is';
+
 import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 import { Application } from '../foundation/application';
+
 
 const envMap = new Map([
   ['development', 'dev'],

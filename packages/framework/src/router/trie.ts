@@ -1,7 +1,7 @@
-import { Node } from './node';
-import { parsePattern} from './helpers';
-import { Route } from './route';
 import { Request } from '../request';
+import { parsePattern } from './helpers';
+import { Node } from './node';
+import { Route } from './route';
 
 export class Trie {
   /**

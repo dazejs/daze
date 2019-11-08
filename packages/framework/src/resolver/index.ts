@@ -1,7 +1,8 @@
 // import { Container } from '../container';
+import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
-import { ControllerManager } from '../controller';
+
 // import { ModelManager } from '../model';
 
 

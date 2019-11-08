@@ -1,5 +1,6 @@
-import { createInjectDecorator } from './factory/create-inject-decorator';
 import * as symbols from '../symbol';
+import { createInjectDecorator } from './factory/create-inject-decorator';
+
 export const OriginalReq = createInjectDecorator(symbols.INJECTORS.REQ);
 export const Req = OriginalReq;
 export const OriginalRes = createInjectDecorator(symbols.INJECTORS.RES);

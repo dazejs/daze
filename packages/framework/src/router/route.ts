@@ -4,16 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
+import is from 'core-util-is';
 import http from 'http';
 import pathToRegExp from 'path-to-regexp';
-import is from 'core-util-is';
+
 import { Container } from '../container';
+import { Application } from '../foundation/application';
 import { Middleware } from '../middleware';
+import { Request } from '../request';
 import { Response } from '../response';
 import { parsePattern } from './helpers';
-import { Application } from '../foundation/application';
-import { Request } from '../request';
+
 
 export class Route {
 

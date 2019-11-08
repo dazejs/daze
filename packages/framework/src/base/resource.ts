@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Injectable } from './injectable';
-import { Item, Collection } from '../resource';
+import { Collection, Item } from '../resource';
 import { ComponentType } from '../symbol';
+import { Injectable } from './injectable';
 
 @Reflect.metadata('type', ComponentType.Resource)
 export abstract class Resource extends Injectable {

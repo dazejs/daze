@@ -1,9 +1,9 @@
-
-import { Base } from './base';
 import { Request } from '../request';
-import { Resource as BaseResource } from './resource';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
+import { Base } from './base';
+import { Resource as BaseResource } from './resource';
+
 
 @Reflect.metadata('injectable', true)
 export class Injectable extends Base {

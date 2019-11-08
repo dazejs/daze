@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Resolver } from '../../resolver';
 import { Loader } from '../../loader';
+import { Resolver } from '../../resolver';
 import { Application } from '../application';
 
 export class ResolverProvider {

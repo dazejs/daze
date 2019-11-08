@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import { Container} from '../container';
+import { Controller } from '../base';
+import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ComponentType } from '../symbol';
-import { Controller } from '../base';
+
 
 export class ControllerManager {
   /**

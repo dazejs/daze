@@ -4,8 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import path from 'path';
 import is from 'core-util-is';
+import path from 'path';
+
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 

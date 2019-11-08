@@ -4,19 +4,20 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import path from 'path';
 import cluster from 'cluster';
-import util from 'util';
-import Keygrip from 'keygrip';
 import { Server } from 'http';
-import { Container } from '../container';
+import Keygrip from 'keygrip';
+import path from 'path';
+import util from 'util';
+
 import { Master, Worker } from '../cluster';
-import * as providers from './providers';
-import { HttpError } from '../errors/http-error';
-import { HttpServer } from './http-server';
 import { Config } from '../config';
-import { Logger } from '../logger';
+import { Container } from '../container';
 import { Database } from '../database';
+import { HttpError } from '../errors/http-error';
+import { Logger } from '../logger';
+import { HttpServer } from './http-server';
+import * as providers from './providers';
 
 const DEFAULT_PORT = 8080;
 

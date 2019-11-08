@@ -1,5 +1,5 @@
-import { Parser } from '../parser/parser';
 import { Builder } from '../builder';
+import { Parser } from '../parser/parser';
 
 export abstract class AbstractConnection {
   parser: Parser;

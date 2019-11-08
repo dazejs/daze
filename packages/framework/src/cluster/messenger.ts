@@ -4,11 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import EventEmitter from 'events';
 import cluster from 'cluster';
-import { getAlivedWorkers } from './helpers';
-import { Container } from '../container';
+import EventEmitter from 'events';
+
 import { Config } from '../config';
+import { Container } from '../container';
+import { getAlivedWorkers } from './helpers';
 
 const MESSENGER = 'daze-messenger';
 

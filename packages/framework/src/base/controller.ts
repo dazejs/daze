@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Injectable } from './injectable';
-import { View } from '../view';
 import { ComponentType } from '../symbol';
+import { View } from '../view';
+import { Injectable } from './injectable';
 
 @Reflect.metadata('type', ComponentType.Controller)
 export abstract class Controller extends Injectable {

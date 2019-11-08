@@ -1,7 +1,7 @@
-import { Application } from '../foundation/application';
-import { IllegalArgumentError } from '../errors/illegal-argument-error';
-import { MysqlConnection } from './connection/mysql-connection';
 import { Container } from '../container';
+import { IllegalArgumentError } from '../errors/illegal-argument-error';
+import { Application } from '../foundation/application';
+import { MysqlConnection } from './connection/mysql-connection';
 import { MysqlConnector } from './connector/mysql-connector';
 
 export class Database {

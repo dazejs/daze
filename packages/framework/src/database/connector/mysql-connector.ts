@@ -1,4 +1,5 @@
-import { createConnection, ConnectionConfig, MysqlError, Connection } from 'mysql';
+import { Connection, ConnectionConfig, createConnection, MysqlError } from 'mysql';
+
 import { ConnectorInterface } from './connector.interface';
 
 // Mysql 连接器

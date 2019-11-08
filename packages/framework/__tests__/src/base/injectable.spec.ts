@@ -1,5 +1,3 @@
-
-
 import path from 'path';
 import request from 'supertest';
 import { Application } from '../../../src';

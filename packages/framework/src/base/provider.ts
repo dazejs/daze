@@ -1,5 +1,5 @@
-import { Base } from './base';
 import { ComponentType } from '../symbol';
+import { Base } from './base';
 
 @Reflect.metadata('type', ComponentType.Provider)
 @Reflect.metadata('injectable', true)

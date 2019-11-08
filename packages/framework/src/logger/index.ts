@@ -4,14 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import path from 'path';
 import * as winston from 'winston';
 import { MongoDB } from 'winston-mongodb';
-// import DailyRotateFile from 'winston-daily-rotate-file';
+
 import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 
+
+// import DailyRotateFile from 'winston-daily-rotate-file';
 export class Logger {
   app: any;
   container: any;

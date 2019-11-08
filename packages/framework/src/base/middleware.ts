@@ -4,10 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Base } from './base';
-import { ComponentType } from '../symbol';
-// import { Request } from '../request';
 import { Response } from '../response';
+import { ComponentType } from '../symbol';
+import { Base } from './base';
+
+// import { Request } from '../request';
 // import { TNext } from '../middleware';
 
 

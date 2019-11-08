@@ -1,4 +1,4 @@
-import { Builder, TSymlink, TJoinType } from './builder';
+import { Builder, TJoinType, TSymlink } from './builder';
 
 
 export class Join {

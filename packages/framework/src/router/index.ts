@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import { Route } from './route';
 import { Container } from '../container';
-import { Dispatcher } from './dispatcher';
-import { Trie } from './trie';
-import { CORSMiddleware } from '../foundation/middlewares';
 import { Application } from '../foundation/application';
+import { CORSMiddleware } from '../foundation/middlewares';
 import { Request } from '../request';
+import { Dispatcher } from './dispatcher';
+import { Route } from './route';
+import { Trie } from './trie';
+
 
 export class Router {
   app: Application = Container.get('app');

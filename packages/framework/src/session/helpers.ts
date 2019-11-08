@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import { crc32 } from 'crc';
+
 
 export function decode(str: string) {
   const body = Buffer.from(str, 'base64').toString('utf8');

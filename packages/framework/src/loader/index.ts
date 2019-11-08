@@ -4,22 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import path from 'path';
-// import fs from 'fs';
 import glob from 'glob';
-import { VerifyCsrfToken } from '../foundation/middlewares';
-import { ComponentType } from '../symbol';
-import { Application } from '../foundation/application';
-import {
-  Controller,
-  Service,
-  Validator,
-  Resource,
-  Middleware,
-} from '../base';
-import { Model } from '../model';
+import path from 'path';
 
+import { Controller, Middleware, Resource, Service, Validator } from '../base';
+import { Application } from '../foundation/application';
+import { VerifyCsrfToken } from '../foundation/middlewares';
+import { Model } from '../model';
+import { ComponentType } from '../symbol';
+
+
+// import fs from 'fs';
 export class Loader {
   /**
    * @var app Application

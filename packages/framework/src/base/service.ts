@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Injectable } from './injectable';
 import { ComponentType } from '../symbol';
+import { Injectable } from './injectable';
 
 
 @Reflect.metadata('type', ComponentType.Service)

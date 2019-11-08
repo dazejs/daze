@@ -4,15 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import cluster from 'cluster';
 import debuger from 'debug';
-import net from 'net';
 import http from 'http';
-import {
-  RELOAD_SIGNAL, WORKER_DYING, WORKER_DID_FORKED, WORKER_DISCONNECT, STIKCY_CONNECTION
-} from './const';
+import net from 'net';
+
 import { Deferred } from '../foundation/support/defered';
+import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
+
 
 const debug = debuger('daze-framework:cluster');
 

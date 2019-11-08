@@ -1,8 +1,8 @@
-
-import { Parser } from '../parser';
 import { IllegalArgumentError } from '../../errors/illegal-argument-error';
 import { AbstractConnection } from '../connection/connection.abstract';
+import { Parser } from '../parser';
 import { Join } from './join';
+
 
 export type TSymlink = 'and' | 'or' | ''
 

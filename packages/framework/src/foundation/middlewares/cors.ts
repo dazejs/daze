@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import is from 'core-util-is';
-import { Response } from '../../response';
-import { Component } from '../../decorators';
+
 import { Middleware } from '../../base/middleware';
-import { Request } from '../../request';
+import { Component } from '../../decorators';
 import { TNext } from '../../middleware';
+import { Request } from '../../request';
+import { Response } from '../../response';
+
 
 const defaultOptions = {
   origin: '*',

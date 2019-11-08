@@ -1,6 +1,7 @@
 import { Connection } from 'mysql';
-import { AbstractConnection } from './connection.abstract';
+
 import { MysqlParser } from '../parser';
+import { AbstractConnection } from './connection.abstract';
 
 export class MysqlConnection extends AbstractConnection {
 

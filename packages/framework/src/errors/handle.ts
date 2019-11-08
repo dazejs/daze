@@ -4,17 +4,18 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-
+import tracePage from '@dazejs/trace-page';
 import statuses from 'statuses';
 import * as typeis from 'type-is';
-import tracePage from '@dazejs/trace-page';
+
 import { Container } from '../container';
-import { HttpError } from './http-error';
-import { ValidateHttpError } from './validate-http-error';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 import { View } from '../view';
+import { HttpError } from './http-error';
+import { ValidateHttpError } from './validate-http-error';
+
+
 
 const defaultHttpErrorTemplate = {
   401: "errors/401.njk",

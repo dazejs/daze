@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
+import { Resource as BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { Resource as BaseResource } from '../base/resource';
 import { ComponentType } from '../symbol';
+
 
 const DEFAULT_KEY = 'data';
 

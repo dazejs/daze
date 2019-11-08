@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
+
 import * as symbols from '../../symbol';
 import { Application } from '../application';
 

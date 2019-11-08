@@ -1,5 +1,5 @@
-import { Parser } from './parser';
 import { Builder } from '../builder';
+import { Parser } from './parser';
 
 export class MysqlParser extends Parser {
   parseLock(builder: Builder) {

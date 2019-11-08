@@ -1,6 +1,6 @@
-
 import { isMatchNodeWithType } from './helpers';
 import { Route } from './route';
+
 
 export class Node {
   /**

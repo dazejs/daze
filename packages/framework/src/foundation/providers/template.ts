@@ -4,11 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
-import path from 'path';
 import nunjucks from 'nunjucks';
-import { Application } from '../application';
+import path from 'path';
+
 import { Config } from '../../config';
+import { Application } from '../application';
+
 
 export class TemplateProvider {
   /**

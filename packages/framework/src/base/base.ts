@@ -5,17 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 import { OutgoingHttpHeaders } from 'http';
+
+import { Messenger } from '../cluster/messenger';
+import { Config } from '../config';
 import { Container } from '../container';
+import { Database } from '../database';
+import { Builder } from '../database/builder';
+import { AbstractConnection } from '../database/connection/connection.abstract';
+import { Application } from '../foundation/application';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
-import { Application } from '../foundation/application';
-import { Config } from '../config';
-import { Messenger } from '../cluster/messenger';
-import { AbstractConnection } from '../database/connection/connection.abstract';
-import { Builder } from '../database/builder';
-// import { Model } from './model';
-import { Database } from '../database';
 
+// import { Model } from './model';
 @Reflect.metadata('injectable', true)
 export abstract class Base {
   /**

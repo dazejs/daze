@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { EResourceTypeList, FormatterType, Resource } from './resource';
 
-import { Resource, EResourceTypeList, FormatterType } from './resource';
 
 export class Item extends Resource {
   constructor(data: any, formatter?: FormatterType, key?: any) {

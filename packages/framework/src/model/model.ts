@@ -1,8 +1,8 @@
-
-import { ModelBuilder} from './builder';
-import { Builder } from '../database/builder';
 import { Base } from '../base';
+import { Builder } from '../database/builder';
 import { ComponentType } from '../symbol';
+import { ModelBuilder } from './builder';
+
 
 @Reflect.metadata('type', ComponentType.Model)
 @Reflect.metadata('injectable', true)

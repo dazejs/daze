@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { formatPrefix } from './helpers';
 import { ComponentType } from '../symbol';
+import { formatPrefix } from './helpers';
 
 export function Route(prefix = ''): ClassDecorator {
   return function (constructor) {
