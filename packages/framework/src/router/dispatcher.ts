@@ -149,7 +149,7 @@ export class Dispatcher {
       .catch((err) => {
         throw err;
       });
-      // .then(this.handleResponse())
+    // .then(this.handleResponse())
   }
 
   // handleResponse() {

@@ -4,16 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Injectable } from './injectable';
+import { Base } from './base';
 import { ComponentType } from '../symbol';
-import { Request } from '../request';
+// import { Request } from '../request';
 import { Response } from '../response';
-import { TNext } from '../middleware';
+// import { TNext } from '../middleware';
 
 
 @Reflect.metadata('type', ComponentType.Middleware)
-export abstract class Middleware extends Injectable {
-  abstract resolve(request: Request, next: TNext): Response | Promise<Response>
+export abstract class Middleware extends Base {
+  // abstract resolve(request: Request, next: TNext): Response | Promise<Response>
+  abstract resolve(...args: any[]): Response | Promise<Response>
 }
 
 
