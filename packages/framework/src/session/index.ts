@@ -1,4 +1,3 @@
-import is from 'core-util-is';
 import uuid from 'uuid/v4';
 
 import { Container } from '../container';
@@ -142,7 +141,7 @@ export class Session {
    * @param session
    */
   verify(session: any) {
-    if (!session || !is.isObject(session)) return false;
+    if (!session || typeof session !== 'object') return false;
     if (session._expire && session._expire < Date.now()) return false;
     return true;
   }

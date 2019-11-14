@@ -62,7 +62,6 @@
     "co-body": "^6.0.0",
     "content-disposition": "^0.5.3",
     "cookies": "^0.8.0",
-    "core-util-is": "^1.0.2",
     "crc": "^3.8.0",
     "csrf": "^3.0.6",
     "debug": "^4.1.1",
@@ -76,7 +75,7 @@
     "minimatch": "^3.0.4",
     "nunjucks": "^3.1.3",
     "parseurl": "^1.3.2",
-    "path-to-regexp": "^3.1.0",
+    "path-to-regexp": "^5.0.0",
     "pluralize": "^8.0.0",
     "redis": "^2.8.0",
     "reflect-metadata": "^0.1.13",
@@ -93,6 +92,8 @@
   "devDependencies": {
     "@types/mysql": "^2.15.7",
     "@types/pluralize": "^0.0.29",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "copyfiles": "^2.1.1",
+    "rimraf": "^3.0.0"
   }
 }

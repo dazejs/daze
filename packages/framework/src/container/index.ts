@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 
 import * as symbols from '../symbol';
 

@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import nunjucks from 'nunjucks';
-import path from 'path';
+import * as nunjucks from 'nunjucks';
+import * as path from 'path';
 
 import { Config } from '../../config';
 import { Application } from '../application';

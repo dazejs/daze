@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import cluster from 'cluster';
-import EventEmitter from 'events';
+import * as cluster from 'cluster';
+import { EventEmitter } from 'events';
 
 import { Config } from '../config';
 import { Container } from '../container';
@@ -57,7 +57,7 @@ export class Messenger extends EventEmitter {
   run() {
     if (cluster.isMaster) { // 主进程
       // 主进程监听工作进程发送的消息事件
-      cluster.on('message', (_worker, message) => {
+      process.on('message', (_worker, message) => {
         // 不处理 Messenger 以外的通信数据
         if (!message || message.action !== MESSENGER) return;
         if (message.type === 'broadcast') {

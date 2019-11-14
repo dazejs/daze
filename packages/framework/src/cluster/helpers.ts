@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import cluster from 'cluster';
-import os from 'os';
+import * as cluster from 'cluster';
+import * as os from 'os';
 
 import { WORKER_DYING } from './const';
 import { MasterOptions } from './master';

@@ -4,7 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
 
 import { Middleware } from '../../base/middleware';
 import { Component } from '../../decorators';
@@ -30,12 +29,12 @@ export class CORSMiddleware extends Middleware {
   }
 
   parseOptions(options: any) {
-    if (is.isString(options)) {
+    if (typeof options === 'string') {
       return {
         ...defaultOptions,
         origin: options,
       };
-    } if (is.isObject(options)) {
+    } if (options && typeof options === 'object') {
       return {
         ...defaultOptions,
         ...options,

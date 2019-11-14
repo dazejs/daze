@@ -4,13 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import glob from 'glob';
-import path from 'path';
+import * as glob from 'glob';
+import * as path from 'path';
 
-import { Controller, Middleware, Resource, Service, Validator } from '../base';
+import { Controller, Middleware, Resource, Service, Validator, Model } from '../base';
 import { Application } from '../foundation/application';
 import { VerifyCsrfToken } from '../foundation/middlewares';
-import { Model } from '../model';
 import { ComponentType } from '../symbol';
 
 

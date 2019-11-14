@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import path from 'path';
+import * as path from 'path';
 import * as winston from 'winston';
 import { MongoDB } from 'winston-mongodb';
 

@@ -4,13 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import isType from 'core-util-is';
 import validator from 'validator';
 
 // MARK: Custom
 
 export function passed(value: any, callback: any): boolean {
-  return isType.isFunction(callback) && !!callback(value);
+  return typeof callback === 'function' && !!callback(value);
 };
 
 // MARK: Common
@@ -79,74 +78,74 @@ export function beforeDate(value: any, date: any) {
 // MARK: Type
 
 export function isBoolean(value: any) {
-  return isType.isBoolean(value);
+  return typeof value === 'boolean';
 };
 
 export function isDate(value: any) {
-  return isType.isDate(value);
+  return Object.prototype.toString.call(value) === '[object Date]';
 };
 
 export function isString(value: any) {
-  return isType.isString(value);
+  return typeof value === 'string';
 };
 
 export function isNumber(value: any) {
-  return isType.isNumber(value);
+  return typeof value === 'number';
 };
 
 export function isArray(value: any) {
-  return isType.isArray(value);
+  return Array.isArray(value);
 };
 
 export function isError(value: any) {
-  return isType.isError(value);
+  return value instanceof Error;
 };
 
 export function isFunction(value: any) {
-  return isType.isFunction(value);
+  return typeof value === 'function';
 };
 
 export function isBuffer(value: any) {
-  return isType.isBuffer(value);
+  return Buffer.isBuffer(value);
 };
 
 export function isObject(value: any) {
-  return isType.isObject(value);
+  return Object.prototype.toString.call(value) === '[object Object]';
 };
 
 export function isRegExp(value: any) {
-  return isType.isRegExp(value);
+  return Object.prototype.toString.call(value) === '[object RegExp]';
 };
 
 export function isSymbol(value: any) {
-  return isType.isSymbol(value);
+  return typeof value === 'symbol';
 };
 
 export function isNullOrUndefined(value: any) {
-  return isType.isNullOrUndefined(value);
+  return value === null || value === undefined;
 };
 
 export function isNull(value: any) {
-  return isType.isNull(value);
+  return value === null;
 };
 
 export function isUndefined(value: any) {
-  return isType.isUndefined(value);
+  return value === undefined;
 };
 
 // MARK: String Type
 
 export function isDateString(value: any) {
   const date = Date.parse(value);
-  return isType.isString(value) && !Number.isNaN(date);
+  return typeof value === 'string' && !Number.isNaN(date);
 };
 
 export function isBooleanString(value: any) {
-  return isType.isString(value) && validator.isBoolean(value);
+  return typeof value === 'string' && validator.isBoolean(value);
 };
 
 export function isNumberString(value: any, options?: any) {
-  return isType.isString(value) && validator.isNumeric(value, options);
+  return typeof value === 'string' && validator.isNumeric(value, options);
 };
 
 // MARK: String

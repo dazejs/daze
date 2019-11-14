@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import fs from 'fs';
+import * as fs from 'fs';
 import mime from 'mime-types';
-import path from 'path';
+import * as path from 'path';
 import { promisify } from 'util';
 
 import { Container } from '../container';
@@ -53,60 +53,69 @@ export class Dispatcher {
    * resolve dispatcher
    */
   async resolve() {
-    if (this.route) {
+    if (!this.isStaticServerRequest()) return this.dispatchToRoute();
+    const staticFilePath = this.getStaticFilePath();
+    let stats;
+    try {
+      stats = await promisify(fs.stat)(staticFilePath);
+    } catch (err) {
+      if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
+        return this.dispatchToRoute();
+      }
+    }
+    if (!stats || stats?.isDirectory()) {
       return this.dispatchToRoute();
     }
-    return this.dispatchToStaticServer();
+    return this.dispatchToStaticServer(staticFilePath, stats);
   }
 
   /**
    * dispatch request to static server
    */
-  async dispatchToStaticServer() {
+  async dispatchToStaticServer(staticFilePath: string, stats: fs.Stats) {
     // create response instance
     const response = new Response().staticServer();
     const { maxage } = this.publicOptions;
-    if (this.isStaticServerRequest()) {
-      let filePath = this.getStaticFilePath();
+    let filePath = staticFilePath;
 
-      let encodingExt = '';
-      if (this.isEncodingBR(filePath)) {
-        filePath += '.br';
-        response.setHeader('Content-Encoding', 'br');
-        this.request.res.removeHeader('Content-Length');
-        encodingExt = '.br';
-      } else if (this.isEncodingGZ(filePath)) {
-        filePath += '.gz';
-        response.setHeader('Content-Encoding', 'gzip');
-        this.request.res.removeHeader('Content-Length');
-        encodingExt = '.gz';
-      }
-
-      let stats;
-      try {
-        stats = await promisify(fs.stat)(filePath);
-      } catch (err) {
-        if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
-          throw this.createNotFountError();
-        }
-        throw err;
-      }
-      if (!stats.isDirectory()) {
-        response.setHeader('Content-Length', stats.size);
-        if (!this.request.getHeader('Last-Modified')) response.setHeader('Last-Modified', stats.mtime.toUTCString());
-        if (!this.request.getHeader('Cache-Control')) {
-          const directives = [`max-age=${maxage / 1000 | 0}`];
-          response.setHeader('Cache-Control', directives.join(','));
-        }
-        response.setHeader('Content-Type', mime.lookup(type(filePath, encodingExt)));
-        response.setData(fs.createReadStream(filePath));
-        return response;
-        // return new ResponseManager(response).output(this.request);
-      }
+    let encodingExt = '';
+    if (this.isEncodingBR(filePath)) {
+      filePath += '.br';
+      response.setHeader('Content-Encoding', 'br');
+      this.request.res.removeHeader('Content-Length');
+      encodingExt = '.br';
+    } else if (this.isEncodingGZ(filePath)) {
+      filePath += '.gz';
+      response.setHeader('Content-Encoding', 'gzip');
+      this.request.res.removeHeader('Content-Length');
+      encodingExt = '.gz';
     }
 
-    throw this.createNotFountError();
-    // return this.errorCatch(error);
+    response.setHeader('Content-Length', stats.size);
+    if (!this.request.getHeader('Last-Modified')) response.setHeader('Last-Modified', stats.mtime.toUTCString());
+    if (!this.request.getHeader('Cache-Control')) {
+      const directives = [`max-age=${maxage / 1000 | 0}`];
+      response.setHeader('Cache-Control', directives.join(','));
+    }
+    response.setHeader('Content-Type', mime.lookup(type(filePath, encodingExt)));
+    response.setData(fs.createReadStream(filePath));
+    return response;
+  }
+
+  async checkIfStaticServer(filePath: string) {
+    if (!this.isStaticServerRequest()) return false;
+    let stats;
+    try {
+      stats = await promisify(fs.stat)(filePath);
+    } catch (err) {
+      if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
+        return false;
+      }
+    }
+    if (stats?.isDirectory()) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -145,6 +154,9 @@ export class Dispatcher {
    * dispatch request to controller
    */
   async dispatchToRoute() {
+    if (!this.route) {
+      throw this.createNotFountError();
+    }
     return this.route.middleware
       .handle(this.request, async (request: Request) => this.route.resolve(request))
       .catch((err) => {

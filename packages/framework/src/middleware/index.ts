@@ -4,8 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
-
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { Pipeline } from '../pipeline';
@@ -26,9 +24,9 @@ export class Middleware {
    * register a middleware
    */
   register(middleware: any, args: any[] = []) {
-    if (is.isString(middleware)) {
+    if (typeof middleware === 'string') {
       this.parseStringMiddleware(middleware, args);
-    } else if (is.isFunction(middleware)) {
+    } else if (typeof middleware === 'function') {
       this.parseFunctionMiddleware(middleware, args);
     }
     return this;

@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import cluster from 'cluster';
+import * as cluster from 'cluster';
 import debuger from 'debug';
-import net from 'net';
+import * as net from 'net';
 import hash from 'string-hash';
 
 import { Deferred } from '../foundation/support/defered';

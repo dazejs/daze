@@ -4,7 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
 import path from 'path';
 
 import { Container } from '../container';
@@ -48,7 +47,7 @@ export class View {
    * @param value variable value
    */
   assign(name: string | object, value?: any) {
-    if (is.isObject(name)) {
+    if (name && typeof name === 'object') {
       this.vars = Object.assign(this.vars, name);
     } else if (typeof name === 'string') {
       this.vars[name] = value;

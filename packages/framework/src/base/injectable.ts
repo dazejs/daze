@@ -3,6 +3,8 @@ import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
 import { Resource as BaseResource } from './resource';
+import { Model } from './model';
+import { ModelBuilder } from '../model/builder';
 
 
 @Reflect.metadata('injectable', true)
@@ -83,5 +85,17 @@ export class Injectable extends Base {
    */
   collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
     return (new Resource.Collection(data, resource).setContext(this.__context__));
+  }
+
+
+  model(model: string | { new(): Model }) {
+    if (typeof model === 'string') {
+      return (new ModelBuilder(
+        this.app.get(`model.${model}`)
+      )).prepare();
+    };
+    return (new ModelBuilder(
+      this.app.get(model)
+    )).prepare();
   }
 }

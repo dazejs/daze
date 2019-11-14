@@ -99,6 +99,10 @@ export class Node {
     const key = keys[height];
     const children = this.matchChildren(key);
 
+    if (!children.length) {
+      if (this.route) return this;
+    }
+
     for (const child of children) {
       const res = child.search(keys, height + 1);
       if (res) return res;

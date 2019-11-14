@@ -4,7 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
 
 import * as validators from '../../validate/validators';
 import { validatorFactory } from './factory';
@@ -267,7 +266,7 @@ export function NotContains(seed: any, options?: any) {
 
 export function IsAlpha(locale?: any, options?: any) {
   const defaultMessage = '$field must contain only letters (a-zA-Z)';
-  if (is.isObject(locale)) {
+  if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isAlpha, [locale.locale], {
       message: defaultMessage,
       ...locale,
@@ -281,7 +280,7 @@ export function IsAlpha(locale?: any, options?: any) {
 
 export function IsAlphanumeric(locale?: any, options?: any) {
   const defaultMessage = '$field must contain only letters and numbers';
-  if (is.isObject(locale)) {
+  if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isAlphanumeric, [locale.locale], {
       message: defaultMessage,
       ...locale,
@@ -375,7 +374,7 @@ export function IsHexadecimal (options?: any) {
 
 export function IsIP(version?: any, options?: any) {
   const defaultMessage = '$field must be an ip address';
-  if (is.isObject(version)) {
+  if (version && typeof version === 'object') {
     return validatorFactory(validators.isIP, [version.version], {
       message: defaultMessage,
       ...version,
@@ -389,7 +388,7 @@ export function IsIP(version?: any, options?: any) {
 
 export function IsISBN(version?: any, options?: any) {
   const defaultMessage = '$field must be an ISBN';
-  if (is.isObject(version)) {
+  if (version && typeof version === 'object') {
     return validatorFactory(validators.isISBN, [version.version], {
       message: defaultMessage,
       ...version,
@@ -438,7 +437,7 @@ export function IsLowercase (options?: any) {
 };
 
 export function IsMobilePhone(locale?: any, options?: any) {
-  if (is.isObject(locale)) {
+  if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isMobilePhone, [locale.locale, locale], locale);
   }
   return validatorFactory(validators.isMobilePhone, [locale, options], {
@@ -478,7 +477,7 @@ export function IsURL (options?: any) {
 
 export function IsUUID(version?: any, options?: any) {
   const defaultMessage = '$field must be an UUID';
-  if (is.isObject(version)) {
+  if (version && typeof version === 'object') {
     return validatorFactory(validators.isUUID, [version.version], {
       message: defaultMessage,
       ...version,
@@ -520,7 +519,7 @@ export function MaxLength(max: any, options?: any) {
 
 export function Matches(pattern: any, modifiers?: any, options?: any) {
   const defaultMessage = '$field must match $1 regular expression';
-  if (is.isObject(modifiers)) {
+  if (modifiers && typeof modifiers === 'object') {
     return validatorFactory(
       validators.matches,
       [pattern, modifiers.modifiers, modifiers],

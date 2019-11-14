@@ -4,9 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
@@ -80,7 +79,7 @@ export class Config {
           this.set(normalBasename, currentConfig);
         } else {
           const oldConfig = this.get(normalBasename);
-          if (is.isObject(oldConfig)) {
+          if (oldConfig && !Array.isArray(oldConfig) && typeof oldConfig === 'object') {
             this.set(normalBasename, {
               ...oldConfig,
               ...currentConfig
@@ -95,7 +94,7 @@ export class Config {
           this.set(envBasename, currentConfig);
         } else {
           const oldConfig = this.get(envBasename);
-          if (is.isObject(oldConfig)) {
+          if (oldConfig && !Array.isArray(oldConfig) && typeof oldConfig === 'object') {
             this.set(envBasename, {
               ...oldConfig,
               ...currentConfig
@@ -131,7 +130,7 @@ export class Config {
    * Set the property value according to the property name
    */
   set(name: string, value: any) {
-    if (!is.isString(name)) throw new IllegalArgumentError('Config#set name must be String!');
+    if (typeof name !== 'string') throw new IllegalArgumentError('Config#set name must be String!');
     const names = name.split('.');
     const nameValue = this.setValue(names, value);
     // Merge configuration attributes

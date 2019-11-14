@@ -5,10 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-// import assert from 'assert'
-// import is from 'core-util-is'
-// import { IllegalArgumentError } from '../errors/illegal-argument-error'
-
 type TStage = (...args: any[]) => any
 
 type TProcesser = (...args: any[]) => any

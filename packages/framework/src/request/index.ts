@@ -6,11 +6,10 @@
  */
 import accepts from 'accepts';
 import Cookies from 'cookies';
-import is from 'core-util-is';
-import http from 'http';
+import * as http from 'http';
 import parse from 'parseurl';
-import qs from 'querystring';
-import typeis from 'type-is';
+import * as qs from 'querystring';
+import { is as typeIs } from 'type-is';
 
 import { Container } from '../container';
 import { ValidateHttpError } from '../errors/validate-http-error';
@@ -490,7 +489,7 @@ export class Request {
   }
 
   is(...types: any[]) {
-    return typeis(this.req, types);
+    return typeIs(this.getHeader('content-type') as string, types);
   }
 
   /**
@@ -574,7 +573,7 @@ export class Request {
         if (this.hasParam(arg)) {
           res[arg] = this.getParam(arg);
         }
-      } else if (is.isArray(arg)) {
+      } else if (Array.isArray(arg)) {
         for (const name of arg) {
           if (this.hasParam(name)) {
             res[name] = this.getParam(name);

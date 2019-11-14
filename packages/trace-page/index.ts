@@ -1,9 +1,9 @@
 
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import stackTrace from 'stack-trace';
 import { promisify } from 'util';
-import nunjucks from 'nunjucks';
+import * as nunjucks from 'nunjucks';
 
 const contextLinesNumber = 10;
 const WRITE_CONTENT_IN_LINE = Symbol('Trace#writeContentInLine');

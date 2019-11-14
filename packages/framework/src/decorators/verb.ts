@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import http from 'http';
+import * as http from 'http';
 
 import { formatPrefix } from './helpers';
 

@@ -4,12 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import cluster from 'cluster';
+import * as cluster from 'cluster';
 import { Server } from 'http';
 import Keygrip from 'keygrip';
-import path from 'path';
-import util from 'util';
-
+import * as path from 'path';
+import * as util from 'util';
 import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
@@ -201,23 +200,29 @@ export class Application extends Container {
    * load a registed provider with key or provider function
    */
   async load(Provider: any): Promise<this> {
-    if (typeof Provider === 'string') {
-      if (this.has(Provider)) {
-        await this.register(this.get(Provider));
-        return this;
-      }
-      try {
-        const Target = (await import(Provider)).default;
-        await this.register(new Target(this));
-      } catch (err) {
-        throw new Error(`Can not find provider [${Provider}]!`);
-      }
-      return this;
-    }
+    // if (typeof Provider === 'string') {
+    //   if (this.has(Provider)) {
+    //     await this.register(this.get(Provider));
+    //     return this;
+    //   }
+    //   try {
+    //     const Target = (await import(Provider)).default;
+    //     const type = Reflect.getMetadata('type', Target);
+    //     if (type !== 'provider') throw new Error(`${Target.name || 'Unknow'} is not a provider!`);
+    //     console.log(Target.toString());
+    //     await this.register(new Target(this));
+    //   } catch (err) {
+    //     console.error(err);
+    //     throw new Error(`Can not find provider [${Provider}]!`);
+    //   }
+    //   return this;
+    // }
     if (typeof Provider === 'function') {
       const type = Reflect.getMetadata('type', Provider);
-      if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a provider!`);
-      await this.register(new Provider(this));
+      if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a prov222ider!`);
+      await this.register(
+        new Provider(this)
+      );
       return this;
     }
     throw new Error(`Does not supported ${typeof Provider} Provider!`);

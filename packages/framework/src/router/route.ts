@@ -4,9 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import is from 'core-util-is';
-import http from 'http';
-import pathToRegExp from 'path-to-regexp';
+import * as http from 'http';
+import { pathToRegexp, parse, Key } from 'path-to-regexp';
 
 import { Container } from '../container';
 import { Application } from '../foundation/application';
@@ -26,7 +25,7 @@ export class Route {
   /**
    * route params keys
    */
-  keys: pathToRegExp.Key[] = [];
+  keys: Key[] = [];
 
   /**
    * request uri
@@ -80,7 +79,7 @@ export class Route {
     /**
      * @type regexp path RegExp
      */
-    this.regexp = pathToRegExp(uri, this.keys);
+    this.regexp = pathToRegexp(uri, this.keys);
 
     /**
      * @type controller controller
@@ -103,7 +102,7 @@ export class Route {
   }
 
   get pieces() {
-    const pieces = pathToRegExp.parse(this.uri);
+    const pieces = parse(this.uri);
     const res = [];
     for (const piece of pieces) {
       if (piece && typeof piece === 'string') {
@@ -127,7 +126,7 @@ export class Route {
    * @param middleware
    */
   registerMiddleware(middleware: any, args: any[]) {
-    if (middleware && is.isFunction(middleware)) {
+    if (middleware && typeof middleware === 'function') {
       this.middleware.register(middleware, args);
     }
     return this;
@@ -156,7 +155,7 @@ export class Route {
    * @param path request path
    */
   getParams(requestPath: string) {
-    return requestPath.match(this.regexp)!.slice(1);
+    return requestPath.match(this.regexp)?.slice(1) ?? [];
   }
 
   /**
@@ -175,7 +174,7 @@ export class Route {
    * @param requestPath request path
    */
   match(requestPath: string) {
-    return this.regexp.test(requestPath);
+    return !!this.regexp.exec(requestPath);
   }
 
   async resolve(request: Request) {
