@@ -69,13 +69,13 @@ export class Resolver {
    * resolve model components
    */
   resolveModels() {
-    const { models } = this.loader;
-    for (const Model of models) {
-      const name = Reflect.getMetadata('name', Model);
-      this.app.multiton(Model, Model);
+    const { entities } = this.loader;
+    for (const Entity of entities) {
+      const name = Reflect.getMetadata('name', Entity);
+      this.app.multiton(Entity, Entity);
       if (name) {
-        this.app.multiton(`model.${name}`, (...args: any[]) => {
-          return this.app.get(Model, args);
+        this.app.multiton(`entity.${name}`, (...args: any[]) => {
+          return this.app.get(Entity, args);
         }, true);
       }
     }

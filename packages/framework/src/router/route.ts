@@ -106,17 +106,25 @@ export class Route {
     const res = [];
     for (const piece of pieces) {
       if (piece && typeof piece === 'string') {
-        res.push(...parsePattern(piece).map(p => ({
-          key: p,
-          type: 'static',
-        })));
-      }
-      if (piece && typeof piece === 'object') {
+        res.push(...parsePattern(piece).map(p => {
+          if (p === '*') {
+            return {
+              key: p,
+              type: 'all',
+            };
+          }
+          return {
+            key: p,
+            type: 'static',
+          };
+        }));
+      } else if (piece && typeof piece === 'object') {
         res.push({
           key: piece.pattern,
           type: 'reg',
         });
       }
+      
     }
     return res;
   }

@@ -79,7 +79,7 @@ export class View {
    */
   getTemplate() {
     const config = this.app.get('config');
-    const ext = config.get('app.view_extension');
+    const ext = config.get('app.viewExtension', 'html');
     if (path.extname(this.template) === '') {
       return `${this.template}.${ext}`;
     }

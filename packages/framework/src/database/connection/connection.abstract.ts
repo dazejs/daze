@@ -1,12 +1,25 @@
 import { Builder } from '../builder';
 import { Parser } from '../parser/parser';
+// import { Model } from '../../model/model';
+// import { Entity } from '../../base/entity';
 
 export abstract class AbstractConnection {
   parser: Parser;
 
+  // model: Model<Entity>;
+
   constructor() {
     this.useDefaultParser();
   }
+
+  // setModel(model: Model<Entity>) {
+  //   this.model = model;
+  //   return this;
+  // }
+
+  // getModel() {
+  //   return this.model;
+  // }
 
   useDefaultParser() {
     this.parser = this.getDefaultParser();

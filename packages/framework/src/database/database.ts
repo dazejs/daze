@@ -3,6 +3,7 @@ import { IllegalArgumentError } from '../errors/illegal-argument-error';
 import { Application } from '../foundation/application';
 import { MysqlConnection } from './connection/mysql-connection';
 import { MysqlConnector } from './connector/mysql-connector';
+import { AbstractConnection } from './connection/connection.abstract';
 
 export class Database {
   /**
@@ -25,14 +26,14 @@ export class Database {
   /**
    * instance proxy
    */
-  get proxy() {
+  get proxy(): ProxyHandler<this> {
     return {
-      get(target: any, p: string | number | symbol, receiver: any) {
+      get(target: Database, p: string | number | symbol, receiver: any) {
         if (typeof p === 'string') {
           if (Reflect.has(target, p)) {
             return Reflect.get(target, p, receiver);
           }
-          return target.connection()[p];
+          return target.connection()[p as keyof AbstractConnection];
         }
         return Reflect.get(target, p, receiver);
       }
@@ -43,7 +44,7 @@ export class Database {
    * Auto connection 
    * @param name 
    */
-  connection(name = 'default') {
+  connection<T extends AbstractConnection>(name = 'default'): T {
     if (!this.connections.has(name)) {
       const config = this.getConnectioncConfigure(name);
       this.connections.set(name, this.createConnection(config));

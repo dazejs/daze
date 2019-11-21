@@ -22,21 +22,21 @@ export abstract class Base {
   /**
    * Application instance getter
    */
-  get app(): Application {
+  protected get app(): Application {
     return Container.get('app');
   }
 
   /**
    * Config instance getter
    */
-  get config(): Config {
+  protected get config(): Config {
     return Container.get('config');
   }
 
   /**
    * Message instance getter
    */
-  get messenger(): Messenger {
+  protected get messenger(): Messenger {
     return Container.get('messenger');
   }
 
@@ -44,7 +44,7 @@ export abstract class Base {
    * create response instance
    * @param params response constructor params
    */
-  response(data?: any, code = 200, header: OutgoingHttpHeaders = {}): Response {
+  protected response(data?: any, code = 200, header: OutgoingHttpHeaders = {}): Response {
     return new Response(data, code, header);
   }
 
@@ -52,7 +52,7 @@ export abstract class Base {
    * create redirect instance
    * @param params redirect constructor params
    */
-  redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}): Redirect {
+  protected redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}): Redirect {
     return new Redirect(url, code, header);
   }
 
@@ -60,7 +60,7 @@ export abstract class Base {
    * create database instance
    * @param name connection name
    */
-  db(name?: string) {
+  protected db(name?: string) {
     return this.app.get<Database>('db').connection(name) as AbstractConnection & Builder;
   }
 

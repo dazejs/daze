@@ -7,7 +7,7 @@
 import * as glob from 'glob';
 import * as path from 'path';
 
-import { Controller, Middleware, Resource, Service, Validator, Model } from '../base';
+import { Controller, Middleware, Resource, Service, Validator, Entity } from '../base';
 import { Application } from '../foundation/application';
 import { VerifyCsrfToken } from '../foundation/middlewares';
 import { ComponentType } from '../symbol';
@@ -48,9 +48,9 @@ export class Loader {
   resources: typeof Resource[] = [];
 
   /**
-   * @var models
+   * @var entities
    */
-  models: typeof Model[] = [];
+  entities: typeof Entity[] = [];
 
   /**
    * @var components
@@ -95,8 +95,8 @@ export class Loader {
       case ComponentType.Controller:
         this.controllers.push(Target);
         break;
-      case ComponentType.Model:
-        this.models.push(Target);
+      case ComponentType.Entity:
+        this.entities.push(Target);
         break;
       case ComponentType.Middleware:
         this.middlewares.push(Target);

@@ -260,26 +260,24 @@ export class Application extends Container {
    * getter for Configuration cluster.enabled
    */
   get isCluster() {
-    return this.config.get('app.cluster.enable', false);
+    return this.config.get('app.cluster', false);
   }
 
   // 获取集群主进程实例
   get clusterMaterInstance() {
-    const clusterConfig = this.config.get('app.cluster', {});
     return new Master({
       port: this.port,
-      workers: clusterConfig.workers || 0,
-      sticky: clusterConfig.sticky || false,
+      workers: this.config.get('app.cluster.workers', 0),
+      sticky: this.config.get('app.cluster.sticky', false)
     });
   }
 
 
   // 获取集群工作进程实例
   get clusterWorkerInstance() {
-    const clusterConfig = this.config.get('app.cluster', {});
     return new Worker({
       port: this.port,
-      sticky: clusterConfig.sticky || false,
+      sticky: this.config.get('app.cluster.sticky', false),
       createServer: (port: number) => {
         this._server = this.startServer(port);
         return this._server;
@@ -358,9 +356,8 @@ export class Application extends Container {
 
     this.registerKeys();
 
-    const clusterConfig = this.config.get('app.cluster', {});
     // 在集群模式下，主进程不运行业务代码
-    if (!clusterConfig.enable || !cluster.isMaster) {
+    if (!this.isCluster || !cluster.isMaster) {
       await this.registerDefaultProviders();
       await this.registerVendorProviders();
       await this.registerHttpServerProvider();
@@ -387,7 +384,7 @@ export class Application extends Container {
     // reload port if necessary
     if (port) this.port = port;
     // check app.cluster.enabled
-    if (this.config.get('app.cluster.enable', false)) {
+    if (this.isCluster) {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
         await this.clusterMaterInstance.run();

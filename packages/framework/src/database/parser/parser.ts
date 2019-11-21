@@ -38,6 +38,33 @@ export class Parser {
   }
 
   /**
+   * parse insert
+   * @param builder 
+   * @param columns 
+   */
+  parseInsert(builder: Builder, columns?: string[]) {
+    if (!columns || !columns.length) {
+      return `insert into ${builder._from} default values`;
+    }
+    const _columns = this.columnDelimite(columns);
+    const values = columns.map(() => this.placeholder()).join(', ');
+    return `insert into ${builder._from} (${_columns}) values (${values})`;
+  }
+
+  parseUpdate(builder: Builder, columns: string[] = []) {
+    const _columns = this.columnDelimiteForUpdate(columns);
+
+    const where = this.parseWheres(builder);
+
+    if (builder._joins.length > 0) {
+      const joins = this.parseJoins(builder);
+      return `update ${builder._from} ${joins} set ${_columns} ${where}`;
+    }
+
+    return `update ${builder._from} set ${_columns} ${where}`;
+  }
+
+  /**
    * parser query components
    * @param builder 
    */
@@ -237,6 +264,12 @@ export class Parser {
   }
 
   columnDelimite(columns: string[]) {
+    if (!columns) return '';
     return columns.join(', ');
+  }
+
+  columnDelimiteForUpdate(columns: string[]) {
+    if (!columns) return '';
+    return columns.map(column => `${column} = ${this.placeholder()}`);
   }
 }

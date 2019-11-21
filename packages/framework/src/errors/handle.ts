@@ -114,7 +114,7 @@ export class ErrorHandler {
    */
   renderTracePage() {
     const page = tracePage(this.error, this.request);
-    return new Response(page, this.code, this.error.headers).setType("html");
+    return new Response(page, this.code, this.error.headers).setType('html');
   }
 
   /**
@@ -122,26 +122,26 @@ export class ErrorHandler {
    * @private
    */
   renderHttpErrorPage() {
-    const config = this.app.get("config");
+    const config = this.app.get('config');
     // get http_exception_template object
-    const httpErrorTemplate = config.get("app.errors_page", {});
-    const temps = Object.assign({}, httpErrorTemplate, defaultHttpErrorTemplate);
+    const httpErrorTemplate = config.get('app.httpErrorTemplate', {});
+    const temps = Object.assign({}, defaultHttpErrorTemplate, httpErrorTemplate);
     // check user config s status page
     if (temps[this.error.code]) {
-      const view = (new View()).render(temps[this.error.code] || "errors/error.njk", {
+      const view = (new View()).render(temps[this.error.code] || 'errors/error.njk', {
         err: this.error,
       });
-      return new Response(view, this.code, this.error.headers).setType("html");
+      return new Response(view, this.code, this.error.headers).setType('html');
     }
     if (temps.error) {
       const view = (new View()).render(temps.error || "errors/error.njk", {
         err: this.error,
       });
-      return new Response(view, this.code, this.error.headers).setType("html");
+      return new Response(view, this.code, this.error.headers).setType('html');
     }
-    const view = (new View()).render("errors/error.njk", {
+    const view = (new View()).render('errors/error.njk', {
       err: this.error,
     });
-    return new Response(view, this.code, this.error.headers).setType("html");
+    return new Response(view, this.code, this.error.headers).setType('html');
   }
 }

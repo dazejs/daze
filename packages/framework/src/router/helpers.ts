@@ -5,6 +5,9 @@ import { Node } from './node';
  * match trie node with type
  */
 export function isMatchNodeWithType(node: Node, key: string) {
+  if (node.key && node.type === 'all') {
+    return true;
+  }
   if (node.key && node.type === 'static') {
     return node.key === key;
   }

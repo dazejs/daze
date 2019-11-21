@@ -12,7 +12,7 @@ export const enum ComponentType {
   Resource = 'resource',
   Validator = 'validator',
   Middleware = 'middleware',
-  Model = 'model',
+  Entity = 'entity',
   Provider = 'provider'
 }
 
