@@ -21,7 +21,7 @@ describe('Config', () => {
     expect(configInstance.get('custom')).toEqual(customConfig);
     expect(configInstance.get()).toEqual(configInstance._items);
     expect(configInstance.get('app.port')).toBe(8888);
-    expect(configInstance.get('app.cluster.workers')).toBe(0);
+    expect(configInstance.get('app.workers')).toBe(0);
     expect(configInstance.get('custom.a.b.c')).toBe('c');
     expect(configInstance.get('custom.a.b.c', 'd')).toBe('c');
     expect(configInstance.get('custom.a.b.d', 'd')).toBe('d');
@@ -31,8 +31,8 @@ describe('Config', () => {
     const configInstance = new Config();
     await configInstance.initialize();
     expect(configInstance.has('app')).toBeTruthy();
-    expect(configInstance.has('app.cluster.workers')).toBeTruthy();
-    expect(configInstance.has('app.cluster.undefineProp')).toBeFalsy();
+    expect(configInstance.has('app.workers')).toBeTruthy();
+    expect(configInstance.has('app.undefineProp')).toBeFalsy();
     expect(configInstance.has('custom.a.b.c')).toBeTruthy();
     expect(configInstance.has('custom.a.b.d')).toBeFalsy();
     expect(configInstance.has()).toBeFalsy();
