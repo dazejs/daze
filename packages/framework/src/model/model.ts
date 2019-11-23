@@ -7,47 +7,47 @@ export class Model<TEntity extends Entity> {
   /**
    * 模型实体
    */
-  entity: TEntity;
+  private entity: TEntity;
 
   /**
    * 表名
    */
-  table: string;
+  private table: string;
 
   /**
    * 连接名
    */
-  connection: string;
+  private connection: string;
 
   /**
    * 实体的数据库字段
    */
-  columns: string[] = [];
+  private columns: string[] = [];
 
   /**
    * 主键名
    */
-  primaryKey: string;
+  private primaryKey: string;
   
   /**
    * 是否已经存在模型
    */
-  exists = false;
+  private exists = false;
 
   /**
    * 模型属性
    */
-  attributes: Record<string, any> = {};
+  private attributes: Record<string, any> = {};
 
   /**
    * 表示主键是否是递增的
    */
-  incrementing = true;
+  private incrementing = true;
 
   /**
    * 已更新的模型字段名
    */
-  updateAttributeColumns: Set<string> = new Set();
+  private updateAttributeColumns: Set<string> = new Set();
 
   /**
    * Create Model
@@ -133,6 +133,27 @@ export class Model<TEntity extends Entity> {
   }
 
   /**
+   * 获取模型表名
+   */
+  getTable() {
+    return this.table;
+  }
+
+  /**
+   * 获取模型连接名
+   */
+  getConnectioName() {
+    return this.connection;
+  }
+
+  /**
+   * 获取模型实体字段数组
+   */
+  getColumns() {
+    return this.columns;
+  }
+
+  /**
    * 获取所有的模型属性
    * Gets all model properties
    */
@@ -145,8 +166,8 @@ export class Model<TEntity extends Entity> {
    * Generate a new model instance - the model with the populated data
    * @param attributes 
    */
-  newModelInstance(attributes: Record<string, any>) {
-    return new Model<TEntity>(this.entity).setExists(true).fill(attributes);
+  newModelInstance(attributes: Record<string, any>, exists = false) {
+    return new Model<TEntity>(this.entity).setExists(exists).fill(attributes);
   }
 
   /**
@@ -154,7 +175,7 @@ export class Model<TEntity extends Entity> {
    * Analytic model entity
    * @param entity 
    */
-  resolveEntity(entity: TEntity) {
+  private resolveEntity(entity: TEntity) {
     this.table = Reflect.getMetadata('table', entity.constructor);
     this.connection = Reflect.getMetadata('connection', entity.constructor) ?? 'default';
     this.columns = Reflect.getMetadata('columns', entity.constructor) ?? [];
@@ -167,14 +188,14 @@ export class Model<TEntity extends Entity> {
    * Generate model query construct class instances
    */
   newModelBuilderInstance() {
-    return (new ModelBuilder(this.entity)).prepare();
+    return (new ModelBuilder<TEntity>(this)).prepare();
   }
 
   /**
    * 获取需要更新的模型属性
    * Gets the model attributes that need to be updated
    */
-  getUpdatedAttributes() {
+  private getUpdatedAttributes() {
     const attributes: Record<string, any> = {};
     for (const column of this.updateAttributeColumns) {
       attributes[column] = this.attributes[column];
@@ -186,7 +207,7 @@ export class Model<TEntity extends Entity> {
    * 判断是否有需要更新的模型属性
    * Determine if there are model attributes that need to be updated
    */
-  hasUpdatedAttributes() {
+  private hasUpdatedAttributes() {
     return !!this.updateAttributeColumns.size;
   }
 
@@ -244,6 +265,19 @@ export class Model<TEntity extends Entity> {
   }
 
   /**
+   * 创建数据库记录
+   * Create database records
+   * @param attributes 
+   */
+  async create(attributes: Record<string, any>) {
+    // 创建一个不存在记录的模型
+    // Create a model with no records
+    const model = this.newModelInstance(this.entity, false).fill(attributes);
+    model.save();
+    return model;
+  }
+
+  /**
    * 创建/更新数据库记录操作
    * 自动根据场景来执行更新/创建操作
    * Create/update database record operations
@@ -265,11 +299,14 @@ export class Model<TEntity extends Entity> {
     // There is no model
     else {
       // 如果是递增主键
+      // 需要插入记录后并且返回记录id，将记录id设置到当前模型中
       if (this.getIncrementing()) {
         // 执行插入操作并且设置模型主键值
         await this.executeInsertAndSetId(query);
       }
       // 如果不是递增主键
+      // 普通主键必须由用户定义插入
+      // 由于不存在自动递增主键，当数据字段为空的时候直接返回
       else {
         if (!this.columns.length) return true;
         await query.insert(

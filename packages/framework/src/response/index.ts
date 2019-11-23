@@ -8,7 +8,7 @@ import getType from 'cache-content-type';
 import contentDisposition from 'content-disposition';
 import { OutgoingHttpHeaders, ServerResponse } from 'http';
 import { extname } from 'path';
-
+import compressible from 'compressible';
 import { Container } from '../container';
 import { Cookie } from '../cookie';
 import { Application } from '../foundation/application';
@@ -17,7 +17,13 @@ import { Resource } from '../resource/resource';
 import { View } from '../view';
 import { ViewFactory } from '../view/factory';
 import { Statusable } from './statusable';
+import { Stream } from 'stream';
+import * as zlib from 'zlib';
 
+const encodingMethods = {
+  gzip: zlib.createGzip,
+  deflate: zlib.createDeflate
+};
 
 // import statuses from 'statuses'
 // import { IllegalArgumentError } from '../errors/illegal-argument-error'
@@ -54,14 +60,9 @@ export class Response extends Statusable {
   protected cookies: Cookie[] = [];
 
   /**
-   * is static server
-   */
-  protected _isStaticServer = false;
-
-  /**
    * patched methods
    */
-  [key: string]: any;
+  // [key: string]: any;
   constructor(data?: any, code = 200, header: OutgoingHttpHeaders = {}) {
     super();
     /**
@@ -77,10 +78,9 @@ export class Response extends Statusable {
     this._header = this.parseHeaders(header);
 
     /**
-     * original data
-     * @type
+     * init data
      */
-    this._data = data;
+    this.setData(data);
   }
 
   /**
@@ -109,11 +109,6 @@ export class Response extends Statusable {
    */
   get data() {
     return this._data;
-  }
-
-  staticServer() {
-    this._isStaticServer = true;
-    return this;
   }
 
   /**
@@ -243,16 +238,6 @@ export class Response extends Statusable {
   }
 
   /**
-   * Set the returned data
-   * @public
-   * @param data Returned data
-   */
-  setData(data: any) {
-    this._data = data;
-    return this;
-  }
-
-  /**
    * set content-type
    * @param type 
    */
@@ -265,12 +250,33 @@ export class Response extends Statusable {
   }
 
   /**
+   * get content type
+   */
+  getType() {
+    const type = this.getHeader('Content-Type') as string;
+    if (!type) return '';
+    return type.split(';', 1)[0];
+  }
+
+  /**
    * set length header
    * @param length 
    */
   setLength(length: number) {
     this.setHeader('Content-Length', length);
     return this;
+  }
+
+  /**
+   * get response data length
+   */
+  getLength() {
+    const length = this.getHeader('Content-Length') as string;
+    if (length) return parseInt(length, 10) ?? 0;
+    if (!this._data || this._data instanceof Stream) return 0;
+    if (typeof this._data === 'string') return Buffer.byteLength(this._data); 
+    if (Buffer.isBuffer(this._data)) return this._data.length;
+    return Buffer.byteLength(JSON.stringify(this._data));
   }
 
   /**
@@ -362,7 +368,7 @@ export class Response extends Statusable {
    * @returns this
    */
   attachment(filename = '', options: any) {
-    if (filename) this.type = extname(filename);
+    if (filename) this.setType(extname(filename));
     this.setHeader('Content-Disposition', contentDisposition(filename, options));
     return this;
   }
@@ -379,7 +385,7 @@ export class Response extends Statusable {
   /**
    * handle Resource data
    */
-  handleData(request: any) {
+  transformData(request: any) {
     const data = this.getData();
     if (!data) return data;
     if (data instanceof Resource) {
@@ -459,15 +465,24 @@ export class Response extends Statusable {
     return this;
   }
 
+  /**
+   * Set the returned data
+   * @public
+   * @param data Returned data
+   */
+  setData(data: any) {
+    this._data = data;
+    return this;
+  }
 
   /**
-   * send data
-   * @param request
-   * @public
+   * prepare response
+   * @param request 
    */
-  async send(request: Request) {
-    const { res } = request;
-    const data = this.handleData(request);
+  prepare(request: Request) {
+    
+    const data = this.transformData(request);
+
     const shouldSetType = !this.getHeader('content-type');
 
     // if no content
@@ -476,41 +491,107 @@ export class Response extends Statusable {
       this.removeHeader('content-type');
       this.removeHeader('content-length');
       this.removeHeader('transfer-encoding');
-      this.sendHeaders(res);
-      return res.end(data);
+      return data;
     }
-
-    await this.commitCookies(request);
 
     // string
     if (typeof data === 'string') {
-      // getType(/^\s*</.test(data) ? 'html' : 'text')
       if (shouldSetType) this.setHeader('content-type', defaultContentTypes.PLAIN);
       this.setHeader('content-length', Buffer.byteLength(data));
-      this.sendHeaders(res);
-      return res.end(data);
+      return data;
     }
-
     // buffer
     if (Buffer.isBuffer(data)) {
       if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET);
       this.setHeader('content-length', data.length);
+      return data;
+    }
+    // stream
+    if (typeof data.pipe === 'function') {
+      this.removeHeader('content-length');
+      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET);
+      return data;
+    }
+    // json
+    this.removeHeader('content-length');
+    if (shouldSetType) this.setHeader('content-type', defaultContentTypes.JSON);
+
+    return data;
+  }
+
+
+  /**
+   * send data
+   * @param request
+   * @public
+   */
+  async send(request: Request) {
+    const data = this.prepare(request);
+
+    if (this.app.get('config').get('app.compress')) {
+      return this.endWithCompress(request, data);
+    }
+    return this.end(request, data);
+  }
+
+  /**
+   * end response
+   * @param request 
+   * @param data 
+   */
+  async end(request: Request, data: any) {
+    const { res } = request;
+
+    // coomit cookies
+    await this.commitCookies(request);
+    
+    // responses
+    if (typeof data === 'string' || Buffer.isBuffer(data)) {
       this.sendHeaders(res);
       return res.end(data);
     }
-
-    // stream
-    if (typeof data.pipe === 'function') {
-      if (shouldSetType) this.setHeader('content-type', defaultContentTypes.OCTET);
+    if (data instanceof Stream) {
       this.sendHeaders(res);
       return data.pipe(res);
-    }
+    };
 
     // json
     const jsonData = JSON.stringify(data);
-    if (shouldSetType) this.setHeader('content-type', defaultContentTypes.JSON);
-    this.setHeader('content-length', Buffer.byteLength(jsonData));
+    if (!res.headersSent) {
+      this.setHeader('content-length', Buffer.byteLength(jsonData));
+    }
     this.sendHeaders(res);
     return res.end(jsonData);
+  }
+
+  /**
+   * end with compress
+   * @param request 
+   */
+  endWithCompress(request: Request, data: any) {
+
+    // if compress is disable
+    const encoding: string | false = request.acceptsEncodings('gzip', 'deflate', 'identity');
+
+    if (!encoding || encoding === 'identity') return this.end(request, data);
+
+    if (!compressible(this.getType())) return this.end(request, data);
+
+    const threshold = this.app.get('config').get('app.threshold', 1024);
+
+    if (threshold > this.getLength()) return this.end(request, data);
+
+    this.setHeader('Content-Encoding', encoding);
+    this.removeHeader('Content-Length');
+
+    const stream = encodingMethods[encoding as 'gzip' | 'deflate']({});
+
+    if (data instanceof Stream) {
+      data.pipe(stream);
+    } else {
+      stream.end(data);
+    }
+
+    return this.end(request, stream);
   }
 }

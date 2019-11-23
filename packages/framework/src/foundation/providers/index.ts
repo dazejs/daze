@@ -16,5 +16,4 @@ export * from './middleware';
 export * from './http-server';
 export * from './router';
 export * from './database';
-export * from './model';
 export * from './resolver';

@@ -4,13 +4,22 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { CORSMiddleware } from '../foundation/middlewares';
 import { Request } from '../request';
+// import { Response } from '../response';
 import { Dispatcher } from './dispatcher';
 import { Route } from './route';
 import { Trie } from './trie';
+// import * as zlib from 'zlib';
+// import { Stream } from 'stream';
+
+// const encodingMethods = {
+//   gzip: zlib.createGzip,
+//   deflate: zlib.createDeflate
+// };
 
 
 export class Router {
@@ -22,7 +31,7 @@ export class Router {
     return async (request: Request) => {
       const metchedRoute = this.trie.match(request);
       const dispatcher = new Dispatcher(request, metchedRoute);
-      return dispatcher.resolve();
+      return await dispatcher.resolve();  
     };
   }
 

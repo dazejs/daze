@@ -95,6 +95,11 @@ export class Application extends Container {
   needsSession = true;
 
   /**
+   * needs static server
+   */
+  needsStaticServer = true;
+
+  /**
    * provider launch calls
    */
   launchCalls: ((...args: any[]) => any)[] = [];
@@ -160,6 +165,13 @@ export class Application extends Container {
   }
 
   /**
+   * disable static server
+   */
+  disableStaticServer() {
+    this.needsStaticServer = false;
+  }
+
+  /**
    * register base provider
    */
   async registerBaseProviders(): Promise<void> {
@@ -175,7 +187,6 @@ export class Application extends Container {
   async registerDefaultProviders(): Promise<void> {
     await this.register(new providers.AppProvider(this));
     await this.register(new providers.ControllerProvider(this));
-    await this.register(new providers.ModelProvider(this));
     await this.register(new providers.MiddlewareProvider(this));
     await this.register(new providers.RouterProvider(this));
     await this.register(new providers.TemplateProvider(this));

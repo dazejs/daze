@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import mime from 'mime-types';
 import * as path from 'path';
 import { promisify } from 'util';
+// import * as zlib from 'zlib';
 
 import { Container } from '../container';
 import { NotFoundHttpError } from '../errors/not-found-http-error';
@@ -17,12 +18,12 @@ import { Response } from '../response';
 import { Route } from './route';
 
 
-// import { HttpError } from '../errors/http-error'
-// import { ResponseManager } from '../response/manager'
+// // import { HttpError } from '../errors/http-error'
+// // import { ResponseManager } from '../response/manager'
 
-function type(file: string, ext: string) {
-  return ext !== '' ? path.extname(path.basename(file, ext)) : path.extname(file);
-}
+// function type(file: string, ext: string) {
+//   return ext !== '' ? path.extname(path.basename(file, ext)) : path.extname(file);
+// }
 
 const defaultPublicOptions = {
   maxage: 0,
@@ -45,19 +46,62 @@ export class Dispatcher {
     this.route = route;
     this.publicOptions = {
       ...defaultPublicOptions,
-      ...this.app.get('config').get('app.public', {}),
+      // ...this.app.get('config').get('app.public', {}),
     };
+  }
+
+  /**
+   * 判断请求是否是可读请求
+   * 可用于判断是否是静态资源请求
+   */
+  isReadRequest() {
+    return this.request.isHead() || this.request.isGet();
+  }
+
+  decodePath(undecodePath: string) {
+    try {
+      return decodeURIComponent(undecodePath);
+    } catch (err) {
+      return false;
+    }
   }
 
   /**
    * resolve dispatcher
    */
   async resolve() {
-    if (!this.isStaticServerRequest()) return this.dispatchToRoute();
-    const staticFilePath = this.getStaticFilePath();
+    // 如果不是只读请求或者关闭了静态资源服务，直接匹配分发请求到路由模块
+    if (
+      !this.isReadRequest() ||
+      !this.app.get('config').get('app.public')
+    ) return this.dispatchToRoute();
+
+    // 将 publicPrefix 路径除去 /
+    let publicPrefix = this.app.get('config').get('app.publicPrefix', '');
+    publicPrefix = publicPrefix.substr(path.parse(publicPrefix).root.length);
+
+    // 将请求路径除去 /
+    let requestPath: string | false = this.request.getPath();
+    requestPath = this.decodePath(
+      requestPath.substr(path.parse(requestPath).root.length)
+    );
+    // 如果请求路径不能被 decode 直接响应 400 错误
+    if (requestPath === false) return new Response().BadRequest('failed to decode url');
+
+    // 如果请求路径不是以 publicPrefix 路径开始的，直接分发请求到路由匹配器
+    if (!requestPath.startsWith(publicPrefix)) return this.dispatchToRoute();
+
+    // 相对静态资源路径
+    const assetsPath = path.relative(publicPrefix, requestPath);
+    // 绝对静态资源路径
+    const staticPath = path.resolve(this.app.publicPath, assetsPath);
+
+    // console.log(path.resolve(this.app.publicPath, assetsPath));
+
+    // 如果不存在静态资源
     let stats;
     try {
-      stats = await promisify(fs.stat)(staticFilePath);
+      stats = await promisify(fs.stat)(staticPath);
     } catch (err) {
       if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
         return this.dispatchToRoute();
@@ -66,88 +110,19 @@ export class Dispatcher {
     if (!stats || stats?.isDirectory()) {
       return this.dispatchToRoute();
     }
-    return this.dispatchToStaticServer(staticFilePath, stats);
-  }
 
-  /**
-   * dispatch request to static server
-   */
-  async dispatchToStaticServer(staticFilePath: string, stats: fs.Stats) {
-    // create response instance
-    const response = new Response().staticServer();
-    const { maxage } = this.publicOptions;
-    let filePath = staticFilePath;
-
-    let encodingExt = '';
-    if (this.isEncodingBR(filePath)) {
-      filePath += '.br';
-      response.setHeader('Content-Encoding', 'br');
-      this.request.res.removeHeader('Content-Length');
-      encodingExt = '.br';
-    } else if (this.isEncodingGZ(filePath)) {
-      filePath += '.gz';
-      response.setHeader('Content-Encoding', 'gzip');
-      this.request.res.removeHeader('Content-Length');
-      encodingExt = '.gz';
-    }
+    const response = new Response();
 
     response.setHeader('Content-Length', stats.size);
     if (!this.request.getHeader('Last-Modified')) response.setHeader('Last-Modified', stats.mtime.toUTCString());
     if (!this.request.getHeader('Cache-Control')) {
-      const directives = [`max-age=${maxage / 1000 | 0}`];
+      const directives = [`max-age=${this.publicOptions.maxage / 1000 | 0}`];
       response.setHeader('Cache-Control', directives.join(','));
     }
-    response.setHeader('Content-Type', mime.lookup(type(filePath, encodingExt)));
-    response.setData(fs.createReadStream(filePath));
+    response.setHeader('Content-Type', mime.lookup(path.extname(staticPath)));
+
+    response.setData(fs.createReadStream(staticPath));
     return response;
-  }
-
-  async checkIfStaticServer(filePath: string) {
-    if (!this.isStaticServerRequest()) return false;
-    let stats;
-    try {
-      stats = await promisify(fs.stat)(filePath);
-    } catch (err) {
-      if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
-        return false;
-      }
-    }
-    if (stats?.isDirectory()) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * check if support br encoding
-   * @param filePath
-   */
-  isEncodingBR(filePath: string) {
-    return this.publicOptions.br && this.request.acceptsEncodings('br', 'identity') === 'br' && fs.existsSync(`${filePath}.br`);
-  }
-
-  /**
-   * check if support gzip encoding
-   * @param filePath
-   */
-  isEncodingGZ(filePath: any) {
-    return this.publicOptions.gzip && this.request.acceptsEncodings('gzip', 'identity') === 'gzip' && fs.existsSync(`${filePath}.gz`);
-  }
-
-  /**
-   * return the static server file path
-   */
-  getStaticFilePath() {
-    const requestPath: string = this.request.getPath();
-    const filePath = decodeURIComponent(requestPath.substr(path.parse(requestPath).root.length));
-    return path.resolve(this.app.publicPath, filePath);
-  }
-
-  /**
-   * check if the request is support static server
-   */
-  isStaticServerRequest() {
-    return this.request.isHead() || this.request.isGet();
   }
 
   /**

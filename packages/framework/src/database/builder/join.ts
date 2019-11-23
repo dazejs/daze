@@ -35,6 +35,6 @@ export class Join {
   }
 
   getParams() {
-    return this.builder.getParams();
+    return this.builder.getBindings();
   }
 }

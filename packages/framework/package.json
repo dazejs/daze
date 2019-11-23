@@ -60,6 +60,7 @@
     "body-parser": "^1.18.3",
     "cache-content-type": "^1.0.1",
     "co-body": "^6.0.0",
+    "compressible": "^2.0.17",
     "content-disposition": "^0.5.3",
     "cookies": "^0.8.0",
     "crc": "^3.8.0",
@@ -90,10 +91,11 @@
     "winston-mongodb": "^5.0.0"
   },
   "devDependencies": {
+    "@types/compressible": "^2.0.0",
     "@types/mysql": "^2.15.7",
     "@types/pluralize": "^0.0.29",
-    "mysql": "^2.17.1",
     "copyfiles": "^2.1.1",
+    "mysql": "^2.17.1",
     "rimraf": "^3.0.0"
   }
 }

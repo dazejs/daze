@@ -8,14 +8,14 @@ import { Response } from '../response';
 import { ComponentType } from '../symbol';
 import { Base } from './base';
 
-// import { Request } from '../request';
-// import { TNext } from '../middleware';
+import { Request } from '../request';
+import { TNext } from '../middleware';
 
 
 @Reflect.metadata('type', ComponentType.Middleware)
 export abstract class Middleware extends Base {
-  // abstract resolve(request: Request, next: TNext): Response | Promise<Response>
-  abstract resolve(...args: any[]): Response | Promise<Response>
+  abstract resolve(request: Request, next: TNext): Response | Promise<Response>
+  // abstract resolve(...args: any[]): Response | Promise<Response>
 }
 
 

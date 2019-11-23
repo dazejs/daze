@@ -29,7 +29,7 @@ export class Loader {
    * @var middlewares
    */
   middlewares: typeof Middleware[] = [
-    VerifyCsrfToken
+    VerifyCsrfToken,
   ];
 
   /**
