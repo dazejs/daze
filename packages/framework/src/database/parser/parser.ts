@@ -47,7 +47,7 @@ export class Parser {
       return `insert into ${builder._from} default values`;
     }
     const _columns = this.columnDelimite(columns);
-    const values = columns.map(() => this.placeholder()).join(', ');
+    const values = columns.map(() => this.parameter()).join(', ');
     return `insert into ${builder._from} (${_columns}) values (${values})`;
   }
 
@@ -62,6 +62,17 @@ export class Parser {
     }
 
     return `update ${builder._from} set ${_columns} ${where}`;
+  }
+
+  parseDelete(builder: Builder) {
+    const where = this.parseWheres(builder);
+
+    if (builder._joins.length > 0) {
+      const joins = this.parseJoins(builder);
+      return `delete from ${builder._from} ${joins} ${where}`;
+    }
+
+    return `delete from ${builder._from} ${where}`;
   }
 
   /**
@@ -164,7 +175,7 @@ export class Parser {
       if (where.type === 'value') {
         wheres.push(
           //where.value
-          `${leadSymlink}${where.column} ${where.operator} ${this.placeholder()}`
+          `${leadSymlink}${where.column} ${where.operator} ${this.parameter()}`
         );
       }
       // column type
@@ -177,6 +188,30 @@ export class Parser {
       if (where.type === 'sql') {
         wheres.push(
           `${leadSymlink}${where.value}`
+        );
+      }
+
+      if (where.type === 'in') {
+        wheres.push(
+          `${leadSymlink}${where.column} in (${this.parameterize(where.value)})`
+        );
+      }
+
+      if (where.type === 'notIn') {
+        wheres.push(
+          `${leadSymlink}${where.column} not in (${this.parameterize(where.value)})`
+        );
+      }
+
+      if (where.type === 'null') {
+        wheres.push(
+          `${leadSymlink}${where.column} is null`
+        );
+      }
+
+      if (where.type === 'notNull') {
+        wheres.push(
+          `${leadSymlink}${where.column} is not ull`
         );
       }
     }
@@ -259,7 +294,11 @@ export class Parser {
     return `${sqls.join(' ')}`;
   }
 
-  placeholder() {
+  parameterize(value: any[]) {
+    return value.map(() => this.parameter());
+  }
+
+  parameter() {
     return '?';
   }
 
@@ -270,6 +309,6 @@ export class Parser {
 
   columnDelimiteForUpdate(columns: string[]) {
     if (!columns) return '';
-    return columns.map(column => `${column} = ${this.placeholder()}`);
+    return columns.map(column => `${column} = ${this.parameter()}`);
   }
 }

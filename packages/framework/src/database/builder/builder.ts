@@ -13,10 +13,10 @@ export type TSymlink = 'and' | 'or' | ''
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
 
 interface WhereDescribeOption {
-  type: 'value' | 'column' | 'sql';
+  type: 'value' | 'column' | 'sql' | 'in' | 'notIn' | 'null' | 'notNull';
   column?: string;
   operator?: string;
-  value: any;
+  value?: any;
   symlink: TSymlink;
 }
 
@@ -263,6 +263,46 @@ export class Builder {
     } else {
       this._wheres.push({ type, column, operator: '=', value: operator, symlink: _symlink });
     }
+    return this;
+  }
+
+
+
+  whereIn(column: string, value: any[], symlink: TSymlink = 'and') {
+    const _symlink = this._wheres.length > 0 ? symlink : '';
+    const type = 'in';
+    this._wheres.push({ type, column, value, symlink: _symlink });
+    this.addBinding('where', value);
+    return this;
+  }
+
+  whereNotIn(column: string, value: any[], symlink: TSymlink = 'and') {
+    const _symlink = this._wheres.length > 0 ? symlink : '';
+    const type = 'notIn';
+    this._wheres.push({ type, column, value, symlink: _symlink });
+    this.addBinding('where', value);
+    return this;
+  }
+
+  whereNull(column: string, symlink: TSymlink = 'and', not = false) {
+    const _symlink = this._wheres.length > 0 ? symlink : '';
+    const type = not ? 'notNull' : 'null';
+    this._wheres.push({ type, column, symlink: _symlink });
+    return this;
+  }
+
+  whereNotNull(column: string, symlink: TSymlink = 'and') {
+    this.whereNull(column, symlink, true);
+    return this;
+  }
+
+  orWhereNull(column: string) {
+    this.whereNull(column, 'or', false);
+    return this;
+  }
+
+  orWhereNotNull(column: string) {
+    this.whereNull(column, 'or', true);
     return this;
   }
 
@@ -619,10 +659,6 @@ export class Builder {
     const params = this.getBindings();
     const results = await this.collection.select(sql, params);
 
-    // if (this.model) {
-    //   return this.exportToModelCollection(results);
-    // }
-
     return results;
   }
 
@@ -677,6 +713,15 @@ export class Builder {
     ];
   }
 
+  getBindingsForDelete() {
+    const cleanBindings = this.getBindingsExceptKeys([
+      'select',
+    ]);
+    return [
+      ...cleanBindings
+    ];
+  }
+
 
   async insert(data: Record<string, any>) {
     const columns = Object.keys(data);
@@ -695,5 +740,16 @@ export class Builder {
       this.parser.parseUpdate(this, columns),
       this.getBindingsForUpdate(values)
     );
+  }
+
+  async delete(id?: number | string) {
+    if (id) {
+      this.where(`${this._from}.id`, '=', id);
+    }
+    return this.collection.delete(
+      this.parser.parseDelete(this),
+      this.getBindingsForDelete()
+    );
+
   }
 }

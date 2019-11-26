@@ -1,6 +1,17 @@
 import { Entity } from '../base/entity';
 import { ModelBuilder } from './builder';
 import { Builder } from '../database/builder';
+// import { SoftDeleteModel } from './soft-delete-model';
+// import { ModelInterface } from './model.interface';
+import { format as dateFormat, getUnixTime } from 'date-fns';
+
+export interface ColumnDescription {
+  type: string;
+  length: number;
+};
+
+type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
+// type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
 export class Model<TEntity extends Entity> {
 
@@ -22,7 +33,7 @@ export class Model<TEntity extends Entity> {
   /**
    * 实体的数据库字段
    */
-  private columns: string[] = [];
+  private columns: Map<string, ColumnDescription> = new Map();
 
   /**
    * 主键名
@@ -50,6 +61,24 @@ export class Model<TEntity extends Entity> {
   private updateAttributeColumns: Set<string> = new Set();
 
   /**
+   * 软删除字段名称
+   * soft deletes key name
+   */
+  private softDeleteKey: string;
+
+  /**
+   * 自动创建时间字段名称
+   * create timestamp key name
+   */
+  private createTimestampKey: string;
+
+  /**
+   * 自动更新时间字段名称
+   * update timestamp key name
+   */
+  private updateTimestampKey: string;
+
+  /**
    * Create Model
    * @param entity
    */
@@ -72,12 +101,16 @@ export class Model<TEntity extends Entity> {
     });
   }
 
+  isForceDelete() {
+    return !this.softDeleteKey;
+  }
+
   /**
    * 是否是模型实体属性
    * @param column 
    */
-  isEntityColumns(column: string) {
-    return this.columns.includes(column);
+  isEntityColumns(columnKey: string) {
+    return this.columns.has(columnKey);
   }
 
   /**
@@ -98,9 +131,10 @@ export class Model<TEntity extends Entity> {
   fill(attributes: Record<string, any> = {}) {
     // 只有在实体声明的字段才会被填充
     // Only fields declared in the entity are populated
-    for (const column of this.columns) {
-      if (Reflect.has(attributes, column)) {
-        this.attributes[column] = attributes[column];
+    const keys = this.columns.keys();
+    for (const columnKey of keys) {
+      if (Reflect.has(attributes, columnKey)) {
+        this.attributes[columnKey] = attributes[columnKey];
       }
     }
     return this;
@@ -161,13 +195,20 @@ export class Model<TEntity extends Entity> {
     return this.attributes;
   }
 
+  // /**
+  //  * 生成新的模型实例 - 已填充数据的模型
+  //  * Generate a new model instance - the model with the populated data
+  //  * @param attributes 
+  //  */
+  // newModelInstance(attributes: Record<string, any>, exists = false) {
+  //   return new Model<TEntity>(this.entity).setExists(exists).fill(attributes);
+  // }
+
   /**
-   * 生成新的模型实例 - 已填充数据的模型
-   * Generate a new model instance - the model with the populated data
-   * @param attributes 
+   * get entity
    */
-  newModelInstance(attributes: Record<string, any>, exists = false) {
-    return new Model<TEntity>(this.entity).setExists(exists).fill(attributes);
+  getEntity() {
+    return this.entity;
   }
 
   /**
@@ -181,6 +222,9 @@ export class Model<TEntity extends Entity> {
     this.columns = Reflect.getMetadata('columns', entity.constructor) ?? [];
     this.primaryKey = Reflect.getMetadata('primaryKey', entity.constructor) ?? 'id';
     this.incrementing = Reflect.getMetadata('incrementing', entity.constructor) ?? true;
+    this.softDeleteKey = Reflect.getMetadata('softDeleteKey', entity.constructor);
+    this.createTimestampKey = Reflect.getMetadata('createTimestampKey', entity.constructor);
+    this.updateTimestampKey = Reflect.getMetadata('updateTimestampKey', entity.constructor);
   }
 
   /**
@@ -189,6 +233,92 @@ export class Model<TEntity extends Entity> {
    */
   newModelBuilderInstance() {
     return (new ModelBuilder<TEntity>(this)).prepare();
+  }
+
+  /**
+   * 获取默认主键名
+   * Gets the default primary key name
+   */
+  getDefaultPrimaryKey() {
+    return this.primaryKey || 'id';
+  }
+
+  /**
+   * 获取模型主键值
+   * Gets the model primary key value
+   */
+  getPrimaryKeyVal() {
+    return this.attributes[this.getDefaultPrimaryKey()];
+  }
+
+  /**
+   * 获取是否是递增主键
+   * Gets whether the primary key is incrementing
+   */
+  getIncrementing() {
+    return this.incrementing;
+  }
+
+  /**
+   * 获取软删除字段名
+   */
+  getSoftDeleteKey() {
+    return this.softDeleteKey;
+  }
+
+  /**
+   * 创建新的 model 实例
+   */
+  newInstance(): ProxyModel<TEntity>{
+    return new Model<TEntity>(
+      this.getEntity()
+    ) as ProxyModel<TEntity>;
+  }
+
+  /**
+   * 根据字段名获取字段类型
+   * @param key 
+   */
+  getColumnType(key: string) {
+    return this.columns.get(key)?.type;
+  }
+
+  /**
+   * 获取当前格式化的时间格式
+   * 根据数据库字段格式进行格式化
+   * @param type 
+   */
+  getFormatedDate(type = 'int') {
+    switch (type.toLowerCase()) {
+      case 'date':
+        return dateFormat(new Date(), 'YYYY-MM-DD');
+      case 'time':
+        return dateFormat(new Date(), 'HH:MM:SS');
+      case 'year':
+        return dateFormat(new Date(), 'YYYY');
+      case 'datetime':
+        return dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss');
+      case 'timestamp':
+        return dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss');
+      case 'int':
+      default:
+        return getUnixTime(new Date());
+
+    }
+  }
+
+  /**
+   * has create timestamp
+   */
+  hasCreateTimestamp() {
+    return !!this.createTimestampKey;
+  }
+
+  /**
+   * has update timestamp
+   */
+  hasUpdateTimestamp() {
+    return !!this.updateTimestampKey;
   }
 
   /**
@@ -241,40 +371,67 @@ export class Model<TEntity extends Entity> {
   }
 
   /**
-   * 获取默认主键名
-   * Gets the default primary key name
+   * 删除
    */
-  getDefaultPrimaryKey() {
-    return this.primaryKey || 'id';
+  async delete() {
+    if (!this.getDefaultPrimaryKey()) {
+      throw new Error('Primary key not defined');
+    }
+    if (!this.exists) return;
+
+    await this.executeDelete();
+
+    return true;
   }
 
   /**
-   * 获取模型主键值
-   * Gets the model primary key value
+   * 执行删除操作
    */
-  getPrimaryKeyVal() {
-    return this.attributes[this.getDefaultPrimaryKey()];
+  async executeDelete() {
+    // 创建模型查询构建器
+    const query = this.newModelBuilderInstance();
+    // 强制删除数据库记录的情况
+    if (this.isForceDelete()) {
+      await query.where(
+        this.getDefaultPrimaryKey(),
+        '=',
+        this.getPrimaryKeyVal()
+      ).delete();
+      // 设置模型为不存在
+      this.setExists(false);
+      return true;
+    }
+    // 软删除的情况
+    // 需要更新的字段
+    const attributes: Record<string, any> = {};
+    attributes[this.getSoftDeleteKey()] = this.getFormatedDate(
+      this.getColumnType(
+        this.getSoftDeleteKey()
+      )
+    );
+    // 执行更新操作
+    return query.where(
+      this.getDefaultPrimaryKey(),
+      '=',
+      this.getPrimaryKeyVal()
+    ).update(attributes);
   }
 
   /**
-   * 获取是否是递增主键
-   * Gets whether the primary key is incrementing
+   * 根据 id 删除记录
+   * @param ids 
    */
-  getIncrementing() {
-    return this.incrementing;
-  }
-
-  /**
-   * 创建数据库记录
-   * Create database records
-   * @param attributes 
-   */
-  async create(attributes: Record<string, any>) {
-    // 创建一个不存在记录的模型
-    // Create a model with no records
-    const model = this.newModelInstance(this.entity, false).fill(attributes);
-    model.save();
-    return model;
+  async destroy(...ids: (number | string)[]) {
+    let count = 0;
+    const model = this.newInstance();
+    const _models = await model.whereIn(
+      model.getDefaultPrimaryKey(),
+      ids
+    ).find();
+    for (const _model of _models) {
+      if (await _model.delete()) count++;
+    }
+    return count;
   }
 
   /**
@@ -288,7 +445,10 @@ export class Model<TEntity extends Entity> {
     // 已存在模型
     // Existing model
     if (this.exists) {
+      // 没有字段需要更新的时候，直接返回 true
       if (!this.hasUpdatedAttributes()) return true;
+      // 获取需要更新的数据
+      // 即模型实体有改动的的属性
       const updatedAttributes = this.getUpdatedAttributes();
       return this.executeUpdate(
         query,
@@ -308,7 +468,7 @@ export class Model<TEntity extends Entity> {
       // 普通主键必须由用户定义插入
       // 由于不存在自动递增主键，当数据字段为空的时候直接返回
       else {
-        if (!this.columns.length) return true;
+        if (!this.columns.size) return true;
         await query.insert(
           this.getAttributes()
         );
