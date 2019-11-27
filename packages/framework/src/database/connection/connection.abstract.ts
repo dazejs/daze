@@ -1,45 +1,45 @@
 import { Builder } from '../builder';
 import { Parser } from '../parser/parser';
-// import { Model } from '../../model/model';
-// import { Entity } from '../../base/entity';
 
 export abstract class AbstractConnection {
+  /**
+   * sql parser
+   */
   parser: Parser;
 
-  // model: Model<Entity>;
-
+  /**
+   * Create Connection
+   */
   constructor() {
-    this.useDefaultParser();
-  }
-
-  // setModel(model: Model<Entity>) {
-  //   this.model = model;
-  //   return this;
-  // }
-
-  // getModel() {
-  //   return this.model;
-  // }
-
-  useDefaultParser() {
     this.parser = this.getDefaultParser();
   }
 
+  /**
+   * get default sql parser
+   */
   getDefaultParser() {
     return new Parser();
   }
 
-  builder() {
+  /**
+   * create new Builder instance
+   */
+  newBuilderInsatnce() {
     return new Builder(this);
   }
 
+  /**
+   * set builder from and return builder
+   * @param table 
+   * @param as 
+   */
   table(table: string, as?: string): Builder {
-    return this.builder().table(table, as);
+    return this.newBuilderInsatnce().table(table, as);
   }
-
-  abstract select(query: string, bindings: any[]): Promise<any[]>
-  abstract insert(query: string, bindings: any[]):  Promise<number>
-  abstract update(query: string, bindings: any[]):  Promise<number>
-  abstract delete(query: string, bindings: any[]):  Promise<number>
-  abstract query(query: string, bindings: any[]):  Promise<any>
+  
+  abstract select(query: string, bindings?: any[]): Promise<any[]>
+  abstract insert(query: string, bindings?: any[]):  Promise<number>
+  abstract update(query: string, bindings?: any[]):  Promise<number>
+  abstract delete(query: string, bindings?: any[]):  Promise<number>
+  abstract query(query: string, bindings?: any[]):  Promise<any>
 }

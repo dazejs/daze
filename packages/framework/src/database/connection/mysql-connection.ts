@@ -1,10 +1,9 @@
 import { Connection } from 'mysql';
-
 import { MysqlParser } from '../parser';
 import { AbstractConnection } from './connection.abstract';
 
-export class MysqlConnection extends AbstractConnection {
 
+export class MysqlConnection extends AbstractConnection {
   /**
    * Mysql connection
    */
@@ -19,6 +18,9 @@ export class MysqlConnection extends AbstractConnection {
     this.connection = connection;
   }
 
+  /**
+   * default parser for mysql
+   */
   getDefaultParser() {
     return new MysqlParser();
   }

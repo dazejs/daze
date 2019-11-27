@@ -1,15 +1,14 @@
-import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 import { Application } from '../foundation/application';
+import { AbstractConnection } from './connection/connection.abstract';
 import { MysqlConnection } from './connection/mysql-connection';
 import { MysqlConnector } from './connector/mysql-connector';
-import { AbstractConnection } from './connection/connection.abstract';
 
 export class Database {
   /**
    * Application instance
    */
-  app: Application = Container.get('app');
+  app: Application;
 
   /**
    * The active connection instances.
@@ -19,7 +18,10 @@ export class Database {
   /**
    * Create Database instance
    */
-  constructor() {
+  constructor(app: Application) {
+
+    this.app = app;
+
     return new Proxy(this, this.proxy);
   }
 
