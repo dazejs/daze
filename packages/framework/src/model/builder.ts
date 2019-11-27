@@ -24,6 +24,11 @@ export class ModelBuilder<TEntity extends Entity> {
   builder: Builder;
 
   /**
+   * 不走代理的接口列表
+   */
+  throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg']; 
+
+  /**
    * Create Builder For Model
    * @param model 
    */
@@ -39,15 +44,28 @@ export class ModelBuilder<TEntity extends Entity> {
       get(target: ModelBuilder<TEntity>, p: string | number | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
-          return new Proxy(target.builder[p as keyof Builder] as Function, {
-            apply(target2: any, _thisArg: any, argArray?: any) {
-              Reflect.apply(target2, target.builder, argArray);
-              return new Proxy(target, target.proxy);
-            }
-          });
+          return target.handleForwardCalls(p as keyof Builder);
         }
+        // if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
+        //   return new Proxy(target.builder[p as keyof Builder] as Function, {
+        //     apply(target2: any, _thisArg: any, argArray?: any) {
+        //       Reflect.apply(target2, target.builder, argArray);
+        //       return new Proxy(target, target.proxy);
+        //     }
+        //   });
+        // }
         return Reflect.get(target, p, receiver);
       }
+    };
+  }
+
+  handleForwardCalls(p: keyof Builder) {
+    return (...args: any[]) => {
+      if (this.throughs.includes(p)) {
+        return (this.builder[p] as Function)(...args);
+      }
+      (this.builder[p] as Function)(...args);
+      return new Proxy(this, this.proxy);
     };
   }
 

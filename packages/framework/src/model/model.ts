@@ -291,20 +291,29 @@ export class Model<TEntity extends Entity> {
   getFormatedDate(type = 'int') {
     switch (type.toLowerCase()) {
       case 'date':
-        return dateFormat(new Date(), 'YYYY-MM-DD');
+        return dateFormat(new Date(), 'yyyy-MM-dd');
       case 'time':
         return dateFormat(new Date(), 'HH:MM:SS');
       case 'year':
-        return dateFormat(new Date(), 'YYYY');
+        return dateFormat(new Date(), 'yyyy');
       case 'datetime':
-        return dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        return dateFormat(new Date(), 'yyyy-MM-dd HH:mm:ss');
       case 'timestamp':
-        return dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        return dateFormat(new Date(), 'yyyy-MM-dd HH:mm:ss');
       case 'int':
       default:
         return getUnixTime(new Date());
 
     }
+  }
+
+  /**
+   * getFreshDateWithColumnKey
+   * @param key 
+   */
+  getFreshDateWithColumnKey(key: string) {
+    const type = this.getColumnType(key);
+    return this.getFormatedDate(type);
   }
 
   /**
@@ -319,6 +328,20 @@ export class Model<TEntity extends Entity> {
    */
   hasUpdateTimestamp() {
     return !!this.updateTimestampKey;
+  }
+
+  /**
+   * get create timestamp
+   */
+  getCreateTimestampKey() {
+    return this.createTimestampKey;
+  }
+
+  /**
+   * get update timestamp
+   */
+  getUpdateTimestampKey() {
+    return this.updateTimestampKey;
   }
 
   /**
@@ -409,6 +432,13 @@ export class Model<TEntity extends Entity> {
         this.getSoftDeleteKey()
       )
     );
+    // 需要自动更新时间
+    if (this.hasUpdateTimestamp()) {
+      const updateTimestampKey = this.getUpdateTimestampKey();
+      attributes[updateTimestampKey] = this.getFormatedDate(
+        this.getColumnType(updateTimestampKey)
+      );
+    } 
     // 执行更新操作
     return query.where(
       this.getDefaultPrimaryKey(),
@@ -447,6 +477,13 @@ export class Model<TEntity extends Entity> {
     if (this.exists) {
       // 没有字段需要更新的时候，直接返回 true
       if (!this.hasUpdatedAttributes()) return true;
+      // 如果需要自动更新时间
+      if (this.hasUpdateTimestamp()) {
+        this.setAttribute(
+          this.getUpdateTimestampKey(),
+          this.getFreshDateWithColumnKey(this.getUpdateTimestampKey())
+        );
+      }
       // 获取需要更新的数据
       // 即模型实体有改动的的属性
       const updatedAttributes = this.getUpdatedAttributes();
@@ -458,6 +495,13 @@ export class Model<TEntity extends Entity> {
     // 不存在模型
     // There is no model
     else {
+      if (this.hasCreateTimestamp()) {
+        this.setAttribute(
+          this.getCreateTimestampKey(),
+          this.getFreshDateWithColumnKey(this.getCreateTimestampKey())
+        );
+      }
+
       // 如果是递增主键
       // 需要插入记录后并且返回记录id，将记录id设置到当前模型中
       if (this.getIncrementing()) {
