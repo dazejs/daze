@@ -33,9 +33,9 @@ export default class RedisSessionStore {
    */
   getRedisConfigure() {
     const config = this.app.get('config');
-    const redisDatabaseConfig = config.get('database.redis', {});
-    const connectionName = config.get('session.connection', '');
-    return redisDatabaseConfig[connectionName] || {};
+    const connectionName = config.get('session.connection', 'session');
+    const { type, ...options } = config.get(`database.${connectionName}`, {});
+    return type === 'redis' ? options : {};
   }
 
   /**
