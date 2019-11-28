@@ -1,9 +1,8 @@
-import { Entity } from '../base/entity';
-import { ModelBuilder } from './builder';
-import { Builder } from '../database/builder';
-// import { SoftDeleteModel } from './soft-delete-model';
-// import { ModelInterface } from './model.interface';
 import { format as dateFormat, getUnixTime } from 'date-fns';
+import { Entity } from '../base/entity';
+import { Builder } from '../database/builder';
+import { ModelBuilder } from './builder';
+import { Relationship } from './relationship';
 
 export interface ColumnDescription {
   type: string;
@@ -13,7 +12,7 @@ export interface ColumnDescription {
 type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 // type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
-export class Model<TEntity extends Entity> {
+export class Model<TEntity extends Entity> extends Relationship {
 
   /**
    * 模型实体
@@ -83,6 +82,8 @@ export class Model<TEntity extends Entity> {
    * @param entity
    */
   constructor(entity: TEntity) {
+    super();
+    
     this.entity = entity;
 
     this.resolveEntity(entity);
