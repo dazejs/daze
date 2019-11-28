@@ -89,6 +89,7 @@
     "vary": "^1.1.2",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.1.0",
+    "mysql": "^2.17.1",
     "winston-mongodb": "^5.0.0"
   },
   "devDependencies": {
@@ -96,7 +97,6 @@
     "@types/mysql": "^2.15.7",
     "@types/pluralize": "^0.0.29",
     "copyfiles": "^2.1.1",
-    "mysql": "^2.17.1",
     "rimraf": "^3.0.0"
   }
 }
