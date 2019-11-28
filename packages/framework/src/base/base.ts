@@ -63,10 +63,4 @@ export abstract class Base {
   protected db(name?: string) {
     return this.app.get<Database>('db').connection(name) as AbstractConnection & Builder;
   }
-
-  // model<T>(name: string): T & Builder
-  // model(name: string): Builder
-  // model(name: string) {
-  //   return this.app.get(`model.${name}`);
-  // }
 }

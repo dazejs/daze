@@ -56,8 +56,5 @@
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.7.2"
-  },
-  "dependencies": {
-    "date-fns": "^2.8.1"
   }
 }
