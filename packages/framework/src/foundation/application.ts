@@ -211,7 +211,6 @@ export class Application extends Container {
    * load a registed provider with key or provider function
    */
   async load(Provider: any): Promise<this> {
-    console.log(Provider, 'Provider');
     if (typeof Provider === 'function') {
       const type = Reflect.getMetadata('type', Provider);
       if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a prov222ider!`);
