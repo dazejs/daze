@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as fs from 'fs';
+import * as glob from 'glob';
 import * as path from 'path';
 
 import { Container } from '../container';
@@ -68,12 +69,16 @@ export class Config {
   private async parse() {
     if (!fs.existsSync(this._app.configPath)) return;
     const currentEnv = this.env;
-    const files = fs.readdirSync(this._app.configPath);
-    for (const file of files) {
+    // const files = fs.readdirSync(this._app.configPath);
+    const filePaths = glob.sync(path.join(this._app.configPath, '**/*.@(js|ts)'), {
+      nodir: true,
+      matchBase: true
+    });
+    for (const file of filePaths) {
       const extname = path.extname(file);
       const normalBasename = path.basename(file, extname);
       const envBasename = path.basename(file, `.${currentEnv}${extname}`);
-      const currentConfig = (await import(path.join(this._app.configPath, file))).default;
+      const currentConfig = (await import(file)).default;
       if (!~path.basename(file, extname).indexOf('.')) {
         if (!this.has(normalBasename)) {
           this.set(normalBasename, currentConfig);

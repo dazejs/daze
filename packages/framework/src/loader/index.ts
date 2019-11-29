@@ -72,8 +72,9 @@ export class Loader {
   }
 
   async scan(absoluteFilePath: string) {
-    const filePaths = glob.sync(path.join(absoluteFilePath, '**'), {
+    const filePaths = glob.sync(path.join(absoluteFilePath, '**/*.@(js|ts)'), {
       nodir: true,
+      matchBase: true
     });
     for (const file of filePaths) {
       const Target = (await import(file)).default;

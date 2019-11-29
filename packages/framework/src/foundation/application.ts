@@ -211,23 +211,7 @@ export class Application extends Container {
    * load a registed provider with key or provider function
    */
   async load(Provider: any): Promise<this> {
-    // if (typeof Provider === 'string') {
-    //   if (this.has(Provider)) {
-    //     await this.register(this.get(Provider));
-    //     return this;
-    //   }
-    //   try {
-    //     const Target = (await import(Provider)).default;
-    //     const type = Reflect.getMetadata('type', Target);
-    //     if (type !== 'provider') throw new Error(`${Target.name || 'Unknow'} is not a provider!`);
-    //     console.log(Target.toString());
-    //     await this.register(new Target(this));
-    //   } catch (err) {
-    //     console.error(err);
-    //     throw new Error(`Can not find provider [${Provider}]!`);
-    //   }
-    //   return this;
-    // }
+    console.log(Provider, 'Provider');
     if (typeof Provider === 'function') {
       const type = Reflect.getMetadata('type', Provider);
       if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a prov222ider!`);
