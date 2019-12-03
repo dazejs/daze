@@ -47,6 +47,16 @@ $ npm start
 
 - [中文文档](https://dazejs.org/zh/)
 
+<!-- ## 贡献者
+
+请告诉我们可以为你做点什么，在此之前，首先查看 [Issues](https://github.com/dazejs/daze/issues) 来获取 BUG 报告或建议。
+
+想成为一个贡献者, 请参考我们的贡献指南
+
+感谢所有为这个项目做出贡献的人！ -->
+
+
+
 ## 基准测试
 
 基准测试对比了一些其他的框架，主要通过没有路由与定义1000个路由的情况下进行比较，详见[benchmarks](benchmarks/README.md)
