@@ -15,7 +15,7 @@
   <h4>Node.js 的 Web 框架</h4>
 </div>
 
-中文 | [English](README.md)
+中文 | [English](README_en.md)
 
 
 访问 [https://dazejs.org/](https://dazejs.org/) 了解更多

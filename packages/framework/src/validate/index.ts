@@ -8,6 +8,7 @@ import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { Message } from '../foundation/support/message';
 import * as validators from './validators';
+import { Validator as BaseValidator } from '../base/validator';
 
 export interface RuleData {
   field: string;
@@ -19,6 +20,8 @@ export interface RuleData {
 export interface RuleIndependences {
   [key: string]: [keyof typeof validators, any[]?, { [key2: string]: any }?][];
 }
+
+export type validatorType = { new(): BaseValidator } | Record<string, any> | string
 
 export class Validate {
   /**
@@ -46,7 +49,7 @@ export class Validate {
    * @param data
    * @param rules
    */
-  constructor(data: { [key: string]: any }, validator?: any) {
+  constructor(data: { [key: string]: any }, validator?: validatorType) {
     /**
      * @type {Object} data validate data
      */
@@ -62,7 +65,7 @@ export class Validate {
    * parse different type rulse
    * @param rules rules
    */
-  parseValidator(validator?: any) {
+  parseValidator(validator?: validatorType) {
     if (!validator) return [];
     // if object type
     if (typeof validator === 'object') {
@@ -79,6 +82,12 @@ export class Validate {
       if (!this.app.has(containerKey)) return [];
       return Reflect.getMetadata('rules', this.app.get(`validator.${validator}`).constructor) || [];
     }
+    // if type function
+    if (typeof validator === 'function') {
+      if (!this.app.has(validator)) return [];
+      return Reflect.getMetadata('rules', this.app.get(validator).constructor) || [];
+    }
+
     return [];
   }
 
