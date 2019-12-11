@@ -1,3 +1,5 @@
+import { OutgoingHttpHeaders } from "http";
+
 /**
  * Copyright (c) 2018 Chan Zewail
  *
@@ -7,8 +9,11 @@
 
 export class HttpError extends Error {
   code: number;
-  headers: any;
-  errors: any;
+
+  headers: OutgoingHttpHeaders;
+
+  errors: any[];
+
   constructor(code = 500, message = '', headers = {}, errors: any[] = []) {
     super(message);
     this.code = code;

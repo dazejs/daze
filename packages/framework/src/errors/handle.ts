@@ -10,48 +10,67 @@ import * as typeis from 'type-is';
 
 import { Container } from '../container';
 import { Response } from '../response';
+import { Application } from '../foundation/application';
 import { Redirect } from '../response/redirect';
 import { View } from '../view';
+import { Request } from '../request';
 import { HttpError } from './http-error';
 import { ValidateHttpError } from './validate-http-error';
-
-
+// import { OutgoingHttpHeaders } from 'http';
 
 const defaultHttpErrorTemplate = {
-  401: "errors/401.njk",
-  404: "errors/404.njk",
-  500: "errors/500.njk",
-  503: "errors/503.njk",
+  401: 'errors/401.njk',
+  404: 'errors/404.njk',
+  500: 'errors/500.njk',
+  503: 'errors/503.njk',
 };
 
+const renderTypes = ['html', 'text', 'json'];
+
+export interface ErrorOptionProperty { 
+  render?: Function; 
+  report?: Function;
+}
+
+export type ErrorCollection = (Error & ErrorOptionProperty) | (HttpError & ErrorOptionProperty);
+
 export class ErrorHandler {
-  app: any;
-  request: any;
-  error: any;
-  code: any;
+  /**
+   * app Application instance
+   */
+  app: Application = Container.get('app');
+
+  request: Request;
+
+  error: ErrorCollection;
+
   /**
    * Create Application Error Handler
    */
-  constructor(request: any, error: any) {
+  constructor(request: Request, error: ErrorCollection) {
     /**
-     * @type {Application} app Application instance
-     */
-    this.app = Container.get("app");
-
-    /**
-     * @type {Request} request request instance
+     * request request instance
      */
     this.request = request;
 
     /**
-     * @type {HttpError} error thrown Error
+     * error thrown Error
      */
     this.error = error;
 
-    /**
-     * @type {Number} code error code
-     */
-    this.code = (this.error instanceof HttpError) ? this.error.code : 500;
+  }
+
+  /**
+   * report error
+   */
+  report() {
+    if (this.error instanceof HttpError) return;
+    // eslint-disable-next-line
+    console.error();
+    // eslint-disable-next-line
+    console.error(this.error.stack || this.error.toString());
+    // eslint-disable-next-line
+    console.error();
   }
 
 
@@ -60,8 +79,21 @@ export class ErrorHandler {
    * @public
    */
   render() {
-    const type: 'json' | 'html' | 'text' = typeis.is(this.error.headers && this.error.headers["content-type"], ["html", "text", "json"]) || this.request.acceptsTypes("html", "text", "json") || "text";
-    return this[type]();
+    if (this.error instanceof HttpError) {
+      const contentType = this.error.headers && this.error.headers['content-type'] as string || '';
+
+      const headersType = typeis.is(contentType, ['html', 'text', 'json']);
+      if (headersType && renderTypes.includes(headersType)) {
+        return this[headersType as 'html' | 'text' | 'json']();
+      }
+    }
+
+    const acceptsType = this.request.acceptsTypes('html', 'text', 'json');
+    if (typeof acceptsType === 'string' && renderTypes.includes(acceptsType)) {
+      return this[acceptsType as 'html' | 'text' | 'json']();
+    }
+
+    return this.text();
   }
 
   /**
@@ -69,8 +101,13 @@ export class ErrorHandler {
    * @private
    */
   text() {
-    const data = this.error.message || statuses[+this.error.code];
-    return new Response(data, this.code, this.error.headers).setType("txt");
+    if (this.error instanceof HttpError) {
+      const data = this.error.message || statuses[+this.error.code || 500];
+      return new Response(data, this.error.code, this.error.headers).setType('txt');
+    }
+
+    const data = this.error.message || 'something went error!';
+    return new Response(data, 500).setType('txt');
   }
 
   /**
@@ -78,15 +115,23 @@ export class ErrorHandler {
    * @private
    */
   json() {
-    const message = this.error.message || statuses[+this.error.code];
-    const { errors } = this.error;
-    const data: any = { message, errors };
-    if (this.app.isDebug) {
-      if (this.error.code >= 500) {
-        data.stack = this.error.stack;
+    if (this.error instanceof HttpError) {
+      const message = this.error.message || statuses[+this.error.code || 500];
+      const { errors } = this.error;
+      const data: Record<string, any> = { message, errors };
+      if (this.app.isDebug) {
+        if (this.error.code >= 500) {
+          data.stack = this.error.stack;
+        }
       }
+      return new Response(data, this.error.code, this.error.headers).setType('json');
     }
-    return new Response(data, this.code, this.error.headers).setType("json");
+
+    const data: Record<string, any> = { message: this.error.message || 'something went error!' };
+    if (this.app.isDebug) {
+      data.stack = this.error.stack;
+    }
+    return new Response(data, 500).setType('json');
   }
 
   /**
@@ -102,46 +147,63 @@ export class ErrorHandler {
       // TODO: session
       return (new Redirect()).back();
     }
-    if (!(this.error instanceof HttpError) && this.app.isDebug) {
-      return this.renderTracePage();
+    if (!(this.error instanceof HttpError)) {
+      if (this.app.isDebug) {
+        return this.renderTracePage(this.error);
+      }
+      return this.renderErrorPage(this.error);
     }
-    return this.renderHttpErrorPage();
+    return this.renderHttpErrorPage(this.error);
   }
 
   /**
    * render trace page for debug
    * @private
    */
-  renderTracePage() {
-    const page = tracePage(this.error, this.request);
-    return new Response(page, this.code, this.error.headers).setType('html');
+  private renderTracePage(error: Error & ErrorOptionProperty) {
+    const page = tracePage(error, this.request);
+    return new Response(page, 500).setType('html');
+  }
+
+  /**
+   * render error page
+   * @param error 
+   */
+  private renderErrorPage(error: Error & ErrorOptionProperty) {
+    const config = this.app.get('config');
+    // get http_exception_template object
+    const httpErrorTemplate = config.get('app.httpErrorTemplate', {});
+    const temps = Object.assign({}, defaultHttpErrorTemplate, httpErrorTemplate);
+    const view = (new View()).render(temps[500], {
+      err: error,
+    });
+    return new Response(view, 500).setType('html');
   }
 
   /**
    * render http error page
-   * @private
    */
-  renderHttpErrorPage() {
+  private renderHttpErrorPage(error: HttpError & ErrorOptionProperty) {
     const config = this.app.get('config');
     // get http_exception_template object
     const httpErrorTemplate = config.get('app.httpErrorTemplate', {});
     const temps = Object.assign({}, defaultHttpErrorTemplate, httpErrorTemplate);
     // check user config s status page
-    if (temps[this.error.code]) {
-      const view = (new View()).render(temps[this.error.code] || 'errors/error.njk', {
-        err: this.error,
+    if (temps[error.code]) {
+      const view = (new View()).render(temps[error.code], {
+        err: error,
       });
-      return new Response(view, this.code, this.error.headers).setType('html');
+      return new Response(view, error.code, error.headers).setType('html');
     }
     if (temps.error) {
-      const view = (new View()).render(temps.error || "errors/error.njk", {
-        err: this.error,
+      const view = (new View()).render(temps.error, {
+        err: error,
       });
-      return new Response(view, this.code, this.error.headers).setType('html');
+      return new Response(view, error.code, error.headers).setType('html');
     }
     const view = (new View()).render('errors/error.njk', {
-      err: this.error,
+      err: error,
     });
-    return new Response(view, this.code, this.error.headers).setType('html');
+    return new Response(view, error.code, error.headers).setType('html');
   }
 }

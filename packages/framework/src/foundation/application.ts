@@ -14,11 +14,15 @@ import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
 import { Database } from '../database';
+// import { HttpError } from '../errors/http-error';
+import { ErrorHandler, ErrorOptionProperty } from '../errors/handle';
 import { HttpError } from '../errors/http-error';
 import { Logger } from '../logger';
+import { Middleware } from '../middleware';
+import { Request } from '../request';
+import { ResponseManager } from '../response/manager';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
-import { Middleware } from '../middleware';
 
 const DEFAULT_PORT = 8080;
 
@@ -317,15 +321,22 @@ export class Application extends Container {
    * app error listener
    * @param err 
    */
-  onerror(err: any) {
+  onerror(err: Error & HttpError & ErrorOptionProperty, request: Request) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
-    if (err instanceof HttpError) return;
-    // eslint-disable-next-line
-    console.error();
-    // eslint-disable-next-line
-    console.error(err.stack || err.toString());
-    // eslint-disable-next-line
-    console.error();
+
+    if (err.report && typeof err.report === 'function') {
+      err.report(this);
+    } else {
+      const handler = new ErrorHandler(request, err);
+      handler.report();
+    }
+
+    if (err.render && typeof err.render === 'function') {
+      new ResponseManager(err.render(this)).output(request);
+    } else {
+      const handler = new ErrorHandler(request, err);
+      new ResponseManager(handler.render()).output(request);
+    }
   }
 
   /**
