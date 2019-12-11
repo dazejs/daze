@@ -220,6 +220,19 @@ export class Request {
     return this.length;
   }
 
+  getIps() {
+    const proxy = this.app.get('config').get('app.proxy');
+    if (proxy) {
+      const ips = this.getHeader('X-Forwarded-For') as string;
+      return ips.split(/\s*,\s*/);
+    }
+    return [];
+  }
+
+  getIp() {
+    return this.getIps()[0] || this.getSocket().remoteAddress || ''; 
+  }
+
   /**
    * Get request URL.
    */

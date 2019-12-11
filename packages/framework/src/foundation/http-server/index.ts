@@ -14,11 +14,8 @@ import { Response } from '../../response';
 import { ResponseManager } from '../../response/manager';
 import { Application } from '../application';
 
-
-
-
 export class HttpServer {
-  app: Application = Container.get('app');;
+  app: Application = Container.get('app');
 
   listen(port: number) {
     const routeHandler = this.app.get('router').resolve();

@@ -1,4 +1,4 @@
-import { Connection } from 'mysql';
+import { Connection, Pool } from 'mysql';
 import { MysqlParser } from '../parser';
 import { AbstractConnection } from './connection.abstract';
 
@@ -7,13 +7,13 @@ export class MysqlConnection extends AbstractConnection {
   /**
    * Mysql connection
    */
-  connection: Connection;
+  connection: Connection | Pool;
 
   /**
    * Create Mysql Connection instance
    * @param connection 
    */
-  constructor(connection: Connection) {
+  constructor(connection: Connection | Pool) {
     super();
     this.connection = connection;
   }

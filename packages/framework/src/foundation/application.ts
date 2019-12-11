@@ -9,6 +9,7 @@ import { Server } from 'http';
 import Keygrip from 'keygrip';
 import * as path from 'path';
 import * as util from 'util';
+import * as winston from 'winston';
 import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
@@ -17,6 +18,7 @@ import { HttpError } from '../errors/http-error';
 import { Logger } from '../logger';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
+import { Middleware } from '../middleware';
 
 const DEFAULT_PORT = 8080;
 
@@ -191,6 +193,7 @@ export class Application extends Container {
     await this.register(new providers.RouterProvider(this));
     await this.register(new providers.TemplateProvider(this));
     await this.register(new providers.DatabaseProvider(this));
+    await this.register(new providers.LoggerProvider(this));
   }
 
   /**
@@ -446,8 +449,9 @@ export class Application extends Container {
 
   get(abstract: 'app', args?: any[], force?: boolean): Application
   get(abstract: 'config', args?: any[], force?: boolean): Config
-  get(abstract: 'logger', args?: any[], force?: boolean): Logger
+  get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
+  get(abstract: 'middleware', args?: any[], force?: boolean): Middleware
   get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 

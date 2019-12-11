@@ -272,11 +272,7 @@ export class Response extends Statusable {
    */
   getLength() {
     const length = this.getHeader('Content-Length') as string;
-    if (length) return parseInt(length, 10) ?? 0;
-    if (!this._data || this._data instanceof Stream) return 0;
-    if (typeof this._data === 'string') return Buffer.byteLength(this._data); 
-    if (Buffer.isBuffer(this._data)) return this._data.length;
-    return Buffer.byteLength(JSON.stringify(this._data));
+    return length ? parseInt(length, 10) : 0;
   }
 
   /**

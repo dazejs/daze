@@ -63,4 +63,8 @@ export abstract class Base {
   protected db(name?: string) {
     return this.app.get<Database>('db').connection(name) as AbstractConnection & Builder;
   }
+
+  protected logger(channel?: string) {
+    return this.app.get('logger').channel(channel);
+  }
 }

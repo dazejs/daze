@@ -18,3 +18,4 @@ export * from './cookie';
 export * from './decorators';
 export * from './base';
 export * from './model';
+export * from './request';

@@ -428,6 +428,7 @@ export class Model<TEntity extends Entity> extends Relationship {
     // 软删除的情况
     // 需要更新的字段
     const attributes: Record<string, any> = {};
+    
     attributes[this.getSoftDeleteKey()] = this.getFormatedDate(
       this.getColumnType(
         this.getSoftDeleteKey()

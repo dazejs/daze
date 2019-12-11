@@ -15,8 +15,8 @@ import { IllegalArgumentError } from '../errors/illegal-argument-error';
 // import DailyRotateFile from 'winston-daily-rotate-file';
 export class Logger {
   app: any;
-  container: any;
-  logger: any;
+  container: winston.Container;
+  logger: winston.Logger;
   defaultDrivers: any;
   customDrivers: any;
   defaultFormat: any;
@@ -33,15 +33,19 @@ export class Logger {
     this.container = new winston.Container();
 
     /**
-      * @var {Logger} logger log instance
-      */
-    this.logger = null;
-
-    /**
      * @var {Map} defaultDrivers
      * default transports supported
      */
-    this.defaultDrivers = new Set(['console', 'file', 'http', 'stream', 'mongodb', 'dailyFile']);
+    // this.defaultDrivers = new Set(['console', 'file', 'http', 'stream', 'mongodb', 'dailyFile']);
+
+    this.defaultDrivers = new Map([
+      ['console', winston.transports.Console],
+      ['file', winston.transports.File],
+      ['http', winston.transports.Http],
+      ['stream', winston.transports.Stream],
+      ['mongodb', MongoDB],
+      ['dailyFile', require('winston-daily-rotate-file')],
+    ]);
 
     /**
       * @var {Map} customDrivers
@@ -56,17 +60,17 @@ export class Logger {
       format.splat(),
       format.printf((info: any) => `[${info.timestamp}] [${info.level.toUpperCase()}] - ${info.message}`),
     );
-
+    
     return new Proxy(this, this.proxy());
   }
 
   proxy(): ProxyHandler<this> {
     return {
       get(t, prop, reveicer) {
-        if (Reflect.has(t, prop) || typeof prop === 'symbol') {
+        if (Reflect.has(t, prop) || typeof prop !== 'string') {
           return Reflect.get(t, prop, reveicer);
         }
-        return t.logger[prop];
+        return t.logger[prop as keyof winston.Logger];
       },
     };
   }
@@ -96,8 +100,10 @@ export class Logger {
   /**
    * change log channel
    */
-  channel(channelName: string) {
-    this.resolve(channelName);
+  channel(channelName?: string) {
+    if (channelName) this.resolve(channelName);
+    else this.resolveDefaultChannel();
+    
     return this;
   }
 
@@ -120,7 +126,7 @@ export class Logger {
   /**
    * get winston transports
    */
-  getTransports(channelName: string) {
+  getTransports(channelName: string): any[] {
     const config = this.getChannelConfigure(channelName);
     if (!config) throw new IllegalArgumentError(`Logger channel [${channelName}] is not defined.`);
     const { driver: driverName } = config;
@@ -134,7 +140,16 @@ export class Logger {
     }
 
     if (this.isDefaultDriverSupported(driverName)) {
-      return this[`${driverName}DriverCreator`](config);
+      switch (driverName) {
+        case 'file' :
+          return this.defaultDriverCreator({
+            ...config,
+            filename: path.resolve(this.app.appPath, '../../logs', config.filename)
+          });
+        default:
+          return this.defaultDriverCreator(config);
+      }
+      // return this[`${driverName}DriverCreator`](config);
     }
 
     throw new IllegalArgumentError(`Logger Driver [${driverName}] is not supported.`);
@@ -177,16 +192,26 @@ export class Logger {
     return driver === 'compose';
   }
 
-  callCustomDriverCreator(..._args: any[]) {
-    // TODO
+  callCustomDriverCreator(config: Record<string, any>) {
+    const { driver, ...restOpts } = config;
+    const [DriverInstance, defaultOptions] = this.customDrivers.get(driver);
+    return [new DriverInstance({
+      ...defaultOptions,
+      ...restOpts
+    })];
+  }
+
+  addCustomDriver(channelName: string, Driver: any, defaultOptions: Record<string, any> = {}) {
+    this.customDrivers.set(channelName, [Driver, defaultOptions]);
+    return this;
   }
 
   /**
    * compose driver creator
    */
-  composeDriverCreator(channel: any) {
+  composeDriverCreator(channel: any): any[] {
     const { channels } = channel;
-    if (!this.isComposeChannel(channel)) return undefined;
+    if (!this.isComposeChannel(channel)) return [];
     let res: any[] = [];
     for (const _channel of channels) {
       const transports = this.getTransports(_channel);
@@ -195,55 +220,61 @@ export class Logger {
     return res;
   }
 
-  /**
-   * console driver creator
-   */
-  consoleDriverCreator(options: any) {
+  // /**
+  //  * console driver creator
+  //  */
+  // consoleDriverCreator(options: any) {
+  //   const { driver, ...restOpts } = options;
+  //   return [new winston.transports.Console(restOpts)];
+  // }
+
+  defaultDriverCreator(options: Record<string, any>) {
     const { driver, ...restOpts } = options;
-    return [new winston.transports.Console(restOpts)];
+    const DriverInstance = this.defaultDrivers.get(driver);
+    return [new DriverInstance(restOpts)];
   }
 
-  /**
-   * dailyFile driver creator
-   */
-  dailyFileDriverCreator(options: any) {
-    const { driver, ...restOpts } = options;
-    return [new (require('winston-daily-rotate-file'))(restOpts)];
-  }
+  // /**
+  //  * dailyFile driver creator
+  //  */
+  // dailyFileDriverCreator(options: any) {
+  //   const { driver, ...restOpts } = options;
+  //   return [new (require('winston-daily-rotate-file'))(restOpts)];
+  // }
 
   /**
    * file driver creator
    */
-  fileDriverCreator(options: any) {
-    const { driver, filename, ...restOpts } = options;
-    const _filename = path.resolve(this.app.appPath, '../../logs', filename);
-    return [new winston.transports.File({
-      filename: _filename,
-      ...restOpts,
-    })];
-  }
+  // fileDriverCreator(options: any) {
+  //   const { driver, filename, ...restOpts } = options;
+  //   const _filename = path.resolve(this.app.appPath, '../../logs', filename);
+  //   return [new winston.transports.File({
+  //     filename: _filename,
+  //     ...restOpts,
+  //   })];
+  // }
 
   /**
    * http driver creator
    */
-  httpDriverCreator(options: any) {
-    const { driver, ...restOpts } = options;
-    return [new winston.transports.Http(restOpts)];
-  }
+  // httpDriverCreator(options: any) {
+  //   const { driver, ...restOpts } = options;
+  //   return [new winston.transports.Http(restOpts)];
+  // }
 
   /**
    * stream driver creator
    */
-  streamDriverCreator(options: any) {
-    const { driver, ...restOpts } = options;
-    return [new winston.transports.Stream(restOpts)];
-  }
+  // streamDriverCreator(options: any) {
+  //   const { driver, ...restOpts } = options;
+  //   return [new winston.transports.Stream(restOpts)];
+  // }
 
   /**
    * mongodb driver creator
    */
-  mongodbDriverCreator(options: any) {
-    const { driver, ...restOpts } = options;
-    return [new MongoDB(restOpts)];
-  }
+  // mongodbDriverCreator(options: any) {
+  //   const { driver, ...restOpts } = options;
+  //   return [new MongoDB(restOpts)];
+  // }
 }

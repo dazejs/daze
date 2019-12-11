@@ -1,4 +1,5 @@
-import { Connection, ConnectionConfig, createConnection, MysqlError } from 'mysql';
+// import { Connection, ConnectionConfig, createConnection, MysqlError, createPool } from 'mysql';
+import { Connection, ConnectionConfig, createPool } from 'mysql';
 import { ConnectorInterface } from './connector.interface';
 
 /**
@@ -12,29 +13,38 @@ export class MysqlConnector implements ConnectorInterface {
   connection: Connection;
 
   /**
-   * connect to mysql
+   * connect to mysql use pool
+   * @param options 
    */
   connect(options: string | ConnectionConfig) {
-    const connection = createConnection(options);
-    connection.connect();
-    connection.on('error', (err: MysqlError) => {
-      this.handleConnectionLost(err, options);
-    });
+    const connection = createPool(options);
     return connection;
   }
 
-  /**
-   * handle error when connection lost
-   * @param err 
-   * @param options 
-   */
-  handleConnectionLost(err: MysqlError, options: string | ConnectionConfig) {
-    if (err) {
-      if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        this.connect(options);
-      } else {
-        throw err;
-      }
-    }
-  }
+  // /**
+  //  * connect to mysql
+  //  */
+  // connect(options: string | ConnectionConfig) {
+  //   const connection = createConnection(options);
+  //   connection.connect();
+  //   connection.on('error', (err: MysqlError) => {
+  //     this.handleConnectionLost(err, options);
+  //   });
+  //   return connection;
+  // }
+
+  // /**
+  //  * handle error when connection lost
+  //  * @param err 
+  //  * @param options 
+  //  */
+  // handleConnectionLost(err: MysqlError, options: string | ConnectionConfig) {
+  //   if (err) {
+  //     if (err.fatal) {
+  //       this.connect(options);
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // }
 }
