@@ -14,9 +14,7 @@ import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
 import { Database } from '../database';
-// import { HttpError } from '../errors/http-error';
-import { ErrorHandler, ErrorOptionProperty } from '../errors/handle';
-import { HttpError } from '../errors/http-error';
+import { ErrorHandler, ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { Request } from '../request';
@@ -321,7 +319,7 @@ export class Application extends Container {
    * app error listener
    * @param err 
    */
-  onerror(err: Error & HttpError & ErrorOptionProperty, request: Request) {
+  onerror(err: ErrorCollection, request: Request) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
 
     if (err.report && typeof err.report === 'function') {
