@@ -12,28 +12,27 @@
     <img width="200" heigth="200" src="https://github.com/dazejs/daze/blob/master/assets/logo.png">
   </a>  
   <h1>Daze.js</h1>
-  <h4>Node.js 的 Web 框架</h4>
+  <h4>Web framwork for Node.js</h4>
 </div>
 
-中文 | [English](README_en.md)
+English | [中文](README_zh.md)
 
 
-访问 [https://dazejs.org/](https://dazejs.org/) 了解更多
+Visit [https://dazejs.org/](https://dazejs.org/) to learn more
 
-## 介绍
+## Introduction
 
-`Daze.js` 是一款高性能、高扩展性、功能强大的 `Node.js` 服务端 Web 开发框架。
+`Daze.js` is an efficient, highly extensible and powerful `Node.js` server-side Web development daze.
 
 
-## 快速开始
+## Getting Started
 
-##### 安装工具
-
+#### Install cli tool
 ```bash
 $ npm install -g @dazejs/cli
 ```
 
-##### 创建工程
+#### Create application
 
 ```bash
 $ daze create example
@@ -41,25 +40,14 @@ $ cd example
 $ npm start
 ```
 
-访问 `http://localhost:8080` 进行预览
+visit `http://localhost:8080` to preview
 
-## 文档 & 社区
+## Docs & Community
 
-- [中文文档](https://dazejs.org/zh/)
+- [Documentations](https://dazejs.org/)
 
-<!-- ## 贡献者
-
-请告诉我们可以为你做点什么，在此之前，首先查看 [Issues](https://github.com/dazejs/daze/issues) 来获取 BUG 报告或建议。
-
-想成为一个贡献者, 请参考我们的贡献指南
-
-感谢所有为这个项目做出贡献的人！ -->
-
-
-
-## 基准测试
-
-基准测试对比了一些其他的框架，主要通过没有路由与定义1000个路由的情况下进行比较，详见[benchmarks](benchmarks/README.md)
+## Benchmarks
+The benchmark compares a number of other frameworks, mainly with no routes and with 1000 routes defined, see [benchmarks](benchmarks/README.md)
 
 ## License
 
