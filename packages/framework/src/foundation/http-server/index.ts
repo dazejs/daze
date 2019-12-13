@@ -8,7 +8,8 @@ import * as http from 'http';
 
 import { Container } from '../../container';
 // import { ErrorHandler } from '../../errors/handle';
-import { HttpError } from '../../errors/http-error';
+import { HttpError} from '../../errors/http-error';
+import { ErrorCollection, ErrorHandler } from '../../errors/handle';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { ResponseManager } from '../../response/manager';
@@ -37,8 +38,20 @@ export class HttpServer {
         .then((response: Response) => {
           return new ResponseManager(response).output(request);
         })
-        .catch((error: Error) => {
-          this.app.emit('error', error, request);
+        .catch((err: ErrorCollection) => {
+          if (err.report && typeof err.report === 'function') {
+            err.report(this);
+          } else {
+            const handler = new ErrorHandler(err, request);
+            handler.report();
+          }
+
+          if (err.render && typeof err.render === 'function') {
+            new ResponseManager(err.render(this.app)).output(request);
+          } else {
+            const handler = new ErrorHandler(err, request);
+            new ResponseManager(handler.render()).output(request);
+          }
         });
     });
     return server.listen(port);

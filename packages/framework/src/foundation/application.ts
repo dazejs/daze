@@ -311,7 +311,7 @@ export class Application extends Container {
    */
   loadListeners() {
     if (!this.listenerCount('error')) {
-      this.on('error', this.onerror);
+      this.on('error', this.onerror.bind(this));
     }
   }
 
@@ -319,22 +319,9 @@ export class Application extends Container {
    * app error listener
    * @param err 
    */
-  onerror(err: ErrorCollection, request?: Request) {
+  onerror(err: ErrorCollection) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
-
-    if (err.report && typeof err.report === 'function') {
-      err.report(this);
-    } else {
-      const handler = new ErrorHandler(err, request);
-      handler.report();
-    }
-
-    if (err.render && typeof err.render === 'function') {
-      new ResponseManager(err.render(this)).output(request);
-    } else {
-      const handler = new ErrorHandler(err, request);
-      new ResponseManager(handler.render()).output(request);
-    }
+    throw err;
   }
 
   /**
