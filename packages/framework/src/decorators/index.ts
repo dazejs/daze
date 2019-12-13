@@ -5,15 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 import * as HttpContext from './contexts-http';
-import { HttpCode } from './http-code';
 import * as Vberbs from './verb';
 
 
 export const Http = {
-  Code: HttpCode,
   ...Vberbs,
   ...HttpContext
 };
+export const http = Http;
 export * from './route';
 export * from './rest';
 export * from './multiton';
