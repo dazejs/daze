@@ -7,14 +7,16 @@
 import { ComponentType } from '../symbol';
 import { formatPrefix } from './helpers';
 
-export function Route(prefix = ''): ClassDecorator {
+export function Route(...prefixs: string[]): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
+    Reflect.defineMetadata('isRoute', true, constructor);
     Reflect.defineMetadata('type', ComponentType.Controller, constructor);
-    Reflect.defineMetadata('prefix', formatPrefix(prefix), constructor);
+    Reflect.defineMetadata('prefixs', prefixs?.map(prefix => formatPrefix(prefix)) ?? ['/'] , constructor);
+    // Reflect.defineMetadata('prefix', formatPrefix(), constructor);
   };
 };
 
-export function route(prefix = ''): ClassDecorator {
-  return Route(prefix);
+export function route(...prefixs: string[]): ClassDecorator {
+  return Route(...prefixs);
 };

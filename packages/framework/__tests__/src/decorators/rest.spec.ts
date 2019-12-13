@@ -15,6 +15,6 @@ describe('Rest Decorator', () => {
       update: [{ uri: '/:id', method: 'put' }],
       destroy: [{ uri: '/:id', method: 'del' }],
     });
-    expect(Reflect.getMetadata('prefix', Example)).toBe('/example');
+    expect(Reflect.getMetadata('prefixs', Example)).toEqual(['/example']);
   });
 });

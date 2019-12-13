@@ -5,6 +5,6 @@ describe('Controller Decorator', () => {
   it('should patch type and prefix in Controller', () => {
     @Route('example')
     class Example { };
-    expect(Reflect.getMetadata('prefix', Example)).toBe('/example');
+    expect(Reflect.getMetadata('prefixs', Example)).toEqual(['/example']);
   });
 });

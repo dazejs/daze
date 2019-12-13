@@ -30,16 +30,19 @@ export class ControllerManager {
    */
   public resolve(controller: typeof Controller) {
     const routes = Reflect.getMetadata('routes', controller) || {};
-    const prefix = Reflect.getMetadata('prefix', controller) || '';
+    const prefixs = Reflect.getMetadata('prefixs', controller) || [''];
     const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller) || [];
     const routeMiddlewares = Reflect.getMetadata('routeMiddlewares', controller) || {};
-    this.registerRoutes(controller, routes, prefix, controllerMiddlewares, routeMiddlewares);
+
+    for (const prefix of prefixs) {
+      this.registerRoutes(controller, routes, prefix, controllerMiddlewares, routeMiddlewares);
+    }
   }
 
   /**
    * register controller routes
    */
-  private registerRoutes(controller: any, routes: any, prefix?: string, controllerMiddlewares?: any, routeMiddlewares?: any) {
+  private registerRoutes(controller: any, routes: any, prefix = '', controllerMiddlewares?: any, routeMiddlewares?: any) {
     const Router = this.app.get('router');
     for (const key of Object.keys(routes)) {
       for (const route of routes[key]) {
