@@ -23,3 +23,7 @@ function handle(args: any[], code: number) {
 export function HttpCode(code = 200) {
   return (...args: any[]) => handle(args, code);
 };
+
+export function httpCode(code = 200) {
+  return HttpCode(code);
+};
