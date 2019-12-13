@@ -15,3 +15,7 @@ export function Component(name = ''): ClassDecorator {
     Reflect.defineMetadata('name', name, constructor);
   };
 };
+
+export function component(name = '') {
+  return Component(name);
+}

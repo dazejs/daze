@@ -18,6 +18,10 @@ export function Passed (options?: any) {
   });
 };
 
+export function passed(options?: any) {
+  return Passed(options);
+};
+
 // MARK: Common
 
 export function Accepted (options?: any) {
@@ -27,11 +31,19 @@ export function Accepted (options?: any) {
   });
 };
 
+export function accepted(options?: any) {
+  return Accepted(options);
+};
+
 export function Is (comparison: any, options?: any) {
   return validatorFactory(validators.is, [comparison], {
     message: '$field must is $1',
     ...options,
   });
+};
+
+export function is(comparison: any, options?: any) {
+  return Is(comparison, options);
 };
 
 export function Required (options?: any) {
@@ -41,11 +53,19 @@ export function Required (options?: any) {
   });
 };
 
+export function required(options?: any) {
+  return Required(options);
+};
+
 export function Equals(comparison: any, options?: any) {
   return validatorFactory(validators.equals, [comparison], {
     message: '$field must be equal to $1',
     ...options,
   });
+};
+
+export function equals(comparison: any, options?: any) {
+  return Equals(comparison, options);
 };
 
 export function NotEquals(comparison: any, options?: any) {
@@ -55,6 +75,10 @@ export function NotEquals(comparison: any, options?: any) {
   });
 };
 
+export function notEquals(comparison: any, options?: any) {
+  return NotEquals(comparison, options);
+};
+
 export function IsEmpty (options?: any) {
   return validatorFactory(validators.isEmpty, [], {
     message: '$field must be empty',
@@ -62,11 +86,19 @@ export function IsEmpty (options?: any) {
   });
 };
 
+export function isEmpty(options?: any) {
+  return IsEmpty(options);
+};
+
 export function IsNotEmpty (options?: any) {
   return validatorFactory(validators.isNotEmpty, [], {
     message: '$field should not be empty',
     ...options,
   });
+};
+
+export function isNotEmpty(options?: any) {
+  return IsNotEmpty(options);
 };
 
 // MARK: Number
@@ -78,11 +110,19 @@ export function IsDivisibleBy(num: any, options?: any) {
   });
 };
 
+export function isDivisibleBy(num: any, options?: any) {
+  return IsDivisibleBy(num, options);
+};
+
 export function IsPositive (options?: any) {
   return validatorFactory(validators.isPositive, [], {
     message: '$field must be a positive number',
     ...options,
   });
+};
+
+export function isPositive(options?: any) {
+  return IsPositive(options);
 };
 
 export function IsNegative (options?: any) {
@@ -92,6 +132,10 @@ export function IsNegative (options?: any) {
   });
 };
 
+export function isNegative(options?: any) {
+  return IsNegative(options);
+};
+
 export function Min(min: any, options?: any) {
   return validatorFactory(validators.min, [min], {
     message: '$field must not be less than $1',
@@ -99,11 +143,19 @@ export function Min(min: any, options?: any) {
   });
 };
 
+export function min(min: any, options?: any) {
+  return Min(min, options);
+};
+
 export function Max(max: any, options?: any) {
   return validatorFactory(validators.max, [max], {
     message: '$field must not be greater than $1',
     ...options,
   });
+};
+
+export function max(max: any, options?: any) {
+  return Max(max, options);
 };
 
 
@@ -116,11 +168,19 @@ export function AfterDate(date: any, options?: any) {
   });
 };
 
+export function afterDate(date: any, options?: any) {
+  return AfterDate(date, options);
+};
+
 export function BeforeDate(date: any, options?: any) {
   return validatorFactory(validators.beforeDate, [date], {
     message: '$field date must not be after than $1',
     ...options,
   });
+};
+
+export function beforeDate(date: any, options?: any) {
+  return BeforeDate(date, options);
 };
 
 // MARK: Type
@@ -132,11 +192,19 @@ export function IsBoolean (options?: any) {
   });
 };
 
+export function isBoolean(options?: any) {
+  return IsBoolean(options);
+};
+
 export function IsDate (options?: any) {
   return validatorFactory(validators.isDate, [], {
     message: '$field must be a date value',
     ...options,
   });
+};
+
+export function isDate(options?: any) {
+  return IsDate(options);
 };
 
 export function IsString (options?: any) {
@@ -146,11 +214,19 @@ export function IsString (options?: any) {
   });
 };
 
+export function isString(options?: any) {
+  return IsString(options);
+};
+
 export function IsNumber (options?: any) {
   return validatorFactory(validators.isNumber, [], {
     message: '$field must be a number value',
     ...options,
   });
+};
+
+export function isNumber(options?: any) {
+  return IsNumber(options);
 };
 
 export function IsArray (options?: any) {
@@ -160,11 +236,19 @@ export function IsArray (options?: any) {
   });
 };
 
+export function isArray(options?: any) {
+  return IsArray(options);
+};
+
 export function IsError (options?: any) {
   return validatorFactory(validators.isError, [], {
     message: '$field must be an error',
     ...options,
   });
+};
+
+export function isError(options?: any) {
+  return IsError(options);
 };
 
 export function IsFunction (options?: any) {
@@ -174,11 +258,19 @@ export function IsFunction (options?: any) {
   });
 };
 
+export function isFunction(options?: any) {
+  return IsFunction(options);
+};
+
 export function IsBuffer (options?: any) {
   return validatorFactory(validators.isBuffer, [], {
     message: '$field must be a buffer',
     ...options,
   });
+};
+
+export function isBuffer(options?: any) {
+  return IsBuffer(options);
 };
 
 export function IsObject (options?: any) {
@@ -188,11 +280,19 @@ export function IsObject (options?: any) {
   });
 };
 
+export function isObject(options?: any) {
+  return IsObject(options);
+};
+
 export function IsRegExp (options?: any) {
   return validatorFactory(validators.isRegExp, [], {
     message: '$field must be a regexp',
     ...options,
   });
+};
+
+export function isRegExp(options?: any) {
+  return IsRegExp(options);
 };
 
 export function IsSymbol (options?: any) {
@@ -202,11 +302,19 @@ export function IsSymbol (options?: any) {
   });
 };
 
+export function isSymbol(options?: any) {
+  return IsSymbol(options);
+};
+
 export function IsNullOrUndefined (options?: any) {
   return validatorFactory(validators.isNullOrUndefined, [], {
     message: '$field must be null or undefined',
     ...options,
   });
+};
+
+export function isNullOrUndefined(options?: any) {
+  return IsNullOrUndefined(options);
 };
 
 export function IsNull (options?: any) {
@@ -216,11 +324,19 @@ export function IsNull (options?: any) {
   });
 };
 
+export function isNull(options?: any) {
+  return IsNull(options);
+};
+
 export function IsUndefined (options?: any) {
   return validatorFactory(validators.isUndefined, [], {
     message: '$field must be undefined',
     ...options,
   });
+};
+
+export function isUndefined(options?: any) {
+  return IsUndefined(options);
 };
 
 // MARK: String Type
@@ -232,11 +348,19 @@ export function IsDateString (options?: any) {
   });
 };
 
+export function isDateString(options?: any) {
+  return IsDateString(options);
+};
+
 export function IsBooleanString (options?: any) {
   return validatorFactory(validators.isBooleanString, [], {
     message: '$field must be a boolean string value',
     ...options,
   });
+};
+
+export function isBooleanString(options?: any) {
+  return IsBooleanString(options);
 };
 
 export function IsNumberString (options?: any) {
@@ -247,6 +371,9 @@ export function IsNumberString (options?: any) {
   });
 };
 
+export function isNumberString(options?: any) {
+  return IsNumberString(options);
+};
 
 // MARK: String
 
@@ -257,11 +384,19 @@ export function Contains(seed: any, options?: any) {
   });
 };
 
+export function contains(seed: any, options?: any) {
+  return Contains(seed, options);
+};
+
 export function NotContains(seed: any, options?: any) {
   return validatorFactory(validators.notContains, [seed], {
     message: '$field should not contain a $1 string',
     ...options,
   });
+};
+
+export function notContains(seed: any, options?: any) {
+  return NotContains(seed, options);
 };
 
 export function IsAlpha(locale?: any, options?: any) {
@@ -278,6 +413,10 @@ export function IsAlpha(locale?: any, options?: any) {
   });
 };
 
+export function isAlpha(locale: any, options?: any) {
+  return IsAlpha(locale, options);
+};
+
 export function IsAlphanumeric(locale?: any, options?: any) {
   const defaultMessage = '$field must contain only letters and numbers';
   if (locale && typeof locale === 'object') {
@@ -292,11 +431,19 @@ export function IsAlphanumeric(locale?: any, options?: any) {
   });
 };
 
+export function isAlphanumeric(locale: any, options?: any) {
+  return IsAlphanumeric(locale, options);
+};
+
 export function IsAscii (options?: any) {
   return validatorFactory(validators.isAscii, [], {
     message: '$field must contain only ASCII characters',
     ...options,
   });
+};
+
+export function isAscii(options?: any) {
+  return IsAscii(options);
 };
 
 export function IsBase64 (options?: any) {
@@ -306,6 +453,10 @@ export function IsBase64 (options?: any) {
   });
 };
 
+export function isBase64(options?: any) {
+  return IsBase64(options);
+};
+
 export function IsByteLength(min: any, max: any, options?: any) {
   return validatorFactory(validators.isByteLength, [min, max], {
     message: '$field\'s byte length must fall into($1, $2) range',
@@ -313,11 +464,19 @@ export function IsByteLength(min: any, max: any, options?: any) {
   });
 };
 
+export function isByteLength(min: any, max: any, options?: any) {
+  return IsByteLength(min, max, options);
+};
+
 export function IsCreditCard (options?: any) {
   return validatorFactory(validators.isCreditCard, [], {
     message: '$field must be a credit card',
     ...options,
   });
+};
+
+export function isCreditCard(options?: any) {
+  return IsCreditCard(options);
 };
 
 export function IsCurrency (options?: any) {
@@ -328,12 +487,20 @@ export function IsCurrency (options?: any) {
   });
 };
 
+export function isCurrency(options?: any) {
+  return IsCurrency(options);
+};
+
 export function IsEmail (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isEmail, _options, {
     message: '$field must be an email',
     ...options,
   });
+};
+
+export function isEmail(options?: any) {
+  return IsEmail(options);
 };
 
 export function IsFQDN (options?: any) {
@@ -344,11 +511,19 @@ export function IsFQDN (options?: any) {
   });
 };
 
+export function isFQDN(options?: any) {
+  return IsFQDN(options);
+};
+
 export function IsFullWidth (options?: any) {
   return validatorFactory(validators.isFullWidth, [], {
     message: '$field must contain a full-width characters',
     ...options,
   });
+};
+
+export function isFullWidth(options?: any) {
+  return IsFullWidth(options);
 };
 
 export function IsHalfWidth (options?: any) {
@@ -358,6 +533,10 @@ export function IsHalfWidth (options?: any) {
   });
 };
 
+export function isHalfWidth(options?: any) {
+  return IsHalfWidth(options);
+};
+
 export function IsHexColor (options?: any) {
   return validatorFactory(validators.isHexColor, [], {
     message: '$field must be a hex color',
@@ -365,11 +544,19 @@ export function IsHexColor (options?: any) {
   });
 };
 
+export function isHexColor(options?: any) {
+  return IsHexColor(options);
+};
+
 export function IsHexadecimal (options?: any) {
   return validatorFactory(validators.isHexadecimal, [], {
     message: '$field must be a hexadecimal number',
     ...options,
   });
+};
+
+export function isHexadecimal(options?: any) {
+  return IsHexadecimal(options);
 };
 
 export function IsIP(version?: any, options?: any) {
@@ -386,6 +573,10 @@ export function IsIP(version?: any, options?: any) {
   });
 };
 
+export function isIP(version?: any, options?: any) {
+  return IsIP(version, options);
+};
+
 export function IsISBN(version?: any, options?: any) {
   const defaultMessage = '$field must be an ISBN';
   if (version && typeof version === 'object') {
@@ -400,12 +591,20 @@ export function IsISBN(version?: any, options?: any) {
   });
 };
 
+export function isISBN(version?: any, options?: any) {
+  return IsISBN(version, options);
+};
+
 export function IsISSN (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isISSN, _options, {
     message: '$field must be an ISSN',
     ...options,
   });
+};
+
+export function isISSN(options?: any) {
+  return IsISSN(options);
 };
 
 export function IsISIN (options?: any) {
@@ -415,11 +614,19 @@ export function IsISIN (options?: any) {
   });
 };
 
+export function isISIN(options?: any) {
+  return IsISIN(options);
+};
+
 export function IsISO8601 (options?: any) {
   return validatorFactory(validators.isISO8601, [], {
     message: '$field must be a valid ISO 8601 date string',
     ...options,
   });
+};
+
+export function isISO8601(options?: any) {
+  return IsISO8601(options);
 };
 
 export function IsJSON (options?: any) {
@@ -429,11 +636,19 @@ export function IsJSON (options?: any) {
   });
 };
 
+export function isJSON(options?: any) {
+  return IsJSON(options);
+};
+
 export function IsLowercase (options?: any) {
   return validatorFactory(validators.isLowercase, [], {
     message: '$field must be a lowercase string',
     ...options,
   });
+};
+
+export function isLowercase(options?: any) {
+  return IsLowercase(options);
 };
 
 export function IsMobilePhone(locale?: any, options?: any) {
@@ -446,11 +661,19 @@ export function IsMobilePhone(locale?: any, options?: any) {
   });
 };
 
+export function isMobilePhone(locale?: any, options?: any) {
+  return IsMobilePhone(locale, options);
+};
+
 export function IsMongoId (options?: any) {
   return validatorFactory(validators.isMongoId, [], {
     message: '$field must be a mongodb id',
     ...options,
   });
+};
+
+export function isMongoId(options?: any) {
+  return IsMongoId(options);
 };
 
 export function IsMultibyte (options?: any) {
@@ -460,11 +683,19 @@ export function IsMultibyte (options?: any) {
   });
 };
 
+export function isMultibyte(options?: any) {
+  return IsMultibyte(options);
+};
+
 export function IsSurrogatePair (options?: any) {
   return validatorFactory(validators.isSurrogatePair, [], {
     message: '$field must contain any surrogate pairs chars',
     ...options,
   });
+};
+
+export function isSurrogatePair(options?: any) {
+  return IsSurrogatePair(options);
 };
 
 export function IsURL (options?: any) {
@@ -473,6 +704,10 @@ export function IsURL (options?: any) {
     message: '$field must be an URL address',
     ...options,
   });
+};
+
+export function isURL(options?: any) {
+  return IsURL(options);
 };
 
 export function IsUUID(version?: any, options?: any) {
@@ -489,11 +724,19 @@ export function IsUUID(version?: any, options?: any) {
   });
 };
 
+export function isUUID(version?: any, options?: any) {
+  return IsUUID(version, options);
+};
+
 export function IsUppercase (options?: any) {
   return validatorFactory(validators.isUppercase, [], {
     message: '$field must be an uppercase string',
     ...options,
   });
+};
+
+export function isUppercase(options?: any) {
+  return IsUppercase(options);
 };
 
 export function Length(min: any, max: any, options?: any) {
@@ -503,6 +746,10 @@ export function Length(min: any, max: any, options?: any) {
   });
 };
 
+export function length(min: any, max: any, options?: any) {
+  return Length(min, max, options);
+};
+
 export function MinLength(min: any, options?: any) {
   return validatorFactory(validators.minLength, [min], {
     message: '$field must not be shorter than $1',
@@ -510,11 +757,19 @@ export function MinLength(min: any, options?: any) {
   });
 };
 
+export function minLength(min: any, options?: any) {
+  return MinLength(min, options);
+};
+
 export function MaxLength(max: any, options?: any) {
   return validatorFactory(validators.maxLength, [max], {
     message: '$field must not be longer than $1',
     ...options,
   });
+};
+
+export function maxLength(max: any, options?: any) {
+  return MaxLength(max, options);
 };
 
 export function Matches(pattern: any, modifiers?: any, options?: any) {
@@ -533,4 +788,8 @@ export function Matches(pattern: any, modifiers?: any, options?: any) {
     message: defaultMessage,
     ...options,
   });
+};
+
+export function matches(pattern: any, modifiers?: any, options?: any) {
+  return Matches(pattern, modifiers, options);
 };

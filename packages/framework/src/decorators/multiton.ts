@@ -13,3 +13,7 @@ export function Multiton(): ClassDecorator {
     Reflect.defineMetadata(MULTITON, true, target);
   };
 };
+
+export function multiton(): ClassDecorator {
+  return Multiton();
+}

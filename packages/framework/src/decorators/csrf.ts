@@ -9,3 +9,7 @@ import { useMiddleware } from './use-middleware';
 export function Csrf() {
   return (...args: any) => useMiddleware('verify-csrf-token')(...args);
 };
+
+export function csrf() {
+  return Csrf();
+}

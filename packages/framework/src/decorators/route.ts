@@ -14,3 +14,7 @@ export function Route(prefix = ''): ClassDecorator {
     Reflect.defineMetadata('prefix', formatPrefix(prefix), constructor);
   };
 };
+
+export function route(prefix = ''): ClassDecorator {
+  return Route(prefix);
+};

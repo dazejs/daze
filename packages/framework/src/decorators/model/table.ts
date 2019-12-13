@@ -9,3 +9,7 @@ export function Table(table: string): ClassDecorator {
     return target;
   };
 }
+
+export function table(table: string): ClassDecorator {
+  return Table(table);
+}

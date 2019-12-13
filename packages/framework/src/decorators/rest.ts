@@ -6,7 +6,7 @@
  */
 import { formatPrefix } from './helpers';
 
-const rest = {
+const defaultRestRoutes = {
   index: [{ uri: '/', method: 'get' }],
   create: [{ uri: '/create', method: 'get' }],
   show: [{ uri: '/:id', method: 'get' }],
@@ -16,25 +16,19 @@ const rest = {
   destroy: [{ uri: '/:id', method: 'del' }],
 };
 
-function injectClass(target: any, prefix: string) {
-  Reflect.defineMetadata('injectable', true, target);
-  Reflect.defineMetadata('prefix', formatPrefix(prefix), target);
-  const routes = Reflect.getMetadata('routes', target);
-  Reflect.defineMetadata('routes', {
-    ...rest,
-    ...routes,
-  }, target);
-  return target;
-}
-
-function handle(args: any[], prefix: string) {
-  if (args.length === 1) {
-    const [target] = args;
-    return injectClass(target, prefix);
-  }
-  throw new Error('@Rest must be decorate on Class');
-}
-
-export function Rest(prefix = '') {
-  return (...args: any) => handle(args, prefix);
+export function Rest(prefix = ''): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata('injectable', true, constructor);
+    Reflect.defineMetadata('prefix', formatPrefix(prefix), constructor);
+    const routes = Reflect.getMetadata('routes', constructor);
+    Reflect.defineMetadata('routes', {
+      ...defaultRestRoutes,
+      ...routes,
+    }, constructor);
+    return constructor;
+  };
 };
+
+export function rest(prefix = ''): ClassDecorator {
+  return Rest(prefix);
+}

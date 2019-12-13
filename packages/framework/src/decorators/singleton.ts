@@ -13,3 +13,7 @@ export function Singleton(): ClassDecorator {
     Reflect.defineMetadata(SINGLETON, true, target);
   };
 };
+
+export function singleton() {
+  return Singleton();
+}

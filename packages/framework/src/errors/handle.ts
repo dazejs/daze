@@ -40,14 +40,14 @@ export class ErrorHandler {
    */
   app: Application = Container.get('app');
 
-  request: Request;
+  request?: Request;
 
   error: ErrorCollection;
 
   /**
    * Create Application Error Handler
    */
-  constructor(request: Request, error: ErrorCollection) {
+  constructor(error: ErrorCollection, request?: Request) {
     /**
      * request request instance
      */
@@ -88,7 +88,7 @@ export class ErrorHandler {
       }
     }
 
-    const acceptsType = this.request.acceptsTypes('html', 'text', 'json');
+    const acceptsType = this.request?.acceptsTypes('html', 'text', 'json');
     if (typeof acceptsType === 'string' && renderTypes.includes(acceptsType)) {
       return this[acceptsType as 'html' | 'text' | 'json']();
     }

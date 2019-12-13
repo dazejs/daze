@@ -5,19 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-function decorateClass(target: any) {
-  Reflect.defineMetadata('injectable', true, target);
-  return target;
-}
-
-function handle(args: any[]) {
-  if (args.length === 1) {
-    const [target] = args;
-    return decorateClass(target);
-  }
-  throw new Error('@Injectable must be decorate on Class');
-}
-
-export function Injectable() {
-  return (...args: any[]) => handle(args);
+export function Injectable(): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata('injectable', true, constructor);
+    return constructor;
+  };
 };
+
+export function injectable() {
+  return Injectable();
+}

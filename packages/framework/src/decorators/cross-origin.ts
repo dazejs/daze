@@ -32,3 +32,7 @@ function handle(args: any[], options: any) {
 export function CrossOrigin(options: any = {}) {
   return (...args: any[]) => handle(args, options);
 };
+
+export function crossOrigin(options: any = {}) {
+  return CrossOrigin(options);
+};

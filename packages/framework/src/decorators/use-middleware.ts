@@ -31,6 +31,10 @@ function handle(args: any[], middleware: any) {
   return decoratorMethod(target, name, descriptor, middleware);
 }
 
-export function useMiddleware(middleware: any) {
+export function UseMiddleware(middleware: any) {
   return (...args: any[]) => handle(args, middleware);
 };
+
+export function useMiddleware(middleware: any) {
+  return UseMiddleware(middleware);
+}
