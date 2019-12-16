@@ -202,11 +202,9 @@ export class Application extends Container {
    */
   async registerVendorProviders(): Promise<void> {
     const _providers = this.config.get('app.providers', []);
-    const providerPromises = [];
     for (const key of _providers) {
-      providerPromises.push(this.load(key));
+      await this.load(key);
     }
-    await Promise.all(providerPromises);
   }
 
 
