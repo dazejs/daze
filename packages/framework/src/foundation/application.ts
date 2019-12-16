@@ -17,8 +17,6 @@ import { Database } from '../database';
 import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
 import { Middleware } from '../middleware';
-// import { Request } from '../request';
-// import { ResponseManager } from '../response/manager';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
 
