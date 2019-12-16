@@ -9,7 +9,7 @@ export default {
    */
   public: true,
 
-  public_prefix: '/',
+  publicPrefix: "/",
 
   /**
    * View config
@@ -17,7 +17,7 @@ export default {
    * view_extension - The view defaults to the HTML suffix
    */
 
-  view_extension: 'njk',
+  viewExtension: "njk",
 
   /**
    * Cluster
@@ -28,11 +28,11 @@ export default {
    *
    * cluster.sticky - ticky session
    */
-  cluster: {
-    enable: false,
-    workers: 0,
-    sticky: false,
-  },
+  cluster: false,
+
+  workers: 0,
+
+  sticky: false,
 
   /**
    * debug mode
@@ -42,11 +42,11 @@ export default {
   /**
    * template
    */
-  http_exception_template: {
+  httpExceptionTemplate: {
     /* ex: 404: 'errors/404.njk', root path: /views */
   },
 
   providers: [
-    // require.resolve('../provider/bootstrap'),
+    //
   ],
 };

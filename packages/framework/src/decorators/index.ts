@@ -23,6 +23,7 @@ export * from './component';
 export * from './ignore';
 export * from './use-middleware';
 export * from './contexts';
+export * from './inject';
 export * from './cross-origin';
 export * from './validates';
 export * from './injectable';
