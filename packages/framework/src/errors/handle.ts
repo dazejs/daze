@@ -7,15 +7,15 @@
 import tracePage from '@dazejs/trace-page';
 import statuses from 'statuses';
 import * as typeis from 'type-is';
-
 import { Container } from '../container';
-import { Response } from '../response';
 import { Application } from '../foundation/application';
+import { Request } from '../request';
+import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 import { View } from '../view';
-import { Request } from '../request';
 import { HttpError } from './http-error';
 import { ValidateHttpError } from './validate-http-error';
+
 // import { OutgoingHttpHeaders } from 'http';
 
 const defaultHttpErrorTemplate = {
