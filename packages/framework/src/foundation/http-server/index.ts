@@ -7,7 +7,6 @@
 import * as http from 'http';
 
 import { Container } from '../../container';
-// import { ErrorHandler } from '../../errors/handle';
 import { HttpError} from '../../errors/http-error';
 import { ErrorCollection, ErrorHandler } from '../../errors/handle';
 import { Request } from '../../request';
