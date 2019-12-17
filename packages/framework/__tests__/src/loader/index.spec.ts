@@ -33,7 +33,7 @@ describe('Loader', () => {
 
     @Component('example')
     class ExampleMiddleware extends Middleware {
-      resolve(request: any, next: any) {
+      resolve(_request: any, next: any) {
         return next();
       }
     }

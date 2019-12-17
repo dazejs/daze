@@ -1,5 +1,5 @@
 import {
-  Controller, Route, Http, useMiddleware
+  Controller, Route, Http
 } from '../../../../../src';
 
 @Route('/injectable')

@@ -18,4 +18,20 @@ export default class extends Controller {
       files: this.request.files,
     };
   }
+
+  @Http.Get('/null')
+  sayNull() {
+    return null;
+  }
+
+  @Http.Get('/number')
+  sayNumber(): number {
+    return 0;
+  }
+
+  @Http.Get('/boolean')
+  sayBoolean(): boolean {
+    return true;
+  }
+
 }

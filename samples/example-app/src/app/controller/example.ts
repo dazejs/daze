@@ -1,22 +1,19 @@
 
 import {
-  Http, Controller, Route, useService
+  Http, Controller, Route
 } from '@dazejs/framework'
-import ExampleService from '../service/example'
 
 @Route('example')
 export default class extends Controller {
 
-  @useService('example') exampleService: ExampleService;
-
   @Http.Get()
   async index() {
-    return this.exampleService.findAll()
+    return this.service('example').findAll()
   }
 
   @Http.Post()
   async store() {
-    this.exampleService.add({})
+    this.service('example').add({})
     return this.response().Created()
   }
 }
