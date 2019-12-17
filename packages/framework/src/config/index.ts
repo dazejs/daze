@@ -74,10 +74,10 @@ export class Config {
       nodir: true,
       matchBase: true
     });
+
     for (const file of filePaths) {
       const extname = path.extname(file);
       const normalBasename = path.basename(file, extname);
-      const envBasename = path.basename(file, `.${currentEnv}${extname}`);
       const currentConfig = (await import(file)).default;
       if (!~path.basename(file, extname).indexOf('.')) {
         if (!this.has(normalBasename)) {
@@ -94,6 +94,12 @@ export class Config {
           }
         }
       }
+    }
+
+    for (const file of filePaths) {
+      const extname = path.extname(file);
+      const envBasename = path.basename(file, `.${currentEnv}${extname}`);
+      const currentConfig = (await import(file)).default;
       if (~file.indexOf(`.${currentEnv}${extname}`)) {
         if (!this.has(envBasename)) {
           this.set(envBasename, currentConfig);
