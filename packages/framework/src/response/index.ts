@@ -482,19 +482,19 @@ export class Response extends Statusable {
     const shouldSetType = !this.getHeader('content-type');
 
     // if no content
-    if (!data) {
+    if (data === null || typeof data === 'undefined') {
       this.setCode(204);
       this.removeHeader('content-type');
       this.removeHeader('content-length');
       this.removeHeader('transfer-encoding');
-      return data;
+      return data || '';
     }
 
     // string
-    if (typeof data === 'string') {
+    if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
       if (shouldSetType) this.setHeader('content-type', defaultContentTypes.PLAIN);
-      this.setHeader('content-length', Buffer.byteLength(data));
-      return data;
+      this.setHeader('content-length', Buffer.byteLength(data.toString()));
+      return data.toString();
     }
     // buffer
     if (Buffer.isBuffer(data)) {
@@ -538,7 +538,7 @@ export class Response extends Statusable {
   async end(request: Request, data: any) {
     const { res } = request;
 
-    // coomit cookies
+    // commit cookies
     await this.commitCookies(request);
     
     // responses
