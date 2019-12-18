@@ -12,7 +12,7 @@ export function Route(...prefixs: string[]): ClassDecorator {
     Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('isRoute', true, constructor);
     Reflect.defineMetadata('type', ComponentType.Controller, constructor);
-    Reflect.defineMetadata('prefixs', prefixs?.map(prefix => formatPrefix(prefix)) ?? ['/'] , constructor);
+    Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => formatPrefix(prefix)) : formatPrefix(), constructor);
     // Reflect.defineMetadata('prefix', formatPrefix(), constructor);
   };
 };
