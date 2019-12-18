@@ -12,13 +12,6 @@ import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 import { Application } from '../foundation/application';
 
-
-const envMap = new Map([
-  ['development', 'dev'],
-  ['test', 'test'],
-  ['production', 'prod'],
-]);
-
 export class Config {
   /**
    * @var {object} this._app Application
@@ -186,6 +179,6 @@ export class Config {
    * current env getter
    */
   get env() {
-    return process.env.DAZE_ENV || (process.env.NODE_ENV && envMap.get(process.env.NODE_ENV)) || process.env.NODE_ENV;
+    return this._app.getEnv();
   }
 }
