@@ -419,24 +419,27 @@ export class Response extends Statusable {
   /**
    * set json response type
    */
-  json() {
+  json(data?: any) {
     this.setType('json');
+    if (data) this.setData(data);
     return this;
   }
 
   /**
    * set html response type
    */
-  html() {
+  html(data?: any) {
     this.setType('html');
+    if (data) this.setData(data);
     return this;
   }
 
   /**
    * set html response type
    */
-  text() {
+  text(data?: any) {
     this.setType('text');
+    if (data) this.setData(data);
     return this;
   }
 
