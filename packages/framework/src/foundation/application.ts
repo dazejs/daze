@@ -303,6 +303,20 @@ export class Application extends Container {
   }
 
   /**
+   * env getter
+   */
+  get env() {
+    return process.env.DAZE_ENV || process.env.NODE_ENV;
+  }
+
+  /**
+   * get env
+   */
+  getEnv() {
+    return this.env;
+  }
+
+  /**
    * load default listener
    */
   loadListeners() {
