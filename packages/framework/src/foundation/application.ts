@@ -22,6 +22,12 @@ import * as providers from './providers';
 
 const DEFAULT_PORT = 8080;
 
+const envMap = new Map([
+  ['development', 'dev'],
+  ['test', 'test'],
+  ['production', 'prod'],
+]);
+
 export interface ApplicationPathsOptions {
   app?: string;
   config?: string;
@@ -306,7 +312,7 @@ export class Application extends Container {
    * env getter
    */
   get env() {
-    return process.env.DAZE_ENV || process.env.NODE_ENV;
+    return process.env.DAZE_ENV || (process.env.NODE_ENV && envMap.get(process.env.NODE_ENV)) || process.env.NODE_ENV;
   }
 
   /**
