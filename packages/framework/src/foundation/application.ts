@@ -70,7 +70,7 @@ export class Application extends Container {
   /**
    * keygrip keys
    */
-  keys: any[]
+  keys: any[];
 
   /**
    * http Server

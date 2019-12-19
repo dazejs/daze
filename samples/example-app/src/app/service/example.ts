@@ -9,6 +9,6 @@ export default class extends Service {
   }
 
   findAll() {
-    return this.list;
+    return this.list || [];
   }
 }
