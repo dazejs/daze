@@ -26,5 +26,9 @@ packages/*/__debug__
 # test
 packages/*/coverage
 
-# future
+# future and deprecated
 FUTURE_*
+DEPRECATED_*
+
+# dev example
+__example__
