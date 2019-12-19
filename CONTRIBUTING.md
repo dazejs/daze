@@ -32,7 +32,6 @@ Pull requests 提议更改代码库的最佳方式 ([Github Flow](https://guides
 ## 使用 Github 的 [issues](https://github.com/dazejs/daze/issues) 报告 Bug
 我们使用 Github 的 Issues 来跟踪 Bug. 报告 Bug 通过 [opening a new issue]()!
 
-## Write bug reports with detail, background, and sample code
 ## 报告 Bug 请尽可能详细
 
 **一个合格的Bug报告** 应该包含:
