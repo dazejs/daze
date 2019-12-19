@@ -38,3 +38,11 @@ export function UseMiddleware(middleware: any) {
 export function useMiddleware(middleware: any) {
   return UseMiddleware(middleware);
 }
+
+export function Use(middleware: any) {
+  return UseMiddleware(middleware);
+}
+
+export function use(middleware: any) {
+  return UseMiddleware(middleware);
+}
