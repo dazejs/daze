@@ -1,0 +1,27 @@
+  {
+    "extends": [
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "rules": {
+      "semi": [
+        "error",
+        "always"
+      ],
+      "@typescript-eslint/no-this-alias": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/explicit-member-accessibility": "off",
+      "@typescript-eslint/indent": [
+        "error",
+        2
+      ]
+    }
+  }
