@@ -1,7 +1,5 @@
 # 贡献指南
 
-# Contributing to Transcriptase
-
 我们非常乐意看到大家的建议与意见！我们希望为这个项目做贡献尽可能简单和透明，不管它是不是:
 
 - 报告 Bug
