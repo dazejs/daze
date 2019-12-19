@@ -9,7 +9,7 @@
 - 成为项目维护者
 
 ## 我们通过 Github 贡献代码
-We use github to host code, to track issues and feature requests, as well as accept pull requests.
+
 我们使用 Github 托管代码，跟踪 Issue 和 Pull Request，以及接受 Pull Request。
 
 ## 我们使用 [Github Flow](https://guides.github.com/introduction/flow/index.html)，所以所有的代码更改都是通过 Pull Request 进行的
