@@ -13,7 +13,10 @@
     "publish": {
       "ignoreChanges": [
         "*.md"
-      ]
+      ],
+      "allowBranch": "master",
+      "exact": true,
+      "conventionalCommits": true
     }
   },
   "version": "independent"
