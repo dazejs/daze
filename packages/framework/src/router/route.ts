@@ -160,7 +160,7 @@ export class Route {
 
   /**
    * get route params
-   * @param path request path
+   * @param requestPath request path
    */
   getParams(requestPath: string) {
     return requestPath.match(this.regexp)?.slice(1) ?? [];

@@ -7,14 +7,14 @@
 
 // import { patchClass, patchProperty, patchMethod } from './patch-decorator'
 
-function handle(args: any[], params: any, type: string) {
+function handle(args: any[], params: any, type: string, handler?: (injectedParam: any) => any) {
   if (args.length === 1) {
     const [target] = args;
     Reflect.defineMetadata('injectable', true, target);
     const injectors = Reflect.getMetadata('injectparams', target) || [];
     Reflect.defineMetadata('injectparams', [
       ...injectors,
-      [type, params],
+      !!handler ? [type, params, handler] : [type, params],
     ], target);
     return target;
   }
@@ -23,11 +23,11 @@ function handle(args: any[], params: any, type: string) {
   const injectors = Reflect.getMetadata('injectparams', target.constructor, key) || [];
   Reflect.defineMetadata('injectparams', [
     ...injectors,
-    [type, params],
+    !!handler ? [type, params, handler] : [type, params],
   ], target.constructor, key);
   return target; 
 }
 
-export function createInjectDecorator(type: string){
-  return (...args: any[]) => (...argsClass: any[])  => handle(argsClass, args, type);
-};
+export function createInjectDecorator(type: string, handler?: (injectedParam: any) => any){
+  return (...args: any[]) => (...argsClass: any[])  => handle(argsClass, args, type, handler);
+}

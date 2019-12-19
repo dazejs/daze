@@ -5,7 +5,7 @@
  * @author   Chan Zewail <chanzewail@gmail.com>
  */
 
-import { Application } from '@dazejs/framework'
+import { Application } from '@dazejs/framework';
 
 /**
  * Create The Application

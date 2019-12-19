@@ -57,31 +57,22 @@ export class AppProvider {
     );
 
     // for @HttpQuery
-    this.app.multiton(symbols.INJECTORS.QUERY, (request: any) => request.query, true);
+    this.app.multiton(symbols.INJECTORS.QUERY, 
+      (request: any) => request.query, 
+      true)
+    ;
 
     // for @HttpParams
     this.app.multiton(
       symbols.INJECTORS.PARAMS,
-      (name: string, request: any) => (name ? request.getParam(name) : request.getParams()),
+      (request: any) => request.getParams(),
       true,
     );
 
     // for @HttpHeaders
     this.app.multiton(
       symbols.INJECTORS.HEADERS,
-      (key: string, request: any) => {
-        if (key) {
-          return request.headers[key];
-        }
-        return request.headers;
-      },
-      true,
-    );
-
-    // for @HttpQuery
-    this.app.multiton(
-      symbols.INJECTORS.QUERY,
-      (key: string, request: any) => request.getQuery(key),
+      (request: any) => request.headers,
       true,
     );
 
@@ -95,14 +86,14 @@ export class AppProvider {
     // for @CookieValue
     this.app.multiton(
       symbols.INJECTORS.COOKIE,
-      (key: string, request: any) => (key ? request.cookie(key) : request.cookies),
+      (request: any) => request.cookies,
       true,
     );
 
     // for @SessionValue
     this.app.multiton(
       symbols.INJECTORS.SESSION,
-      (key: string, request: any) => (key ? request.session(key) : request.session()),
+      (request: any) => request.session(),
       true,
     );
 
