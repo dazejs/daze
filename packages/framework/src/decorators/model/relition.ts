@@ -18,6 +18,10 @@ export function HasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: s
   };
 }
 
+export function hasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+  return HasOne(Entity, foreignKey, localKey);
+}
+
 /**
  * BelongsTo
  *
@@ -36,4 +40,8 @@ export function BelongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey
     Reflect.defineMetadata('relations', relations, target.constructor);
     return target;
   };
+}
+
+export function belongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+  return BelongsTo(Entity, foreignKey, localKey);
 }

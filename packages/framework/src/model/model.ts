@@ -12,7 +12,7 @@ export interface ColumnDescription {
 type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 // type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
-export class Model<TEntity extends Entity> extends Relationship {
+export class Model<TEntity extends Entity> extends Relationship<TEntity> {
 
   /**
    * 模型实体
@@ -226,6 +226,7 @@ export class Model<TEntity extends Entity> extends Relationship {
     this.softDeleteKey = Reflect.getMetadata('softDeleteKey', entity.constructor);
     this.createTimestampKey = Reflect.getMetadata('createTimestampKey', entity.constructor);
     this.updateTimestampKey = Reflect.getMetadata('updateTimestampKey', entity.constructor);
+    this.relations = Reflect.getMetadata('relations', entity.constructor) || new Map();
   }
 
   /**
