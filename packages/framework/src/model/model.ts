@@ -260,7 +260,7 @@ export class Model<TEntity extends Entity> {
   }
 
 
-  getRelation(relation: string) {
+  getRelation<T extends HasRelations<TEntity>>(relation: string): T | undefined  {
     const relationDesc = this.relations.get(relation);
     if (relationDesc) {
       switch (relationDesc.type) {
