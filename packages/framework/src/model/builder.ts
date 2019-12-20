@@ -98,18 +98,25 @@ export class ModelBuilder<TEntity extends Entity> {
     ).setExists(exists).fill(attributes);
   }
 
-  exportToModel(result: Record<string, any>) {
+  toModel(result: Record<string, any>, isFromCollection = false) {
     // 创建一个已存在记录的模型
     // Create a model of an existing record
     const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
+
+
+    // 预载入查询
+    if (!isFromCollection && model.withs.size > 0) {
+      model.eagerly(model);
+    }
+
     return model;
   }
 
-  exportToModelCollection(result: Record<string, any>[]) {
+  toModelCollection(result: Record<string, any>[]) {
     const data = [];
     for (const item of result) {
       data.push(
-        this.exportToModel(item)
+        this.toModel(item, true)
       );
     }
     return data;
@@ -145,12 +152,12 @@ export class ModelBuilder<TEntity extends Entity> {
   async find() {
     if (this.model.isForceDelete()) {
       const res = await this.builder.find();
-      return this.exportToModelCollection(res);
+      return this.toModelCollection(res);
     }
     const res = await this.builder.whereNull(
       this.model.getSoftDeleteKey()
     ).find();
-    return this.exportToModelCollection(res);
+    return this.toModelCollection(res);
   }
 
   async first() {
@@ -160,7 +167,7 @@ export class ModelBuilder<TEntity extends Entity> {
       );
     }
     const res = await this.builder.first();
-    return this.exportToModel(res);
+    return this.toModel(res);
   }
 
   /**
@@ -178,6 +185,6 @@ export class ModelBuilder<TEntity extends Entity> {
       '=',
       id
     ).first();
-    return this.exportToModel(res);
+    return this.toModel(res);
   }
 }

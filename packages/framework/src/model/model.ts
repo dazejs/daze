@@ -2,7 +2,19 @@ import { format as dateFormat, getUnixTime } from 'date-fns';
 import { Entity } from '../base/entity';
 import { Builder } from '../database/builder';
 import { ModelBuilder } from './builder';
-import { Relationship } from './relationship';
+// import { Relationship } from './relationship';
+import { HasRelations } from './relations/has-relations.abstract';
+import { HasOne, BelongsTo } from './relations';
+
+export type RelationTypes = 'hasOne' | 'belongsTo'
+
+export interface RelationDesc<TEntity> {
+  relation: typeof HasRelations;
+  type: RelationTypes;
+  entity: TEntity;
+  foreignKey: string;
+  localKey: string;
+}
 
 export interface ColumnDescription {
   type: string;
@@ -12,7 +24,7 @@ export interface ColumnDescription {
 type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 // type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
-export class Model<TEntity extends Entity> extends Relationship<TEntity> {
+export class Model<TEntity extends Entity> {
 
   /**
    * 模型实体
@@ -77,12 +89,16 @@ export class Model<TEntity extends Entity> extends Relationship<TEntity> {
    */
   private updateTimestampKey: string;
 
+  relations: Map<string, RelationDesc<TEntity>>;
+
+  withs: Map<string, HasRelations<TEntity>> = new Map();
+
   /**
    * Create Model
    * @param entity
    */
   constructor(entity: TEntity) {
-    super();
+    // super();
     
     this.entity = entity;
 
@@ -229,6 +245,47 @@ export class Model<TEntity extends Entity> extends Relationship<TEntity> {
     this.relations = Reflect.getMetadata('relations', entity.constructor) || new Map();
   }
 
+  with(...relations: string[]) {
+    for (const relation of relations) {
+      const relationDesc = this.relations.get(relation);
+      if (relationDesc) {
+        this.withs.set(relation, new relationDesc.relation(
+          this,
+          relationDesc.foreignKey,
+          relationDesc.localKey
+        ));
+      };
+    }
+    return this;
+  }
+
+
+  getRelation(relation: string) {
+    const relationDesc = this.relations.get(relation);
+    if (relationDesc) {
+      switch (relationDesc.type) {
+        case 'hasOne':
+          return new HasOne(this, relationDesc.foreignKey, relationDesc.localKey);
+        case 'belongsTo':
+          return new BelongsTo(this, relationDesc.foreignKey, relationDesc.localKey);
+        default:
+          return;
+      }
+    }
+    return;
+  }
+
+
+  /**
+   * 渴求式加载
+   * @param result 
+   */
+  eagerly(result: Model<TEntity>) {
+    for (const [relation, relationImp] of this.withs) {
+      relationImp.eagerly(result, relation);
+    }
+  }
+
   /**
    * 生成模型查询构造类实例
    * Generate model query construct class instances
@@ -345,6 +402,7 @@ export class Model<TEntity extends Entity> extends Relationship<TEntity> {
   getUpdateTimestampKey() {
     return this.updateTimestampKey;
   }
+
 
   /**
    * 获取需要更新的模型属性

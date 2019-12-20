@@ -1,3 +1,7 @@
+import { RelationDesc } from '../../model/model';
+import { HasOne as HasOneRelation } from '../../model/relations/has-one';
+import { BelongsTo as BelongsToRelation } from '../../model/relations/belongs-to';
+
 /**
  * HasOne
  *
@@ -6,8 +10,9 @@
 export function HasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
-    const relations: Map<string, any> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
+    const relations: Map<string, RelationDesc<TEntity>> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
+      relation: HasOneRelation,
       type: 'hasOne',
       entity: Entity,
       foreignKey: foreignKey,
@@ -30,8 +35,9 @@ export function hasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: s
 export function BelongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
-    const relations: Map<string, any> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
+    const relations: Map<string, RelationDesc<TEntity>> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
+      relation: BelongsToRelation,
       type: 'belongsTo',
       entity: Entity,
       foreignKey: foreignKey,
