@@ -187,8 +187,11 @@ export class Container extends EventEmitter {
                     'injectparams', Concrete, __name,
                   ) || [];
 
-                  for (const [type, params = []] of methodInjectors) {
-                    const injectedParam = that.make(type, [...params, ...args]);
+                  for (const [type, params = [], handler] of methodInjectors) {
+                    let injectedParam = that.make(type, [...params, ...args]);
+                    if (typeof handler === 'function') {
+                      injectedParam = handler(injectedParam);
+                    }
                     bindMethodParams.push(injectedParam);
                   }
                   return Reflect.apply(target, thisBinding, [...bindMethodParams.reverse(), ...methodArgs]);
