@@ -9,7 +9,6 @@ import { HasOne, BelongsTo } from './relations';
 export type RelationTypes = 'hasOne' | 'belongsTo'
 
 export interface RelationDesc<TEntity> {
-  relation: typeof HasRelations;
   type: RelationTypes;
   entity: TEntity;
   foreignKey: string;
@@ -89,21 +88,31 @@ export class Model<TEntity extends Entity> {
    */
   private updateTimestampKey: string;
 
-  relations: Map<string, RelationDesc<TEntity>>;
+  /**
+   * 实体的关联关系描述集合
+   * The associations of entities describe the set
+   */
+  private relationMap: Map<string, RelationDesc<TEntity>>;
 
-  withs: Map<string, HasRelations<TEntity>> = new Map();
+  /**
+   * 渴求式加载对象集合
+   * Want to load a collection of objects
+   */
+  private withs: Map<string, HasRelations<TEntity>> = new Map();
+
+  /**
+   * 渴求式加载数据集合
+   * Eager load data set
+   */
+  private relations: Record<string, any> = {};
 
   /**
    * Create Model
    * @param entity
    */
   constructor(entity: TEntity) {
-    // super();
-    
     this.entity = entity;
-
     this.resolveEntity(entity);
-
     return new Proxy(this, {
       set(target: Model<TEntity>, p: number | string | symbol, value: any, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.set(target, p, value, receiver);
@@ -112,12 +121,16 @@ export class Model<TEntity extends Entity> {
       },
       get(target: Model<TEntity>, p: number | string | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
-        if (target.isEntityColumns(p)) return target.getAttribute(p);
+        if (target.isEntityColumns(p) || target.isEntityRelations(p)) return target.getAttribute(p);
         return target.newModelBuilderInstance()[p as keyof Builder];
       }
     });
   }
 
+  /**
+   * 记录是否需要被完全删除
+   * Whether the record needs to be deleted completely
+   */
   isForceDelete() {
     return !this.softDeleteKey;
   }
@@ -128,6 +141,15 @@ export class Model<TEntity extends Entity> {
    */
   isEntityColumns(columnKey: string) {
     return this.columns.has(columnKey);
+  }
+
+  /**
+   * 是否是关联属性
+   * Is it an associated property
+   * @param columnKey 
+   */
+  isEntityRelations(columnKey: string) {
+    return this.relationMap.has(columnKey);
   }
 
   /**
@@ -180,11 +202,20 @@ export class Model<TEntity extends Entity> {
    */
   getAttribute(key: string) {
     if (!key) return;
-    return this.attributes[key];
+    return this.attributes[key] ?? this.relations[key];
+  }
+
+  /**
+   * 获取需要被渴求式加载的对象集合
+   * Gets the collection of objects that need to be loaded by the desired type
+   */
+  getWiths() {
+    return this.withs;
   }
 
   /**
    * 获取模型表名
+   * get table name
    */
   getTable() {
     return this.table;
@@ -192,6 +223,7 @@ export class Model<TEntity extends Entity> {
 
   /**
    * 获取模型连接名
+   * get connection name
    */
   getConnectioName() {
     return this.connection;
@@ -199,6 +231,7 @@ export class Model<TEntity extends Entity> {
 
   /**
    * 获取模型实体字段数组
+   * Gets an array of model entity fields
    */
   getColumns() {
     return this.columns;
@@ -211,15 +244,6 @@ export class Model<TEntity extends Entity> {
   getAttributes() {
     return this.attributes;
   }
-
-  // /**
-  //  * 生成新的模型实例 - 已填充数据的模型
-  //  * Generate a new model instance - the model with the populated data
-  //  * @param attributes 
-  //  */
-  // newModelInstance(attributes: Record<string, any>, exists = false) {
-  //   return new Model<TEntity>(this.entity).setExists(exists).fill(attributes);
-  // }
 
   /**
    * get entity
@@ -236,38 +260,42 @@ export class Model<TEntity extends Entity> {
   private resolveEntity(entity: TEntity) {
     this.table = Reflect.getMetadata('table', entity.constructor);
     this.connection = Reflect.getMetadata('connection', entity.constructor) ?? 'default';
-    this.columns = Reflect.getMetadata('columns', entity.constructor) ?? [];
+    this.columns = Reflect.getMetadata('columns', entity.constructor) ?? new Map();
     this.primaryKey = Reflect.getMetadata('primaryKey', entity.constructor) ?? 'id';
     this.incrementing = Reflect.getMetadata('incrementing', entity.constructor) ?? true;
     this.softDeleteKey = Reflect.getMetadata('softDeleteKey', entity.constructor);
     this.createTimestampKey = Reflect.getMetadata('createTimestampKey', entity.constructor);
     this.updateTimestampKey = Reflect.getMetadata('updateTimestampKey', entity.constructor);
-    this.relations = Reflect.getMetadata('relations', entity.constructor) || new Map();
+    this.relationMap = Reflect.getMetadata('relations', entity.constructor) || new Map();
   }
 
+  /**
+   * need eagerly
+   * @param relations 
+   */
   with(...relations: string[]) {
     for (const relation of relations) {
-      const relationDesc = this.relations.get(relation);
-      if (relationDesc) {
-        this.withs.set(relation, new relationDesc.relation(
-          this,
-          relationDesc.foreignKey,
-          relationDesc.localKey
-        ));
+      const relationImp = this.getRelationImp(relation);
+      if (relationImp) {
+        this.withs.set(relation, relationImp);
       };
     }
     return this;
   }
 
-
-  getRelation<T extends HasRelations<TEntity>>(relation: string): T | undefined  {
-    const relationDesc = this.relations.get(relation);
+  /**
+   * get relation implementat
+   * @param relation 
+   */
+  getRelationImp(relation: string): HasRelations<TEntity> | undefined {
+    const relationDesc = this.relationMap.get(relation);
+    if (!relationDesc) return;
     if (relationDesc) {
       switch (relationDesc.type) {
         case 'hasOne':
-          return new HasOne(this, relationDesc.foreignKey, relationDesc.localKey);
+          return new HasOne(this, relationDesc.foreignKey, relationDesc.localKey, relationDesc.entity);
         case 'belongsTo':
-          return new BelongsTo(this, relationDesc.foreignKey, relationDesc.localKey);
+          return new BelongsTo(this, relationDesc.foreignKey, relationDesc.localKey, relationDesc.entity);
         default:
           return;
       }
@@ -280,10 +308,23 @@ export class Model<TEntity extends Entity> {
    * 渴求式加载
    * @param result 
    */
-  eagerly(result: Model<TEntity>) {
-    for (const [relation, relationImp] of this.withs) {
-      relationImp.eagerly(result, relation);
+  async eagerly(withs: Map<string, HasRelations<TEntity>>, parent: Model<TEntity>) {
+    for (const [relation, relationImp] of withs) {
+      const data = await relationImp.eagerly(parent, relation);
+      parent.setRelation(relation, data);
+      // TODO 将模型赋值
+      // parent.setAttribute(relation, data);
     }
+  }
+
+  /**
+   * 设置关联结果
+   * @param key 
+   * @param value 
+   */
+  setRelation(key: string, value: Model<TEntity>) {
+    this.relations[key] = value;
+    return this;
   }
 
   /**

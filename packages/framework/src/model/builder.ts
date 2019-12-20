@@ -98,25 +98,23 @@ export class ModelBuilder<TEntity extends Entity> {
     ).setExists(exists).fill(attributes);
   }
 
-  toModel(result: Record<string, any>, isFromCollection = false) {
+  async toModel(result: Record<string, any>, isFromCollection = false) {
     // 创建一个已存在记录的模型
     // Create a model of an existing record
     const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
-
-
     // 预载入查询
-    if (!isFromCollection && model.withs.size > 0) {
-      model.eagerly(model);
+    if (!isFromCollection && this.model.getWiths().size > 0) {
+      await model.eagerly(this.model.getWiths(), model);
     }
 
     return model;
   }
 
-  toModelCollection(result: Record<string, any>[]) {
+  async toModelCollection(result: Record<string, any>[]) {
     const data = [];
     for (const item of result) {
       data.push(
-        this.toModel(item, true)
+        await this.toModel(item, true)
       );
     }
     return data;

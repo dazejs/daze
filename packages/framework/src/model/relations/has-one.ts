@@ -5,11 +5,15 @@ export class HasOne<TEntity> extends HasRelations<TEntity> {
   /**
    * 预载入
    */
-  eagerly<T = Model<TEntity>>(result: T, relation: string) {
-    //
-  }
-
-  getQuery() {
-    return this.model.newModelBuilderInstance();
+  async eagerly(result: Model<TEntity>) {
+    const foreignKey = this.foreignKey;
+    const localKey = this.localKey;
+    const entity = this.entity;
+    const model = new Model(
+      this.app.get(entity)
+    );
+    const query = model.newModelBuilderInstance();
+    const data = await query.where(foreignKey, '=', result.getAttribute(localKey)).first();
+    return data;
   }
 }

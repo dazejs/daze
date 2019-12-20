@@ -1,17 +1,39 @@
 import { Model } from '../model';
+import { Application } from '../../foundation/application';
+import { Container } from '../../container';
 
 export abstract class HasRelations<TEntity> {
-  model: Model<TEntity>;
+  /**
+   * application
+   */
+  protected app: Application = Container.get('app')
 
-  foreignKey: string;
+  /**
+   * 实体
+   */
+  protected entity: any;
 
-  localKey: string;
+  /**
+   * 模型
+   */
+  protected model: Model<TEntity>;
 
-  constructor(model: Model<TEntity>, foreignKey: string, localKey: string) {
+  /**
+   * 外键名
+   */
+  protected foreignKey: string;
+
+  /**
+   * 关联键名
+   */
+  protected localKey: string;
+
+  constructor(model: Model<any>, foreignKey: string, localKey: string, entity: any) {
     this.model = model;
-
+    this.entity = entity;
     this.foreignKey = foreignKey;
-
     this.localKey = localKey;
   }
+  
+  abstract eagerly(result: Model<TEntity>, relation: string): any
 }
