@@ -1,14 +1,12 @@
-import { Model } from '../model';
-// import { Entity } from '../base/entity';
-import { Application } from '../../foundation/application';
-import { Container } from '../../container';
-import { Builder } from '../../database/builder';
-import { Database } from '../../database';
-// import { Entity } from 'src/base';
+import { Model } from './model';
+import { Entity } from '../base/entity';
+import { Application } from '../foundation/application';
+import { Container } from '../container';
+import { Builder } from '../database/builder';
+import { Database } from '../database';
 // import { SoftDeleteModel } from './soft-delete-model';
-// import { ModelBuilderInterface, ModelBuilderConstructor } from './builder.interface';
 
-export class ModelBuilder<TModel> {
+export class ModelBuilder<TEntity extends Entity> {
 
   /**
    * Application instance
@@ -18,7 +16,7 @@ export class ModelBuilder<TModel> {
   /**
    * Model instance
    */
-  model: Model<TModel>;
+  model: Model<TEntity>;
 
   /**
    * Database query builder instance
@@ -34,7 +32,7 @@ export class ModelBuilder<TModel> {
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: Model<TModel>) {
+  constructor(model: Model<TEntity>) {
     this.model = model;
     this.builder = this.newBuilderInstance();
     // Proxy class
@@ -46,7 +44,7 @@ export class ModelBuilder<TModel> {
    */
   get proxy(): ProxyHandler<this> {
     return {
-      get(target: ModelBuilder<TModel>, p: string | number | symbol, receiver: any) {
+      get(target: ModelBuilder<TEntity>, p: string | number | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
           return target.handleForwardCalls(p as keyof Builder);
@@ -77,10 +75,10 @@ export class ModelBuilder<TModel> {
   newBuilderInstance() {
     return this.app.get<Database>('db')
       .connection(
-        this.model.getEntityConnectioName()
+        this.model.getConnectioName()
       )
       .table(
-        this.model.getEntityTable()
+        this.model.getTable()
       );
   }
 
@@ -88,7 +86,7 @@ export class ModelBuilder<TModel> {
    * set new model
    * @param model 
    */
-  setModel(model: Model<TModel>) {
+  setModel(model: Model<TEntity>) {
     this.model = model;
     return this;
   }
@@ -106,7 +104,9 @@ export class ModelBuilder<TModel> {
    * @param exists 
    */
   newModelInstance(attributes: Record<string, any>, exists = false) {
-    return this.model.newInstance<TModel>().setExists(exists).fill(attributes);
+    return this.model.newInstance(
+      this.model.getEntity()
+    ).setExists(exists).fill(attributes);
   }
 
   /**
@@ -117,8 +117,7 @@ export class ModelBuilder<TModel> {
   async toModel(result: Record<string, any>, isFromCollection = false) {
     // 创建一个已存在记录的模型
     // Create a model of an existing record
-    const model = this.newModelInstance(result, true);
-
+    const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
     // 预载入查询
     if (!isFromCollection && this.model.getWiths().size > 0) {
       await model.eagerly(this.model.getWiths(), model);
@@ -132,7 +131,7 @@ export class ModelBuilder<TModel> {
    * @param result 
    */
   async toModelCollection(result: Record<string, any>[]) {
-    const data: Model<TModel>[] = [];
+    const data = [];
     for (const item of result) {
       data.push(
         await this.toModel(item, true)
@@ -153,9 +152,9 @@ export class ModelBuilder<TModel> {
    */
   prepare() {
     this.builder.columns(
-      ...this.model.getEntityColumns().keys()
+      ...this.model.getColumns().keys()
     );
-    return this;
+    return this as this & Builder & TEntity;
   }
 
 

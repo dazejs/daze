@@ -1,7 +1,6 @@
 import { HasRelations } from './has-relations.abstract';
-// import { Entity } from '../../base/entity';
 
-export class BelongsTo<TModel> extends HasRelations<TModel> {
+export class BelongsTo<TEntity> extends HasRelations<TEntity> {
 
   /**
    * 预载入

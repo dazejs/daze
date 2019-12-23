@@ -1,28 +1,30 @@
 import { HasRelations } from './has-relations.abstract';
 import { Model } from '../model';
-// import { Entity } from '../../base/entity';
 
-export class HasOne<TModel> extends HasRelations<TModel> {
+export class HasOne<TEntity> extends HasRelations<TEntity> {
   /**
    * 预载入
    */
-  async eagerly(result: Model<TModel>, relation: string) {
+  async eagerly(result: Model<TEntity>, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
+    const entity = this.entity;
+    // const model = new Model(
+    //   this.app.get(entity) as TEntity
+    // );
+    const model = this.model.newInstance(
+      this.app.get(entity) as TEntity
+    );
 
-    // const entity = this.entity;
-    const model = this.relationModel.newInstance<TModel>();
     const query = model.newModelBuilderInstance();
     const data = await query.where(foreignKey, '=', result.getAttribute(localKey)).first();
-    // console.log(data);
-
     result.setRelation(relation, data);
   }
 
-  async eagerlyMap(results: Model<TModel>[], relation: string) {
+  async eagerlyMap(results: Model<TEntity>[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
-    const relationModel = this.relationModel;
+    const entity = this.entity;
 
     const range = [];
 
@@ -35,7 +37,12 @@ export class HasOne<TModel> extends HasRelations<TModel> {
     }
 
     if (range.length > 0) {
-      const model = relationModel;
+      // const model = new Model(
+      //   this.app.get(entity) as TEntity
+      // );
+      const model = this.model.newInstance(
+        this.app.get(entity) as TEntity
+      );
       const query = model.newModelBuilderInstance();
 
       const data = await query.whereIn(foreignKey, range).find();

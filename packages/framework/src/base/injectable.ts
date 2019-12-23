@@ -89,9 +89,9 @@ export class Injectable extends Base {
   }
 
   model<TEntity>(entity: string | { new(): TEntity })  {
-    // return (new Model<TEntity>(
-    //   typeof entity === 'string' ? this.app.get<TEntity>(`entity.${entity}`) : this.app.get<TEntity>(entity)
-    // )) as Model<TEntity>;
-    return typeof entity === 'string' ? this.app.get<Model<TEntity>>(`entity.${entity}`) : this.app.get<Model<TEntity>>(entity);
+    return (new Model<TEntity>(
+      typeof entity === 'string' ? this.app.get<TEntity>(`entity.${entity}`) : this.app.get<TEntity>(entity)
+    )) as Model<TEntity>;
+    // return typeof entity === 'string' ? this.app.get<Model<TEntity>>(`entity.${entity}`) : this.app.get<Model<TEntity>>(entity);
   }
 }
