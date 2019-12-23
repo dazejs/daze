@@ -1,9 +1,12 @@
 import { HasRelations } from './has-relations.abstract';
 import { Model } from '../model';
+import { Entity } from '../../base/entity';
 
-export class HasOne<TEntity> extends HasRelations<TEntity> {
+export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
   /**
-   * 预载入
+   * 预载入单个模型
+   * @param result 
+   * @param relation 
    */
   async eagerly(result: Model<TEntity>, relation: string) {
     const foreignKey = this.foreignKey;
@@ -21,6 +24,11 @@ export class HasOne<TEntity> extends HasRelations<TEntity> {
     result.setRelation(relation, data);
   }
 
+  /**
+   * 预载入模型集合
+   * @param results 
+   * @param relation 
+   */
   async eagerlyMap(results: Model<TEntity>[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;

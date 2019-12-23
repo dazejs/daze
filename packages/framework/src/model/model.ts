@@ -113,6 +113,7 @@ class FakeModel<TEntity extends Entity> {
   constructor(entity: TEntity) {
     this.entity = entity;
     this.resolveEntity(entity);
+    this.fill(entity);
     return new Proxy(this as unknown as Model<TEntity>, {
       set(target: Model<TEntity>, p: number | string | symbol, value: any, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.set(target, p, value, receiver);
@@ -574,7 +575,7 @@ class FakeModel<TEntity extends Entity> {
    * Create/update database record operations
    * Update/create operations are performed automatically based on the scenario
    */
-  async save() {
+  async save(): Promise<boolean> {
     const query = this.newModelBuilderInstance();
     // 已存在模型
     // Existing model
@@ -626,5 +627,5 @@ class FakeModel<TEntity extends Entity> {
   }
 }
 
-export type Model<T> = FakeModel<T> & T & ModelBuilder<T> & Builder;
-export const Model: new <T>(entity: T) => Model<T> = FakeModel as any;
+export type Model<T extends Entity> = FakeModel<T> & T & ModelBuilder<T> & Builder;
+export const Model: new <T extends Entity>(entity: T) => Model<T> = FakeModel as any;

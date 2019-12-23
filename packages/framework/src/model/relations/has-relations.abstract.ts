@@ -1,8 +1,9 @@
 import { Model } from '../model';
 import { Application } from '../../foundation/application';
 import { Container } from '../../container';
+import { Entity } from '../../base/entity';
 
-export abstract class HasRelations<TEntity> {
+export abstract class HasRelations<TEntity extends Entity> {
   /**
    * application
    */
