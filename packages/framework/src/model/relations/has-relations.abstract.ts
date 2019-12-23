@@ -1,8 +1,8 @@
 import { Model } from '../model';
 import { Application } from '../../foundation/application';
 import { Container } from '../../container';
-
-export abstract class HasRelations<TEntity> {
+// import { Entity } from '../../base/entity';
+export abstract class HasRelations<TModel> {
   /**
    * application
    */
@@ -11,12 +11,12 @@ export abstract class HasRelations<TEntity> {
   /**
    * 实体
    */
-  protected entity: any;
+  protected relationModel: Model<TModel>;
 
   /**
    * 模型
    */
-  protected model: Model<TEntity>;
+  protected model: Model<TModel>;
 
   /**
    * 外键名
@@ -28,12 +28,13 @@ export abstract class HasRelations<TEntity> {
    */
   protected localKey: string;
 
-  constructor(model: Model<any>, foreignKey: string, localKey: string, entity: any) {
+  constructor(model: Model<TModel>, foreignKey: string, localKey: string, relationModel: Model<TModel>) {
     this.model = model;
-    this.entity = entity;
+    this.relationModel = relationModel;
     this.foreignKey = foreignKey;
     this.localKey = localKey;
   }
-  
-  abstract eagerly(result: Model<TEntity>, relation: string): any
+
+  abstract eagerly(result: Model<TModel>, relation: string): any
+  abstract eagerlyMap(results: Model<TModel>[], relation: string): any
 }

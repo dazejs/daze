@@ -1,14 +1,15 @@
 import { RelationDesc } from '../../model/model';
+import { Entity as EntityBase } from 'src/base';
 
 /**
  * HasOne
  *
  * @returns {PropertyDecorator}
  */
-export function HasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+export function HasOne<T extends EntityBase>(Entity: { new(): T }, foreignKey: string, localKey: string): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
-    const relations: Map<string, RelationDesc<TEntity>> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
+    const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'hasOne',
       entity: Entity,
@@ -20,7 +21,7 @@ export function HasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: s
   };
 }
 
-export function hasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+export function hasOne<T extends EntityBase>(Entity: { new(): T }, foreignKey: string, localKey: string): PropertyDecorator {
   return HasOne(Entity, foreignKey, localKey);
 }
 
@@ -29,10 +30,10 @@ export function hasOne<TEntity>(Entity: TEntity, foreignKey: string, localKey: s
  *
  * @returns {PropertyDecorator}
  */
-export function BelongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+export function BelongsTo<T extends EntityBase>(Entity: { new(): T }, foreignKey: string, localKey: string): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
-    const relations: Map<string, RelationDesc<TEntity>> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
+    const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'belongsTo',
       entity: Entity,
@@ -44,6 +45,6 @@ export function BelongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey
   };
 }
 
-export function belongsTo<TEntity>(Entity: TEntity, foreignKey: string, localKey: string): PropertyDecorator {
+export function belongsTo<T extends EntityBase>(Entity: { new(): T }, foreignKey: string, localKey: string): PropertyDecorator {
   return BelongsTo(Entity, foreignKey, localKey);
 }

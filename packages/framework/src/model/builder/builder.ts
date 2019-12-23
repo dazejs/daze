@@ -1,12 +1,14 @@
-import { Model } from './model';
-import { Entity } from '../base/entity';
-import { Application } from '../foundation/application';
-import { Container } from '../container';
-import { Builder } from '../database/builder';
-import { Database } from '../database';
+import { Model } from '../model';
+// import { Entity } from '../base/entity';
+import { Application } from '../../foundation/application';
+import { Container } from '../../container';
+import { Builder } from '../../database/builder';
+import { Database } from '../../database';
+// import { Entity } from 'src/base';
 // import { SoftDeleteModel } from './soft-delete-model';
+// import { ModelBuilderInterface, ModelBuilderConstructor } from './builder.interface';
 
-export class ModelBuilder<TEntity extends Entity> {
+export class ModelBuilder<TModel> {
 
   /**
    * Application instance
@@ -16,7 +18,7 @@ export class ModelBuilder<TEntity extends Entity> {
   /**
    * Model instance
    */
-  model: Model<TEntity>;
+  model: Model<TModel>;
 
   /**
    * Database query builder instance
@@ -32,33 +34,32 @@ export class ModelBuilder<TEntity extends Entity> {
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: Model<TEntity>) {
+  constructor(model: Model<TModel>) {
     this.model = model;
     this.builder = this.newBuilderInstance();
     // Proxy class
     return new Proxy(this, this.proxy);
   } 
 
+  /**
+   * Model builder proxy
+   */
   get proxy(): ProxyHandler<this> {
     return {
-      get(target: ModelBuilder<TEntity>, p: string | number | symbol, receiver: any) {
+      get(target: ModelBuilder<TModel>, p: string | number | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
           return target.handleForwardCalls(p as keyof Builder);
         }
-        // if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
-        //   return new Proxy(target.builder[p as keyof Builder] as Function, {
-        //     apply(target2: any, _thisArg: any, argArray?: any) {
-        //       Reflect.apply(target2, target.builder, argArray);
-        //       return new Proxy(target, target.proxy);
-        //     }
-        //   });
-        // }
         return Reflect.get(target, p, receiver);
       }
     };
   }
 
+  /**
+   * handle proxy getter
+   * @param p 
+   */
   handleForwardCalls(p: keyof Builder) {
     return (...args: any[]) => {
       if (this.throughs.includes(p)) {
@@ -76,32 +77,48 @@ export class ModelBuilder<TEntity extends Entity> {
   newBuilderInstance() {
     return this.app.get<Database>('db')
       .connection(
-        this.model.getConnectioName()
+        this.model.getEntityConnectioName()
       )
       .table(
-        this.model.getTable()
+        this.model.getEntityTable()
       );
   }
 
-  setModel(model: Model<TEntity>) {
+  /**
+   * set new model
+   * @param model 
+   */
+  setModel(model: Model<TModel>) {
     this.model = model;
     return this;
   }
 
+  /**
+   * get builder model
+   */
   getModel() {
     return this.model;
   }
 
+  /**
+   * new model instance
+   * @param attributes 
+   * @param exists 
+   */
   newModelInstance(attributes: Record<string, any>, exists = false) {
-    return new Model<TEntity>(
-      this.model.getEntity()
-    ).setExists(exists).fill(attributes);
+    return this.model.newInstance<TModel>().setExists(exists).fill(attributes);
   }
 
+  /**
+   * export model instance with result
+   * @param result 
+   * @param isFromCollection 
+   */
   async toModel(result: Record<string, any>, isFromCollection = false) {
     // 创建一个已存在记录的模型
     // Create a model of an existing record
-    const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
+    const model = this.newModelInstance(result, true);
+
     // 预载入查询
     if (!isFromCollection && this.model.getWiths().size > 0) {
       await model.eagerly(this.model.getWiths(), model);
@@ -110,13 +127,24 @@ export class ModelBuilder<TEntity extends Entity> {
     return model;
   }
 
+  /**
+   * export model instance commection with result
+   * @param result 
+   */
   async toModelCollection(result: Record<string, any>[]) {
-    const data = [];
+    const data: Model<TModel>[] = [];
     for (const item of result) {
       data.push(
         await this.toModel(item, true)
       );
     }
+
+    // console.log(this.model.getWiths());
+    // 预载入查询
+    if (this.model.getWiths().size > 0) {
+      await this.model.eagerlyCollection(this.model.getWiths(), data);
+    }
+
     return data;
   }
 
@@ -125,9 +153,9 @@ export class ModelBuilder<TEntity extends Entity> {
    */
   prepare() {
     this.builder.columns(
-      ...this.model.getColumns().keys()
+      ...this.model.getEntityColumns().keys()
     );
-    return this as this & Builder & TEntity;
+    return this;
   }
 
 
@@ -158,6 +186,9 @@ export class ModelBuilder<TEntity extends Entity> {
     return this.toModelCollection(res);
   }
 
+  /**
+   * 查询单条记录
+   */
   async first() {
     if (!this.model.isForceDelete()) { 
       this.builder.whereNull(
