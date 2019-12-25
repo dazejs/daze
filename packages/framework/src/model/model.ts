@@ -291,6 +291,7 @@ class FakeModel<TEntity extends Entity> {
   getRelationImp(relation: string): HasRelations<TEntity> | undefined {
     const relationDesc = this.relationMap.get(relation);
     if (!relationDesc) return;
+    
     if (relationDesc) {
       switch (relationDesc.type) {
         case 'hasOne':
