@@ -45,9 +45,6 @@ export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
     }
 
     if (range.length > 0) {
-      // const model = new Model(
-      //   this.app.get(entity) as TEntity
-      // );
       const model = this.model.newInstance(
         this.app.get(entity) as TEntity
       );
@@ -66,6 +63,5 @@ export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
         }
       }
     }
-    
   }
 }

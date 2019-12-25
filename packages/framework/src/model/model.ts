@@ -23,7 +23,8 @@ export interface ColumnDescription {
 // export type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 // type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
-class FakeModel<TEntity extends Entity> {
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+class _Model<TEntity extends Entity> {
 
   /**
    * 模型实体
@@ -374,7 +375,7 @@ class FakeModel<TEntity extends Entity> {
    * 创建新的 model 实例
    */
   newInstance<TTEntity extends Entity>(entity: TTEntity): Model<TTEntity>{
-    return new FakeModel<TTEntity>(entity) as Model<TTEntity>;
+    return new _Model<TTEntity>(entity) as Model<TTEntity>;
   }
 
   /**
@@ -628,5 +629,5 @@ class FakeModel<TEntity extends Entity> {
   }
 }
 
-export type Model<T extends Entity> = FakeModel<T> & T & ModelBuilder<T> & Builder;
-export const Model: new <T extends Entity>(entity: T) => Model<T> = FakeModel as any;
+export type Model<T extends Entity> = _Model<T> & T & ModelBuilder<T> & Builder;
+export const Model: new <T extends Entity>(entity: T) => Model<T> = _Model as any;
