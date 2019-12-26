@@ -22,6 +22,35 @@ describe('insert record use builder', () => {
   });
 });
 
+describe('columns in builder',  () => {
+  it('should return set columns', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18
+    });
+    const record = await app.get('db').connection().table('users').columns('name', 'age').first();
+    expect(record).toEqual({
+      name: 'dazejs',
+      age: 18
+    });
+  });
+  it('should return all columns default', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18
+    });
+    const record = await app.get('db').connection().table('users').columns().first();
+    expect(record).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: null
+    });
+  });
+});
+
 describe('find record use builder', () => {
   it('should return records when find success', async () => {
     await app.get('db').connection().table('users').insert({
@@ -34,7 +63,7 @@ describe('find record use builder', () => {
       name: 'dazejs',
       age: 20
     });
-    const records = await app.get('db').connection().table('users').find();
+    const records = await app.get('db').connection().table('users').columns('id', 'name', 'age').find();
     expect(records).toEqual([{
       id: 1,
       name: 'dazejs',
@@ -55,7 +84,7 @@ describe('get record by id use builder', () => {
       name: 'dazejs',
       age: 18
     });
-    const record = await app.get('db').connection().table('users').first();
+    const record = await app.get('db').connection().table('users').columns('id', 'name', 'age').first();
     expect(record).toEqual({
       id: 1,
       name: 'dazejs',
@@ -75,7 +104,7 @@ describe('update record use builder', () => {
     const rows = await app.get('db').connection().table('users').where('id', 1).update({
       age: 20
     });
-    const record = await app.get('db').connection().table('users').first();
+    const record = await app.get('db').connection().table('users').columns('id', 'name', 'age').first();
     expect(rows).toBe(1);
     expect(record).toEqual({
       id: 1,
@@ -97,8 +126,8 @@ describe('where in get sqls', () => {
       name: 'zewail',
       age: 20
     });
-    const record1 = await app.get('db').connection().table('users').where('id', '=', 1).first();
-    const record2 = await app.get('db').connection().table('users').where('id', 2).first();
+    const record1 = await app.get('db').connection().table('users').columns('id', 'name', 'age').where('id', '=', 1).first();
+    const record2 = await app.get('db').connection().table('users').columns('id', 'name', 'age').where('id', 2).first();
     expect(record1).toEqual({
       id: 1,
       name: 'dazejs',
@@ -111,7 +140,7 @@ describe('where in get sqls', () => {
     });
   });
 
-  it('should return recirds use whereIn', async () => {
+  it('should return records use whereIn', async () => {
     await app.get('db').connection().table('users').insert({
       id: 1,
       name: 'dazejs',
@@ -127,7 +156,7 @@ describe('where in get sqls', () => {
       name: 'test',
       age: 22
     });
-    const records = await app.get('db').connection().table('users').whereIn('id', [1, 2]).find();
+    const records = await app.get('db').connection().table('users').columns('id', 'name', 'age').whereIn('id', [1, 2]).find();
     expect(records).toEqual([{
       id: 1,
       name: 'dazejs',
@@ -137,5 +166,26 @@ describe('where in get sqls', () => {
       name: 'zewail',
       age: 20
     }]);
+  });
+});
+
+describe('whereNull in builder', () => {
+  it('should return null column', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20,
+    });
+    const record = await app.get('db').connection().table('users').columns('id', 'description').whereNull('description').first();
+    expect(record).toEqual({
+      id: 2,
+      description: null
+    });
   });
 });
