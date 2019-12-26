@@ -13,7 +13,7 @@ export class Database {
   /**
    * The active connection instances.
    */
-  connections = new Map();
+  connections: Map<string, AbstractConnection> = new Map();
 
   /**
    * Create Database instance
@@ -43,6 +43,16 @@ export class Database {
   }
 
   /**
+   * close connection by name
+   * @param name 
+   */
+  close(name = 'default') {
+    if (this.connections.has(name)) {
+      this.connections.get(name)?.close();
+    }
+  }
+
+  /**
    * Auto connection 
    * @param name 
    */
@@ -51,7 +61,7 @@ export class Database {
       const config = this.getConnectioncConfigure(name);
       this.connections.set(name, this.createConnection(config));
     }
-    return this.connections.get(name);
+    return this.connections.get(name) as T;
   }
 
   /**
