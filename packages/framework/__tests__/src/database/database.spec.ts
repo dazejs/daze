@@ -22,7 +22,7 @@ describe('Database Common', () => {
     const config = app.get('db').getConnectioncConfigure('default');
     expect(config).toEqual({
       type: 'mysql',
-      host: 'mysql',
+      host: 'localhost',
       user: 'root',
       password: 'password',
       port: 13306,

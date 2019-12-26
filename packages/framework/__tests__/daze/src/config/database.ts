@@ -1,7 +1,7 @@
 export default {
   default: {
     type: 'mysql',
-    host: 'mysql',
+    host: 'localhost',
     user: 'root',
     password: 'password',
     port: 13306,
