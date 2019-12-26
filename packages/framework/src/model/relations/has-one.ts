@@ -8,20 +8,18 @@ export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
    * @param result 
    * @param relation 
    */
-  async eagerly(result: Model<TEntity>, relation: string) {
+  async eagerly(result: TEntity, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
     const entity = this.entity;
-    // const model = new Model(
-    //   this.app.get(entity) as TEntity
-    // );
-    const model = this.model.newInstance(
+    const model = new Model(
       this.app.get(entity) as TEntity
     );
 
     const query = model.newModelBuilderInstance();
     const data = await query.where(foreignKey, '=', result.getAttribute(localKey)).first();
-    result.setRelation(relation, data);
+    const res = await model.resultToEntity(data);
+    result.setRelation(relation, res);
   }
 
   /**
@@ -29,7 +27,7 @@ export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
    * @param results 
    * @param relation 
    */
-  async eagerlyMap(results: Model<TEntity>[], relation: string) {
+  async eagerlyMap(results: TEntity[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
     const entity = this.entity;
@@ -45,21 +43,23 @@ export class HasOne<TEntity extends Entity> extends HasRelations<TEntity> {
     }
 
     if (range.length > 0) {
-      const model = this.model.newInstance(
+      const model = new Model(
         this.app.get(entity) as TEntity
       );
+
       const query = model.newModelBuilderInstance();
 
-      const data = await query.whereIn(foreignKey, range).find();
+      const res: Record<string, any>[] = await query.whereIn(foreignKey, range).find();
 
-      const dataMap = new Map(
-        data.map(item => [item.getAttribute(foreignKey), item])
+      const resMap = new Map(
+        res.map(item => [item.getAttribute(foreignKey), item])
       );
 
       for (const item of results) {
-        const _model = dataMap.get(item.getAttribute(localKey));
-        if (_model) {
-          item.setRelation(relation, _model);
+        const data = resMap.get(item.getAttribute(localKey));
+        if (data) {
+          const _data = await model.resultToEntity(data, true);
+          item.setRelation(relation, _data);
         }
       }
     }

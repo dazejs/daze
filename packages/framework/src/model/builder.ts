@@ -104,48 +104,47 @@ export class ModelBuilder<TEntity extends Entity> {
    * @param exists 
    */
   newModelInstance(attributes: Record<string, any>, exists = false) {
-    return this.model.newInstance(
-      this.model.getEntity()
-    ).setExists(exists).fill(attributes);
+    return this.model.setExists(exists).fill(attributes);
   }
 
-  /**
-   * export model instance with result
-   * @param result 
-   * @param isFromCollection 
-   */
-  async toModel(result: Record<string, any>, isFromCollection = false) {
-    // 创建一个已存在记录的模型
-    // Create a model of an existing record
-    const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
-    // 预载入查询
-    if (!isFromCollection && this.model.getWiths().size > 0) {
-      await model.eagerly(this.model.getWiths(), model);
-    }
+  // /**
+  //  * export model instance with result
+  //  * @param result 
+  //  * @param isFromCollection 
+  //  */
+  // async toModel(result: Record<string, any>, isFromCollection = false) {
+  //   // 创建一个已存在记录的模型
+  //   // Create a model of an existing record
+  //   // const model = this.newModelInstance(result, true);
+  //   this.model.setExists(true).fill(result);
+  //   // 预载入查询
+  //   if (!isFromCollection && this.model.getWiths().size > 0) {
+  //     await this.model.eagerly(this.model.getWiths(), this.model);
+  //   }
 
-    return model;
-  }
+  //   return this.model;
+  // }
 
-  /**
-   * export model instance commection with result
-   * @param result 
-   */
-  async toModelCollection(result: Record<string, any>[]) {
-    const data = [];
-    for (const item of result) {
-      data.push(
-        await this.toModel(item, true)
-      );
-    }
+  // /**
+  //  * export model instance commection with result
+  //  * @param result 
+  //  */
+  // async toModelCollection(result: Record<string, any>[]) {
+  //   const data = [];
+  //   for (const item of result) {
+  //     data.push(
+  //       await this.toModel(item, true)
+  //     );
+  //   }
 
-    // console.log(this.model.getWiths());
-    // 预载入查询
-    if (this.model.getWiths().size > 0) {
-      await this.model.eagerlyCollection(this.model.getWiths(), data);
-    }
+  //   // console.log(this.model.getWiths());
+  //   // 预载入查询
+  //   if (this.model.getWiths().size > 0) {
+  //     await this.model.eagerlyCollection(this.model.getWiths(), data);
+  //   }
 
-    return data;
-  }
+  //   return data;
+  // }
 
   /**
    * 查询预处理
@@ -154,7 +153,7 @@ export class ModelBuilder<TEntity extends Entity> {
     this.builder.columns(
       ...this.model.getColumns().keys()
     );
-    return this as this & Builder & TEntity;
+    return this as this & Builder;
   }
 
 
@@ -175,14 +174,20 @@ export class ModelBuilder<TEntity extends Entity> {
    * 查询数据集
    */
   async find() {
+    // if (this.model.isForceDelete()) {
+    //   const res = await this.builder.find();
+    //   return this.toModelCollection(res);
+    // }
+    // const res = await this.builder.whereNull(
+    //   this.model.getSoftDeleteKey()
+    // ).find();
+    // return this.toModelCollection(res);
     if (this.model.isForceDelete()) {
-      const res = await this.builder.find();
-      return this.toModelCollection(res);
+      return this.builder.find();
     }
-    const res = await this.builder.whereNull(
+    return this.builder.whereNull(
       this.model.getSoftDeleteKey()
     ).find();
-    return this.toModelCollection(res);
   }
 
   /**
@@ -194,8 +199,9 @@ export class ModelBuilder<TEntity extends Entity> {
         this.model.getSoftDeleteKey()
       );
     }
-    const res = await this.builder.first();
-    return this.toModel(res);
+    return this.builder.first();
+    // const res = await this.builder.first();
+    // return this.toModel(res);
   }
 
   /**
@@ -208,11 +214,16 @@ export class ModelBuilder<TEntity extends Entity> {
         this.model.getSoftDeleteKey()
       );
     }
-    const res = await this.builder.where(
-      this.model.getDefaultPrimaryKey(),
+    return this.builder.where(
+      this.model.getPrimaryKey(),
       '=',
       id
     ).first();
-    return this.toModel(res);
+    // const res = await this.builder.where(
+    //   this.model.getDefaultPrimaryKey(),
+    //   '=',
+    //   id
+    // ).first();
+    // return this.toModel(res);
   }
 }
