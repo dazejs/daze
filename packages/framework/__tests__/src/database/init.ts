@@ -34,7 +34,8 @@ export async function initDb() {
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'daze'
+    database: 'daze',
+    port: 13306
   });
 
   connection.connect();
