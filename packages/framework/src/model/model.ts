@@ -2,17 +2,29 @@ import { format as dateFormat, getUnixTime } from 'date-fns';
 import { Entity } from '../base/entity';
 import { Builder } from '../database/builder';
 import { ModelBuilder } from './builder';
-import { Relationship } from './relationship';
+// import { Relationship } from './relationship';
+import { HasRelations } from './relations/has-relations.abstract';
+import { HasOne, BelongsTo } from './relations';
+
+export type RelationTypes = 'hasOne' | 'belongsTo'
+
+export interface RelationDesc<TEntity> {
+  type: RelationTypes;
+  entity: { new(): TEntity};
+  foreignKey: string;
+  localKey: string;
+}
 
 export interface ColumnDescription {
   type: string;
   length: number;
 };
 
-type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
+// export type ProxyModel<TEntity> = Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 // type ProxySoftDeleteModel<TEntity> = SoftDeleteModel<TEntity> & TEntity & ModelBuilder<TEntity> & Builder
 
-export class Model<TEntity extends Entity> extends Relationship {
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+class _Model<TEntity extends Entity> {
 
   /**
    * 模型实体
@@ -78,17 +90,32 @@ export class Model<TEntity extends Entity> extends Relationship {
   private updateTimestampKey: string;
 
   /**
+   * 实体的关联关系描述集合
+   * The associations of entities describe the set
+   */
+  private relationMap: Map<string, RelationDesc<TEntity>>;
+
+  /**
+   * 渴求式加载对象集合
+   * Want to load a collection of objects
+   */
+  private withs: Map<string, HasRelations<TEntity>> = new Map();
+
+  /**
+   * 渴求式加载数据集合
+   * Eager load data set
+   */
+  private relations: Record<string, any> = {};
+
+  /**
    * Create Model
    * @param entity
    */
   constructor(entity: TEntity) {
-    super();
-    
     this.entity = entity;
-
     this.resolveEntity(entity);
-
-    return new Proxy(this, {
+    this.fill(entity);
+    return new Proxy(this as unknown as Model<TEntity>, {
       set(target: Model<TEntity>, p: number | string | symbol, value: any, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.set(target, p, value, receiver);
         target.setAttribute(p, value);
@@ -96,12 +123,16 @@ export class Model<TEntity extends Entity> extends Relationship {
       },
       get(target: Model<TEntity>, p: number | string | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
-        if (target.isEntityColumns(p)) return target.getAttribute(p);
+        if (target.isEntityColumns(p) || target.isEntityRelations(p)) return target.getAttribute(p);
         return target.newModelBuilderInstance()[p as keyof Builder];
       }
     });
   }
 
+  /**
+   * 记录是否需要被完全删除
+   * Whether the record needs to be deleted completely
+   */
   isForceDelete() {
     return !this.softDeleteKey;
   }
@@ -112,6 +143,15 @@ export class Model<TEntity extends Entity> extends Relationship {
    */
   isEntityColumns(columnKey: string) {
     return this.columns.has(columnKey);
+  }
+
+  /**
+   * 是否是关联属性
+   * Is it an associated property
+   * @param columnKey 
+   */
+  isEntityRelations(columnKey: string) {
+    return this.relationMap.has(columnKey);
   }
 
   /**
@@ -164,11 +204,20 @@ export class Model<TEntity extends Entity> extends Relationship {
    */
   getAttribute(key: string) {
     if (!key) return;
-    return this.attributes[key];
+    return this.attributes[key] ?? this.relations[key];
+  }
+
+  /**
+   * 获取需要被渴求式加载的对象集合
+   * Gets the collection of objects that need to be loaded by the desired type
+   */
+  getWiths() {
+    return this.withs;
   }
 
   /**
    * 获取模型表名
+   * get table name
    */
   getTable() {
     return this.table;
@@ -176,6 +225,7 @@ export class Model<TEntity extends Entity> extends Relationship {
 
   /**
    * 获取模型连接名
+   * get connection name
    */
   getConnectioName() {
     return this.connection;
@@ -183,6 +233,7 @@ export class Model<TEntity extends Entity> extends Relationship {
 
   /**
    * 获取模型实体字段数组
+   * Gets an array of model entity fields
    */
   getColumns() {
     return this.columns;
@@ -195,15 +246,6 @@ export class Model<TEntity extends Entity> extends Relationship {
   getAttributes() {
     return this.attributes;
   }
-
-  // /**
-  //  * 生成新的模型实例 - 已填充数据的模型
-  //  * Generate a new model instance - the model with the populated data
-  //  * @param attributes 
-  //  */
-  // newModelInstance(attributes: Record<string, any>, exists = false) {
-  //   return new Model<TEntity>(this.entity).setExists(exists).fill(attributes);
-  // }
 
   /**
    * get entity
@@ -220,12 +262,74 @@ export class Model<TEntity extends Entity> extends Relationship {
   private resolveEntity(entity: TEntity) {
     this.table = Reflect.getMetadata('table', entity.constructor);
     this.connection = Reflect.getMetadata('connection', entity.constructor) ?? 'default';
-    this.columns = Reflect.getMetadata('columns', entity.constructor) ?? [];
+    this.columns = Reflect.getMetadata('columns', entity.constructor) ?? new Map();
     this.primaryKey = Reflect.getMetadata('primaryKey', entity.constructor) ?? 'id';
     this.incrementing = Reflect.getMetadata('incrementing', entity.constructor) ?? true;
     this.softDeleteKey = Reflect.getMetadata('softDeleteKey', entity.constructor);
     this.createTimestampKey = Reflect.getMetadata('createTimestampKey', entity.constructor);
     this.updateTimestampKey = Reflect.getMetadata('updateTimestampKey', entity.constructor);
+    this.relationMap = Reflect.getMetadata('relations', entity.constructor) || new Map();
+  }
+
+  /**
+   * need eagerly
+   * @param relations 
+   */
+  with(...relations: string[]): Model<TEntity> {
+    for (const relation of relations) {
+      const relationImp = this.getRelationImp(relation);
+      if (relationImp) {
+        this.withs.set(relation, relationImp);
+      };
+    }
+    return this as unknown as Model<TEntity>;
+  }
+
+  /**
+   * get relation implementat
+   * @param relation 
+   */
+  getRelationImp(relation: string): HasRelations<TEntity> | undefined {
+    const relationDesc = this.relationMap.get(relation);
+    if (!relationDesc) return;
+    
+    if (relationDesc) {
+      switch (relationDesc.type) {
+        case 'hasOne':
+          return new HasOne(this as unknown as Model<TEntity>, relationDesc.foreignKey, relationDesc.localKey, relationDesc.entity);
+        case 'belongsTo':
+          return new BelongsTo(this as unknown as Model<TEntity>, relationDesc.foreignKey, relationDesc.localKey, relationDesc.entity);
+        default:
+          return;
+      }
+    }
+    return;
+  }
+
+  /**
+   * 渴求式加载
+   * @param result 
+   */
+  async eagerly(withs: Map<string, HasRelations<TEntity>>, result: Model<TEntity>) {
+    for (const [relation, relationImp] of withs) {
+      await relationImp.eagerly(result, relation);
+    }
+  }
+
+  async eagerlyCollection(withs: Map<string, HasRelations<TEntity>>, results: Model<TEntity>[]) {
+    for (const [relation, relationImp] of withs) {
+      await relationImp.eagerlyMap(results, relation);
+    }
+  }
+
+  /**
+   * 设置关联结果
+   * @param key 
+   * @param value 
+   */
+  setRelation(key: string, value: Model<TEntity>) {
+    this.relations[key] = value;
+    return this;
   }
 
   /**
@@ -233,7 +337,7 @@ export class Model<TEntity extends Entity> extends Relationship {
    * Generate model query construct class instances
    */
   newModelBuilderInstance() {
-    return (new ModelBuilder<TEntity>(this)).prepare();
+    return (new ModelBuilder<TEntity>(this as unknown as Model<TEntity>)).prepare();
   }
 
   /**
@@ -270,10 +374,8 @@ export class Model<TEntity extends Entity> extends Relationship {
   /**
    * 创建新的 model 实例
    */
-  newInstance(): ProxyModel<TEntity>{
-    return new Model<TEntity>(
-      this.getEntity()
-    ) as ProxyModel<TEntity>;
+  newInstance<TTEntity extends Entity>(entity: TTEntity): Model<TTEntity>{
+    return new _Model<TTEntity>(entity) as Model<TTEntity>;
   }
 
   /**
@@ -344,6 +446,7 @@ export class Model<TEntity extends Entity> extends Relationship {
   getUpdateTimestampKey() {
     return this.updateTimestampKey;
   }
+
 
   /**
    * 获取需要更新的模型属性
@@ -455,7 +558,9 @@ export class Model<TEntity extends Entity> extends Relationship {
    */
   async destroy(...ids: (number | string)[]) {
     let count = 0;
-    const model = this.newInstance();
+    const model = this.newInstance(
+      this.getEntity()
+    );
     const _models = await model.whereIn(
       model.getDefaultPrimaryKey(),
       ids
@@ -472,7 +577,7 @@ export class Model<TEntity extends Entity> extends Relationship {
    * Create/update database record operations
    * Update/create operations are performed automatically based on the scenario
    */
-  async save() {
+  async save(): Promise<boolean> {
     const query = this.newModelBuilderInstance();
     // 已存在模型
     // Existing model
@@ -523,3 +628,6 @@ export class Model<TEntity extends Entity> extends Relationship {
     return true;
   }
 }
+
+export type Model<T extends Entity> = _Model<T> & T & ModelBuilder<T> & Builder;
+export const Model: new <T extends Entity>(entity: T) => Model<T> = _Model as any;

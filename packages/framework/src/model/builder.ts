@@ -39,6 +39,9 @@ export class ModelBuilder<TEntity extends Entity> {
     return new Proxy(this, this.proxy);
   } 
 
+  /**
+   * Model builder proxy
+   */
   get proxy(): ProxyHandler<this> {
     return {
       get(target: ModelBuilder<TEntity>, p: string | number | symbol, receiver: any) {
@@ -46,19 +49,15 @@ export class ModelBuilder<TEntity extends Entity> {
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
           return target.handleForwardCalls(p as keyof Builder);
         }
-        // if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
-        //   return new Proxy(target.builder[p as keyof Builder] as Function, {
-        //     apply(target2: any, _thisArg: any, argArray?: any) {
-        //       Reflect.apply(target2, target.builder, argArray);
-        //       return new Proxy(target, target.proxy);
-        //     }
-        //   });
-        // }
         return Reflect.get(target, p, receiver);
       }
     };
   }
 
+  /**
+   * handle proxy getter
+   * @param p 
+   */
   handleForwardCalls(p: keyof Builder) {
     return (...args: any[]) => {
       if (this.throughs.includes(p)) {
@@ -83,35 +82,68 @@ export class ModelBuilder<TEntity extends Entity> {
       );
   }
 
+  /**
+   * set new model
+   * @param model 
+   */
   setModel(model: Model<TEntity>) {
     this.model = model;
     return this;
   }
 
+  /**
+   * get builder model
+   */
   getModel() {
     return this.model;
   }
 
+  /**
+   * new model instance
+   * @param attributes 
+   * @param exists 
+   */
   newModelInstance(attributes: Record<string, any>, exists = false) {
-    return new Model<TEntity>(
+    return this.model.newInstance(
       this.model.getEntity()
     ).setExists(exists).fill(attributes);
   }
 
-  exportToModel(result: Record<string, any>) {
+  /**
+   * export model instance with result
+   * @param result 
+   * @param isFromCollection 
+   */
+  async toModel(result: Record<string, any>, isFromCollection = false) {
     // 创建一个已存在记录的模型
     // Create a model of an existing record
     const model = this.newModelInstance(result, true) as Model<TEntity> & TEntity;
+    // 预载入查询
+    if (!isFromCollection && this.model.getWiths().size > 0) {
+      await model.eagerly(this.model.getWiths(), model);
+    }
+
     return model;
   }
 
-  exportToModelCollection(result: Record<string, any>[]) {
+  /**
+   * export model instance commection with result
+   * @param result 
+   */
+  async toModelCollection(result: Record<string, any>[]) {
     const data = [];
     for (const item of result) {
       data.push(
-        this.exportToModel(item)
+        await this.toModel(item, true)
       );
     }
+
+    // console.log(this.model.getWiths());
+    // 预载入查询
+    if (this.model.getWiths().size > 0) {
+      await this.model.eagerlyCollection(this.model.getWiths(), data);
+    }
+
     return data;
   }
 
@@ -145,14 +177,17 @@ export class ModelBuilder<TEntity extends Entity> {
   async find() {
     if (this.model.isForceDelete()) {
       const res = await this.builder.find();
-      return this.exportToModelCollection(res);
+      return this.toModelCollection(res);
     }
     const res = await this.builder.whereNull(
       this.model.getSoftDeleteKey()
     ).find();
-    return this.exportToModelCollection(res);
+    return this.toModelCollection(res);
   }
 
+  /**
+   * 查询单条记录
+   */
   async first() {
     if (!this.model.isForceDelete()) { 
       this.builder.whereNull(
@@ -160,7 +195,7 @@ export class ModelBuilder<TEntity extends Entity> {
       );
     }
     const res = await this.builder.first();
-    return this.exportToModel(res);
+    return this.toModel(res);
   }
 
   /**
@@ -178,6 +213,6 @@ export class ModelBuilder<TEntity extends Entity> {
       '=',
       id
     ).first();
-    return this.exportToModel(res);
+    return this.toModel(res);
   }
 }

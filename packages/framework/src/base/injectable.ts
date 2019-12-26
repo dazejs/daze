@@ -2,11 +2,12 @@ import { Request } from '../request';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
-import { Resource as BaseResource } from './resource';
 import { Entity } from './entity';
+import { Resource as BaseResource } from './resource';
+// import { Entity } from './entity';
 import { Model } from '../model/model';
-import { ModelBuilder } from '../model/builder';
-import { Builder } from '../database/builder';
+// import { ModelBuilder } from '../model/builder';
+// import { Builder } from '../database/builder';
 
 @Reflect.metadata('injectable', true)
 export class Injectable extends Base {
@@ -88,9 +89,10 @@ export class Injectable extends Base {
     return (new Resource.Collection(data, resource).setContext(this.__context__));
   }
 
-  model<TEntity extends Entity>(entity: string | { new(): TEntity }) {
+  model<TEntity extends Entity>(entity: string | { new(): TEntity })  {
     return (new Model<TEntity>(
-      typeof entity === 'string' ? this.app.get(`entity.${entity}`) : this.app.get(entity)
-    )) as Model<TEntity> & TEntity & ModelBuilder<TEntity> & Builder;
+      typeof entity === 'string' ? this.app.get<TEntity>(`entity.${entity}`) : this.app.get<TEntity>(entity)
+    )) as Model<TEntity>;
+    // return typeof entity === 'string' ? this.app.get<Model<TEntity>>(`entity.${entity}`) : this.app.get<Model<TEntity>>(entity);
   }
 }

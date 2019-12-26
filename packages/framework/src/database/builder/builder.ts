@@ -60,11 +60,6 @@ export class Builder {
    * The columns
    */
   _columns: string[] = [];
-
-  // /**
-  //  * Columns for set
-  //  */
-  // _setColumns: string[] = [];
   
   /**
    * The table target
@@ -573,20 +568,6 @@ export class Builder {
     return this.union(builder, true);
   }
 
-  // /**
-  //  * add param to params
-  //  * @param value 
-  //  */
-  // addParams(value: any) {
-  //   if (Array.isArray(value)) {
-  //     this.params.push(...value);
-  //     return this;
-  //   }
-  //   this.params.push(value);
-  //   return this;
-  // }
-
-
   addBinding(key: BindingKeys, value: any) {
     if (Array.isArray(value)) {
       this.bindings.get(key)?.push(...value);
@@ -628,13 +609,6 @@ export class Builder {
     return bindings;
   }
 
-  // /**
-  //  * get all params
-  //  */
-  // getParams() {
-  //   return this.params;
-  // }
-
   /**
    * gen sql string
    */
@@ -662,16 +636,6 @@ export class Builder {
     return results;
   }
 
-  // /**
-  //  * query one record from database
-  //  * @param id 
-  //  */
-  // async get(id: string | number) {
-  //   const sql = this.where('id', id).take(1).toSql();
-  //   const params = this.getParams();
-  //   const results = await this.collection.select(sql, params);
-  //   return results[0];
-  // }
 
   /**
    * query first record from database
@@ -688,18 +652,6 @@ export class Builder {
       ...results[0]
     };
   }
-
-  // /**
-  //  * query last record from database width id desc
-  //  * @param order 
-  //  */
-  // async last(order = 'id') {
-  //   const sql = this.take(1).orderBy(order, 'desc').toSql();
-  //   const params = this.getParams();
-  //   const results = await this.collection.select(sql, params);
-  //   return results[0];
-  // }
-
 
   getBindingsForUpdate(values: any[] = []) {
     const cleanBindings = this.getBindingsExceptKeys([
