@@ -36,7 +36,7 @@ export abstract class AbstractConnection {
   table(table: string, as?: string): Builder {
     return this.newBuilderInsatnce().table(table, as);
   }
-  
+  abstract close(): void;
   abstract select(query: string, bindings?: any[]): Promise<any[]>
   abstract insert(query: string, bindings?: any[]):  Promise<number>
   abstract update(query: string, bindings?: any[]):  Promise<number>

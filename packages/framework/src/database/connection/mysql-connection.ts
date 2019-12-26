@@ -19,6 +19,13 @@ export class MysqlConnection extends AbstractConnection {
   }
 
   /**
+   * close connection
+   */
+  close() {
+    this.connection.end();
+  }
+
+  /**
    * default parser for mysql
    */
   getDefaultParser() {
