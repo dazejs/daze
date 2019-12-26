@@ -31,7 +31,7 @@ async function createTable(connection: mysql.Connection, sql: string) {
 
 export async function initDb() {
   const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'mysql',
     user: 'root',
     password: 'root',
     database: 'daze',
