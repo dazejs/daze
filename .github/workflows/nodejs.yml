@@ -13,9 +13,9 @@ jobs:
   
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        node-version: [8, 10, 12]
+    # strategy:
+    #   matrix:
+    #     node-version: [8, 10, 12]
 
     container: node:12
 
