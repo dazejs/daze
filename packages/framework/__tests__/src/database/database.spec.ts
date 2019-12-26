@@ -24,7 +24,7 @@ describe('Database Common', () => {
       type: 'mysql',
       host: 'mysql',
       user: 'root',
-      password: 'root',
+      password: 'password',
       port: 13306,
       database: 'daze'
     });

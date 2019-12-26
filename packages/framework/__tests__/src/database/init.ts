@@ -33,7 +33,7 @@ export async function initDb() {
   const connection = mysql.createConnection({
     host: 'mysql',
     user: 'root',
-    password: 'root',
+    password: 'password',
     database: 'daze',
     port: 13306
   });
