@@ -17,6 +17,8 @@ jobs:
       matrix:
         node-version: [8, 10, 12]
 
+    container: node:12
+
     services:
       mysql:
         image: mysql:5.7
