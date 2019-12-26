@@ -3,7 +3,7 @@ export default {
     type: 'mysql',
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'root',
     port: 13306,
     database: 'daze'
   },
