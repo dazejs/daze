@@ -42,6 +42,8 @@ export async function initDb() {
 
   // 删除 users 表
   await dropTable(connection, 'users');
+  // 删除 comments 表
+  await dropTable(connection, 'comments');
   // 创建 users 表
   await createTable(connection, `CREATE TABLE \`users\` (
       \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -50,6 +52,7 @@ export async function initDb() {
       \`description\` varchar(255) DEFAULT NULL,
       PRIMARY KEY (\`id\`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
+  // 创建 comments 表
   await createTable(connection, `CREATE TABLE \`comments\` (
       \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
       \`user_id\` int(11) NOT NULL,
