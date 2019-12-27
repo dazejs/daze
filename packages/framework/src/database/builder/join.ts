@@ -1,10 +1,7 @@
 import { Builder, TJoinType, TSymlink } from './builder';
 
-
-export class Join {
+export class NJoin {
   builder: Builder;
-
-  _table: string;
 
   type: TJoinType;
 
@@ -28,13 +25,28 @@ export class Join {
       }
     };
   }
+  /**
+   * set join table
+   * @param table 
+   * @param as 
+   */
+  table(table: string, as?: string) {
+    this.builder.table(table, as);
+    return this;
+  }
 
+  /**
+   * set on sql
+   * @param column 
+   * @param operator 
+   * @param seed 
+   * @param symlink 
+   */
   on(column: string, operator: string, seed?: string, symlink: TSymlink = 'and') {
     this.builder.whereColumn(column, operator, seed, symlink);
     return this;
   }
-
-  getParams() {
-    return this.builder.getBindings();
-  }
 }
+
+export type Join = NJoin & Builder;
+export const Join: new (builder: Builder, type: TJoinType) => Join = NJoin as any;
