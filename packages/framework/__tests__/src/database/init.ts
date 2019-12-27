@@ -50,6 +50,12 @@ export async function initDb() {
       \`description\` varchar(255) DEFAULT NULL,
       PRIMARY KEY (\`id\`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
+  await createTable(connection, `CREATE TABLE \`comments\` (
+      \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      \`user_id\` int(11) NOT NULL,
+      \`comment\` varchar(11) NOT NULL DEFAULT '',
+      PRIMARY KEY (\`id\`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;`);
 
   connection.end();
 }
