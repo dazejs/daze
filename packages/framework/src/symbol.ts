@@ -55,3 +55,8 @@ export const INJECTORS = {
   // VALIDATOR: '__DAZE_INJECT_VALIDATOR__',
   // MODEL: '__DAZE_INJECT_MODEL__',
 };
+
+export const DazeModuleType = {
+  MODULES: Symbol("DAZE#MODULES"),
+  BEAN: Symbol("DAZE#BEAN"),
+};

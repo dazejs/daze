@@ -2,6 +2,7 @@
 import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
+import { DazeAutoModuleConfigure } from "../boot/auto-module";
 
 // import { ModelManager } from '../model';
 
@@ -34,6 +35,7 @@ export class Resolver {
     this.resolveComponents();
     this.resolveModels();
     this.resolveControllers();
+    this.resolveAutoModules();
   }
 
   /**
@@ -140,5 +142,9 @@ export class Resolver {
         }, true);
       }
     }
+  }
+  
+  resolveAutoModules() {
+    new DazeAutoModuleConfigure(this.app).config(this.app.rootAutoModule);
   }
 }

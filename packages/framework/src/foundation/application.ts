@@ -19,6 +19,9 @@ import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
+import { DazeAutoModule } from "../boot/auto-module";
+import { DazeModuleType } from "../symbol";
+import { ModuleOption } from "../boot/module.decorator";
 
 const DEFAULT_PORT = 8080;
 
@@ -41,6 +44,11 @@ export class Application extends Container {
    * The base path for the Application installation.
    */
   rootPath = '';
+
+  /**
+   * The base auto module for the Application installation.
+   */
+  rootAutoModule: DazeAutoModule | any;
 
   /**
    * The app workspace path
@@ -117,14 +125,27 @@ export class Application extends Container {
    */
   runtimeCalls: ((...args: any[]) => any)[] = [];
 
-  /**
-   * Create a Dazejs Application insstance
-   */
-  constructor(rootPath: string, paths: ApplicationPathsOptions = {}) {
+  constructor(module: DazeAutoModule | any);
+  constructor(rootPath: string);
+  constructor(moduleOrRootPath: any, paths: ApplicationPathsOptions = {}) {
     super();
-    if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
+    if (!moduleOrRootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
+    
+    if (typeof moduleOrRootPath === 'function') {
+      const moduleOption: ModuleOption = Reflect.getMetadata(DazeModuleType.MODULES, moduleOrRootPath);
+      // TODO: support multiple paths
+      const componentScan = moduleOption.componentScan;
+      if (Array.isArray(componentScan)) {
+        this.rootPath = moduleOption.componentScan[0];
+      } else {
+        this.rootPath = moduleOption.componentScan as string;
+      }
+      this.rootAutoModule = moduleOrRootPath;
+    }
 
-    this.rootPath = rootPath;
+    if (typeof moduleOrRootPath === 'string') {
+      this.rootPath = moduleOrRootPath;
+    }
 
     this.setPaths(paths);
 
