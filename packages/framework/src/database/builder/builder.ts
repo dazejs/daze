@@ -407,7 +407,7 @@ export class Builder {
    * @param column 
    */
   async sum(column: string) {
-    const res = await this.aggregate('min', column);
+    const res = await this.aggregate('sum', column);
     return res ?? 0;
   }
 
