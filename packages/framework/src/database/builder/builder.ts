@@ -2,11 +2,6 @@ import { IllegalArgumentError } from '../../errors/illegal-argument-error';
 import { AbstractConnection } from '../connection/connection.abstract';
 import { Parser } from '../parser';
 import { Join } from './join';
-// import { ModelRelation } from './model-relation';
-// import { Model } from '../../model/model';
-// import { Entity } from '../../base/entity';
-
-
 
 export type TSymlink = 'and' | 'or' | ''
 
@@ -62,9 +57,14 @@ export class Builder {
   _columns: string[] = [];
   
   /**
-   * The table target
+   * the table name
    */
-  _from: string;
+  _table: string;
+
+  /**
+   * the table from alias
+   */
+  _alias: string;
 
   /**
    * The where constraints
@@ -136,6 +136,8 @@ export class Builder {
    */
   collection: AbstractConnection;
 
+  shouldLogSql = false;
+
   /**
    * Create Builder instance
    * @param collection 
@@ -183,7 +185,22 @@ export class Builder {
    * @param as 
    */
   table(table: string, as?: string) {
-    this._from = as ? `${table} as ${as}` : table;
+    // this._from = as ? `${table} as ${as}` : table;
+    let _table = table;
+    let _as = as;
+    if (~table.indexOf(` as `)) {
+      [_table, _as] = table.split(` as `);
+    }
+    _table = _table.trim();
+    _as = _as?.trim();
+    if (_as) {
+      // this._from = `${_table} as ${_as}`;
+      this._alias = _as;
+    }
+    //  else {
+    //   this._from = _table;
+    // }
+    this._table = _table;
     return this;
   }
 
@@ -261,8 +278,12 @@ export class Builder {
     return this;
   }
 
-
-
+  /**
+   * where in 
+   * @param column 
+   * @param value 
+   * @param symlink 
+   */
   whereIn(column: string, value: any[], symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'in';
@@ -271,6 +292,12 @@ export class Builder {
     return this;
   }
 
+  /**
+   * where not in
+   * @param column 
+   * @param value 
+   * @param symlink 
+   */
   whereNotIn(column: string, value: any[], symlink: TSymlink = 'and') {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'notIn';
@@ -279,6 +306,12 @@ export class Builder {
     return this;
   }
 
+  /**
+   * where null
+   * @param column 
+   * @param symlink 
+   * @param not 
+   */
   whereNull(column: string, symlink: TSymlink = 'and', not = false) {
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = not ? 'notNull' : 'null';
@@ -286,16 +319,29 @@ export class Builder {
     return this;
   }
 
+  /**
+   * where not null
+   * @param column 
+   * @param symlink 
+   */
   whereNotNull(column: string, symlink: TSymlink = 'and') {
     this.whereNull(column, symlink, true);
     return this;
   }
 
+  /**
+   * or where null
+   * @param column 
+   */
   orWhereNull(column: string) {
     this.whereNull(column, 'or', false);
     return this;
   }
 
+  /**
+   * or where not null
+   * @param column 
+   */
   orWhereNotNull(column: string) {
     this.whereNull(column, 'or', true);
     return this;
@@ -356,7 +402,7 @@ export class Builder {
    * @param column 
    */
   async sum(column: string) {
-    const res = await this.aggregate('min', column);
+    const res = await this.aggregate('sum', column);
     return res ?? 0;
   }
 
@@ -482,7 +528,7 @@ export class Builder {
    * @param type 
    */
   join(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any, type: TJoinType = 'inner') {
-    const join = new Join(new Builder(this.collection), type) as Join & Builder;
+    const join = new Join(new Builder(this.collection), type);
     if (typeof table === 'string' && column) {
       this._joins.push(
         join.table(table).on(column, operator, value)
@@ -568,6 +614,11 @@ export class Builder {
     return this.union(builder, true);
   }
 
+  /**
+   * add binding param
+   * @param key 
+   * @param value 
+   */
   addBinding(key: BindingKeys, value: any) {
     if (Array.isArray(value)) {
       this.bindings.get(key)?.push(...value);
@@ -577,12 +628,19 @@ export class Builder {
     return this;
   }
 
+  /**
+   * get all binding params
+   */
   getBindings() {
     const _keys = [...this.bindings.keys()];
     // return Array.from(this.bindings).flat();
     return this.getBindingsWithKeys(_keys);
   }
 
+  /**
+   * gei binding params with keys
+   * @param keys 
+   */
   getBindingsWithKeys(keys: BindingKeys[]) {
     const _keys = [...this.bindings.keys()].filter(key => keys.includes(key));
     const bindings = [];
@@ -596,6 +654,10 @@ export class Builder {
     return bindings;
   }
 
+  /**
+   * get binding params except keys
+   * @param keys 
+   */
   getBindingsExceptKeys(keys: BindingKeys[]) {
     const _keys = [...this.bindings.keys()].filter(key => !keys.includes(key));
     const bindings = [];
@@ -616,14 +678,13 @@ export class Builder {
     return this.parser.parseSelect(this);
   }
 
-  // /**
-  //  * load sql and params
-  //  */
-  // logSql() {
-  //   console.log('sql:', this.toSql());
-  //   console.log('params:', this.getParams());
-  //   return this;
-  // }
+  /**
+   * load sql and params
+   */
+  logSql() {
+    this.shouldLogSql = true;
+    return this;
+  }
 
   /**
    * query multiple records from database,
@@ -631,11 +692,13 @@ export class Builder {
   async find() {
     const sql = this.toSql();
     const params = this.getBindings();
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
+    }
     const results = await this.collection.select(sql, params);
-
     return results;
   }
-
 
   /**
    * query first record from database
@@ -643,16 +706,20 @@ export class Builder {
   async first(){
     const sql = this.take(1).toSql();
     const params = this.getBindings();
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
+    }
     const results = await this.collection.select(sql, params);
     if (!results[0]) return;
-    // if (this.model) {
-    //   return this.exportToModel(results[0]);
-    // }
     return {
       ...results[0]
     };
   }
-
+  /**
+   * get binding parmas for update
+   * @param values 
+   */
   getBindingsForUpdate(values: any[] = []) {
     const cleanBindings = this.getBindingsExceptKeys([
       'select',
@@ -665,6 +732,9 @@ export class Builder {
     ];
   }
 
+  /**
+   * get binding params for delete
+   */
   getBindingsForDelete() {
     const cleanBindings = this.getBindingsExceptKeys([
       'select',
@@ -674,34 +744,60 @@ export class Builder {
     ];
   }
 
-
+  /**
+   * inser data
+   * @param data 
+   */
   async insert(data: Record<string, any>) {
     const columns = Object.keys(data);
-    const values = columns.map(column => data[column]);
+    const params = columns.map(column => data[column]);
+    const sql = this.parser.parseInsert(this, columns);
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
+    }
     return this.collection.insert(
-      this.parser.parseInsert(this, columns),
-      values
+      sql,
+      params
     );
   }
 
-
+  /**
+   * update data
+   * @param data 
+   */
   async update(data: Record<string, any>) {
     const columns = Object.keys(data);
     const values = columns.map(column => data[column]);
+    const sql = this.parser.parseUpdate(this, columns);
+    const params = this.getBindingsForUpdate(values);
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
+    }
     return this.collection.update(
-      this.parser.parseUpdate(this, columns),
-      this.getBindingsForUpdate(values)
+      sql,
+      params
     );
   }
 
+  /**
+   * delete by id
+   * @param id 
+   */
   async delete(id?: number | string) {
     if (id) {
-      this.where(`${this._from}.id`, '=', id);
+      this.where('id', '=', id);
+    }
+    const sql = this.parser.parseDelete(this);
+    const params = this.getBindingsForDelete();
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
     }
     return this.collection.delete(
-      this.parser.parseDelete(this),
-      this.getBindingsForDelete()
+      sql,
+      params
     );
-
   }
 }

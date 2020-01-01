@@ -1,6 +1,12 @@
 name: Node CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
 
 jobs:
   test:
@@ -9,7 +15,19 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [8, 10, 11, 12]
+        node-version: [8, 10, 12]
+
+    # container: node:12
+
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 13306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: daze
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - name: Checkout

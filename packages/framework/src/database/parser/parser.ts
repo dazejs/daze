@@ -44,35 +44,43 @@ export class Parser {
    */
   parseInsert(builder: Builder, columns?: string[]) {
     if (!columns || !columns.length) {
-      return `insert into ${builder._from} default values`;
+      return `insert into ${this.getTable(builder)} default values`;
     }
-    const _columns = this.columnDelimite(columns);
+    const _columns = this.columnDelimite(columns, builder);
     const values = columns.map(() => this.parameter()).join(', ');
-    return `insert into ${builder._from} (${_columns}) values (${values})`;
+    return `insert into ${this.getTable(builder)} (${_columns}) values (${values})`;
   }
-
+  /**
+   * parse update
+   * @param builder 
+   * @param columns 
+   */
   parseUpdate(builder: Builder, columns: string[] = []) {
-    const _columns = this.columnDelimiteForUpdate(columns);
+    const _columns = this.columnDelimiteForUpdate(columns, builder);
 
     const where = this.parseWheres(builder);
 
     if (builder._joins.length > 0) {
       const joins = this.parseJoins(builder);
-      return `update ${builder._from} ${joins} set ${_columns} ${where}`;
+      return `update ${this.getTable(builder)} ${joins} set ${_columns} ${where}`;
     }
 
-    return `update ${builder._from} set ${_columns} ${where}`;
+    return `update ${this.getTable(builder)} set ${_columns} ${where}`;
   }
 
+  /**
+   * parse delete
+   * @param builder 
+   */
   parseDelete(builder: Builder) {
     const where = this.parseWheres(builder);
 
     if (builder._joins.length > 0) {
       const joins = this.parseJoins(builder);
-      return `delete from ${builder._from} ${joins} ${where}`;
+      return `delete from ${this.getTable(builder)} ${joins} ${where}`;
     }
 
-    return `delete from ${builder._from} ${where}`;
+    return `delete from ${this.getTable(builder)} ${where}`;
   }
 
   /**
@@ -90,6 +98,11 @@ export class Parser {
     return sqls.join(' ');
   }
 
+  /**
+   * parse components
+   * @param builder 
+   * @param part 
+   */
   parseComponent(builder: Builder, part: string) {
     switch(part) {
       case 'aggregate':
@@ -128,9 +141,9 @@ export class Parser {
     let { column } = builder._aggregate;
     // 需要去重
     if (builder._distinct === true && column !== '*') {
-      column = `distinct ${column}`;
+      column = `distinct ${this.wrapColum(column, builder)}`;
     } else if (Array.isArray(builder._distinct)) {
-      column = `distinct ${this.columnDelimite(builder._distinct)}`;
+      column = `distinct ${this.columnDelimite(builder._distinct, builder)}`;
     }
     return `select ${builder._aggregate.func}(${column}) as aggregate`;
   }
@@ -143,7 +156,7 @@ export class Parser {
     if (builder._aggregate) return '';
     const select = builder._distinct ? 'select distinct' : 'select';
     if (!builder._columns.length) return `${select} *`;
-    return `${select} ${this.columnDelimite(builder._columns)}`;
+    return `${select} ${this.columnDelimite(builder._columns, builder)}`;
   }
 
   /**
@@ -151,7 +164,7 @@ export class Parser {
    * @param builder 
    */
   parseFrom(builder: Builder) {
-    return builder._from ? `from ${builder._from}` : '';
+    return builder._table ? `from ${this.getTable(builder)}` : '';
   }
 
   /**
@@ -159,7 +172,7 @@ export class Parser {
    * @param builder 
    */
   parseGroups(builder: Builder) {
-    return builder._groups.length ? `group by ${this.columnDelimite(builder._groups)}`: '';
+    return builder._groups.length ? `group by ${this.columnDelimite(builder._groups, builder)}`: '';
   }
 
   /**
@@ -175,13 +188,13 @@ export class Parser {
       if (where.type === 'value') {
         wheres.push(
           //where.value
-          `${leadSymlink}${where.column} ${where.operator} ${this.parameter()}`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} ${where.operator} ${this.parameter()}`
         );
       }
       // column type
       if (where.type === 'column') {
         wheres.push(
-          `${leadSymlink}${where.column} ${where.operator} ${where.value}`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} ${where.operator} ${this.wrapColum(where.value as string, builder)}`
         );
       }
 
@@ -193,25 +206,25 @@ export class Parser {
 
       if (where.type === 'in') {
         wheres.push(
-          `${leadSymlink}${where.column} in (${this.parameterize(where.value)})`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} in (${this.parameterize(where.value)})`
         );
       }
 
       if (where.type === 'notIn') {
         wheres.push(
-          `${leadSymlink}${where.column} not in (${this.parameterize(where.value)})`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} not in (${this.parameterize(where.value)})`
         );
       }
 
       if (where.type === 'null') {
         wheres.push(
-          `${leadSymlink}${where.column} is null`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} is null`
         );
       }
 
       if (where.type === 'notNull') {
         wheres.push(
-          `${leadSymlink}${where.column} is not ull`
+          `${leadSymlink}${this.wrapColum(where.column as string, builder)} is not ull`
         );
       }
     }
@@ -261,7 +274,7 @@ export class Parser {
     const joins = [];
     for (const join of builder._joins) {
       joins.push(
-        `${join.joinType} join ${join._from} ${this.parseWheres(join.builder, 'on')}`
+        `${join.joinType} join ${this.getTable(join.builder)} ${this.parseWheres(join.builder, 'on')}`
       );
     }
     return joins.join(' ');
@@ -283,6 +296,10 @@ export class Parser {
     return `having ${havings.join(' ')}`;
   }
 
+  /**
+   * parse unnions
+   * @param builder 
+   */
   parseUnions(builder: Builder) {
     const sqls: string[] = [];
     if (!builder._unions.length) return '';
@@ -294,21 +311,62 @@ export class Parser {
     return `${sqls.join(' ')}`;
   }
 
+  /**
+   * parameterize params
+   * @param value 
+   */
   parameterize(value: any[]) {
     return value.map(() => this.parameter());
   }
 
+  /**
+   * parameter param
+   */
   parameter() {
     return '?';
   }
 
-  columnDelimite(columns: string[]) {
+  /**
+   * Delimite columns
+   * @param columns 
+   */
+  columnDelimite(columns: string[], builder: Builder) {
     if (!columns) return '';
-    return columns.join(', ');
+    return columns.map(column => this.wrapColum(column, builder)).join(', ');
   }
 
-  columnDelimiteForUpdate(columns: string[]) {
+  /**
+   * Delimite columns for update
+   * @param columns 
+   */
+  columnDelimiteForUpdate(columns: string[], builder: Builder) {
     if (!columns) return '';
-    return columns.map(column => `${column} = ${this.parameter()}`);
+    return columns.map(column => `${this.wrapColum(column, builder)} = ${this.parameter()}`);
+  }
+
+  /**
+   * wrapColum
+   * @param column 
+   */
+  wrapColum(column: string, builder: Builder) {
+    if (~column.indexOf('.')) {
+      const [_alias, _column] = column.split('.');
+      return `\`${_alias}\`.\`${_column}\``;
+    }
+    if (builder._alias) {
+      return `\`${builder._alias}\`.\`${column}\``;
+    }
+    return `\`${builder._table}\`.\`${column}\``;
+  }
+
+  /**
+   * get table name
+   * @param builder 
+   */
+  getTable(builder: Builder) {
+    if (builder._alias) {
+      return `\`${builder._table}\` as \`${builder._alias}\``;
+    }
+    return `\`${builder._table}\``;
   }
 }
