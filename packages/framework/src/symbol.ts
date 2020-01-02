@@ -58,5 +58,7 @@ export const INJECTORS = {
 
 export const DazeModuleType = {
   MODULES: Symbol("DAZE#MODULES"),
-  BEAN: Symbol("DAZE#BEAN"),
+  PROVIDES: Symbol("DAZE#PROVIDES"),
+  PROVIDE_ON_CONFIG: Symbol("DAZE#PROVIDE_ON_CONFIG"),
+  PROVIDE_ON_MISSING: Symbol("DAZE#PROVIDE_ON_MISSING"),
 };

@@ -1,7 +1,7 @@
 import path from 'path';
-import { Module } from "../../../src/boot/module.decorator";
+import { Config, Module } from "../../../src/decorators";
 import { TestLogger } from "./app/component/TestLogger";
-import { Bean } from "../../../src/boot/bean.decorator";
+import { Provide } from "../../../src/decorators";
 
 @Module({
   imports: [],
@@ -9,9 +9,12 @@ import { Bean } from "../../../src/boot/bean.decorator";
 })
 export class AppModule {
   
-  @Bean()
+  @Config("custom.a.b.c")
+  private testConfig = "testConfig";
+  
+  @Provide()
   testLogger() {
-    return new TestLogger();
+    return new TestLogger(this.testConfig);
   }
   
 }

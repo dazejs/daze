@@ -29,3 +29,5 @@ export * from './validates';
 export * from './injectable';
 export * from './csrf';
 export * from './model';
+export * from './module/module.decorator';
+export * from './module/provide.decorator';

@@ -19,9 +19,9 @@ import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
-import { DazeAutoModule } from "../boot/auto-module";
+import { DazeAutoModule } from "./auto-module";
 import { DazeModuleType } from "../symbol";
-import { ModuleOption } from "../boot/module.decorator";
+import { ModuleOption } from "../decorators/module/module.decorator";
 
 const DEFAULT_PORT = 8080;
 
@@ -125,7 +125,7 @@ export class Application extends Container {
    */
   runtimeCalls: ((...args: any[]) => any)[] = [];
 
-  constructor(module: DazeAutoModule | any);
+  constructor(module: DazeAutoModule | Function);
   constructor(rootPath: string);
   constructor(moduleOrRootPath: any, paths: ApplicationPathsOptions = {}) {
     super();
@@ -135,10 +135,10 @@ export class Application extends Container {
       const moduleOption: ModuleOption = Reflect.getMetadata(DazeModuleType.MODULES, moduleOrRootPath);
       // TODO: support multiple paths
       const componentScan = moduleOption.componentScan;
-      if (Array.isArray(componentScan)) {
-        this.rootPath = moduleOption.componentScan[0];
+      if (componentScan && Array.isArray(componentScan)) {
+        this.rootPath = componentScan[0];
       } else {
-        this.rootPath = moduleOption.componentScan as string;
+        this.rootPath = componentScan as string;
       }
       this.rootAutoModule = moduleOrRootPath;
     }

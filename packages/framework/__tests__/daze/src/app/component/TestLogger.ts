@@ -2,9 +2,14 @@
  * Test for Logger
  */
 export class TestLogger {
+  private readonly props: any;
   
-  log(l: any) {
-    console.log(`TestLogger => ${l}`);
+  constructor(props: any) {
+    this.props = props;
+  }
+
+  log(l: any): string {
+    return `TestLogger(${this.props}) => ${l}`;
   }
   
 }
