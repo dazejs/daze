@@ -1,54 +1,83 @@
-import { Entity } from '../../base/entity';
+// import { Entity } from '../../base/entity';
 import { Model } from '../model';
 import { HasRelations } from './has-relations.abstract';
+import pluralize from 'pluralize';
 
-export class BelongsTo<TEntity extends Entity> extends HasRelations<TEntity> {
+export class BelongsTo extends HasRelations {
   /**
-   * 预载入
+   * 创建一对多/一对一的对应关联关系
+   * @param parent 
+   * @param model 
+   * @param foreignKey 
+   * @param localKey 
    */
-  async eagerly(result: TEntity, relation: string) {
-    const foreignKey = this.foreignKey;
-    const localKey = this.localKey;
-    const entity = this.entity;
-
-    const model = new Model(
-      this.app.get(entity) as TEntity
-    );
-
-    const query = model.newModelBuilderInstance();
-    const data = await query.where(localKey, '=', result.getAttribute(foreignKey)).first();
-    result.setRelation(relation, data);
+  constructor(parent: Model, model: Model, foreignKey?: string, localKey?: string) {
+    super();
+    this.parent = parent;
+    this.model = model;
+    this.foreignKey = foreignKey;
+    this.localKey = localKey;
   }
 
-  async eagerlyMap(results: TEntity[], relation: string) {
-    const foreignKey = this.foreignKey;
-    const localKey = this.localKey;
-    const entity = this.entity;
+  /**
+   * 获取默认外键名
+   */
+  getDefaultForeignKey() {
+    return `${pluralize.singular(this.model.getTable())}_${this.model.getPrimaryKey()}`;
+  }
 
-    const range = [];
+  /**
+   * 获取默认关联主键名
+   */
+  getDefaultLocalKey() {
+    return this.model.getPrimaryKey();
+  }
 
-    for (const item of results) {
+  /**
+   * 渴求式加载单个模型关联数据
+   * @param resultModel 
+   * @param relation 
+   */
+  async eagerly(resultModel: Model, relation: string) {
+    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
+    const localKey = this.localKey ?? this.getDefaultLocalKey();
+
+    const query = this.model.newModelBuilderInstance();
+    const data = await query.where(localKey, '=', resultModel.getAttribute(foreignKey)).first();
+    data && resultModel.setRelation(relation, await this.model.resultToModel(data));
+  }
+
+  /**
+   * 渴求式加载多个模型关联数据
+   * @param resultModels 
+   * @param relation 
+   */
+  async eagerlyMap(resultModels: Model[], relation: string) {
+    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
+    const localKey = this.localKey ?? this.getDefaultLocalKey();
+
+    const range = new Set();
+    for (const model of resultModels) {
       // 获取关联外键列表
-      const id = item.getAttribute(foreignKey);
+      const id = model.getAttribute(foreignKey);
       if (id) {
-        range.push(id);
+        range.add(id);
       }
     }
 
-    if (range.length > 0) {
-      const model = new Model(
-        this.app.get(entity) as TEntity
-      );
-      const query = model.newModelBuilderInstance();
-      const data: Record<string, any>[] = await query.whereIn(localKey, range).find();
-      const dataMap = new Map(
-        data.map(item => [item.getAttribute(localKey), item])
-      );
-      for (const item of results) {
-        const _data = dataMap.get(item.getAttribute(foreignKey));
-        if (_data) {
-          item.setRelation(relation, _data);
-        }
+    if (range.size > 0) {
+      const query = this.model.newModelBuilderInstance();
+      const records: Record<string, any>[] = await query.whereIn(localKey, [...range]).find();
+      const map = new Map();
+
+      for (const record of records) {
+        const pk = record[localKey];
+        map.set(pk, record);
+      }
+
+      for (const model of resultModels) {
+        const items = map.get(model.getAttribute(foreignKey));
+        items && model.setRelation(relation, await this.model.resultToModel(items, true));
       }
     }
   }

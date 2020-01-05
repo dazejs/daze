@@ -2,11 +2,9 @@ import { HasRelations } from './has-relations.abstract';
 import { Model } from '../model';
 import pluralize from 'pluralize';
 
-export class HasOne extends HasRelations {
-
-
+export class HasMany extends HasRelations {
   /**
-   * 创建一对一关联关系
+   * 创建一对多关联关系
    * @param parent 
    * @param model 
    * @param foreignKey 
@@ -28,35 +26,38 @@ export class HasOne extends HasRelations {
   }
 
   /**
-   * 获取默认关联主键名
+   * 获取默认关联主键
    */
   getDefaultLocalKey() {
     return this.parent.getPrimaryKey();
   }
 
   /**
-   * 预载入单个实体
-   * @param result 
+   * 渴求式加载单个模型关联数据
+   * @param resultModel 
    * @param relation 
    */
   async eagerly(resultModel: Model, relation: string) {
     const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
     const localKey = this.localKey ?? this.getDefaultLocalKey();
+
     const query = this.model.newModelBuilderInstance();
-    const record = await query.where(foreignKey, '=', resultModel.getAttribute(localKey)).first();
-    record && resultModel.setRelation(relation, await this.model.resultToModel(record));
+    const records = await query.where(foreignKey, '=', resultModel.getAttribute(localKey)).find();
+    records && resultModel.setRelation(relation, await this.model.resultsToModels(records));
   }
 
   /**
-   * 预载入模型集合
-   * @param results 
+   * 渴求式加载多个模型的关联数据
+   * @param resultModels 
    * @param relation 
    */
   async eagerlyMap(resultModels: Model[], relation: string) {
     const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
     const localKey = this.localKey ?? this.getDefaultLocalKey();
+
     const range = new Set();
     for (const model of resultModels) {
+      // 获取关联外键列表
       const id = model.getAttribute(localKey);
       id && range.add(id);
     }
@@ -64,15 +65,17 @@ export class HasOne extends HasRelations {
     if (range.size > 0) {
       const query = this.model.newModelBuilderInstance();
       const records: Record<string, any>[] = await query.whereIn(foreignKey, [...range]).find();
-
       const map = new Map();
       for (const record of records) {
-        map.set(record[foreignKey], record);
+        const pk = record[foreignKey];
+        const items = map.get(pk) || [];
+        items.push(record);
+        map.set(pk, items);
       }
 
-      for (const item of resultModels) {
-        const record = map.get(item.getAttribute(localKey));
-        record && item.setRelation(relation, await this.model.resultToModel(record, true));
+      for (const model of resultModels) {
+        const items = map.get(model.getAttribute(localKey));
+        items && model.setRelation(relation, await this.model.resultsToModels(items));
       }
     }
   }

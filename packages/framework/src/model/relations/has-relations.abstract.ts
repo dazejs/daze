@@ -1,41 +1,45 @@
 // import { Model } from '../model';
 import { Application } from '../../foundation/application';
 import { Container } from '../../container';
-import { Entity } from '../../base/entity';
+// import { Entity } from '../../base/entity';
+import { Model } from '../model';
 
-export abstract class HasRelations<TEntity extends Entity> {
+export abstract class HasRelations {
   /**
    * application
    */
   protected app: Application = Container.get('app')
 
   /**
-   * 实体
+   * 父模型
    */
-  protected entity: any;
+  protected parent: Model;
 
   /**
-   * 模型
+   * 当前关联模型
    */
-  // protected model: Model<TEntity>;
+  protected model: Model;
 
   /**
-   * 外键名
+   * 外键
    */
-  protected foreignKey: string;
+  protected foreignKey?: string;
 
   /**
-   * 关联键名
+   * 关联主键
    */
-  protected localKey: string;
+  protected localKey?: string;
 
-  constructor(foreignKey: string, localKey: string, entity: any) {
-    // this.model = model;
-    this.entity = entity;
-    this.foreignKey = foreignKey;
-    this.localKey = localKey;
-  }
-
-  abstract eagerly(result: TEntity, relation: string): any
-  abstract eagerlyMap(results: TEntity[], relation: string): any
+  /**
+   * 渴求式加载单个模型关联数据
+   * @param result 
+   * @param relation 
+   */
+  abstract eagerly(result: Model, relation: string): Promise<void>
+  /**
+   * 渴求式加载多个模型关联数据
+   * @param results 
+   * @param relation 
+   */
+  abstract eagerlyMap(results: Model[], relation: string): Promise<void>
 }

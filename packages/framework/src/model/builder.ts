@@ -1,13 +1,10 @@
 import { Model } from './model';
-import { Entity } from '../base/entity';
 import { Application } from '../foundation/application';
 import { Container } from '../container';
 import { Builder } from '../database/builder';
 import { Database } from '../database';
-// import { SoftDeleteModel } from './soft-delete-model';
 
-export class ModelBuilder<TEntity extends Entity> {
-
+export class ModelBuilder {
   /**
    * Application instance
    */
@@ -16,7 +13,7 @@ export class ModelBuilder<TEntity extends Entity> {
   /**
    * Model instance
    */
-  model: Model<TEntity>;
+  model: Model;
 
   /**
    * Database query builder instance
@@ -32,7 +29,7 @@ export class ModelBuilder<TEntity extends Entity> {
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: Model<TEntity>) {
+  constructor(model: Model) {
     this.model = model;
     this.builder = this.newBuilderInstance();
     // Proxy class
@@ -44,7 +41,7 @@ export class ModelBuilder<TEntity extends Entity> {
    */
   get proxy(): ProxyHandler<this> {
     return {
-      get(target: ModelBuilder<TEntity>, p: string | number | symbol, receiver: any) {
+      get(target: ModelBuilder, p: string | number | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
           return target.handleForwardCalls(p as keyof Builder);
@@ -86,7 +83,7 @@ export class ModelBuilder<TEntity extends Entity> {
    * set new model
    * @param model 
    */
-  setModel(model: Model<TEntity>) {
+  setModel(model: Model) {
     this.model = model;
     return this;
   }
@@ -107,45 +104,6 @@ export class ModelBuilder<TEntity extends Entity> {
     return this.model.setExists(exists).fill(attributes);
   }
 
-  // /**
-  //  * export model instance with result
-  //  * @param result 
-  //  * @param isFromCollection 
-  //  */
-  // async toModel(result: Record<string, any>, isFromCollection = false) {
-  //   // 创建一个已存在记录的模型
-  //   // Create a model of an existing record
-  //   // const model = this.newModelInstance(result, true);
-  //   this.model.setExists(true).fill(result);
-  //   // 预载入查询
-  //   if (!isFromCollection && this.model.getWiths().size > 0) {
-  //     await this.model.eagerly(this.model.getWiths(), this.model);
-  //   }
-
-  //   return this.model;
-  // }
-
-  // /**
-  //  * export model instance commection with result
-  //  * @param result 
-  //  */
-  // async toModelCollection(result: Record<string, any>[]) {
-  //   const data = [];
-  //   for (const item of result) {
-  //     data.push(
-  //       await this.toModel(item, true)
-  //     );
-  //   }
-
-  //   // console.log(this.model.getWiths());
-  //   // 预载入查询
-  //   if (this.model.getWiths().size > 0) {
-  //     await this.model.eagerlyCollection(this.model.getWiths(), data);
-  //   }
-
-  //   return data;
-  // }
-
   /**
    * 查询预处理
    */
@@ -155,7 +113,6 @@ export class ModelBuilder<TEntity extends Entity> {
     );
     return this as this & Builder;
   }
-
 
   /**
    * 创建数据库记录
@@ -174,14 +131,6 @@ export class ModelBuilder<TEntity extends Entity> {
    * 查询数据集
    */
   async find() {
-    // if (this.model.isForceDelete()) {
-    //   const res = await this.builder.find();
-    //   return this.toModelCollection(res);
-    // }
-    // const res = await this.builder.whereNull(
-    //   this.model.getSoftDeleteKey()
-    // ).find();
-    // return this.toModelCollection(res);
     if (this.model.isForceDelete()) {
       return this.builder.find();
     }
@@ -200,8 +149,6 @@ export class ModelBuilder<TEntity extends Entity> {
       );
     }
     return this.builder.first();
-    // const res = await this.builder.first();
-    // return this.toModel(res);
   }
 
   /**
@@ -219,11 +166,5 @@ export class ModelBuilder<TEntity extends Entity> {
       '=',
       id
     ).first();
-    // const res = await this.builder.where(
-    //   this.model.getDefaultPrimaryKey(),
-    //   '=',
-    //   id
-    // ).first();
-    // return this.toModel(res);
   }
 }
