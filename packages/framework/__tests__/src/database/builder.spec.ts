@@ -114,7 +114,7 @@ describe('update record use builder', () => {
   });
 });
 
-describe('where in get sqls', () => {
+describe('whereIn in builder', () => {
   it('should return record use where', async () => {
     await app.get('db').connection().table('users').insert({
       id: 1,
@@ -187,5 +187,250 @@ describe('whereNull in builder', () => {
       id: 2,
       description: null
     });
+  });
+});
+
+describe('columns in builder', () => {
+  it('should return pre-defined columns witt muti args', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    const record = await app.get('db').connection().table('users').columns('id', 'description').first();
+    expect(record).toEqual({
+      id: 1,
+      description: 'test'
+    });
+  });
+
+  it('should return pre-defined columns witt array arg', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    const record = await app.get('db').connection().table('users').columns(['id', 'description']).first();
+    expect(record).toEqual({
+      id: 1,
+      description: 'test'
+    });
+  });
+
+  it('should return pre-defined fields ', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    const record = await app.get('db').connection().table('users').fields('id', 'description').first();
+    expect(record).toEqual({
+      id: 1,
+      description: 'test'
+    });
+  });
+});
+
+describe('orWhere in builder', () => {
+  it('should return eligible records', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'zewail',
+      age: 20,
+      description: 'test2'
+    });
+    const records = await app.get('db').connection().table('users').where('id', 1).orWhere('id', 2).fields('id').find();
+    expect(records).toEqual([{
+      id: 1
+    }, {
+      id: 2
+    }]);
+  });
+});
+
+describe('whereRaw in builder', () => {
+  it('should return eligible records', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'zewail',
+      age: 20,
+      description: 'test2'
+    });
+    const record = await app.get('db').connection().table('users').columns('id').whereRaw('id = ?', [2]).first();
+    expect(record).toEqual({
+      id: 2
+    });
+  });
+});
+
+describe('orWhereRaw in builder', () => {
+  it('should return eligible record', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'zewail',
+      age: 20,
+      description: 'test2'
+    });
+    const records = await app.get('db').connection().table('users').where('id', 1).orWhereRaw('id = ?', [2]).fields('id').find();
+    expect(records).toEqual([{
+      id: 1
+    }, {
+      id: 2
+    }]);
+  });
+});
+
+describe('whereColumn in builder', () => {
+  it('should return eligible record', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    const record = await app.get('db').connection().table('users').whereColumn('name', 'description').fields('id').first();
+    expect(record).toEqual({
+      id: 1
+    });
+  });
+}); 
+
+
+describe('count() in builder', () => {
+  it('should return counts', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    const count = await app.get('db').connection().table('users').count();
+    expect(count).toBe(2);
+  });
+});
+
+describe('max() in builder', () => {
+  it('should return max age', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20,
+      description: 'dazejs'
+    });
+    const max = await app.get('db').connection().table('users').max('age');
+    expect(max).toBe(20);
+  });
+});
+
+describe('min() in builder', () => {
+  it('should return min age', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20,
+      description: 'dazejs'
+    });
+    const min = await app.get('db').connection().table('users').min('age');
+    expect(min).toBe(18);
+  });
+});
+
+describe('sum() in builder', () => {
+  it('should return sum', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20,
+      description: 'dazejs'
+    });
+    const sum = await app.get('db').connection().table('users').sum('age');
+    expect(sum).toBe(38);
+  });
+});
+
+describe('avg() in builder', () => {
+  it('should return avg age', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'dazejs'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20,
+      description: 'dazejs'
+    });
+    const avg = await app.get('db').connection().table('users').avg('age');
+    expect(avg).toBe(19);
+  });
+});
+
+describe('orderBy in builder', () => {
+  it('should return sorted recoreds', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18,
+      description: 'test'
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'zewail',
+      age: 20,
+      description: 'test2'
+    });
+    const records = await app.get('db').connection().table('users').fields('id').orderBy('id', 'desc').find();
+    expect(records).toEqual([{
+      id: 2
+    }, {
+      id: 1
+    }]);
   });
 });

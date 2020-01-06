@@ -3,6 +3,8 @@ import { AbstractConnection } from '../connection/connection.abstract';
 import { Parser } from '../parser';
 import { Join } from './join';
 
+
+
 export type TSymlink = 'and' | 'or' | ''
 
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
@@ -56,11 +58,6 @@ export class Builder {
    */
   _columns: string[] = [];
   
-  // /**
-  //  * The table target
-  //  */
-  // _from: string;
-
   /**
    * the table name
    */
@@ -407,7 +404,7 @@ export class Builder {
    * @param column 
    */
   async sum(column: string) {
-    const res = await this.aggregate('min', column);
+    const res = await this.aggregate('sum', column);
     return res ?? 0;
   }
 

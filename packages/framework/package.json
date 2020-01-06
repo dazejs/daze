@@ -10,7 +10,7 @@
     "build": "npm run clean && npm run copy && tsc",
     "dev": "npm run clean && npm run copy &&  tsc -w",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-    "test:coverage": "jest --detectOpenHandles --runInBand --forceExit --coverage",
+    "test:coverage": "jest --runInBand --forceExit --coverage",
     "debugger": "node --inspect-brk node_modules/.bin/jest --runInBand --no-cache --no-watchman --detectOpenHandles"
   },
   "keywords": [
