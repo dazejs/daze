@@ -110,8 +110,8 @@ describe('destroy in model', () => {
     user.description = 'test1';
     await user.save();
     const res = await user.destroy(1);
+    const count = await app.get('db').connection().table('users').count();
     expect(res).toBe(1);
-    const count  = await app.get('db').connection().table('users').count();
     expect(count).toBe(0);
   });
 });

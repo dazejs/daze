@@ -535,8 +535,7 @@ export class Model {
    */
   private async executeDelete() {
     // 创建模型查询构建器
-    const query = this.newModelBuilderInstance();
-    // console.log(this.isForceDelete());
+    const query = this.createQueryBuilder();
     // 强制删除数据库记录的情况
     if (this.isForceDelete()) {
       await query.where(

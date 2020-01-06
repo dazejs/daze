@@ -23,7 +23,7 @@ export class ModelBuilder<M extends Model> {
   /**
    * 不走代理的接口列表
    */
-  private throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg']; 
+  private throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg', 'delete']; 
 
   /**
    * Create Builder For Model
