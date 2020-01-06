@@ -129,7 +129,6 @@ export class BelongsToMany extends HasRelations {
         map.set(record[foreignPivotKey], items);
       }
       for (const model of resultModels) {
-        // console.log(model.getAttribute(foreignKey));
         const items = map.get(model.getPrimaryValue());
         items && model.setRelation(relation, await this.model.resultsToModels(items));
       }

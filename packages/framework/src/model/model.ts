@@ -575,7 +575,6 @@ export class Model {
    * 获取实体数据
    */
   getAttributes(): Record<string, any> {
-    // console.log(this.relations);
     const data: Record<string, any> = {};
     for (const column of this.columns.keys()) {
       data[column] = this.attributes[column];
