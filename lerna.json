@@ -10,6 +10,9 @@
         "--no-package-lock"
       ]
     },
+    "version": {
+      "message": "chore(release): publish %s"
+    },
     "publish": {
       "ignoreChanges": [
         "*.md"
