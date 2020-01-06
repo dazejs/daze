@@ -3,6 +3,8 @@ import { AbstractConnection } from '../connection/connection.abstract';
 import { Parser } from '../parser';
 import { Join } from './join';
 
+
+
 export type TSymlink = 'and' | 'or' | ''
 
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'

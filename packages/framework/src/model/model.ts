@@ -26,11 +26,7 @@ export interface ColumnDescription {
   length: number;
 };
 
-// export type ProxyModel = Model & Entity & ModelBuilder & Builder
-// type ProxySoftDeleteModel = SoftDeleteModel & Entity & ModelBuilder & Builder
-
-// eslint-disable-next-line @typescript-eslint/class-name-casing
-export class Model{
+export class Model {
   /**
    * 应用实例
    */
@@ -117,6 +113,8 @@ export class Model{
    */
   // private entity: Entity; AAsae33
 
+  // private intercepts = ['where', 'whereIn', 'whereNotIn', 'orWhere'];
+
   /**
    * Create Model
    * @param entity
@@ -125,19 +123,26 @@ export class Model{
     // this.entity = entity;
     this.resolve();
     // this.fill(entity);
-    // return new Proxy(this as unknown as Model, {
-    //   set(target: Model, p: number | string | symbol, value: any, receiver: any) {
-    //     if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.set(target, p, value, receiver);
-    //     target.setAttribute(p, value);
-    //     return true;
-    //   },
-    //   get(target: Model, p: number | string | symbol, receiver: any) {
-    //     if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
-    //     if (target.isEntityColumns(p) || target.isEntityRelations(p)) return target.getAttribute(p);
-    //     return target.newModelBuilderInstance()[p as keyof Builder];
-    //   }
-    // });
+    return new Proxy(this, this.proxy);
   }
+
+  get proxy(): ProxyHandler<this> {
+    return {
+      set(target: any, p: number | string | symbol, value: any, receiver: any) {
+        if (typeof p !== 'string') return Reflect.set(target, p, value, receiver);
+        if (target.isEntityColumns(p) || target.isEntityRelations(p)) target.setAttribute(p, value);
+        Reflect.set(target, p, value, receiver);
+        return true;
+      },
+      get(target: any, p: number | string | symbol, receiver: any) {
+        if (typeof p !== 'string') return Reflect.get(target, p, receiver);
+        if (target.isEntityColumns(p) || target.isEntityRelations(p)) return target.getAttribute(p);
+        if (Reflect.has(target, p)) return Reflect.get(target, p, receiver);
+        return target.newModelBuilderInstance()[p as keyof Builder];
+      }
+    };
+  }
+
 
   /**
    * 解析 metadata
@@ -152,6 +157,10 @@ export class Model{
     this.createTimestampKey = Reflect.getMetadata('createTimestampKey', this.constructor);
     this.updateTimestampKey = Reflect.getMetadata('updateTimestampKey', this.constructor);
     this.relationMap = Reflect.getMetadata('relations', this.constructor) || new Map();
+  }
+
+  createQueryBuilder() {
+    return this.newModelBuilderInstance();
   }
 
   /**
@@ -189,7 +198,7 @@ export class Model{
   * 根据字段名获取字段类型
   * @param key 
   */
-  getColumnType(key: string) {
+  private getColumnType(key: string) {
     return this.columns.get(key)?.type;
   }
 
@@ -219,7 +228,7 @@ export class Model{
   /**
    * 获取注入的关联关系
    */
-  getRelationMap() {
+  private getRelationMap() {
     return this.relationMap;
   }
 
@@ -284,19 +293,19 @@ export class Model{
    * get relation implementat
    * @param relation 
    */
-  getRelationImp(relation: string): HasRelations | undefined {
+  private getRelationImp(relation: string): HasRelations | undefined {
     const relationDesc = this.getRelationMap().get(relation);
     if (!relationDesc) return;
     if (relationDesc) {
       switch (relationDesc.type) {
         case 'hasOne':
-          return new HasOne(this, new relationDesc.entity(), relationDesc.foreignKey, relationDesc.localKey);
+          return new HasOne(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'belongsTo':
-          return new BelongsTo(this, new relationDesc.entity(), relationDesc.foreignKey, relationDesc.localKey);
+          return new BelongsTo(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'hasMany':
-          return new HasMany(this, new relationDesc.entity(), relationDesc.foreignKey, relationDesc.localKey);
+          return new HasMany(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'belongsToMany':
-          return new BelongsToMany(this, new relationDesc.entity(), relationDesc.pivot, relationDesc.foreignPivotKey, relationDesc.relatedPivotKey);
+          return new BelongsToMany(this as any, new relationDesc.entity() as any, relationDesc.pivot as any, relationDesc.foreignPivotKey, relationDesc.relatedPivotKey);
         default:
           return;
       }
@@ -308,7 +317,7 @@ export class Model{
    * 渴求式加载
    * @param result 
    */
-  async eagerly(withs: Map<string, HasRelations>, result: Entity) {
+  async eagerly(withs: Map<string, HasRelations>, result: Model) {
     for (const [relation, relationImp] of withs) {
       await relationImp.eagerly(result, relation);
     }
@@ -319,7 +328,7 @@ export class Model{
    * @param withs 
    * @param results 
    */
-  async eagerlyCollection(withs: Map<string, HasRelations>, results: Entity[]) {
+  async eagerlyCollection(withs: Map<string, HasRelations>, results: Model[]) {
     for (const [relation, relationImp] of withs) {
       await relationImp.eagerlyMap(results, relation);
     }
@@ -330,7 +339,7 @@ export class Model{
    * getFreshDateWithColumnKey
    * @param key 
    */
-  getFreshDateWithColumnKey(key: string) {
+  private getFreshDateWithColumnKey(key: string) {
     const type = this.getColumnType(key);
     return this.getFormatedDate(type);
   }
@@ -339,7 +348,7 @@ export class Model{
    * 是否配置了自动创建时间字段
    * has create timestamp
    */
-  hasCreateTimestamp() {
+  private hasCreateTimestamp() {
     return !!this.createTimestampKey;
   }
 
@@ -348,7 +357,7 @@ export class Model{
    * 是否配置了自动更新时间字段
    * has update timestamp
    */
-  hasUpdateTimestamp() {
+  private hasUpdateTimestamp() {
     return !!this.updateTimestampKey;
   }
 
@@ -356,7 +365,7 @@ export class Model{
    * 获取自动创建时间字段名
    * get create timestamp
    */
-  getCreateTimestampKey() {
+  private getCreateTimestampKey() {
     return this.createTimestampKey;
   }
 
@@ -364,7 +373,7 @@ export class Model{
    * 获取自动更新时间字段名
    * get update timestamp
    */
-  getUpdateTimestampKey() {
+  private getUpdateTimestampKey() {
     return this.updateTimestampKey;
   }
 
@@ -372,7 +381,7 @@ export class Model{
    * 添加字段名到待更新字段列表
    * @param column 
    */
-  addUpdateAttributeColumn(column: string) {
+  private addUpdateAttributeColumn(column: string) {
     return this.updateAttributeColumns.add(column);
   }
 
@@ -380,7 +389,7 @@ export class Model{
    * 获取需要更新的字段属性
    * Gets the model attributes that need to be updated
    */
-  getUpdatedAttributes() {
+  private getUpdatedAttributes() {
     const attributes: Record<string, any> = {};
     for (const column of this.updateAttributeColumns) {
       attributes[column] = this.attributes[column];
@@ -392,7 +401,7 @@ export class Model{
    * 判断是否有需要更新的字段属性
    * Determine if there are model attributes that need to be updated
    */
-  hasUpdatedAttributes() {
+  private hasUpdatedAttributes() {
     return !!this.updateAttributeColumns.size;
   }
 
@@ -420,6 +429,10 @@ export class Model{
     return this.table;
   }
 
+  /**
+   * 设置表名
+   * @param table 
+   */
   setTable(table: string) {
     this.table = table;
     return this;
@@ -445,7 +458,7 @@ export class Model{
    * 根据数据库字段格式进行格式化
    * @param type 
    */
-  getFormatedDate(type = 'int') {
+  private getFormatedDate(type = 'int') {
     switch (type.toLowerCase()) {
       case 'date':
         return dateFormat(new Date(), 'yyyy-MM-dd');
@@ -467,8 +480,8 @@ export class Model{
    * 生成模型查询构造类实例
    * Generate model query construct class instances
    */
-  newModelBuilderInstance(): ModelBuilder & Builder {
-    return (new ModelBuilder(this as unknown as Model)).prepare() as ModelBuilder & Builder;
+  newModelBuilderInstance(): ModelBuilder<this> & Builder {
+    return (new ModelBuilder(this as any)).prepare() as ModelBuilder<this> & Builder;
   }
 
   /**
@@ -477,7 +490,7 @@ export class Model{
    * @param query 
    * @param attributes 
    */
-  async executeUpdate(query: ModelBuilder & Builder, attributes: Record<string, any>) {
+  async executeUpdate(query: ModelBuilder<this> & Builder, attributes: Record<string, any>) {
     await query.where(
       this.getPrimaryKey(),
       '=',
@@ -492,7 +505,7 @@ export class Model{
    * @param query 
    * @param attributes 
    */
-  async executeInsertAndSetId(query: ModelBuilder & Builder) {
+  async executeInsertAndSetId(query: ModelBuilder<this> & Builder) {
     const id = await query.insert(
       this.getAttributes()
     );
@@ -510,7 +523,7 @@ export class Model{
     if (!this.getPrimaryKey()) {
       throw new Error('Primary key not defined');
     }
-    if (!this.isExists()) return;
+    if (!this.isExists()) return false;
 
     await this.executeDelete();
 
@@ -520,9 +533,10 @@ export class Model{
   /**
    * 执行删除操作
    */
-  async executeDelete() {
+  private async executeDelete() {
     // 创建模型查询构建器
     const query = this.newModelBuilderInstance();
+    // console.log(this.isForceDelete());
     // 强制删除数据库记录的情况
     if (this.isForceDelete()) {
       await query.where(
@@ -608,9 +622,9 @@ export class Model{
   }
 
   /**
- * 填充数据对象到实体属性中
- * @param attributes 
- */
+   * 填充数据对象到实体属性中
+   * @param attributes 
+   */
   fill(attributes: Record<string, any> | Entity = {}) {
     // 只有在实体声明的字段才会被填充
     // Only fields declared in the entity are populated
@@ -626,7 +640,7 @@ export class Model{
 
     for (const columnKey of keys) {
       if (Reflect.has(attributes, columnKey)) {
-        this.attributes[columnKey] = attributes[columnKey];
+        this.attributes[columnKey] = (attributes as Record<string, any>)[columnKey];
       }
     }
     return this;
@@ -636,7 +650,7 @@ export class Model{
    * 新建模型实例
    */
   newInstance() {
-    return this.app.get<Model>(this.constructor);
+    return this.app.get<this>(this.constructor);
   }
 
   /**
@@ -649,7 +663,7 @@ export class Model{
     model.fill(result);
     model.setExists(true);
     if (!isFromCollection && this.getWiths().size > 0) {
-      await model.eagerly(this.getWiths(), model);
+      await model.eagerly(this.getWiths(), model as any);
     }
     return model;
   }
@@ -667,7 +681,7 @@ export class Model{
     }
     // 渴求式加载
     if (this.getWiths().size > 0) {
-      await this.eagerlyCollection(this.getWiths(), data);
+      await this.eagerlyCollection(this.getWiths(), data as any);
     }
     return data;
   }
@@ -677,42 +691,48 @@ export class Model{
    * @param id 
    */
   async get(id: number | string) {
-    const query = this.newModelBuilderInstance();
-    const res = await query.get(id);
-    const model = await this.resultToModel(res);
-    return model;
-  }
-
-  /**
-   * 获取单条数据
-   */
-  async first() {
-    const query = this.newModelBuilderInstance();
+    const query = this.createQueryBuilder();
     if (!this.isForceDelete()) {
       query.whereNull(
         this.getSoftDeleteKey()
       );
     }
-    const res = await query.first();
-    const resultModel = await this.resultToModel(res);
-    return resultModel;
+    return query.where(
+      this.getPrimaryKey(),
+      '=',
+      id
+    ).first();
   }
 
   /**
-   * 获取多条数据
+   * 根据主键值删除模型
+   * @param ids 
    */
-  async find() {
-    const query = this.newModelBuilderInstance();
-    if (this.isForceDelete()) {
-      const results = await query.find();
-      const resultModels = await this.resultsToModels(results);
-      return resultModels;
+  async destroy(...ids: (number | string)[]) {
+    let count = 0;
+    if (!ids.length) return count;
+    const model = this.newInstance();
+    const key = model.getPrimaryKey();
+    const results = await model.createQueryBuilder().whereIn(key, ids).find();
+    for (const result of results) {
+      if (await result.delete()) {
+        count++;
+      }
     }
-    const results = await query.whereNull(
-      this.getSoftDeleteKey()
-    ).find();
-    const resultModels = await this.resultsToModels(results);
-    return resultModels;
+    return count;
+  }
+
+  /**
+   * 创建数据库记录
+   * Create database records
+   * @param attributes
+   */
+  async create(attributes: Record<string, any>) {
+    // 创建一个不存在记录的模型
+    // Create a model with no records
+    const model = this.newInstance().fill(attributes).setExists(false);
+    await model.save();
+    return model;
   }
 
   /**
@@ -779,6 +799,3 @@ export class Model{
     return this.getAttributes();
   }
 }
-
-// export type Model = _Model & ModelBuilder & Builder;
-// export const Model: new (entity: Entity) => Model = _Model as any;

@@ -4,32 +4,32 @@ import { Container } from '../container';
 import { Builder } from '../database/builder';
 import { Database } from '../database';
 
-export class ModelBuilder {
+export class ModelBuilder<M extends Model> {
   /**
    * Application instance
    */
-  app: Application = Container.get('app');
+  private app: Application = Container.get('app');
 
   /**
    * Model instance
    */
-  model: Model;
+  private model: M;
 
   /**
    * Database query builder instance
    */
-  builder: Builder;
+  private builder: Builder;
 
   /**
    * 不走代理的接口列表
    */
-  throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg']; 
+  private throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg']; 
 
   /**
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: Model) {
+  constructor(model: M) {
     this.model = model;
     this.builder = this.newBuilderInstance();
     // Proxy class
@@ -41,7 +41,7 @@ export class ModelBuilder {
    */
   get proxy(): ProxyHandler<this> {
     return {
-      get(target: ModelBuilder, p: string | number | symbol, receiver: any) {
+      get(target: any, p: string | number | symbol, receiver: any) {
         if (typeof p !== 'string' || Reflect.has(target, p)) return Reflect.get(target, p, receiver);
         if (target.builder && Reflect.has(target.builder, p) && typeof target.builder[p as keyof Builder] === 'function') {
           return target.handleForwardCalls(p as keyof Builder);
@@ -83,7 +83,7 @@ export class ModelBuilder {
    * set new model
    * @param model 
    */
-  setModel(model: Model) {
+  setModel(model: M) {
     this.model = model;
     return this;
   }
@@ -96,35 +96,13 @@ export class ModelBuilder {
   }
 
   /**
-   * new model instance
-   * @param attributes 
-   * @param exists 
-   */
-  newModelInstance(attributes: Record<string, any>, exists = false) {
-    return this.model.setExists(exists).fill(attributes);
-  }
-
-  /**
    * 查询预处理
    */
   prepare() {
     this.builder.columns(
       ...this.model.getColumns().keys()
     );
-    return this as this & Builder;
-  }
-
-  /**
-   * 创建数据库记录
-   * Create database records
-   * @param attributes 
-   */
-  async create(attributes: Record<string, any>) {
-    // 创建一个不存在记录的模型
-    // Create a model with no records
-    const model = this.newModelInstance(attributes, false);
-    model.save();
-    return model;
+    return this;
   }
 
   /**
@@ -132,11 +110,13 @@ export class ModelBuilder {
    */
   async find() {
     if (this.model.isForceDelete()) {
-      return this.builder.find();
+      const records = await this.builder.find();
+      return this.model.resultsToModels(records);
     }
-    return this.builder.whereNull(
+    const records = await this.builder.whereNull(
       this.model.getSoftDeleteKey()
     ).find();
+    return this.model.resultsToModels(records);
   }
 
   /**
@@ -148,23 +128,7 @@ export class ModelBuilder {
         this.model.getSoftDeleteKey()
       );
     }
-    return this.builder.first();
-  }
-
-  /**
-   * 根据主键获取单条记录
-   * @param id 
-   */
-  async get(id: number | string) {
-    if (!this.model.isForceDelete()) { 
-      this.builder.whereNull(
-        this.model.getSoftDeleteKey()
-      );
-    }
-    return this.builder.where(
-      this.model.getPrimaryKey(),
-      '=',
-      id
-    ).first();
+    const record = await this.builder.first();
+    return this.model.resultToModel(record);
   }
 }
