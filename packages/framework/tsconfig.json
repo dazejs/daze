@@ -14,6 +14,7 @@
   ],
   "exclude": [
     "node_modules",
-    "**/FUTURE_*"
+    "**/FUTURE_*",
+    "**/DEPRECATED_*"
   ]
 }

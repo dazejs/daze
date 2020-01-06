@@ -3,4 +3,4 @@ export default () => {
   // messenger.on('test', data => {
   //   console.log(data)
   // })
-}
+};

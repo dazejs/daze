@@ -96,8 +96,6 @@ export class Dispatcher {
     // 绝对静态资源路径
     const staticPath = path.resolve(this.app.publicPath, assetsPath);
 
-    // console.log(path.resolve(this.app.publicPath, assetsPath));
-
     // 如果不存在静态资源
     let stats;
     try {
