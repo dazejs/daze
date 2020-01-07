@@ -138,7 +138,16 @@ export class Builder {
    */
   collection: AbstractConnection;
 
-  shouldLogSql = false;
+  /**
+   * shlould log sql
+   */
+  private shouldLogSql = false;
+
+  /**
+   * should dump sql
+   * will return sql use select inster update and delete
+   */
+  private shouldDumpSql = false;
 
   /**
    * Create Builder instance
@@ -707,6 +716,29 @@ export class Builder {
   }
 
   /**
+   * log sql alias
+   */
+  log() {
+    this.shouldLogSql = true;
+    return this;
+  }
+
+  /**
+   * dump sql
+   */
+  dumpSql() {
+    this.shouldDumpSql = true;
+    return this;
+  }
+
+  /**
+   * alias for dumpSql
+   */
+  dump() {
+    return this.dumpSql();
+  }
+
+  /**
    * query multiple records from database,
    */
   async find() {
@@ -765,6 +797,30 @@ export class Builder {
   }
 
   /**
+   * build final sql for debug
+   * @param sql 
+   * @param params 
+   */
+  private buildDebugSql(sql: string, params: any[] = []) {
+    let _sql = sql;
+    while (~_sql.indexOf('?')) {
+      _sql = _sql.replace(/(\?)/i, params.shift());
+    }
+    return _sql;
+  }
+
+  /**
+   * log debug sql
+   * @param sql 
+   * @param params 
+   */
+  private logDebugSql(sql: string, params: any[] = []) {
+    const finalSql = this.buildDebugSql(sql, params);
+    console.log('Your SQL:\n');
+    console.log(finalSql);
+  }
+
+  /**
    * 批量插入
    * @param data 
    */
@@ -778,9 +834,9 @@ export class Builder {
     }
     const sql = this.parser.parseInsert(this, data);
     if (this.shouldLogSql) {
-      console.log('sql:', sql);
-      console.log('params:', params);
+      this.logDebugSql(sql, params);
     }
+    if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
     return this.collection.insert(
       sql,
       params
@@ -796,9 +852,9 @@ export class Builder {
     const params = columns.map(column => data[column]);
     const sql = this.parser.parseInsert(this, [data]);
     if (this.shouldLogSql) {
-      console.log('sql:', sql);
-      console.log('params:', params);
+      this.logDebugSql(sql, params);
     }
+    if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
     return this.collection.insert(
       sql,
       params
@@ -815,9 +871,9 @@ export class Builder {
     const sql = this.parser.parseUpdate(this, columns);
     const params = this.getBindingsForUpdate(values);
     if (this.shouldLogSql) {
-      console.log('sql:', sql);
-      console.log('params:', params);
+      this.logDebugSql(sql, params);
     }
+    if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
     return this.collection.update(
       sql,
       params
@@ -835,9 +891,9 @@ export class Builder {
     const sql = this.parser.parseDelete(this);
     const params = this.getBindingsForDelete();
     if (this.shouldLogSql) {
-      console.log('sql:', sql);
-      console.log('params:', params);
+      this.logDebugSql(sql, params);
     }
+    if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
     return this.collection.delete(
       sql,
       params
