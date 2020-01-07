@@ -42,13 +42,15 @@ export class Parser {
    * @param builder 
    * @param columns 
    */
-  parseInsert(builder: Builder, columns?: string[]) {
-    if (!columns || !columns.length) {
+  parseInsert(builder: Builder, data?: Record<string, any>[]) {
+    if (!data || !data.length) {
       return `insert into ${this.getTable(builder)} default values`;
     }
+    const columns = Object.keys(data[0]);
     const _columns = this.columnDelimite(columns, builder);
-    const values = columns.map(() => this.parameter()).join(', ');
-    return `insert into ${this.getTable(builder)} (${_columns}) values (${values})`;
+
+    const values = data.map(() => `(${columns.map(() => this.parameter()).join(', ')})`).join(', ');
+    return `insert into ${this.getTable(builder)} (${_columns}) values ${values}`;
   }
   /**
    * parse update

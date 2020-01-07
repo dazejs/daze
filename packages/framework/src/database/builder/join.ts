@@ -46,6 +46,16 @@ export class NJoin {
     this.builder.whereColumn(column, operator, seed, symlink);
     return this;
   }
+  
+  /**
+   * set or on sql
+   * @param column 
+   * @param operator 
+   * @param seed 
+   */
+  orOn(column: string, operator: string, seed?: string) {
+    return this.on(column, operator, seed, 'or');
+  }
 }
 
 export type Join = NJoin & Builder;

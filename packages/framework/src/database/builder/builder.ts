@@ -295,6 +295,15 @@ export class Builder {
   }
 
   /**
+   * or where in
+   * @param column 
+   * @param value 
+   */
+  orWhereIn(column: string, value: any[]) {
+    return this.whereIn(column, value, 'or');
+  }
+
+  /**
    * where not in
    * @param column 
    * @param value 
@@ -306,6 +315,15 @@ export class Builder {
     this._wheres.push({ type, column, value, symlink: _symlink });
     this.addBinding('where', value);
     return this;
+  }
+
+  /**
+   * or where not in
+   * @param column 
+   * @param value 
+   */
+  orWhereNotIn(column: string, value: any[]) {
+    return this.whereNotIn(column, value, 'or');
   }
 
   /**
@@ -747,13 +765,36 @@ export class Builder {
   }
 
   /**
+   * 批量插入
+   * @param data 
+   */
+  async insertAll(data: Record<string, any>[]) {
+    const results = [];
+    const params = [];
+    for (const item of data) {
+      const columns = Object.keys(item);
+      results.push(columns);
+      params.push(...columns.map(column => item[column]));
+    }
+    const sql = this.parser.parseInsert(this, data);
+    if (this.shouldLogSql) {
+      console.log('sql:', sql);
+      console.log('params:', params);
+    }
+    return this.collection.insert(
+      sql,
+      params
+    );
+  }
+
+  /**
    * inser data
    * @param data 
    */
   async insert(data: Record<string, any>) {
     const columns = Object.keys(data);
     const params = columns.map(column => data[column]);
-    const sql = this.parser.parseInsert(this, columns);
+    const sql = this.parser.parseInsert(this, [data]);
     if (this.shouldLogSql) {
       console.log('sql:', sql);
       console.log('params:', params);
