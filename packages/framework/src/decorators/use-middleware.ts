@@ -5,6 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { Middleware } from '../base/middleware';
+import { Request } from '../request';
+import { Response } from '../response';
+import { TNext } from '../middleware';
+
 function decoratorClass(target: any, middleware: any) {
   const middlewares = Reflect.getMetadata('controllerMiddlewares', target) || [];
   middlewares.push(middleware);
@@ -31,18 +36,18 @@ function handle(args: any[], middleware: any) {
   return decoratorMethod(target, name, descriptor, middleware);
 }
 
-export function UseMiddleware(middleware: any) {
+export function UseMiddleware(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return (...args: any[]) => handle(args, middleware);
 };
 
-export function useMiddleware(middleware: any) {
+export function useMiddleware(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }
 
-export function Use(middleware: any) {
+export function Use(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }
 
-export function use(middleware: any) {
+export function use(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }
