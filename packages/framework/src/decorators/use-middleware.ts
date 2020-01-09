@@ -36,18 +36,18 @@ function handle(args: any[], middleware: any) {
   return decoratorMethod(target, name, descriptor, middleware);
 }
 
-export function UseMiddleware(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+export function UseMiddleware(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return (...args: any[]) => handle(args, middleware);
 };
 
-export function useMiddleware(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+export function useMiddleware(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }
 
-export function Use(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+export function Use(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }
 
-export function use(middleware: Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+export function use(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return UseMiddleware(middleware);
 }

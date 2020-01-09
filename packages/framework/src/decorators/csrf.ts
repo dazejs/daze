@@ -5,9 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { useMiddleware } from './use-middleware';
+import { VerifyCsrfToken } from '../foundation/middlewares/verify-csrf-token';
 
 export function Csrf() {
-  return (...args: any) => useMiddleware('verify-csrf-token')(...args);
+  return (...args: any) => useMiddleware(VerifyCsrfToken)(...args);
 };
 
 export function csrf() {
