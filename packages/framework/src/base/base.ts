@@ -60,7 +60,7 @@ export abstract class Base {
    * @param name connection name
    */
   protected db(name?: string) {
-    return this.app.get<Database>('db').connection(name) as Manager & Builder;
+    return this.app.get<Database>('db').connection(name);
   }
 
   protected logger(channel?: string) {
