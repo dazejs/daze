@@ -22,7 +22,6 @@ export class MysqlTransactionActuator extends Actuator {
     * @param bindings
     */
   query(query: string, bindings: any[] = []): Promise<any> {
-    console.log(query);
     return new Promise((resolve, reject) => {
       this.connection.query(query, bindings, (err, results) => {
         if (err) return reject(err);

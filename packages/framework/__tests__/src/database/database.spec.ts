@@ -69,3 +69,95 @@ describe('delete record', () => {
     expect(selects).toEqual([]);
   });
 });
+
+
+describe('transaction', () => {
+  it('should commit with transaction', async () => {
+    await app.get('db').connection().transaction(async (conn) => {
+      await conn.table('users').insert({
+        id: 1,
+        age: 1,
+        name: 'dazejs'
+      });
+      await conn.table('users').insert({
+        id: 2,
+        age: 2,
+        name: 'dazejs'
+      });
+    });
+    const users = await app.get('db').connection().table('users').columns('id', 'name', 'age').find();
+    expect(users).toEqual([{
+      id: 1,
+      age: 1,
+      name: 'dazejs'
+    }, {
+      id: 2,
+      age: 2,
+      name: 'dazejs'
+    }]);
+  });
+
+  it('should rollback with transaction', async () => {
+    try {
+      await app.get('db').connection().transaction(async (conn) => {
+        await conn.table('users').insert({
+          id: 1,
+          age: 1,
+          name: 'dazejs'
+        });
+        await conn.table('users').insert({
+          id: 2,
+          age: 2,
+          name: 'dazejs'
+        });
+        throw new Error();
+      });
+    } catch (err) {
+      //
+    }
+    const users = await app.get('db').connection().table('users').columns('id', 'name', 'age').find();
+    expect(users).toEqual([]);
+  });
+
+  it('should commit with beginTransaction', async () => {
+    const conn = await app.get('db').connection().beginTransaction();
+    await conn.table('users').insert({
+      id: 1,
+      age: 1,
+      name: 'dazejs'
+    });
+    await conn.table('users').insert({
+      id: 2,
+      age: 2,
+      name: 'dazejs'
+    });
+    await conn.commit();
+    const users = await app.get('db').connection().table('users').columns('id', 'name', 'age').find();
+    expect(users).toEqual([{
+      id: 1,
+      age: 1,
+      name: 'dazejs'
+    }, {
+      id: 2,
+      age: 2,
+      name: 'dazejs'
+    }]);
+  });
+
+  it('should rollback with beginTransaction', async () => {
+    const conn = await app.get('db').connection().beginTransaction();
+    await conn.table('users').insert({
+      id: 1,
+      age: 1,
+      name: 'dazejs'
+    });
+    await conn.table('users').insert({
+      id: 2,
+      age: 2,
+      name: 'dazejs'
+    });
+    await conn.rollback();
+    const users = await app.get('db').connection().table('users').columns('id', 'name', 'age').find();
+    expect(users).toEqual([]);
+  });
+});

@@ -25,6 +25,7 @@ export abstract class Manager {
    */
   abstract table(table: string, as?: string): Builder
   abstract beginTransaction(): Promise<Builder>
+  abstract transaction(callback: (conn: Builder) => Promise<void> | void): Promise<void>
   abstract query(sql: string, bindings?: any): Promise<any>
   abstract select(query: string, bindings?: any[]): Promise<any[]>
   abstract insert(query: string, bindings?: any[]): Promise<number>
