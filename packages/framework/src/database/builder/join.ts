@@ -1,19 +1,32 @@
 import { Builder, TJoinType, TSymlink } from './builder';
 
 export class NJoin {
+  /**
+   * sql builder instance
+   */
   builder: Builder;
 
+  /**
+   * join type
+   * 'inner' | 'left' | 'right' | 'cross'
+   */
   type: TJoinType;
 
-  [key: string]: any;
-
+  /**
+   * Create Join Builder
+   * @param builder 
+   * @param type 
+   */
   constructor(builder: Builder, type: TJoinType) {
     this.builder = builder;
-    this.joinType = type;
+    this.type = type;
 
     return new Proxy(this, this.proxy);
   }
 
+  /**
+   * get Join proxy
+   */
   get proxy(): ProxyHandler<this> {
     return {
       get(target, p, receiver) {

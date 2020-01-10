@@ -276,7 +276,7 @@ export class Parser {
     const joins = [];
     for (const join of builder._joins) {
       joins.push(
-        `${join.joinType} join ${this.getTable(join.builder)} ${this.parseWheres(join.builder, 'on')}`
+        `${join.type} join ${this.getTable(join.builder)} ${this.parseWheres(join.builder, 'on')}`
       );
     }
     return joins.join(' ');

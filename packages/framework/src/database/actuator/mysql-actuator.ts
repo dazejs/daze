@@ -1,35 +1,33 @@
-import { Connection, Pool } from 'mysql';
-import { MysqlParser } from '../parser';
-import { AbstractConnection } from './connection.abstract';
+import { Pool } from 'mysql';
+import { Actuator } from './actuator';
 
-
-export class MysqlConnection extends AbstractConnection {
+export class MysqlActuator extends Actuator {
   /**
-   * Mysql connection
+   * Mysql Pool instance
    */
-  connection: Connection | Pool;
+  pool: Pool;
 
   /**
-   * Create Mysql Connection instance
-   * @param connection 
+   * Create mysql pool actuator
+   * @param pool 
    */
-  constructor(connection: Connection | Pool) {
+  constructor(pool: Pool) {
     super();
-    this.connection = connection;
+    this.pool = pool;
   }
 
   /**
-   * close connection
-   */
-  close() {
-    this.connection.end();
-  }
-
-  /**
-   * default parser for mysql
-   */
-  getDefaultParser() {
-    return new MysqlParser();
+    * Execute an SQL statement and return the origin result
+    * @param query
+    * @param bindings
+    */
+  query(query: string, bindings: any[] = []): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.pool.query(query, bindings, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
   }
 
   /**
@@ -69,16 +67,16 @@ export class MysqlConnection extends AbstractConnection {
   }
 
   /**
-   * Execute an SQL statement and return the origin result
-   * @param query
-   * @param bindings
+   * commit transaction
    */
-  query(query: string, bindings: any[] = []): any {
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, bindings, (error, results) => {
-        if (error) return reject(error);
-        resolve(results);
-      });
-    });
+  async commit() {
+    throw new Error('You must open the transaction before you can use it');
+  }
+
+  /**
+   * rollback transaction
+   */
+  async rollback() {
+    throw new Error('You must open the transaction before you can use it');
   }
 }

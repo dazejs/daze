@@ -1,7 +1,6 @@
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 import { Application } from '../foundation/application';
-import { AbstractConnection } from './connection/connection.abstract';
-import { MysqlConnection } from './connection/mysql-connection';
+import { Manager, MysqlManager } from './manager';
 import { MysqlConnector } from './connector/mysql-connector';
 
 export class Database {
@@ -13,7 +12,7 @@ export class Database {
   /**
    * The active connection instances.
    */
-  connections: Map<string, AbstractConnection> = new Map();
+  managers: Map<string, Manager> = new Map();
 
   /**
    * Create Database instance
@@ -35,7 +34,7 @@ export class Database {
           if (Reflect.has(target, p)) {
             return Reflect.get(target, p, receiver);
           }
-          return target.connection()[p as keyof AbstractConnection];
+          return target.connection()[p as keyof Manager];
         }
         return Reflect.get(target, p, receiver);
       }
@@ -47,8 +46,8 @@ export class Database {
    * @param name 
    */
   close(name = 'default') {
-    if (this.connections.has(name)) {
-      this.connections.get(name)?.close();
+    if (this.managers.has(name)) {
+      this.managers.get(name)?.close();
     }
   }
 
@@ -56,12 +55,12 @@ export class Database {
    * Auto connection 
    * @param name 
    */
-  connection<T extends AbstractConnection>(name = 'default'): T {
-    if (!this.connections.has(name)) {
+  connection<T extends Manager>(name = 'default'): T {
+    if (!this.managers.has(name)) {
       const config = this.getConnectioncConfigure(name);
-      this.connections.set(name, this.createConnection(config));
+      this.managers.set(name, this.createConnection(config));
     }
-    return this.connections.get(name) as T;
+    return this.managers.get(name) as T;
   }
 
   /**
@@ -71,8 +70,8 @@ export class Database {
   createConnection(config: any) {
     switch (config.type) {
       case 'mysql':
-        const connection = (new MysqlConnector()).connect(config);
-        return new MysqlConnection(connection);
+        const pool = (new MysqlConnector()).connect(config);
+        return new MysqlManager(pool);
     }
     throw new IllegalArgumentError(`Unsupported database type [${config.type}]`);
   }

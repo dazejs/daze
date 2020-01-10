@@ -1,9 +1,7 @@
 import { IllegalArgumentError } from '../../errors/illegal-argument-error';
-import { AbstractConnection } from '../connection/connection.abstract';
+import { Actuator } from '../actuator/actuator';
 import { Parser } from '../parser';
 import { Join } from './join';
-
-
 
 export type TSymlink = 'and' | 'or' | ''
 
@@ -136,7 +134,9 @@ export class Builder {
   /**
    * connection instance
    */
-  collection: AbstractConnection;
+  // collection: PoolConnection;
+
+  actuator: Actuator;
 
   /**
    * shlould log sql
@@ -153,10 +153,10 @@ export class Builder {
    * Create Builder instance
    * @param collection 
    */
-  constructor(collection: AbstractConnection) {
+  constructor(actuator: Actuator, parser: Parser) {
     // super();
-    this.collection = collection;
-    this.parser = this.collection.parser;
+    this.actuator = actuator;
+    this.parser = parser;
   }
 
   /**
@@ -398,7 +398,7 @@ export class Builder {
     };
     const sql = this.toSql();
     const params = this.getBindings();
-    const results = await this.collection.select(sql, params);
+    const results = await this.actuator.select(sql, params);
     return results[0]?.aggregate;
   }
 
@@ -557,7 +557,7 @@ export class Builder {
    * @param type 
    */
   join(table: string | ((join: Join & Builder) => Join | void), column?: string, operator?: any, value?: any, type: TJoinType = 'inner') {
-    const join = new Join(new Builder(this.collection), type);
+    const join = new Join(new Builder(this.actuator, this.parser), type);
     if (typeof table === 'string' && column) {
       this._joins.push(
         join.table(table).on(column, operator, value)
@@ -621,7 +621,7 @@ export class Builder {
   union(builder: Builder | ((union: Builder) => Builder | void), isAll = false) {
     let _builder = builder as Builder;
     if (typeof builder === 'function') {
-      _builder = new Builder(this.collection);
+      _builder = new Builder(this.actuator, this.parser);
       builder(
         _builder
       );
@@ -748,7 +748,7 @@ export class Builder {
       console.log('sql:', sql);
       console.log('params:', params);
     }
-    const results = await this.collection.select(sql, params);
+    const results = await this.actuator.select(sql, params);
     return results;
   }
 
@@ -762,7 +762,7 @@ export class Builder {
       console.log('sql:', sql);
       console.log('params:', params);
     }
-    const results = await this.collection.select(sql, params);
+    const results = await this.actuator.select(sql, params);
     if (!results[0]) return;
     return {
       ...results[0]
@@ -821,6 +821,20 @@ export class Builder {
   }
 
   /**
+   * commit transaction
+   */
+  async commit() {
+    await this.actuator.commit();
+  }
+  
+  /**
+   * rollback transaction
+   */
+  async rollback() {
+    await this.actuator.rollback();
+  }
+
+  /**
    * 批量插入
    * @param data 
    */
@@ -837,7 +851,7 @@ export class Builder {
       this.logDebugSql(sql, params);
     }
     if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
-    return this.collection.insert(
+    return this.actuator.insert(
       sql,
       params
     );
@@ -855,7 +869,7 @@ export class Builder {
       this.logDebugSql(sql, params);
     }
     if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
-    return this.collection.insert(
+    return this.actuator.insert(
       sql,
       params
     );
@@ -874,7 +888,7 @@ export class Builder {
       this.logDebugSql(sql, params);
     }
     if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
-    return this.collection.update(
+    return this.actuator.update(
       sql,
       params
     );
@@ -894,7 +908,7 @@ export class Builder {
       this.logDebugSql(sql, params);
     }
     if (this.shouldDumpSql) return this.buildDebugSql(sql, params);
-    return this.collection.delete(
+    return this.actuator.delete(
       sql,
       params
     );
