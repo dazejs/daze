@@ -51,7 +51,7 @@ export class DazeProviderResolver {
 
     // TODO: handle inject dependence
     // handle config
-    const _app = this.app;
+    const that = this;
     const providerInstance = Reflect.construct(provider as Function, []);
     const providerProxy = new Proxy(providerInstance, new class implements ProxyHandler<DazeProvider | Function> {
       get(target: any, name: string | number | symbol, receiver: any): any {
@@ -63,7 +63,7 @@ export class DazeProviderResolver {
                 Reflect.getMetadata(DazeProviderType.PROVIDE_ON_CONFIG, target.constructor) ?? new Map();
               const provideOnConfigProperty = _provideOnConfigMetaMap.get(name);
               if (!!provideOnConfigProperty) {
-                const provideOnConfigPropertyConfig = _app.config.get(provideOnConfigProperty.configKey);
+                const provideOnConfigPropertyConfig = that.app.config.get(provideOnConfigProperty.configKey);
                 if (provideOnConfigPropertyConfig === null || typeof provideOnConfigPropertyConfig === 'undefined') {
                   return undefined;
                 }
@@ -73,7 +73,7 @@ export class DazeProviderResolver {
                 Reflect.getMetadata(DazeProviderType.PROVIDE_ON_MISSING, target.constructor) ?? new Map();
               const provideOnMissingProperty = _provideOnMissingMetaMap.get(name);
               if (!!provideOnMissingProperty) {
-                const missingProvider = _app.get(provideOnMissingProperty.missingProvider);
+                const missingProvider = that.app.get(provideOnMissingProperty.missingProvider);
                 // if exists, just return
                 if (missingProvider !== null && typeof missingProvider !== 'undefined') {
                   return undefined;
@@ -85,7 +85,7 @@ export class DazeProviderResolver {
                 Reflect.getMetadata(DazeProviderType.PROVIDE_ON, target.constructor) ?? new Map();
               const provideOnProperty = _provideOnMetaMap.get(name);
               if (!!provideOnProperty) {
-                const onProvider = _app.get(provideOnProperty.provider);
+                const onProvider = that.app.get(provideOnProperty.provider);
                 // if not exists, just return
                 if (onProvider === null || typeof onProvider === 'undefined') {
                   return undefined;
@@ -99,10 +99,10 @@ export class DazeProviderResolver {
         const config = Reflect.getMetadata('injectparams', target.constructor, name.toString());
         let result = Reflect.get(target, name, receiver);
         if (!!config) {
-          for (const [type, params = []] of config) {
+          for (const [type, params = [], handler] of config) {
             switch (type) {
               case 'config':
-                const value = _app.config.get(params[0]);
+                const value = handler ? handler(that.app.config) : that.app.config.get(params[0]);
                 if (value !== null && typeof value !== 'undefined') {
                   result = value;
                 }
