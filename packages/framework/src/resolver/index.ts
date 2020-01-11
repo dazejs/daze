@@ -2,8 +2,8 @@
 import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
-import { DazeAutoModuleConfigure } from "../foundation/auto-module";
-import { DazeBuildInAutoModule } from "../foundation/auto-modules";
+import { DazeBuildInAutoProviders } from "../foundation/auto-providers";
+import { DazeProviderResolver } from "../foundation/provider-resolver";
 
 // import { ModelManager } from '../model';
 
@@ -36,7 +36,7 @@ export class Resolver {
     this.resolveComponents();
     this.resolveModels();
     this.resolveControllers();
-    this.resolveAutoModules();
+    this.resolveProviders();
   }
 
   /**
@@ -144,9 +144,9 @@ export class Resolver {
       }
     }
   }
-  
-  resolveAutoModules() {
-    new DazeAutoModuleConfigure(this.app).config(this.app.rootAutoModule);
-    new DazeAutoModuleConfigure(this.app).config(DazeBuildInAutoModule);
+
+  resolveProviders() {
+    new DazeProviderResolver(this.app).config(this.app.rootProvider);
+    new DazeProviderResolver(this.app).config(DazeBuildInAutoProviders);
   }
 }

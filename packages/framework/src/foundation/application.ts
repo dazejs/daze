@@ -19,9 +19,9 @@ import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
 import * as providers from './providers';
-import { DazeAutoModule } from "./auto-module";
-import { DazeModuleType } from "../symbol";
-import { ModuleOption } from "../decorators/module/module.decorator";
+import { DazeProviderType } from "../symbol";
+import { DazeProvider } from "./provider-resolver";
+import { ProviderOption } from "../decorators/provider";
 
 const DEFAULT_PORT = 8080;
 
@@ -46,9 +46,9 @@ export class Application extends Container {
   rootPath = '';
 
   /**
-   * The base auto module for the Application installation.
+   * The base auto provider for the Application installation.
    */
-  rootAutoModule: DazeAutoModule | any;
+  rootProvider: DazeProvider | any;
 
   /**
    * The app workspace path
@@ -125,26 +125,26 @@ export class Application extends Container {
    */
   runtimeCalls: ((...args: any[]) => any)[] = [];
 
-  constructor(module: DazeAutoModule | Function);
+  constructor(provider: DazeProvider | Function);
   constructor(rootPath: string);
-  constructor(moduleOrRootPath: any, paths: ApplicationPathsOptions = {}) {
+  constructor(providerOrRootPath: any, paths: ApplicationPathsOptions = {}) {
     super();
-    if (!moduleOrRootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
+    if (!providerOrRootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
     
-    if (typeof moduleOrRootPath === 'function') {
-      const moduleOption: ModuleOption = Reflect.getMetadata(DazeModuleType.MODULES, moduleOrRootPath);
+    if (typeof providerOrRootPath === 'function') {
+      const providerOption: ProviderOption = Reflect.getMetadata(DazeProviderType.PROVIDER, providerOrRootPath);
       // TODO: support multiple paths
-      const componentScan = moduleOption.componentScan;
+      const componentScan = providerOption.componentScan;
       if (componentScan && Array.isArray(componentScan)) {
         this.rootPath = componentScan[0];
       } else {
         this.rootPath = componentScan as string;
       }
-      this.rootAutoModule = moduleOrRootPath;
+      this.rootProvider = providerOrRootPath;
     }
 
-    if (typeof moduleOrRootPath === 'string') {
-      this.rootPath = moduleOrRootPath;
+    if (typeof providerOrRootPath === 'string') {
+      this.rootPath = providerOrRootPath;
     }
 
     this.setPaths(paths);

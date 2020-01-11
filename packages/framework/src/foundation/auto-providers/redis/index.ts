@@ -1,9 +1,10 @@
-import { Config, Module, Provide, ProvideOnConfig, ProvideOnMissing } from "../../../decorators";
 import { RedisStore } from "./redis-store";
+import { Provide, ProvideOnConfig, ProvideOnMissing, Provider } from "../../../decorators/provider";
+import { Config } from "../../../decorators";
 
 @ProvideOnConfig("daze.redis")
-@Module()
-export class RedisAutoModule {
+@Provider()
+export class RedisProvider {
   
   @Config("daze.redis")
   private redisConfig: object = { };
