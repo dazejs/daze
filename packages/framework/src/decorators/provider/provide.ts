@@ -1,7 +1,5 @@
 import { DazeProviderType } from "../../symbol";
 
-
-
 export function Provide(name?: string): MethodDecorator {
   return function (target: object, key: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
     const provideMetaMap: Map<any, ProvideMetaData> = 
@@ -14,6 +12,10 @@ export function Provide(name?: string): MethodDecorator {
     provideMetaMap.set(key, { provideName: _name });
     Reflect.defineMetadata(DazeProviderType.PROVIDE, provideMetaMap, target.constructor);
   };
+}
+
+export function provide(name?: string): MethodDecorator {
+  return Provide(name);
 }
 
 export interface ProvideMetaData {

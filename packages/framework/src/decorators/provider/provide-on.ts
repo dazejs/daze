@@ -20,6 +20,10 @@ export function ProvideOn(provider: string | Function): MethodDecorator {
   };
 }
 
+export function provideOn(provider: string | Function): MethodDecorator {
+  return ProvideOn(provider);
+}
+
 export interface ProvideOnMetadata {
   provider: string | Function;
 }

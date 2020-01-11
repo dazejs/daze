@@ -1,5 +1,6 @@
 import { RedisStore } from "./redis-store";
-import { Provide, ProvideOnConfig, ProvideOnMissing, Provider } from "../../../decorators/provider";
+import { Provide, ProvideOnConfig, ProvideOnMissing } from "../../../decorators/provider";
+import { Provider } from "../../../decorators/provider/provider";
 import { Config } from "../../../decorators";
 
 @ProvideOnConfig("daze.redis")

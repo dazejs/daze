@@ -19,6 +19,10 @@ export function ProvideOnMissing(provider: string | Function): MethodDecorator {
   };
 }
 
+export function provideOnMissing(provider: string | Function): MethodDecorator {
+  return ProvideOnMissing(provider);
+}
+
 export interface ProvideOnMissingMetadata {
   missingProvider: string | Function;
 }

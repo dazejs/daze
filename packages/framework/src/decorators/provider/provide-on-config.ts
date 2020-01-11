@@ -29,6 +29,10 @@ export function ProvideOnConfig(key: string): ClassDecorator | MethodDecorator |
   };
 }
 
+export function provideOnConfig(key: string): ClassDecorator | MethodDecorator | any {
+  return ProvideOnConfig(key);
+}
+
 export interface ProvideOnConfigMetadata {
   configKey: string;
 }
