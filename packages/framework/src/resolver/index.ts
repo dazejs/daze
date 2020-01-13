@@ -2,6 +2,8 @@
 import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
+import { DazeBuildInAutoProviders } from "../foundation/auto-providers";
+import { DazeProviderResolver } from "../foundation/provider-resolver";
 
 // import { ModelManager } from '../model';
 
@@ -34,6 +36,7 @@ export class Resolver {
     this.resolveComponents();
     this.resolveModels();
     this.resolveControllers();
+    this.resolveProviders();
   }
 
   /**
@@ -140,5 +143,10 @@ export class Resolver {
         }, true);
       }
     }
+  }
+
+  resolveProviders() {
+    new DazeProviderResolver(this.app).config(this.app.rootProvider);
+    new DazeProviderResolver(this.app).config(DazeBuildInAutoProviders);
   }
 }
