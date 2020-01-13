@@ -1,7 +1,7 @@
 import {
   Controller, Route, Http
 } from '../../../../../src';
-import { DazeDto } from "./dto/DazeDto";
+import { DazeDto } from "./dto/daze.dto";
 
 @Route('/injectable')
 export default class extends Controller {
