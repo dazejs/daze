@@ -3,7 +3,7 @@ import { Provider as BaseProvider} from '../../base/provider';
 
 export function Depend(providers?: Array<typeof BaseProvider>) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
     providers?.forEach((p) => {
       if (option.imports?.indexOf(p) === -1) {
         option.imports.push(p);
@@ -18,8 +18,12 @@ export function depend(providers?: Array<typeof BaseProvider>) {
 
 export function AutoScan(componentScan: string | Array<string>) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [] };
-    option.componentScan = componentScan;
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
+    if (Array.isArray(componentScan)) {
+      option.componentScan?.push(...componentScan);
+    } else if (typeof componentScan === 'string') {
+      option.componentScan?.push(componentScan);
+    }
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 }
@@ -41,6 +45,6 @@ export function provider(option?: ProviderOption): ClassDecorator {
 }
 
 export interface ProviderOption {
-  imports?: Array<typeof BaseProvider>;
-  componentScan?: string | Array<string>;
+  imports?: (typeof BaseProvider)[];
+  componentScan?: string[];
 }

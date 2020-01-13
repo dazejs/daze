@@ -1,7 +1,8 @@
-import { Application } from "@src";
+import { Application } from '@src';
 import { Provider as BaseProvider } from '../base/provider';
-import { ProvideMetaData } from '../decorators/provider';
-import { ProviderType } from "../symbol";
+import { ProvideMetaData, ProviderOption } from '../decorators/provider';
+import { ProviderType } from '../symbol';
+import { Loader } from '../loader';
 
 
 /**
@@ -26,7 +27,7 @@ export class Provider {
 
     // Get provider options
     // Class should be decorated by @Provider
-    const providerOptions = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
+    const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
 
     const providerInstance = Reflect.construct(ProviderClass, []);
 
@@ -44,10 +45,20 @@ export class Provider {
         this.app.singleton(metadata.provideName, providerInstance[key]);
       }
     }
-    // Resolve next modules
-    providerOptions?.imports?.forEach((next: typeof BaseProvider) => {
-      this.resolve(next);
-    });
+
+    // auto scan componentScan
+    if (providerOptions?.componentScan) {
+      for (const component of providerOptions.componentScan) {
+        await this.app.get<Loader>('loader').scan(component);
+      }
+    }
+
+    // resolve next imports
+    if (providerOptions?.imports) {
+      for (const next of providerOptions.imports) {
+        await this.resolve(next);
+      }
+    }
   }
 
   /**
