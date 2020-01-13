@@ -167,8 +167,11 @@ export class Container extends EventEmitter {
     ) || [];
 
 
-    for (const [type, params = []] of constructorInjectors) {
-      const injectedParam = this.make(type, [...params, ...args]);
+    for (const [type, params = [], handler] of constructorInjectors) {
+      let injectedParam = this.make(type, [...params, ...args]);
+      if (typeof handler === 'function') {
+        injectedParam = handler(injectedParam);
+      }
       bindParams.push(injectedParam);
     }
     const ConcreteProxy = new Proxy(Concrete, {
@@ -202,10 +205,13 @@ export class Container extends EventEmitter {
             const propertyInjectors = Reflect.getMetadata(
               'injectparams', Concrete, __name,
             ) || [];
-            const [type = '', params = []] = propertyInjectors[0] || [];
-            return type
-              ? that.make(type, [...params, ...args])
-              : Reflect.get(__target, __name, __receiver);
+            const [type = '', params = [], handler] = propertyInjectors[0] || [];
+            const originalValue = Reflect.get(__target, __name, __receiver);
+            let injectedParam = type ? that.make(type, [...params, ...args]) : originalValue;
+            if (typeof handler === 'function') {
+              injectedParam = handler(injectedParam);
+            }
+            return injectedParam ?? originalValue;
           },
         });
       },

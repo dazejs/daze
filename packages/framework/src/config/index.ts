@@ -156,7 +156,7 @@ export class Config {
     }
     const names = String(name).split('.');
     for (const n of names) {
-      if (!Reflect.has(value, n)) {
+      if (typeof value === 'object' && !Reflect.has(value, n)) {
         value = undefined;
         break;
       }
