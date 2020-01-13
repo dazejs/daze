@@ -1,29 +1,22 @@
-import { DazeProviderType } from "../../symbol";
-
-/**
- *
- *
- *
- *
- */
+import { ProviderType } from '../../symbol';
+import { ProvideMetaData } from './provide';
 
 export function ProvideOn(provider: string | Function): MethodDecorator {
-  return function (target: object, key: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
-    const metaMap: Map<string | symbol, ProvideOnMetadata> =
-      Reflect.getMetadata(DazeProviderType.PROVIDE_ON, target.constructor) ?? new Map();
-    const method = descriptor.value;
-    if (typeof method !== 'function' || typeof provider === 'undefined') {
-      return;
+  return function (target: object, name: string | symbol) {
+    const metaMap: Map<string | symbol, ProvideMetaData> =
+      Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
+
+    if (metaMap.has(name)) {
+      const options = (metaMap.get(name) ?? {}) as ProvideMetaData;
+      options.onProviderKey = provider;
+      metaMap.set(name, options);
+    } else {
+      metaMap.set(name, { onProviderKey: provider });
     }
-    metaMap.set(key, { provider: provider });
-    Reflect.defineMetadata(DazeProviderType.PROVIDE_ON, metaMap, target.constructor);
+    Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
 }
 
 export function provideOn(provider: string | Function): MethodDecorator {
   return ProvideOn(provider);
-}
-
-export interface ProvideOnMetadata {
-  provider: string | Function;
 }

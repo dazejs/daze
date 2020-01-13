@@ -1,26 +1,26 @@
-import { DazeProviderType } from "../../symbol";
-import { DazeProvider } from "../../foundation/provider-resolver";
+import { ProviderType } from '../../symbol';
+import { Provider as BaseProvider} from '../../base/provider';
 
-export function Depend(providers?: Array<DazeProvider | Function>) {
+export function Depend(providers?: Array<typeof BaseProvider>) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(DazeProviderType.PROVIDER, constructor) ?? { imports: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [] };
     providers?.forEach((p) => {
       if (option.imports?.indexOf(p) === -1) {
         option.imports.push(p);
       }
     });
-    Reflect.defineMetadata(DazeProviderType.PROVIDER, option, constructor);
+    Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 }
-export function depend(providers?: Array<DazeProvider | Function>) {
+export function depend(providers?: Array<typeof BaseProvider>) {
   return Depend(providers);
 }
 
 export function AutoScan(componentScan: string | Array<string>) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(DazeProviderType.PROVIDER, constructor) ?? { imports: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [] };
     option.componentScan = componentScan;
-    Reflect.defineMetadata(DazeProviderType.PROVIDER, option ?? {}, constructor);
+    Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 }
 export function autoScan(componentScan: string | Array<string>) {
@@ -32,7 +32,7 @@ export function autoScan(componentScan: string | Array<string>) {
  */
 export function Provider(option?: ProviderOption): ClassDecorator {
   return function (constructor: Function) {
-    Reflect.defineMetadata(DazeProviderType.PROVIDER, option ?? { imports: [] }, constructor);
+    Reflect.defineMetadata(ProviderType.PROVIDER, option ?? { imports: [] }, constructor);
   };
 }
 
@@ -41,6 +41,6 @@ export function provider(option?: ProviderOption): ClassDecorator {
 }
 
 export interface ProviderOption {
-  imports?: Array<DazeProvider | Function>;
+  imports?: Array<typeof BaseProvider>;
   componentScan?: string | Array<string>;
 }

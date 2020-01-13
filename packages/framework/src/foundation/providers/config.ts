@@ -5,22 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Config } from '../../config';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
 
-export class ConfigProvider {
-  app: Application;
-  /**
-   * create Config Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
-
+export class ConfigProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

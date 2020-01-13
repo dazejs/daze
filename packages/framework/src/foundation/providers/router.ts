@@ -5,21 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { Router } from '../../router';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-export class RouterProvider {
-  app: Application;
-  /**
-   * create Router Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
-
+export class RouterProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

@@ -5,22 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Messenger } from '../../cluster/messenger';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
 
-export class MessengerProvider {
-  app: Application;
-  /**
-   * create Messenger Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
-
+export class MessengerProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

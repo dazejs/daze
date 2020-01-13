@@ -5,23 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Database } from '../../database';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
 
-export class DatabaseProvider {
-  /**
-   * @var app Application
-   */
-  app: Application;
-
-  /**
-   * create Cookie Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    this.app = app;
-  }
-
+export class DatabaseProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

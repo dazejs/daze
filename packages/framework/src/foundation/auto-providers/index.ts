@@ -1,5 +1,5 @@
-import { RedisProvider } from "./redis";
-import { Provider } from "../../decorators/provider/provider";
+import { RedisProvider } from './redis';
+import { Provider } from '../../decorators/provider/provider';
 
 @Provider({
   imports: [

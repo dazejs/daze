@@ -5,15 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Loader } from '../../loader';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-
-export class LoaderProvider {
-  app: Application;
-  constructor(app: Application) {
-    this.app = app;
-  }
-
+export class LoaderProvider extends BaseProvider {
+ 
   register() {
     this.app.singleton('loader', Loader);
   }

@@ -6,32 +6,9 @@
  */
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
+import { Provider as BaseProvider } from '../../base/provider';
 
-import { Config } from '../../config';
-import { Application } from '../application';
-
-
-export class TemplateProvider {
-  /**
-   * application
-   */
-  app: Application;
-
-  /**
-   * config
-   */
-  config: Config;
-
-  /**
-   * create Config Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    this.app = app;
-    
-    this.config = app.get('config');
-  }
-
+export class TemplateProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

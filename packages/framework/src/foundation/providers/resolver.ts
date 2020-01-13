@@ -6,21 +6,9 @@
  */
 import { Loader } from '../../loader';
 import { Resolver } from '../../resolver';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-export class ResolverProvider {
-  app: Application;
-  /**
-   * create Controller Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
-
+export class ResolverProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

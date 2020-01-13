@@ -25,9 +25,6 @@ function handle(args: any[], params: any, type: string, handler?: (injectedParam
     ...injectors,
     !!handler ? [type, params, handler] : [type, params],
   ], target.constructor, key);
-  Object.defineProperties(target, {
-    [key]: { writable: true }
-  });
   return target; 
 }
 

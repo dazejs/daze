@@ -5,21 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-
+import { Provider as BaseProvider } from '../../base/provider';
 import * as symbols from '../../symbol';
-import { Application } from '../application';
+
 
 // FIXME 不单单是这个文件，而是所有provider。建议加一个Provider基类作为类型，不然很多涉及到provider基类的地方无法做类型标记(譬如Application)
 
-export class AppProvider {
-  /**
-   * application
-   */
-  app: Application;
-
-  constructor(app: Application) {
-    this.app = app;
-  }
+export class AppProvider extends BaseProvider {
 
   register() {
     this.app.singleton('csrf', Tokens);
@@ -96,11 +88,5 @@ export class AppProvider {
       (request: any) => request.session(),
       true,
     );
-
-    // this.app.multiton(symbols.INJECTORS.SERVICE, (key: string) => this.app.get(`service.${key}`), true);
-    // this.app.multiton(symbols.INJECTORS.VALIDATOR, (key: string) => this.app.get(`validator.${key}`), true);
-    // this.app.multiton(symbols.INJECTORS.COMPONENT, (key: string) => this.app.get(`component.${key}`), true);
-    // this.app.multiton(symbols.INJECTORS.RESOURCE, (key: string) => this.app.get(`resource.${key}`), true);
-    // this.app.multiton(symbols.INJECTORS.MODEL, (key: string) => this.app.get(`model.${key}`), true);
   }
 }

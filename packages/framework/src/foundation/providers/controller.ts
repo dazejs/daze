@@ -5,20 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { ControllerManager } from '../../controller/manager';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-export class ControllerProvider {
-  app: Application;
-  /**
-   * create Controller Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
+export class ControllerProvider extends BaseProvider {
 
   /**
    * Provider register Hook

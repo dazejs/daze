@@ -4,24 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Application } from '../application';
 import { HttpServer } from '../http-server';
+import { Provider as BaseProvider } from '../../base/provider';
 
 
 
-export class HttpServerProvider {
-  app: Application;
-  /**
-   * create Logger Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
-
+export class HttpServerProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

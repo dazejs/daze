@@ -5,22 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { Logger } from '../../logger';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-
-export class LoggerProvider {
-  app: Application;
-  /**
-   * create Logger Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-    * @var app Application
-    */
-    this.app = app;
-  }
-
+export class LoggerProvider extends BaseProvider {
   /**
    * Provider register Hook
    */

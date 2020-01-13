@@ -1,28 +1,22 @@
-import { DazeProviderType } from "../../symbol";
+import { ProviderType } from '../../symbol';
+import { ProvideMetaData } from './provide';
 
-/**
- *
- *
- *
- *
- */
+
 export function ProvideOnMissing(provider: string | Function): MethodDecorator {
-  return function (target: object, key: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
-    const metaMap: Map<string | symbol, ProvideOnMissingMetadata> = 
-      Reflect.getMetadata(DazeProviderType.PROVIDE_ON_MISSING, target.constructor) ?? new Map();
-    const method = descriptor.value;
-    if (typeof method !== 'function' || typeof provider === 'undefined') {
-      return;
+  return function (target: object, name: string | symbol) {
+    const metaMap: Map<string | symbol, ProvideMetaData> = 
+      Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
+    if (metaMap.has(name)) {
+      const options = (metaMap.get(name) ?? {}) as ProvideMetaData;
+      options.onMissingProviderkey = provider;
+      metaMap.set(name, options);
+    } else {
+      metaMap.set(name, { onMissingProviderkey: provider });
     }
-    metaMap.set(key, { missingProvider: provider });
-    Reflect.defineMetadata(DazeProviderType.PROVIDE_ON_MISSING, metaMap, target.constructor);
+    Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
 }
 
 export function provideOnMissing(provider: string | Function): MethodDecorator {
   return ProvideOnMissing(provider);
-}
-
-export interface ProvideOnMissingMetadata {
-  missingProvider: string | Function;
 }

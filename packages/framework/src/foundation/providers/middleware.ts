@@ -5,20 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { Middleware } from '../../middleware';
-import { Application } from '../application';
+import { Provider as BaseProvider } from '../../base/provider';
 
-export class MiddlewareProvider {
-  app: Application;
-  /**
-   * create Middleware Provider
-   * @param app Application
-   */
-  constructor(app: Application) {
-    /**
-     * @var app Application
-     */
-    this.app = app;
-  }
+export class MiddlewareProvider extends BaseProvider {
 
   register() {
     this.app.singleton('middleware', Middleware);
