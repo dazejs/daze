@@ -28,7 +28,9 @@ export class Messenger extends EventEmitter {
 
   constructor() {
     super();
-    this.events = this.config.get('messenger', () => {});
+    this.events = this.config.get('messenger', () => {
+      //
+    });
     this.run();
     this.parseEvents();
   }

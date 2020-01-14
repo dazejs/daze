@@ -18,7 +18,9 @@ import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
-import * as providers from './providers';
+import { Provider as BaseProvider } from '../base/provider';
+import { Provider } from '../provider';
+import { CommonProvider, HttpServerProvider, BuiltInProvider, ResolverProvider } from './auto-providers';
 
 const DEFAULT_PORT = 8080;
 
@@ -112,14 +114,6 @@ export class Application extends Container {
    */
   launchCalls: ((...args: any[]) => any)[] = [];
 
-  /**
-   * provider runtime calls
-   */
-  runtimeCalls: ((...args: any[]) => any)[] = [];
-
-  /**
-   * Create a Dazejs Application insstance
-   */
   constructor(rootPath: string, paths: ApplicationPathsOptions = {}) {
     super();
     if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
@@ -129,6 +123,8 @@ export class Application extends Container {
     this.setPaths(paths);
 
     this.initialContainer();
+
+    this.initProvider();
   }
 
   /**
@@ -183,9 +179,7 @@ export class Application extends Container {
    * register base provider
    */
   async registerBaseProviders(): Promise<void> {
-    await this.register(new providers.ConfigProvider(this));
-    await this.register(new providers.LoaderProvider(this));
-    await this.register(new providers.MessengerProvider(this));
+    await this.register(CommonProvider);
   }
 
   /**
@@ -193,13 +187,7 @@ export class Application extends Container {
    * @private
    */
   async registerDefaultProviders(): Promise<void> {
-    await this.register(new providers.AppProvider(this));
-    await this.register(new providers.ControllerProvider(this));
-    await this.register(new providers.MiddlewareProvider(this));
-    await this.register(new providers.RouterProvider(this));
-    await this.register(new providers.TemplateProvider(this));
-    await this.register(new providers.DatabaseProvider(this));
-    await this.register(new providers.LoggerProvider(this));
+    await this.register(BuiltInProvider);
   }
 
   /**
@@ -209,38 +197,28 @@ export class Application extends Container {
   async registerVendorProviders(): Promise<void> {
     const _providers = this.config.get('app.providers', []);
     for (const key of _providers) {
-      await this.load(key);
+      await this.register(key);
     }
   }
 
 
-  /**
-   * load a registed provider with key or provider function
-   */
-  async load(Provider: any): Promise<this> {
-    if (typeof Provider === 'function') {
-      const type = Reflect.getMetadata('type', Provider);
-      if (type !== 'provider') throw new Error(`${Provider.name || 'Unknow'} is not a provider!`);
-      await this.register(
-        new Provider(this)
-      );
-      return this;
-    }
-    throw new Error(`Does not supported ${typeof Provider} Provider!`);
+  async register(Provider: typeof BaseProvider): Promise<void> {
+    await this.get<Provider>('provider').resolve(Provider);
   }
 
-  /**
-   * register provider in App
-   */
-  async register(Provider: any): Promise<void> {
-    if (Reflect.has(Provider, 'register') && typeof Provider.register === 'function') {
-      await Provider.register(this);
-    }
+  // /**
+  //  * register provider in App
+  //  */
+  // async register(Provider: any): Promise<void> {
 
-    if (Reflect.has(Provider, 'launch') && typeof Provider.launch === 'function') {
-      this.launchCalls.push((...args) => Provider.launch(...args));
-    }
-  }
+  //   if (Reflect.has(Provider, 'register') && typeof Provider.register === 'function') {
+  //     await Provider.register(this);
+  //   }
+
+  //   if (Reflect.has(Provider, 'launch') && typeof Provider.launch === 'function') {
+  //     this.launchCalls.push((...args) => Provider.launch(...args));
+  //   }
+  // }
 
   async fireLaunchCalls(...args: any[]): Promise<this> {
     for (const launch of this.launchCalls) {
@@ -255,6 +233,13 @@ export class Application extends Container {
   initialContainer(): void {
     Container.setInstance(this);
     this.bind('app', this);
+  }
+
+  /**
+   * initial Provider
+   */
+  initProvider(): void {
+    this.singleton('provider', Provider);
   }
 
   /**
@@ -377,11 +362,11 @@ export class Application extends Container {
   }
 
   async registerResolverProvider() {
-    await this.register(new providers.ResolverProvider(this));
+    await this.register(ResolverProvider);
   }
 
   async registerHttpServerProvider() {
-    await this.register(new providers.HttpServerProvider(this));
+    await this.register(HttpServerProvider);
   }
 
   /**

@@ -3,9 +3,6 @@ import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
 
-// import { ModelManager } from '../model';
-
-
 export class Resolver {
   
   /**

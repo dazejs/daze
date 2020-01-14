@@ -7,4 +7,6 @@ export abstract class Provider extends Base {
     if (target) this.app.get('loader').load(target);
     return this;
   }
+  register?(): void | Promise<void>;
+  launch?(): void | Promise<void>;
 }
