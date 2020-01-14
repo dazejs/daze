@@ -1,4 +1,4 @@
-export { Depend, depend, AutoScan, autoScan, ProviderOption } from './provider';
+export * from './provider';
 export * from './provide';
 export * from './provide-on-config';
 export * from './provide-on-missing';

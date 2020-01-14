@@ -11,25 +11,20 @@ import { Loader } from '../loader';
 export class Provider {
   private app: Application;
 
-  /**
-   * Modules config has been init
-   */
-  private hasInitModules: Array<typeof BaseProvider> = [];
-
   constructor(app: Application) {
     this.app = app;
   }
 
   async resolve(ProviderClass: typeof BaseProvider) {
 
-    if (!ProviderClass || ~this.hasInitModules.indexOf(ProviderClass)) return;
-    this.hasInitModules.push(ProviderClass);
-
+    if (!ProviderClass || this.app.has(ProviderClass)) return;
+    
+    this.app.singleton(ProviderClass, ProviderClass);
     // Get provider options
     // Class should be decorated by @Provider
     const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
 
-    const providerInstance = Reflect.construct(ProviderClass, []);
+    const providerInstance = this.app.get(ProviderClass);
 
     // Compatible with provider hooks
     await this.performRegisterHook(providerInstance);
@@ -42,7 +37,7 @@ export class Provider {
         && this.shouldProvideOnMissingProvider(metadata)
         && this.shouldProvideOnProvider(metadata)
       ) {
-        this.app.singleton(metadata.provideName, providerInstance[key]);
+        this.app.bind(metadata.provideName, providerInstance[key].bind(providerInstance), metadata.isShared, true);
       }
     }
 

@@ -1,12 +1,4 @@
-import { RedisProvider } from './redis';
-import { Provider } from '../../decorators/provider/provider';
-
-@Provider({
-  imports: [
-    RedisProvider, 
-  ],
-})
-export class DazeBuildInAutoProviders {
-  
-  
-}
+export * from './common';
+export * from './http-server';
+export * from './built-in';
+export * from './resolver';

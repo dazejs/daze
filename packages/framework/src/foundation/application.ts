@@ -18,9 +18,9 @@ import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
 import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
-import * as providers from './providers';
 import { Provider as BaseProvider } from '../base/provider';
 import { Provider } from '../provider';
+import { CommonProvider, HttpServerProvider, BuiltInProvider, ResolverProvider } from './auto-providers';
 
 const DEFAULT_PORT = 8080;
 
@@ -179,9 +179,7 @@ export class Application extends Container {
    * register base provider
    */
   async registerBaseProviders(): Promise<void> {
-    await this.register(providers.ConfigProvider);
-    await this.register(providers.LoaderProvider);
-    await this.register(providers.MessengerProvider);
+    await this.register(CommonProvider);
   }
 
   /**
@@ -189,13 +187,7 @@ export class Application extends Container {
    * @private
    */
   async registerDefaultProviders(): Promise<void> {
-    await this.register(providers.AppProvider);
-    await this.register(providers.ControllerProvider);
-    await this.register(providers.MiddlewareProvider);
-    await this.register(providers.RouterProvider);
-    await this.register(providers.TemplateProvider);
-    await this.register(providers.DatabaseProvider);
-    await this.register(providers.LoggerProvider);
+    await this.register(BuiltInProvider);
   }
 
   /**
@@ -247,7 +239,7 @@ export class Application extends Container {
    * initial Provider
    */
   initProvider(): void {
-    this.bind('provider', Provider);
+    this.singleton('provider', Provider);
   }
 
   /**
@@ -370,11 +362,11 @@ export class Application extends Container {
   }
 
   async registerResolverProvider() {
-    await this.register(providers.ResolverProvider);
+    await this.register(ResolverProvider);
   }
 
   async registerHttpServerProvider() {
-    await this.register(providers.HttpServerProvider);
+    await this.register(HttpServerProvider);
   }
 
   /**

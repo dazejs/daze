@@ -1,47 +1,41 @@
 import { ProviderType } from '../../symbol';
 import { Provider as BaseProvider} from '../../base/provider';
 
-export function Depend(providers?: Array<typeof BaseProvider>) {
+export function Depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvider)[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
-    providers?.forEach((p) => {
-      if (option.imports?.indexOf(p) === -1) {
-        option.imports.push(p);
+
+    for (const provider of providers) {
+      if (Array.isArray(provider)) {
+        option.imports?.push(...provider);
+      } else {
+        option.imports?.push(provider);
       }
-    });
+    }
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 }
-export function depend(providers?: Array<typeof BaseProvider>) {
-  return Depend(providers);
+export function depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvider)[][]) {
+  return Depend(...providers);
 }
 
-export function AutoScan(componentScan: string | Array<string>) {
+export function AutoScan(...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
-    if (Array.isArray(componentScan)) {
-      option.componentScan?.push(...componentScan);
-    } else if (typeof componentScan === 'string') {
-      option.componentScan?.push(componentScan);
+
+    for (const componentScan of componentScans) {
+      if (Array.isArray(componentScan)) {
+        option.componentScan?.push(...componentScan);
+      } else if (typeof componentScan === 'string') {
+        option.componentScan?.push(componentScan);
+      }
     }
+   
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 }
-export function autoScan(componentScan: string | Array<string>) {
-  return AutoScan(componentScan);
-}
-
-/**
- * WIP 
- */
-export function Provider(option?: ProviderOption): ClassDecorator {
-  return function (constructor: Function) {
-    Reflect.defineMetadata(ProviderType.PROVIDER, option ?? { imports: [] }, constructor);
-  };
-}
-
-export function provider(option?: ProviderOption): ClassDecorator {
-  return Provider(option);
+export function autoScan(...componentScans: string[] | string[][]) {
+  return AutoScan(...componentScans);
 }
 
 export interface ProviderOption {
