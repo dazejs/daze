@@ -1,3 +1,4 @@
+import { TestLoggerProvider } from '../provider/test-logger-provider';
 export default {
   port: 8888,
   proxy: false,
@@ -5,4 +6,7 @@ export default {
   workers: 0,
   sticky: false,
   viewExtension: 'html',
+  providers: [
+    TestLoggerProvider
+  ]
 };

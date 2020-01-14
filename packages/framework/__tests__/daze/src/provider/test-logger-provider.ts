@@ -15,7 +15,7 @@ export class TestLoggerProvider {
   testConfig3 = "testConfig3";
 
   @Provide()
-  @ProvideOnMissing(TestLogger)
+  @ProvideOnMissing('testLogger')
   testLogger() {
     return new TestLogger(this.testConfig);
   }

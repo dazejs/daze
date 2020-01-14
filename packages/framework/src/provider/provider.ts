@@ -30,7 +30,10 @@ export class Provider {
     await this.performRegisterHook(providerInstance);
     this.registerLaunchHook(providerInstance);
 
+   
+
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
+
     for (const [key, metadata] of provideMetaMap) {
       if (
         this.shouldProvideOnConfig(metadata)
