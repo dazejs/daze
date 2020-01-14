@@ -81,7 +81,9 @@ export class Master {
         // The signal that tells the worker process that it has fork after fork,
         // and lets it end the service
         // fork 完毕后通知工作进程已 fork 的信号，让其结束服务
-        this.forkWorker(env).then(() => worker.send(WORKER_DID_FORKED)).catch(() => {});
+        this.forkWorker(env).then(() => worker.send(WORKER_DID_FORKED)).catch(() => {
+          //
+        });
       }
     });
     // Emitted after the worker IPC channel has disconnected

@@ -1,24 +1,14 @@
-// import { Connection, ConnectionConfig, createConnection, MysqlError, createPool } from 'mysql';
-import { Connection, ConnectionConfig, createPool } from 'mysql';
-import { ConnectorInterface } from './connector.interface';
+import { ConnectionConfig, createPool } from 'mysql';
+import { Connector } from './connector';
 
-/**
- * Mysql 连接器
- * 默认连接 8 小时断开，支持断开后重连
- */
-export class MysqlConnector implements ConnectorInterface {
-  /**
-   * mysql connection
-   */
-  connection: Connection;
-
+export class MysqlConnector extends Connector {
   /**
    * connect to mysql use pool
    * @param options 
    */
   connect(options: string | ConnectionConfig) {
-    const connection = createPool(options);
-    return connection;
+    const pool = createPool(options);
+    return pool;
   }
 
   // /**

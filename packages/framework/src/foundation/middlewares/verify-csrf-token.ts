@@ -5,9 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import minimatch from 'minimatch';
-
 import { Middleware } from '../../base/middleware';
-import { Component } from '../../decorators';
 import { TNext } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
@@ -16,7 +14,6 @@ import { Response } from '../../response';
 const defaultExcludedMethods = ['HEAD', 'GET', 'OPTIONS'];
 const defaultInvalidTokenMessage = 'Invalid CSRF token';
 
-@Component('verify-csrf-token')
 export class VerifyCsrfToken extends Middleware {
   get except(): any[] {
     return [];

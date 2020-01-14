@@ -8,9 +8,9 @@ import * as cluster from 'cluster';
 import debuger from 'debug';
 import * as http from 'http';
 import * as net from 'net';
-
 import { Deferred } from '../foundation/support/defered';
 import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
+
 
 
 const debug = debuger('daze-framework:cluster');
@@ -24,7 +24,9 @@ export interface WorkerOptions {
 const defaultOptions = {
   port: 0,
   sticky: false,
-  createServer: () => {},
+  createServer: () => {
+    //
+  },
 };
 
 /**

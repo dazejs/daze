@@ -5,16 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 import { OutgoingHttpHeaders } from 'http';
-
 import { Messenger } from '../cluster/messenger';
 import { Config } from '../config';
 import { Container } from '../container';
 import { Database } from '../database';
-import { Builder } from '../database/builder';
-import { AbstractConnection } from '../database/connection/connection.abstract';
 import { Application } from '../foundation/application';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
+
 
 @Reflect.metadata('injectable', true)
 export abstract class Base {
@@ -60,7 +58,7 @@ export abstract class Base {
    * @param name connection name
    */
   protected db(name?: string) {
-    return this.app.get<Database>('db').connection(name) as AbstractConnection & Builder;
+    return this.app.get<Database>('db').connection(name);
   }
 
   protected logger(channel?: string) {
