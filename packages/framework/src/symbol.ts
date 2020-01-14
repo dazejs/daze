@@ -55,3 +55,8 @@ export const INJECTORS = {
   // VALIDATOR: '__DAZE_INJECT_VALIDATOR__',
   // MODEL: '__DAZE_INJECT_MODEL__',
 };
+
+export const ProviderType = {
+  PROVIDER: Symbol("DAZE#PROVIDER"),
+  PROVIDE: Symbol("DAZE#PROVIDE"),
+};

@@ -5,6 +5,7 @@ import { Application } from '../../../src/foundation/application';
 import appConfig from '../../daze/src/config/app';
 import appConfig2 from '../../daze/src/config/app.test';
 import customConfig from '../../daze/src/config/custom';
+import { InjectConfigService } from '../../daze/src/app/service/inject-config';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -51,5 +52,15 @@ describe('Config', () => {
     const configInstance = new Config();
     await configInstance.initialize();
     expect(configInstance.app.port).toBe(8888);
+  });
+  
+  it('Config#inject', async () => {
+    app.singleton(InjectConfigService, InjectConfigService);
+    const service = app.make(InjectConfigService);
+    expect(service).toBeTruthy();
+    expect(service.getTestConfig()).toBe(app.get('config'));
+    expect(service.getTestConfig2()).toBe('c');
+    expect(service.getTestConfig3()).toBe('testConfig3');
+    expect(service.testConfig4).toBe('testConfig44');
   });
 });
