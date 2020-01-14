@@ -183,7 +183,7 @@ export class Application extends Container {
   }
 
   /**
-   * register default providerw
+   * register default provider
    * @private
    */
   async registerDefaultProviders(): Promise<void> {
