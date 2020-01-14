@@ -1,13 +1,9 @@
 import { Application } from '@src';
 import { Provider as BaseProvider } from '../base/provider';
 import { ProvideMetaData, ProviderOption } from '../decorators/provider';
-import { ProviderType } from '../symbol';
 import { Loader } from '../loader';
+import { ProviderType } from '../symbol';
 
-
-/**
- * Support provider resolver
- */
 export class Provider {
   private app: Application;
 
@@ -29,8 +25,6 @@ export class Provider {
     // Compatible with provider hooks
     await this.performRegisterHook(providerInstance);
     this.registerLaunchHook(providerInstance);
-
-   
 
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
 

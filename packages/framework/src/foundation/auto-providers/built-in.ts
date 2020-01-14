@@ -4,18 +4,18 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Provider as BaseProvider } from '../../base/provider';
-import { depend, provide } from '../../decorators/provider';
-import { DecoratorProvider } from './providers/decorator';
 import Tokens from 'csrf';
-import { ControllerManager } from '../../controller/manager';
-import { Middleware } from '../../middleware';
-import { Router } from '../../router';
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
+import { Provider as BaseProvider } from '../../base/provider';
+import { ControllerManager } from '../../controller/manager';
 import { Database } from '../../database';
-import { Application } from '../application';
+import { depend, provide } from '../../decorators/provider';
 import { Logger } from '../../logger';
+import { Middleware } from '../../middleware';
+import { Router } from '../../router';
+import { Application } from '../application';
+import { DecoratorProvider } from './providers/decorator';
 
 @depend(DecoratorProvider)
 export class BuiltInProvider extends BaseProvider {

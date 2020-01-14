@@ -6,9 +6,9 @@
  */
 import { Provider as BaseProvider } from '../../../base/provider';
 import { provide } from '../../../decorators/provider';
-import * as symbols from '../../../symbol';
 import { Request } from '../../../request';
 import { Response } from '../../../response';
+import * as symbols from '../../../symbol';
 
 
 export class DecoratorProvider extends BaseProvider {

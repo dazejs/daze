@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import { Provider as BaseProvider } from '../../base/provider';
-import { provide } from '../../decorators/provider';
 import { inject } from '../../decorators/inject';
+import { provide } from '../../decorators/provider';
 import { Loader } from '../../loader';
 import { Resolver } from '../../resolver';
 import { Application } from '../application';
