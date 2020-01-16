@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.1.1...@dazejs/framework@2.2.0) (2020-01-16)
+
+
+### Features
+
+* **core:** add [@config](https://github.com/config) default support ([#120](https://github.com/dazejs/daze/issues/120)) ([5dc3afd](https://github.com/dazejs/daze/commit/5dc3afd513d18d48bbaf33316decef2382e377f7))
+* **database:** support for database transactions ([#117](https://github.com/dazejs/daze/issues/117)) ([886d2e9](https://github.com/dazejs/daze/commit/886d2e92d2aae0ee2689cab95e2f741c07b4a38c))
+* **provide:** add auto provider ([#121](https://github.com/dazejs/daze/issues/121)) ([294e946](https://github.com/dazejs/daze/commit/294e9463ca577b8e2bb9cbb756c4e6f72dc35ba3)), closes [#95](https://github.com/dazejs/daze/issues/95)
+
+
+
+
+
 ## [2.1.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.1.0...@dazejs/framework@2.1.1) (2020-01-06)
 
 **Note:** Version bump only for package @dazejs/framework
