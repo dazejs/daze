@@ -129,7 +129,7 @@ export class Container extends EventEmitter {
       this.emit('resolving', obj, this);
     }
     // 如果是单例，保存实例到容器
-    if (shared && obj) {
+    if (shared && obj !== undefined) {
       this.instances.set(abstract, {
         concrete: obj,
         shared,

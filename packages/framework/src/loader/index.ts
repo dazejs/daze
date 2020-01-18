@@ -6,56 +6,23 @@
  */
 import * as glob from 'glob';
 import * as path from 'path';
-
-// import { Controller, Middleware, Resource, Service, Validator, Entity } from '../base';
 import { Application } from '../foundation/application';
-// import { VerifyCsrfToken } from '../foundation/middlewares';
+import { VerifyCsrfToken } from '../foundation/middlewares';
 import { ComponentType } from '../symbol';
 
 
-// import fs from 'fs';
 export class Loader {
   /**
    * @var app Application
    */
   app: Application;
 
-  // /**
-  //  * @var controllers
-  //  */
-  // controllers: typeof Controller[] = [];
-
-  // /**
-  //  * @var middlewares
-  //  */
-  // middlewares: typeof Middleware[] = [
-  //   VerifyCsrfToken,
-  // ];
-
-  // /**
-  //  * @var validators
-  //  */
-  // validators: typeof Validator[] = [];
-
-  // /**
-  //  * @var services
-  //  */
-  // services: typeof Service[] = [];
-
-  // /**
-  //  * @var resources
-  //  */
-  // resources: typeof Resource[] = [];
-
-  // /**
-  //  * @var entities
-  //  */
-  // entities: typeof Entity[] = [];
-
-  // /**
-  //  * @var components
-  //  */
-  // components: any[] = [];
+  /**
+   * loaded components
+   */
+  loadedComponents: Map<string, any[]> = new Map([
+    [ComponentType.Middleware, [VerifyCsrfToken]]
+  ]);
 
   /**
    * Create AutoScan Instance
@@ -71,6 +38,10 @@ export class Loader {
     await this.scan(this.app.appPath);
   }
 
+  /**
+   * scan dir
+   * @param absoluteFilePath 
+   */
   async scan(absoluteFilePath: string) {
     const filePaths = glob.sync(path.join(absoluteFilePath, '**/*.@(js|ts)'), {
       nodir: true,
@@ -82,6 +53,14 @@ export class Loader {
     }
     return this;
   }
+
+  /**
+   * get component by type
+   * @param type 
+   */
+  getComponentByType(type: string) {
+    return this.loadedComponents.get(type);
+  }
   
   /**
    * parse file module
@@ -91,46 +70,12 @@ export class Loader {
     // ignore @Ignore() decorator s target
     const isIgnore: boolean = Reflect.getMetadata('ignore', Target);
     if (isIgnore === true) return;
-    const type: ComponentType = Reflect.getMetadata('type', Target);
-
-    const loadedComponents: Map<string, any> = this.app.get('loaded-components') || new Map();
-
-    const _type = type || 'unknows';
-
-    if (loadedComponents.has(_type)) {
-      loadedComponents.get(_type).push(Target);
+    const type: ComponentType = Reflect.getMetadata('type', Target) ?? 'component';
+    if (this.loadedComponents.has(type)) {
+      this.loadedComponents.get(type)?.push(Target);
     } else {
-      loadedComponents.set(_type, [Target]);
+      this.loadedComponents.set(type, [Target]);
     }
-
-    this.app.bind('loaded-components', loadedComponents);
-
-
-    // switch (type) {
-    //   case ComponentType.Controller:
-    //     this.controllers.push(Target);
-    //     break;
-    //   case ComponentType.Entity:
-    //     this.entities.push(Target);
-    //     break;
-    //   case ComponentType.Middleware:
-    //     this.middlewares.push(Target);
-    //     break;
-    //   case ComponentType.Service:
-    //     this.services.push(Target);
-    //     break;
-    //   case ComponentType.Resource:
-    //     this.resources.push(Target);
-    //     break;
-    //   case ComponentType.Validator:
-    //     this.validators.push(Target);
-    //     break;
-    //   case ComponentType.Component:
-    //     this.components.push(Target);
-    //     break;
-    //   default:
-    //     break;
-    // }
     return this;
   }
 }
