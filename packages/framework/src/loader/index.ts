@@ -58,7 +58,7 @@ export class Loader {
    * get component by type
    * @param type 
    */
-  getComponentByType(type: string) {
+  getComponentByType(type: any) {
     return this.loadedComponents.get(type);
   }
   
