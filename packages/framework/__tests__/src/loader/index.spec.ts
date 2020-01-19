@@ -8,6 +8,7 @@ import { Service } from '../../../src/base/service';
 import { Validator } from '../../../src/base/validator';
 import { Resource } from '../../../src/base/resource';
 import { Route, Component } from '../../../src/decorators';
+import { ComponentType } from '../../../src/symbol';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -48,11 +49,11 @@ describe('Loader', () => {
     loader.load(ExampleValidator);
     loader.load(ExampleComponent);
 
-    expect(loader.controllers.includes(ExampleController)).toBeTruthy();
-    expect(loader.middlewares.includes(ExampleMiddleware)).toBeTruthy();
-    expect(loader.services.includes(ExampleService)).toBeTruthy();
-    expect(loader.resources.includes(ExampleResource)).toBeTruthy();
-    expect(loader.validators.includes(ExampleValidator)).toBeTruthy();
-    expect(loader.components.includes(ExampleComponent)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Controller).includes(ExampleController)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Middleware).includes(ExampleMiddleware)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Service).includes(ExampleService)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Resource).includes(ExampleResource)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Validator).includes(ExampleValidator)).toBeTruthy();
+    expect(loader.loadedComponents.get(ComponentType.Component).includes(ExampleComponent)).toBeTruthy();
   });
 });

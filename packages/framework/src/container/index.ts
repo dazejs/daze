@@ -107,7 +107,7 @@ export class Container extends EventEmitter {
    */
   make(abstract: any, args: any[] = [], force = false): any {
     const shared = this.isShared(abstract);
-    let obj = null;
+    let obj;
     // returns directly if an object instance already exists in the container
     // instance shared
     if (this.instances.has(abstract) && shared && !force) {
@@ -129,7 +129,7 @@ export class Container extends EventEmitter {
       this.emit('resolving', obj, this);
     }
     // 如果是单例，保存实例到容器
-    if (shared && obj) {
+    if (shared && obj !== undefined) {
       this.instances.set(abstract, {
         concrete: obj,
         shared,

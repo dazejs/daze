@@ -2,6 +2,7 @@
 import { ControllerManager } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
+import { ComponentType } from '../symbol';
 
 export class Resolver {
   
@@ -37,7 +38,7 @@ export class Resolver {
    * resolve middleware components
    */
   resolveMiddlewares() {
-    const { middlewares } = this.loader;
+    const middlewares = this.loader.getComponentByType(ComponentType.Middleware) || [];
     for (const Middleware of middlewares) {
       const name = Reflect.getMetadata('name', Middleware);
       this.app.singleton(Middleware, Middleware);
@@ -54,7 +55,7 @@ export class Resolver {
    * resolve controllers
    */
   resolveControllers() {
-    const { controllers } = this.loader;
+    const controllers = this.loader.getComponentByType(ComponentType.Controller) || [];
     for (const Controller of controllers) {
       this.app.multiton(Controller, Controller);
       this.app.get<ControllerManager>('controller-manager').register(Controller);
@@ -66,7 +67,7 @@ export class Resolver {
    * resolve model components
    */
   resolveModels() {
-    const { entities } = this.loader;
+    const entities = this.loader.getComponentByType(ComponentType.Entity) || [];
     for (const Entity of entities) {
       const name = Reflect.getMetadata('name', Entity);
       this.app.multiton(Entity, Entity);
@@ -82,7 +83,7 @@ export class Resolver {
    * resolve service components
    */
   resolveServices() {
-    const { services } = this.loader;
+    const services = this.loader.getComponentByType(ComponentType.Service) || [];
     for (const Service of services) {
       const name = Reflect.getMetadata('name', Service);
       this.app.multiton(Service, Service);
@@ -98,7 +99,7 @@ export class Resolver {
    * resolve validator components
    */
   resolveValidators() {
-    const { validators } = this.loader;
+    const validators = this.loader.getComponentByType(ComponentType.Validator) || [];
     for (const Validator of validators) {
       const name = Reflect.getMetadata('name', Validator);
       this.app.multiton(Validator, Validator);
@@ -114,7 +115,7 @@ export class Resolver {
    * resolve resource components
    */
   resolveResources() {
-    const { resources } = this.loader;
+    const resources = this.loader.getComponentByType(ComponentType.Resource) || [];
     for (const Resource of resources) {
       const name = Reflect.getMetadata('name', Resource);
       this.app.multiton(Resource, Resource);
@@ -126,8 +127,11 @@ export class Resolver {
     }
   }
 
+  /**
+   * resolve common components
+   */
   resolveComponents() {
-    const { components } = this.loader;
+    const components = this.loader.getComponentByType(ComponentType.Component) || [];
     for (const Component of components) {
       const name = Reflect.getMetadata('name', Component);
       this.app.multiton(Component, Component);

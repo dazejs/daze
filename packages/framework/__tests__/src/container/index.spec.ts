@@ -15,7 +15,7 @@ it('Container.bind and Container.get', () => {
   const App = class { };
   Container.bind(App, App);
   Container.bind('a', null);
-  expect(Container.get('a')).toBeNull();
+  expect(Container.get('a')).toBeUndefined();
   expect(Container.get(App)).toBeInstanceOf(App);
 });
 
@@ -50,7 +50,9 @@ it('Container#exists', () => {
 
 it('Container.get', () => {
   Container.setInstance(null);
-  const fn = () => {};
+  const fn = () => {
+    //
+  };
   const App = class {};
   // shared
   Container.bind('a', App, true);
@@ -69,7 +71,9 @@ it('singleton and multiton', () => {
   Container.setInstance(null);
   const Singleton = class { };
   const Multiton = class { };
-  const normalFun = () => { };
+  const normalFun = () => {
+    //
+  };
   const ContainerInstance = new Container();
   ContainerInstance.singleton(Singleton, Singleton);
   ContainerInstance.multiton(Multiton, Multiton);
