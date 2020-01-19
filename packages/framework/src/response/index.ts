@@ -37,7 +37,7 @@ export class Response extends Statusable {
   /**
    * application
    */
-  protected app: Application = Container.get('app')
+  protected app: Application = Container.get('app');
 
   /**
    * response statusCode
