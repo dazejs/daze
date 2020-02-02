@@ -14,7 +14,14 @@ export class Provider {
   async resolve(ProviderClass: typeof BaseProvider) {
 
     if (!ProviderClass || this.app.has(ProviderClass)) return;
-    
+
+    const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
+    if (provideMetaMap.has(ProviderClass) && 
+      !this.shouldProvideOnConfig(provideMetaMap.get(ProviderClass))
+    ) {
+      return ;
+    }
+
     this.app.singleton(ProviderClass, ProviderClass);
     // Get provider options
     // Class should be decorated by @Provider
@@ -25,8 +32,6 @@ export class Provider {
     // Compatible with provider hooks
     await this.performRegisterHook(providerInstance);
     this.registerLaunchHook(providerInstance);
-
-    const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
 
     for (const [key, metadata] of provideMetaMap) {
       if (
@@ -77,8 +82,8 @@ export class Provider {
    * should Provide On Config 
    * @param metadata 
    */
-  shouldProvideOnConfig(metadata: ProvideMetaData) {
-    if (!metadata.onConfigKey) return true;
+  shouldProvideOnConfig(metadata: ProvideMetaData | undefined) {
+    if (!metadata || !metadata.onConfigKey) return true;
     return this.app.get('config').has(metadata.onConfigKey);
   }
 

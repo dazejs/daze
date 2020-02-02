@@ -59,4 +59,5 @@ export const INJECTORS = {
 export const ProviderType = {
   PROVIDER: Symbol("DAZE#PROVIDER"),
   PROVIDE: Symbol("DAZE#PROVIDE"),
+  ORDER: Symbol("DAZE#ORDER"),
 };

@@ -48,8 +48,12 @@ export class Loader {
       matchBase: true
     });
     for (const file of filePaths) {
-      const Target = (await import(file)).default;
-      this.load(Target);
+      const Target = (await import(file));
+      Object.keys(Target)
+        .filter((k) => typeof Target[k] === 'function')
+        .forEach((k) => {
+          this.load(Target[k]);
+        });
     }
     return this;
   }

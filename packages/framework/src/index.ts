@@ -19,3 +19,4 @@ export * from './decorators';
 export * from './base';
 export * from './request';
 export * from './loader';
+export { TMiddlewareStage, TNext } from './middleware';

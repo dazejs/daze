@@ -1,5 +1,5 @@
 import { RelationDesc } from '../../model/model';
-import { Entity as EntityBase } from 'src/base';
+import { Entity as EntityBase } from '../../base';
 
 interface ManyRealtionOptions {
   pivot?: typeof EntityBase;

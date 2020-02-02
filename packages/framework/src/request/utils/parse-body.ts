@@ -50,6 +50,8 @@ export async function parseBody(request: any) {
     body.fields = await buddy.text(request.req);
   } else if (request.is('multipart')) {
     body = await parseForm(request.req);
+  } else {
+    body.fields = await buddy.text(request.req);
   }
   return body;
-};
+}
