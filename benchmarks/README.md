@@ -2,48 +2,48 @@
 
 ### daze-without-routes
 
-| Stat      | Avg      | Stdev   | Min      |
-| --------- | -------- | ------- | -------- |
-| Req/Sec   | 55425.46 | 4450.49 | 47795    |
-| Bytes/Sec | 8.03 MB  | 4.35 KB | 46.67 KB |
+| Stat      | Avg      | Stdev   | Min     |
+| --------- | -------- | ------- | ------- |
+| Req/Sec   | 64801.46 | 4141.42 | 51921   |
+| Bytes/Sec | 9.39 MB  | 4.04 KB | 50.7 KB |
 
 
 ### express-without-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 31261.82 | 4018.78 | 18671    |
-| Bytes/Sec | 6.41 MB  | 3.92 KB | 18.23 KB |
+| Req/Sec   | 33246.55 | 3611.47 | 22052    |
+| Bytes/Sec | 6.82 MB  | 3.53 KB | 21.54 KB |
 
 
 ### koa-without-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 51582.55 | 5970.59 | 42226    |
-| Bytes/Sec | 7.48 MB  | 5.83 KB | 41.24 KB |
+| Req/Sec   | 60670.55 | 4490.95 | 48478    |
+| Bytes/Sec | 8.79 MB  | 4.39 KB | 47.34 KB |
 
 
 ### daze-with-1000-routes
 
 | Stat      | Avg      | Stdev   | Min      |
 | --------- | -------- | ------- | -------- |
-| Req/Sec   | 34507.64 | 3101.36 | 25933    |
-| Bytes/Sec | 5 MB     | 3.03 KB | 25.33 KB |
+| Req/Sec   | 39210.91 | 3903.57 | 26911    |
+| Bytes/Sec | 5.68 MB  | 3.81 KB | 26.28 KB |
 
 
 ### express-with-1000-routes
 
 | Stat      | Avg      | Stdev   | Min     |
 | --------- | -------- | ------- | ------- |
-| Req/Sec   | 11901.64 | 1295.56 | 7941    |
-| Bytes/Sec | 2.44 MB  | 1.27 KB | 7.75 KB |
+| Req/Sec   | 11745.64 | 1323.05 | 7712    |
+| Bytes/Sec | 2.41 MB  | 1.29 KB | 7.53 KB |
 
 
 ### koa-with-1000-routes
 
-| Stat      | Avg       | Stdev  | Min     |
-| --------- | --------- | ------ | ------- |
-| Req/Sec   | 6396.3    | 928.75 | 3860    |
-| Bytes/Sec | 949.35 KB | 929 B  | 3.77 KB |
+| Stat      | Avg     | Stdev  | Min     |
+| --------- | ------- | ------ | ------- |
+| Req/Sec   | 8803.28 | 758.07 | 6684    |
+| Bytes/Sec | 1.28 MB | 758 B  | 6.53 KB |
 

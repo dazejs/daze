@@ -10,6 +10,7 @@
 import 'reflect-metadata';
 
 export * from './foundation/application';
+export * from './foundation/metadata';
 export * from './container';
 export * from './response';
 export * from './response/redirect';

@@ -16,6 +16,7 @@ export class Provider {
     if (!ProviderClass || this.app.has(ProviderClass)) return;
 
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
+
     if (provideMetaMap.has(ProviderClass) && 
       !this.shouldProvideOnConfig(provideMetaMap.get(ProviderClass))
     ) {
