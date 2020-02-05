@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.2.1...@dazejs/framework@2.3.0) (2020-02-05)
+
+
+### Bug Fixes
+
+* **core:** fix some errors ([#136](https://github.com/dazejs/daze/issues/136)) ([2dca910](https://github.com/dazejs/daze/commit/2dca910cd4dda7650395a4f585038290150dff8d))
+
+
+### Features
+
+* **metadata:** export metadata ([5bf57cd](https://github.com/dazejs/daze/commit/5bf57cd29b342269bfb0eae9271c3f8a241773c7))
+
+
+
+
+
 ## [2.2.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.2.0...@dazejs/framework@2.2.1) (2020-01-19)
 
 **Note:** Version bump only for package @dazejs/framework
