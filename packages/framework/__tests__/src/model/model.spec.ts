@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import path from 'path';
 import { Application } from '../../../src';
 import { initDb } from './init';
 import User from '../../daze/src/app/entities/user';
+import Profile from '../../daze/src/app/entities/profile';
+import Comment from '../../daze/src/app/entities/comment';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -113,5 +116,82 @@ describe('destroy in model', () => {
     const count = await app.get('db').connection().table('users').count();
     expect(res).toBe(1);
     expect(count).toBe(0);
+  });
+});
+
+describe('one to one relation', () => {
+  it('should return relation data', async () => {
+    const user = new User();
+    const profile = new Profile();
+    await user.create({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+    });
+    await profile.create({
+      id: 1,
+      user_id: 1,
+      motto: 'test1'
+    });
+
+    const res = await user.with('profile').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+      profile: {
+        id: 1,
+        motto: 'test1',
+        user_id: 1,
+      }
+    });
+
+  });
+});
+
+
+describe('one to many relation', () => {
+  it('should return relation data', async () => {
+    const user = new User();
+    const comment = new Comment();
+    await user.create({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+    });
+    await comment.create({
+      id: 1,
+      user_id: 1,
+      comment: 'test1'
+    });
+    await comment.create({
+      id: 2,
+      user_id: 1,
+      comment: 'test2'
+    });
+
+    const res = await user.with('comments').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+      comments: [
+        {
+          id: 1,
+          comment: 'test1',
+          user_id: 1,
+        },
+        {
+          id: 2,
+          comment: 'test2',
+          user_id: 1,
+        }
+      ]
+    });
+
   });
 });
