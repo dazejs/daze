@@ -13,12 +13,12 @@ export class BelongsToMany extends HasRelations {
   /**
    * 关联外键
    */
-  foreignPivotKey?: string;
+  foreignPivotKey: string;
 
   /**
    * 关联中间表键
    */
-  relatedPivotKey?: string;
+  relatedPivotKey: string;
 
   /**
    * 创建多对多关联关系
@@ -33,9 +33,9 @@ export class BelongsToMany extends HasRelations {
     this.parent = parent;
     this.model = model;
     // 默认单数形式的表名_主键名
-    this.foreignPivotKey = foreignPivotKey;
+    this.foreignPivotKey = foreignPivotKey ?? this.getDefaultForeignPivotKey();
     // 默认单数形式的表名_主键名
-    this.relatedPivotKey = relatedPivotKey;
+    this.relatedPivotKey = relatedPivotKey ?? this.getDefaultRelatedPivotKey();
     // 中间表实体实例
     this.pivot = this.newPivot(Pivot);
   }
@@ -58,12 +58,16 @@ export class BelongsToMany extends HasRelations {
    * 新建中间表实体实例
    */
   newPivot(Pivot?: typeof Model) {
+    
     const _class = Pivot ?? PivotEntity;
-    const _pivot = new _class();
-    if (_pivot instanceof PivotEntity) {
-      return _pivot;
+    this.app.bind(_class, _class);
+    const _pivot = this.app.get(_class);
+    if (!(_pivot instanceof PivotEntity)) {
+      throw new Error('pivot entity must extends: PivotEntity');
     }
-    throw new Error('pivot entity must extends: PivotEntity');
+    const table = _pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
+    _pivot.setTable(table);
+    return _pivot;
   }
 
   /**
@@ -72,22 +76,28 @@ export class BelongsToMany extends HasRelations {
    * @param relation 关联名
    */
   async eagerly(resultModel: Model, relation: string) {
-    const foreignPivotKey = this.foreignPivotKey ?? this.getDefaultForeignPivotKey();
-    const relatedPivotKey = this.relatedPivotKey ?? this.getDefaultRelatedPivotKey();
+    const foreignPivotKey = this.foreignPivotKey;
+    const relatedPivotKey = this.relatedPivotKey;
     // 需要被加载的模型主键值
     const pk = resultModel.getPrimaryValue();
-    // 关联表名，默认父模型单数行书的表名_当前模型单数形式的表名
-    const table = this.pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
-    // 设置表名到中间表
-    this.pivot.setTable(`${table} as pivot`);
+    // // 关联表名，默认父模型单数行书的表名_当前模型单数形式的表名
+    // const table = this.pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
+    // // 设置表名到中间表
+    // this.pivot.setTable(`${table} as pivot`);
 
-    const query = this.pivot.newModelBuilderInstance();
+    // const query = this.pivot.newModelBuilderInstance();
     // 获取中间表与当前模型的关联数据
-    const records: Record<string, any>[] = await query.columns('relate.*').join((join: Join) => {
-      return join.table(this.model.getTable(), 'relate')
-        .on(`pivot.${relatedPivotKey}`, `relate.${this.model.getPrimaryKey()}`)
-        .where(`pivot.${foreignPivotKey}`, '=', pk);
-    }).find();
+    const records: Model[] = await this.pivot
+      .createQueryBuilder()
+      .getBuilder()
+      .alias('pivot')
+      .columns('relate.*')
+      .join((join: Join) => {
+        return join.table(this.model.getTable(), 'relate')
+          .on(`pivot.${relatedPivotKey}`, `relate.${this.model.getPrimaryKey()}`)
+          .where(`pivot.${foreignPivotKey}`, '=', pk);
+      }).find();
+    // console.log(await this.model.resultsToModels(records));
     // 添加关联数据到需要被加载的模型中
     resultModel.setRelation(relation, await this.model.resultsToModels(records));
   }
@@ -98,8 +108,8 @@ export class BelongsToMany extends HasRelations {
    * @param relation 
    */
   async eagerlyMap(resultModels: Model[], relation: string) {
-    const foreignPivotKey = this.foreignPivotKey ?? this.getDefaultForeignPivotKey();
-    const relatedPivotKey = this.relatedPivotKey ?? this.getDefaultRelatedPivotKey();
+    const foreignPivotKey = this.foreignPivotKey;
+    const relatedPivotKey = this.relatedPivotKey;
     // 查询范围 - foreignPivotKey
     const range = new Set();
     for (const model of resultModels) {
@@ -107,18 +117,23 @@ export class BelongsToMany extends HasRelations {
       id && range.add(id);
     }
     if (range.size > 0) {
-      // 关联表名，默认父模型单数行书的表名_当前模型单数形式的表名
-      const table = this.pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
-      // 设置表名到中间表
-      this.pivot.setTable(`${table} as pivot`);
+      // // 关联表名，默认父模型单数行书的表名_当前模型单数形式的表名
+      // const table = this.pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
+      // // 设置表名到中间表
+      // this.pivot.setTable(`${table} as pivot`);
 
-      const query = this.pivot.newModelBuilderInstance();
+      // const query = this.pivot.newModelBuilderInstance();
       // 获取中间表与当前模型的关联数据
-      const records: Record<string, any>[] = await query.columns('relate.*', `pivot.${foreignPivotKey}`).join((join: Join) => {
-        return join.table(this.model.getTable(), 'relate')
-          .on(`pivot.${relatedPivotKey}`, `relate.${this.model.getPrimaryKey()}`)
-          .whereIn(`pivot.${foreignPivotKey}`, [...range]);
-      }).find();
+      const records: Record<string, any>[] = await this.pivot
+        .createQueryBuilder()
+        .getBuilder()
+        .alias('pivot')
+        .columns('relate.*', `pivot.${foreignPivotKey}`)
+        .join((join: Join) => {
+          return join.table(this.model.getTable(), 'relate')
+            .on(`pivot.${relatedPivotKey}`, `relate.${this.model.getPrimaryKey()}`)
+            .whereIn(`pivot.${foreignPivotKey}`, [...range]);
+        }).find();
 
       const map = new Map();
       for (const record of records) {

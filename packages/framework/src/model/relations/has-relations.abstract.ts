@@ -23,12 +23,12 @@ export abstract class HasRelations {
   /**
    * 外键
    */
-  protected foreignKey?: string;
+  protected foreignKey: string;
 
   /**
    * 关联主键
    */
-  protected localKey?: string;
+  protected localKey: string;
 
   /**
    * 渴求式加载单个模型关联数据

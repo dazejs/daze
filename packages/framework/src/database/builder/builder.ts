@@ -197,9 +197,9 @@ export class Builder {
    */
   table(table: string, as?: string) {
     // this._from = as ? `${table} as ${as}` : table;
-    let _table = table;
+    let _table = table ?? '';
     let _as = as;
-    if (~table.indexOf(` as `)) {
+    if (table && ~table.indexOf(` as `)) {
       [_table, _as] = table.split(` as `);
     }
     _table = _table.trim();
@@ -212,6 +212,15 @@ export class Builder {
     //   this._from = _table;
     // }
     this._table = _table;
+    return this;
+  }
+
+  /**
+   * alias table
+   * @param as 
+   */
+  alias(as: string) {
+    this._alias = as;
     return this;
   }
 

@@ -3,8 +3,6 @@ import { Model } from '../model';
 import pluralize from 'pluralize';
 
 export class HasOne extends HasRelations {
-
-
   /**
    * 创建一对一关联关系
    * @param parent 
@@ -16,8 +14,8 @@ export class HasOne extends HasRelations {
     super();
     this.parent = parent;
     this.model = model;
-    this.foreignKey = foreignKey;
-    this.localKey = localKey;
+    this.foreignKey = foreignKey ?? this.getDefaultForeignKey();
+    this.localKey = localKey ?? this.getDefaultLocalKey();
   }
 
   /**
@@ -40,11 +38,15 @@ export class HasOne extends HasRelations {
    * @param relation 
    */
   async eagerly(resultModel: Model, relation: string) {
-    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
-    const localKey = this.localKey ?? this.getDefaultLocalKey();
-    const query = this.model.newModelBuilderInstance();
-    const record = await query.where(foreignKey, '=', resultModel.getAttribute(localKey)).first();
-    record && resultModel.setRelation(relation, await this.model.resultToModel(record));
+    const foreignKey = this.foreignKey;
+    const localKey = this.localKey;
+    const record = await this.model
+      .createQueryBuilder()
+      .getBuilder()
+      .where(foreignKey, '=', resultModel.getAttribute(localKey))
+      .first();
+    const model = await this.model.resultToModel(record);
+    record && resultModel.setRelation(relation, model);
   }
 
   /**
@@ -53,8 +55,8 @@ export class HasOne extends HasRelations {
    * @param relation 
    */
   async eagerlyMap(resultModels: Model[], relation: string) {
-    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
-    const localKey = this.localKey ?? this.getDefaultLocalKey();
+    const foreignKey = this.foreignKey;
+    const localKey = this.localKey;
     const range = new Set();
     for (const model of resultModels) {
       const id = model.getAttribute(localKey);
@@ -62,8 +64,11 @@ export class HasOne extends HasRelations {
     }
 
     if (range.size > 0) {
-      const query = this.model.newModelBuilderInstance();
-      const records: Record<string, any>[] = await query.whereIn(foreignKey, [...range]).find();
+      const records: Record<string, any>[] = await this.model
+        .createQueryBuilder()
+        .getBuilder()
+        .whereIn(foreignKey, [...range])
+        .find();
 
       const map = new Map();
       for (const record of records) {

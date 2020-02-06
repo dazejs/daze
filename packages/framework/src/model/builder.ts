@@ -88,6 +88,10 @@ export class ModelBuilder<M extends Model> {
     return this;
   }
 
+  getBuilder() {
+    return this.builder;
+  }
+
   /**
    * get builder model
    */

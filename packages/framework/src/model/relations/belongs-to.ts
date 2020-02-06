@@ -15,8 +15,8 @@ export class BelongsTo extends HasRelations {
     super();
     this.parent = parent;
     this.model = model;
-    this.foreignKey = foreignKey;
-    this.localKey = localKey;
+    this.foreignKey = foreignKey ?? this.getDefaultForeignKey();
+    this.localKey = localKey ?? this.getDefaultLocalKey();
   }
 
   /**
@@ -39,11 +39,14 @@ export class BelongsTo extends HasRelations {
    * @param relation 
    */
   async eagerly(resultModel: Model, relation: string) {
-    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
-    const localKey = this.localKey ?? this.getDefaultLocalKey();
+    const foreignKey = this.foreignKey;
+    const localKey = this.localKey;
 
-    const query = this.model.newModelBuilderInstance();
-    const data = await query.where(localKey, '=', resultModel.getAttribute(foreignKey)).first();
+    const data = await this.model
+      .createQueryBuilder()
+      .getBuilder()
+      .where(localKey, '=', resultModel.getAttribute(foreignKey))
+      .first();
     data && resultModel.setRelation(relation, await this.model.resultToModel(data));
   }
 
@@ -53,8 +56,8 @@ export class BelongsTo extends HasRelations {
    * @param relation 
    */
   async eagerlyMap(resultModels: Model[], relation: string) {
-    const foreignKey = this.foreignKey ?? this.getDefaultForeignKey();
-    const localKey = this.localKey ?? this.getDefaultLocalKey();
+    const foreignKey = this.foreignKey;
+    const localKey = this.localKey;
 
     const range = new Set();
     for (const model of resultModels) {
@@ -66,8 +69,11 @@ export class BelongsTo extends HasRelations {
     }
 
     if (range.size > 0) {
-      const query = this.model.newModelBuilderInstance();
-      const records: Record<string, any>[] = await query.whereIn(localKey, [...range]).find();
+      const records: Record<string, any>[] = await this.model
+        .createQueryBuilder()
+        .getBuilder()
+        .whereIn(localKey, [...range])
+        .find();
       const map = new Map();
 
       for (const record of records) {

@@ -1,6 +1,7 @@
-import { Entity, table, autoIncrementPrimaryColumn, column, hasOne, hasMany } from '../../../../../src';
+import { Entity, table, autoIncrementPrimaryColumn, column, hasOne, hasMany, belongsToMany } from '../../../../../src';
 import Profile from './profile';
 import Comment from './comment';
+import Role from './role';
 
 @table('users')
 export default class extends Entity {
@@ -16,15 +17,21 @@ export default class extends Entity {
   @column()
   description: string;
 
-  @hasOne(Profile, {
+  @hasOne(() => Profile, {
     localKey: 'id',
     foreignKey: 'user_id'
   })
   profile: Profile;
 
-  @hasMany(Comment, {
+  @hasMany(() => Comment, {
     localKey: 'id',
     foreignKey: 'user_id'
   })
   comments: Comment[];
+
+  @belongsToMany(() => Role, {
+    foreignPivotKey: 'user_id',
+    relatedPivotKey: 'role_id',
+  })
+  roles: Role[];
 }

@@ -1,4 +1,5 @@
-import { Entity, table, autoIncrementPrimaryColumn, column } from '../../../../../src';
+import { Entity, table, autoIncrementPrimaryColumn, column } from '../../../../../src'; 
+
 
 @table('roles')
 export default class extends Entity {

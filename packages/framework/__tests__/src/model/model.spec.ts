@@ -5,6 +5,7 @@ import { initDb } from './init';
 import User from '../../daze/src/app/entities/user';
 import Profile from '../../daze/src/app/entities/profile';
 import Comment from '../../daze/src/app/entities/comment';
+import Role from '../../daze/src/app/entities/role';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -193,5 +194,121 @@ describe('one to many relation', () => {
       ]
     });
 
+  });
+
+  it('should return belongs to relation data', async () => {
+    const user = new User();
+    const comment = new Comment();
+    await user.create({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+    });
+    await comment.create({
+      id: 1,
+      user_id: 1,
+      comment: 'test1'
+    });
+
+    const res = await comment.with('user').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      comment: 'test1',
+      user_id: 1,
+      user: {
+        id: 1,
+        name: 'dazejs',
+        age: 10,
+        description: 'test1',
+      }
+    });
+
+  });
+});
+
+describe('many to many relation', () => {
+  const user = new User();
+  const role = new Role();
+  beforeEach(async () => {
+    await user.create({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+    });
+    await user.create({
+      id: 2,
+      name: 'dazejs2',
+      age: 11,
+      description: 'test2',
+    });
+    await role.create({
+      id: 1,
+      description: 'test1'
+    });
+    await role.create({
+      id: 2,
+      description: 'test2'
+    });
+  });
+  it('should return many to many relation data', async () => {
+    await app.get('db').connection().table('user_role').insertAll([{
+      user_id: 1,
+      role_id: 1
+    }, {
+      user_id: 1,
+      role_id: 2
+    }]);
+    const res = await user.with('roles').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+      roles: [{
+        id: 1,
+        description: 'test1'
+      }, {
+        id: 2,
+        description: 'test2'
+      }]
+    });
+  });
+
+  it('should attach relation ship', async () => {
+    const user1 = await user.get(1);
+    await user1.attach('roles', 1, 2);
+    const res = await user.with('roles').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+      roles: [{
+        id: 1,
+        description: 'test1'
+      }, {
+        id: 2,
+        description: 'test2'
+      }]
+    });
+  });
+
+  it('should detach relation ship', async () => {
+    const user1 = await user.get(1);
+    await user1.attach('roles', 1, 2);
+    await user1.detach('roles', 1);
+    const res = await user.with('roles').get(1);
+    expect(res.getAttributes()).toEqual({
+      id: 1,
+      name: 'dazejs',
+      age: 10,
+      description: 'test1',
+      roles: [{
+        id: 2,
+        description: 'test2'
+      }]
+    });
   });
 });

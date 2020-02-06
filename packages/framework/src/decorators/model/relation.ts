@@ -18,13 +18,13 @@ interface OneRelationOptions {
  *
  * @returns {PropertyDecorator}
  */
-export function HasOne(RelationEntity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function HasOne(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'hasOne',
-      entity: RelationEntity,
+      entityFn: fn,
       foreignKey: options.foreignKey,
       localKey: options.localKey
     });
@@ -33,8 +33,8 @@ export function HasOne(RelationEntity: typeof EntityBase, options: OneRelationOp
   };
 }
 
-export function hasOne(Entity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
-  return HasOne(Entity, options);
+export function hasOne(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+  return HasOne(fn, options);
 }
 
 /**
@@ -42,13 +42,13 @@ export function hasOne(Entity: typeof EntityBase, options: OneRelationOptions = 
  *
  * @returns {PropertyDecorator}
  */
-export function BelongsTo(Entity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function BelongsTo(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'belongsTo',
-      entity: Entity,
+      entityFn: fn,
       foreignKey: options.foreignKey,
       localKey: options.localKey
     });
@@ -57,8 +57,8 @@ export function BelongsTo(Entity: typeof EntityBase, options: OneRelationOptions
   };
 }
 
-export function belongsTo(Entity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
-  return BelongsTo(Entity, options);
+export function belongsTo(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+  return BelongsTo(fn, options);
 }
 
 /**
@@ -66,13 +66,13 @@ export function belongsTo(Entity: typeof EntityBase, options: OneRelationOptions
  *
  * @returns {PropertyDecorator}
  */
-export function HasMany(Entity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function HasMany(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'hasMany',
-      entity: Entity,
+      entityFn: fn,
       foreignKey: options.foreignKey,
       localKey: options.localKey
     });
@@ -81,8 +81,8 @@ export function HasMany(Entity: typeof EntityBase, options: OneRelationOptions =
   };
 }
 
-export function hasMany(Entity: typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
-  return HasMany(Entity, options);
+export function hasMany(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+  return HasMany(fn, options);
 }
 
 
@@ -91,13 +91,13 @@ export function hasMany(Entity: typeof EntityBase, options: OneRelationOptions =
  *
  * @returns {PropertyDecorator}
  */
-export function BelongsToMany(Entity: typeof EntityBase, options: ManyRealtionOptions = {}): PropertyDecorator {
+export function BelongsToMany(fn: () => typeof EntityBase, options: ManyRealtionOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return target;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
     relations.set(propertyKey, {
       type: 'belongsToMany',
-      entity: Entity,
+      entityFn: fn,
       pivot: options.pivot,
       foreignPivotKey: options.foreignPivotKey,
       relatedPivotKey: options.relatedPivotKey
@@ -107,6 +107,6 @@ export function BelongsToMany(Entity: typeof EntityBase, options: ManyRealtionOp
   };
 }
 
-export function belongsToMany(Entity: typeof EntityBase, options: ManyRealtionOptions = {}): PropertyDecorator {
-  return BelongsToMany(Entity, options);
+export function belongsToMany(fn: () => typeof EntityBase, options: ManyRealtionOptions = {}): PropertyDecorator {
+  return BelongsToMany(fn, options);
 }

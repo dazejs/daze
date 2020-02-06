@@ -13,7 +13,7 @@ export type RelationTypes = 'hasOne' | 'belongsTo' | 'hasMany' | 'belongsToMany'
 
 export interface RelationDesc {
   type: RelationTypes;
-  entity: typeof Entity;
+  entityFn: () => typeof Entity;
   pivot?: typeof Entity;
   foreignKey?: string;
   localKey?: string;
@@ -159,6 +159,40 @@ export class Model {
     this.relationMap = Reflect.getMetadata('relations', this.constructor) || new Map();
   }
 
+  async attach(relation: string, ...ids: (number | string)[]) {
+    if(!this.isExists()) {
+      throw new Error('model does not exists!');
+    }
+    if (!this.hasWith(relation) || !(this.getWith(relation) instanceof BelongsToMany)) {
+      throw new Error(`model does not have many to many relation: [${relation}]!`);
+    }
+    const imp = this.getWith(relation) as BelongsToMany;
+    const insertData: any[] = [];
+    for (const id of ids) {
+      insertData.push({
+        [`${imp.foreignPivotKey}`]: this.getPrimaryValue(),
+        [`${imp.relatedPivotKey}`]: id,
+      });
+    }
+    await imp.pivot.createQueryBuilder().insertAll(insertData);
+    return imp.pivot;
+  }
+
+  async detach(relation: string, ...ids: (number | string)[]) {
+    if (!this.isExists()) {
+      throw new Error('model does not exists!');
+    }
+    if (!this.hasWith(relation) || !(this.getWith(relation) instanceof BelongsToMany)) {
+      throw new Error(`model does not have many to many relation: [${relation}]!`);
+    }
+    const imp = this.getWith(relation) as BelongsToMany;
+    await imp.pivot.createQueryBuilder()
+      .where(imp.foreignPivotKey as string, '=', this.getPrimaryValue())
+      .whereIn(imp.relatedPivotKey as string, ids)
+      .delete();
+    return imp.pivot;
+  }
+
   createQueryBuilder() {
     return this.newModelBuilderInstance();
   }
@@ -223,6 +257,14 @@ export class Model {
    */
   setRelation(key: string, value: any) {
     this.relations.set(key, value);
+  }
+
+  /**
+   * 关联关系是否存在
+   * @param key 
+   */
+  hasRelation(key: string) {
+    return this.relations.has(key);
   }
 
   /**
@@ -297,15 +339,16 @@ export class Model {
     const relationDesc = this.getRelationMap().get(relation);
     if (!relationDesc) return;
     if (relationDesc) {
+      const entity = relationDesc.entityFn();
       switch (relationDesc.type) {
         case 'hasOne':
-          return new HasOne(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
+          return new HasOne(this as any, new entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'belongsTo':
-          return new BelongsTo(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
+          return new BelongsTo(this as any, new entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'hasMany':
-          return new HasMany(this as any, new relationDesc.entity() as any, relationDesc.foreignKey, relationDesc.localKey);
+          return new HasMany(this as any, new entity() as any, relationDesc.foreignKey, relationDesc.localKey);
         case 'belongsToMany':
-          return new BelongsToMany(this as any, new relationDesc.entity() as any, relationDesc.pivot as any, relationDesc.foreignPivotKey, relationDesc.relatedPivotKey);
+          return new BelongsToMany(this as any, new entity() as any, relationDesc.pivot as any, relationDesc.foreignPivotKey, relationDesc.relatedPivotKey);
         default:
           return;
       }
@@ -412,6 +455,11 @@ export class Model {
     return this.withs;
   }
 
+  setWiths(withs: Map<string, any>) {
+    this.withs = withs;
+    return this;
+  }
+
   /**
    * 设置渴求式加载关联关系
    * @param relation 
@@ -420,6 +468,22 @@ export class Model {
   setWith(relation: string, value: HasRelations) {
     this.withs.set(relation, value);
     return this;
+  }
+
+  /**
+   * 获取关联关系
+   * @param relation 
+   */
+  getWith(relation: string) {
+    return this.withs.get(relation);
+  }
+
+  /**
+   * 是否存在关联关系
+   * @param relation 
+   */
+  hasWith(relation: string) {
+    return this.withs.has(relation);
   }
 
   /**
@@ -604,6 +668,17 @@ export class Model {
   }
 
   /**
+   * 是否存在属性
+   * @param key 
+   */
+  hasAttribute(key: string) {
+    if (!key) return false;
+    if (this.columns.has(key)) return true;
+    if (this.relations.has(key)) return true;
+    return false;
+  }
+
+  /**
    * 设置实体属性
    * Set model properties
    * @param key 
@@ -627,9 +702,9 @@ export class Model {
     // 只有在实体声明的字段才会被填充
     // Only fields declared in the entity are populated
     const keys = this.columns.keys();
-    if (attributes instanceof Entity) {
+    if (attributes instanceof Model) {
       for (const columnKey of keys) {
-        if (Reflect.has(attributes, columnKey)) {
+        if (attributes.hasAttribute(columnKey)) {
           this.attributes[columnKey] = attributes.getAttribute(columnKey);
         }
       }
@@ -659,6 +734,7 @@ export class Model {
   async resultToModel(result: Record<string, any>, isFromCollection = false) {
     const model = this.newInstance();
     model.fill(result);
+    model.setWiths(this.withs);
     model.setExists(true);
     if (!isFromCollection && this.getWiths().size > 0) {
       await model.eagerly(this.getWiths(), model as any);
