@@ -31,6 +31,12 @@ describe('Response statusable', () => {
     expect(response.ok().getCode()).toBe(200);
   });
 
+  it('should return 201', () => {
+    const response = new Response();
+    expect(response.Created().getCode()).toBe(201);
+    expect(response.created().getCode()).toBe(201);
+  });
+
   it('should return 202', () => {
     const response = new Response();
     expect(response.Accepted().getCode()).toBe(202);
