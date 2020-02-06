@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.3.0...@dazejs/framework@2.4.0) (2020-02-06)
+
+
+### Bug Fixes
+
+* **error:** update error handle to emit app ([13b944d](https://github.com/dazejs/daze/commit/13b944d0e80b442993780dabcb8335db899ff483))
+* **model:** many-to-many relational operations ([fc5ed8b](https://github.com/dazejs/daze/commit/fc5ed8bd017299808ff6c1f864847decf37674d0))
+* **model:** relation define circular dependencies ([6da775c](https://github.com/dazejs/daze/commit/6da775c99f14b81eeb98459c452bcef608559ce0))
+
+
+### Features
+
+* **response:** add lowercase response status func ([cc230cb](https://github.com/dazejs/daze/commit/cc230cb7415753ef778905c40172dd19c6202661))
+
+
+
+
+
 # [2.3.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.2.1...@dazejs/framework@2.3.0) (2020-02-05)
 
 
