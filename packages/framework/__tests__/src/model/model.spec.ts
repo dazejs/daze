@@ -230,27 +230,29 @@ describe('one to many relation', () => {
 describe('many to many relation', () => {
   const user = new User();
   const role = new Role();
-  beforeEach(async () => {
-    await user.create({
-      id: 1,
-      name: 'dazejs',
-      age: 10,
-      description: 'test1',
-    });
-    await user.create({
-      id: 2,
-      name: 'dazejs2',
-      age: 11,
-      description: 'test2',
-    });
-    await role.create({
-      id: 1,
-      description: 'test1'
-    });
-    await role.create({
-      id: 2,
-      description: 'test2'
-    });
+  beforeEach(() => {
+    return (async () => {
+      await user.create({
+        id: 1,
+        name: 'dazejs',
+        age: 10,
+        description: 'test1',
+      });
+      await user.create({
+        id: 2,
+        name: 'dazejs2',
+        age: 11,
+        description: 'test2',
+      });
+      await role.create({
+        id: 1,
+        description: 'test1'
+      });
+      await role.create({
+        id: 2,
+        description: 'test2'
+      });
+    })();
   });
   it('should return many to many relation data', async () => {
     await app.get('db').connection().table('user_role').insertAll([{
