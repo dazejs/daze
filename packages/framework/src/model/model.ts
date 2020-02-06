@@ -109,13 +109,6 @@ export class Model {
   private relations: Map<string, Entity | Entity[]> = new Map();
 
   /**
-   * 模型实体
-   */
-  // private entity: Entity; AAsae33
-
-  // private intercepts = ['where', 'whereIn', 'whereNotIn', 'orWhere'];
-
-  /**
    * Create Model
    * @param entity
    */
@@ -163,10 +156,10 @@ export class Model {
     if(!this.isExists()) {
       throw new Error('model does not exists!');
     }
-    if (!this.hasWith(relation) || !(this.getWith(relation) instanceof BelongsToMany)) {
+    if (!this.relationMap.has(relation) || this.relationMap.get(relation)?.type !== 'belongsToMany') {
       throw new Error(`model does not have many to many relation: [${relation}]!`);
     }
-    const imp = this.getWith(relation) as BelongsToMany;
+    const imp = this.getRelationImp(relation) as BelongsToMany;
     const insertData: any[] = [];
     for (const id of ids) {
       insertData.push({
@@ -182,10 +175,10 @@ export class Model {
     if (!this.isExists()) {
       throw new Error('model does not exists!');
     }
-    if (!this.hasWith(relation) || !(this.getWith(relation) instanceof BelongsToMany)) {
+    if (!this.relationMap.has(relation) || this.relationMap.get(relation)?.type !== 'belongsToMany') {
       throw new Error(`model does not have many to many relation: [${relation}]!`);
     }
-    const imp = this.getWith(relation) as BelongsToMany;
+    const imp = this.getRelationImp(relation) as BelongsToMany;
     await imp.pivot.createQueryBuilder()
       .where(imp.foreignPivotKey as string, '=', this.getPrimaryValue())
       .whereIn(imp.relatedPivotKey as string, ids)
@@ -734,7 +727,7 @@ export class Model {
   async resultToModel(result: Record<string, any>, isFromCollection = false) {
     const model = this.newInstance();
     model.fill(result);
-    model.setWiths(this.withs);
+    // model.setWiths(this.withs);
     model.setExists(true);
     if (!isFromCollection && this.getWiths().size > 0) {
       await model.eagerly(this.getWiths(), model as any);
