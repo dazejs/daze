@@ -65,12 +65,7 @@ export class ErrorHandler {
    */
   report() {
     if (this.error instanceof HttpError) return;
-    // eslint-disable-next-line
-    console.error();
-    // eslint-disable-next-line
-    console.error(this.error.stack || this.error.toString());
-    // eslint-disable-next-line
-    console.error();
+    this.app.emit('error', this.error, this.request);
   }
 
 

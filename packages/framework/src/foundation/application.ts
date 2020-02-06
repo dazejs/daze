@@ -322,7 +322,12 @@ export class Application extends Container {
    */
   onerror(err: ErrorCollection) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
-    throw err;
+    // eslint-disable-next-line
+    console.error();
+    // eslint-disable-next-line
+    console.error(err.stack || err.toString());
+    // eslint-disable-next-line
+    console.error();
   }
 
   /**

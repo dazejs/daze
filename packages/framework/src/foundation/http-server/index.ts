@@ -38,13 +38,11 @@ export class HttpServer {
           return new ResponseManager(response).output(request);
         })
         .catch((err: ErrorCollection) => {
-          if (err.report && typeof err.report === 'function') {
-            err.report(this);
-          } else {
-            const handler = new ErrorHandler(err, request);
-            handler.report();
-          }
-
+          const handler = new ErrorHandler(err, request);
+          handler.report();
+          // error 对象上存在 report 函数则执行
+          if (err.report && typeof err.report === 'function') err.report();
+          
           if (err.render && typeof err.render === 'function') {
             new ResponseManager(err.render(this.app)).output(request);
           } else {
