@@ -91,13 +91,13 @@ export class Container extends EventEmitter {
         shared: isShared,
         callable,
       });
-      return this;
+    } else {
+      this.instances.set(abstract, {
+        concrete,
+        shared: true,
+        callable: false,
+      });
     }
-    this.instances.set(abstract, {
-      concrete,
-      shared: true,
-      callable,
-    });
     this.emit('binding', this.instances.get(abstract), this);
     return this;
   }
