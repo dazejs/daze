@@ -274,83 +274,83 @@ describe('many to many relation', () => {
     });
   });
 
-  it('should attach relation ship', async () => {
-    const user = new User();
-    const role = new Role();
-    await user.create({
-      id: 1,
-      name: 'dazejs',
-      age: 10,
-      description: 'test1',
-    });
-    await user.create({
-      id: 2,
-      name: 'dazejs2',
-      age: 11,
-      description: 'test2',
-    });
-    await role.create({
-      id: 1,
-      description: 'test1'
-    });
-    await role.create({
-      id: 2,
-      description: 'test2'
-    });
-    const user1 = await user.get(1);
-    await user1.attach('roles', 1, 2);
-    const res = await user.with('roles').get(1);
-    expect(res.getAttributes()).toEqual({
-      id: 1,
-      name: 'dazejs',
-      age: 10,
-      description: 'test1',
-      roles: [{
-        id: 1,
-        description: 'test1'
-      }, {
-        id: 2,
-        description: 'test2'
-      }]
-    });
-  });
+  // it('should attach relation ship', async () => {
+  //   const user = new User();
+  //   const role = new Role();
+  //   await user.create({
+  //     id: 1,
+  //     name: 'dazejs',
+  //     age: 10,
+  //     description: 'test1',
+  //   });
+  //   await user.create({
+  //     id: 2,
+  //     name: 'dazejs2',
+  //     age: 11,
+  //     description: 'test2',
+  //   });
+  //   await role.create({
+  //     id: 1,
+  //     description: 'test1'
+  //   });
+  //   await role.create({
+  //     id: 2,
+  //     description: 'test2'
+  //   });
+  //   const user1 = await user.get(1);
+  //   await user1.attach('roles', 1, 2);
+  //   const res = await user.with('roles').get(1);
+  //   expect(res.getAttributes()).toEqual({
+  //     id: 1,
+  //     name: 'dazejs',
+  //     age: 10,
+  //     description: 'test1',
+  //     roles: [{
+  //       id: 1,
+  //       description: 'test1'
+  //     }, {
+  //       id: 2,
+  //       description: 'test2'
+  //     }]
+  //   });
+  // });
 
-  it('should detach relation ship', async () => {
-    const user = new User();
-    const role = new Role();
-    await user.create({
-      id: 1,
-      name: 'dazejs',
-      age: 10,
-      description: 'test1',
-    });
-    await user.create({
-      id: 2,
-      name: 'dazejs2',
-      age: 11,
-      description: 'test2',
-    });
-    await role.create({
-      id: 1,
-      description: 'test1'
-    });
-    await role.create({
-      id: 2,
-      description: 'test2'
-    });
-    const user1 = await user.get(1);
-    await user1.attach('roles', 1, 2);
-    await user1.detach('roles', 1);
-    const res = await user.with('roles').get(1);
-    expect(res.getAttributes()).toEqual({
-      id: 1,
-      name: 'dazejs',
-      age: 10,
-      description: 'test1',
-      roles: [{
-        id: 2,
-        description: 'test2'
-      }]
-    });
-  });
+  // it('should detach relation ship', async () => {
+  //   const user = new User();
+  //   const role = new Role();
+  //   await user.create({
+  //     id: 1,
+  //     name: 'dazejs',
+  //     age: 10,
+  //     description: 'test1',
+  //   });
+  //   await user.create({
+  //     id: 2,
+  //     name: 'dazejs2',
+  //     age: 11,
+  //     description: 'test2',
+  //   });
+  //   await role.create({
+  //     id: 1,
+  //     description: 'test1'
+  //   });
+  //   await role.create({
+  //     id: 2,
+  //     description: 'test2'
+  //   });
+  //   const user1 = await user.get(1);
+  //   await user1.attach('roles', 1, 2);
+  //   await user1.detach('roles', 1);
+  //   const res = await user.with('roles').get(1);
+  //   expect(res.getAttributes()).toEqual({
+  //     id: 1,
+  //     name: 'dazejs',
+  //     age: 10,
+  //     description: 'test1',
+  //     roles: [{
+  //       id: 2,
+  //       description: 'test2'
+  //     }]
+  //   });
+  // });
 });
