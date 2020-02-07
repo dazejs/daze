@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.0...@dazejs/framework@2.4.1) (2020-02-07)
+
+
+### Bug Fixes
+
+* **container:** sometimes binding event can not tigger ([79a7169](https://github.com/dazejs/daze/commit/79a7169453a57ddbd5c7658f9079c6ccf434db14))
+
+
+
+
+
 # [2.4.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.3.0...@dazejs/framework@2.4.0) (2020-02-06)
 
 
