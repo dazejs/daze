@@ -12,9 +12,6 @@
     "benchmarks": "ts-node tools/benchmarks/benchmarks.ts",
     "commitlint": "commitlint -e $GIT_PARAMS"
   },
-  "dependencies": {
-    "commander": "^4.0.1"
-  },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
