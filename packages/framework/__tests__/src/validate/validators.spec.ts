@@ -192,7 +192,9 @@ describe('validate/validators', () => {
   });
   describe('validators#isFunction', () => {
     it('should return true when passed', () => {
-      expect(validators.isFunction(() => {})).toBeTruthy();
+      expect(validators.isFunction(() => {
+        //
+      })).toBeTruthy();
     });
     it('should return false when failed', () => {
       expect(validators.isFunction('() => {}')).toBeFalsy();

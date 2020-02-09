@@ -12,14 +12,18 @@ beforeAll(() => app.initialize());
 describe('Resource', () => {
   it('should setFormatter and getFmatter suucessful', () => {
     const resource = new Resource();
-    const formatter = () => {};
+    const formatter = () => {
+      //
+    };
     resource.setFormatter(formatter);
     expect(resource.getFormatter()).toBe(formatter);
   });
 
   it('should setMetaFormatter and getMetaFmatter suucessful', () => {
     const resource = new Resource();
-    const formatter = () => { };
+    const formatter = () => {
+      //
+    };
     resource.setMetaFormatter(formatter);
     expect(resource.getMetaFormatter()).toBe(formatter);
   });
