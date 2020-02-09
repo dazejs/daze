@@ -117,8 +117,9 @@ export class Config {
    * Sets the property value recursively based on the property name
    */
   setValue(names: any[], value: any, index = 0) {
-    const res: any = {};
     const name = names[index];
+    const original = names.slice(0, index).join('.') || '';
+    const res: any = this.get(original, {});
     const {
       length,
     } = names;

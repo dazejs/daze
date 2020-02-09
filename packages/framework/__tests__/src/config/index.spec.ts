@@ -44,7 +44,9 @@ describe('Config', () => {
     await configInstance.initialize();
     configInstance.set('app.port', 9999);
     configInstance.set('custom.a.b.d', 'd');
+    configInstance.set('custom.a.b.e', 'e');
     expect(configInstance.get('custom.a.b.d')).toBe('d');
+    expect(configInstance.get('custom.a.b.e')).toBe('e');
     expect(configInstance.get('app.port')).toBe(9999);
   });
 
