@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/trace-page",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "trace page for daze.js",
   "keywords": [
     "trace",

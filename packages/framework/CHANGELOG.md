@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.2](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.1...@dazejs/framework@2.4.2) (2020-02-09)
+
+
+### Bug Fixes
+
+* **config:** config.set can not set depth value ([bc84038](https://github.com/dazejs/daze/commit/bc84038998622b9cc28a0b199af3543745e0c0a3))
+
+
+
+
+
 ## [2.4.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.0...@dazejs/framework@2.4.1) (2020-02-07)
 
 
