@@ -7,9 +7,9 @@ export function Depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvi
 
     for (const provider of providers) {
       if (Array.isArray(provider)) {
-        option.imports?.push(...provider);
+        option.depends?.push(...provider);
       } else {
-        option.imports?.push(provider);
+        option.depends?.push(provider);
       }
     }
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
@@ -39,6 +39,6 @@ export function autoScan(...componentScans: string[] | string[][]) {
 }
 
 export interface ProviderOption {
-  imports?: (typeof BaseProvider)[];
+  depends?: (typeof BaseProvider)[];
   componentScan?: string[];
 }

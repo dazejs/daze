@@ -14,19 +14,24 @@ export class Provider {
   async resolve(ProviderClass: typeof BaseProvider) {
 
     if (!ProviderClass || this.app.has(ProviderClass)) return;
+    this.app.singleton(ProviderClass, ProviderClass);
 
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
+    const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
+
+    // resolve next imports
+    // 优先加载依赖的模块
+    if (providerOptions?.depends) {
+      for (const next of providerOptions.depends) {
+        await this.resolve(next);
+      }
+    }
 
     if (provideMetaMap.has(ProviderClass) && 
       !this.shouldProvideOnConfig(provideMetaMap.get(ProviderClass))
     ) {
       return ;
     }
-
-    this.app.singleton(ProviderClass, ProviderClass);
-    // Get provider options
-    // Class should be decorated by @Provider
-    const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
 
     const providerInstance = this.app.get(ProviderClass);
 
@@ -48,13 +53,6 @@ export class Provider {
     if (providerOptions?.componentScan) {
       for (const component of providerOptions.componentScan) {
         await this.app.get<Loader>('loader').scan(component);
-      }
-    }
-
-    // resolve next imports
-    if (providerOptions?.imports) {
-      for (const next of providerOptions.imports) {
-        await this.resolve(next);
       }
     }
   }
