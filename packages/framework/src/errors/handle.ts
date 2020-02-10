@@ -76,8 +76,7 @@ export class ErrorHandler {
   render() {
     if (this.error instanceof HttpError) {
       const contentType = this.error.headers && this.error.headers['content-type'] as string || '';
-
-      const headersType = typeis.is(contentType, ['html', 'text', 'json']);
+      const headersType = typeis.is(contentType, ['html', 'text', 'json']) || 'text';
       if (headersType && renderTypes.includes(headersType)) {
         return this[headersType as 'html' | 'text' | 'json']();
       }

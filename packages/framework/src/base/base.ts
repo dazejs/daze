@@ -13,8 +13,6 @@ import { Application } from '../foundation/application';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 
-
-@Reflect.metadata('injectable', true)
 export abstract class Base {
   /**
    * Application instance getter

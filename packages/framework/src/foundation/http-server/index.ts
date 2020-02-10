@@ -42,12 +42,11 @@ export class HttpServer {
           handler.report();
           // error 对象上存在 report 函数则执行
           if (err.report && typeof err.report === 'function') err.report();
-          
           if (err.render && typeof err.render === 'function') {
-            new ResponseManager(err.render(this.app)).output(request);
+            return new ResponseManager(err.render(this.app)).output(request);
           } else {
             const handler = new ErrorHandler(err, request);
-            new ResponseManager(handler.render()).output(request);
+            return new ResponseManager(handler.render()).output(request);
           }
         });
     });

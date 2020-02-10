@@ -3,7 +3,7 @@ import { Provider as BaseProvider} from '../../base/provider';
 
 export function Depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvider)[][]) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
     for (const provider of providers) {
       if (Array.isArray(provider)) {
@@ -21,7 +21,7 @@ export function depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvi
 
 export function AutoScan(...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { imports: [], componentScan: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
     for (const componentScan of componentScans) {
       if (Array.isArray(componentScan)) {

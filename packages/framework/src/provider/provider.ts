@@ -21,7 +21,7 @@ export class Provider {
 
     // resolve next imports
     // 优先加载依赖的模块
-    if (providerOptions?.depends) {
+    if (Array.isArray(providerOptions?.depends)) {
       for (const next of providerOptions.depends) {
         await this.resolve(next);
       }
