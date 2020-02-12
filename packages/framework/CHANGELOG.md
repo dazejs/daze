@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.2...@dazejs/framework@2.4.3) (2020-02-12)
+
+
+### Bug Fixes
+
+* **loader:** filter .d.ts file to loader ([72510ee](https://github.com/dazejs/daze/commit/72510ee6603daab1e4c20563111eb319f63e7e2c))
+* **provider:** fix load provider depends order ([439ed74](https://github.com/dazejs/daze/commit/439ed74de29ae137bbaa17710e6c65bec1b019ad))
+
+
+
+
+
 ## [2.4.2](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.1...@dazejs/framework@2.4.2) (2020-02-09)
 
 
