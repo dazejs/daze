@@ -43,17 +43,19 @@ export class Loader {
    * @param absoluteFilePath 
    */
   async scan(absoluteFilePath: string) {
-    const filePaths = glob.sync(path.join(absoluteFilePath, '**/*.@(js|ts)'), {
+    const filePaths = glob.sync(path.join(absoluteFilePath, '**/*.@(ts|js)'), {
       nodir: true,
       matchBase: true
     });
     for (const file of filePaths) {
-      const Target = (await import(file));
-      Object.keys(Target)
-        .filter((k) => typeof Target[k] === 'function')
-        .forEach((k) => {
-          this.load(Target[k]);
-        });
+      if (file.slice(-5) !== '.d.ts') {
+        const Target = (await import(file));
+        Object.keys(Target)
+          .filter((k) => typeof Target[k] === 'function')
+          .forEach((k) => {
+            this.load(Target[k]);
+          });
+      }
     }
     return this;
   }
