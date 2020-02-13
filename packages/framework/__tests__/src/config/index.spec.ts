@@ -13,7 +13,7 @@ beforeAll(() => app.initialize());
 
 describe('Config', () => {
   it('Config#get', async () => {
-    const configInstance = new Config();
+    const configInstance = app.get(Config);
     await configInstance.initialize();
     expect(configInstance.get('app')).toEqual({
       ...appConfig,
@@ -29,7 +29,7 @@ describe('Config', () => {
   });
 
   it('Config#has', async () => {
-    const configInstance = new Config();
+    const configInstance = app.get(Config);
     await configInstance.initialize();
     expect(configInstance.has('app')).toBeTruthy();
     expect(configInstance.has('app.workers')).toBeTruthy();
@@ -40,7 +40,7 @@ describe('Config', () => {
   });
 
   it('Config#set', async () => {
-    const configInstance = new Config();
+    const configInstance = app.get(Config);
     await configInstance.initialize();
     configInstance.set('app.port', 9999);
     configInstance.set('custom.a.b.d', 'd');
@@ -51,7 +51,7 @@ describe('Config', () => {
   });
 
   it('Config#prop', async () => {
-    const configInstance = new Config();
+    const configInstance = app.get(Config);
     await configInstance.initialize();
     expect(configInstance.app.port).toBe(8888);
   });

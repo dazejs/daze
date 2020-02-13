@@ -9,7 +9,7 @@ import { EventEmitter } from 'events';
 
 import { Config } from '../config';
 import { Container } from '../container';
-import { getAlivedWorkers } from './helpers';
+import { getAlivedWorkers } from '../cluster/helpers';
 
 const MESSENGER = 'daze-messenger';
 

@@ -6,7 +6,6 @@ import { OutgoingHttpHeaders } from 'http';
 import { Base } from '../../../src/base/base';
 import { Application } from '../../../src/foundation/application';
 import { Config } from '../../../src/config';
-import { Messenger } from '../../../src/cluster/messenger';
 import { Response } from '../../../src/response';
 import { Redirect } from '../../../src/response/redirect';
 
@@ -29,14 +28,6 @@ describe('Base Class', () => {
     }
     const base = new Example();
     expect(base.config).toBeInstanceOf(Config);
-  });
-
-  it('should return messenger instance with messenger prop', () => {
-    class Example extends Base {
-      get messenger(): Messenger { return super.messenger; }
-    }
-    const base = new Example();
-    expect(base.messenger).toBeInstanceOf(Messenger);
   });
 
   it('should return response instance with response method', () => {
