@@ -9,13 +9,17 @@ import * as nunjucks from 'nunjucks';
 import * as path from 'path';
 import { Provider as BaseProvider } from '../../../base/provider';
 import { ControllerManager } from '../../../controller/manager';
-import { Database } from '../../../database';
-import { provide } from '../../../decorators/provider';
+import { DatabaseProvider } from '../../../database';
+import { provide, depend } from '../../../decorators/provider';
 import { Logger } from '../../../logger';
-import { Middleware } from '../../../middleware';
+import { MiddlewareProvider } from '../../../middleware';
 import { Router } from '../../../router';
-import { Application } from '../../application';
+// import { Application } from '../../application';
 
+@depend([
+  DatabaseProvider,
+  MiddlewareProvider
+])
 export class AppProvider extends BaseProvider {
   @provide('csrf')
   _csrf() {
@@ -25,11 +29,6 @@ export class AppProvider extends BaseProvider {
   @provide('controller-manager')
   _controllerManager() {
     return new ControllerManager();
-  }
-
-  @provide('middleware')
-  _middleware() {
-    return new Middleware();
   }
 
   @provide('router')
@@ -52,11 +51,6 @@ export class AppProvider extends BaseProvider {
     templateEnv.addGlobal('config', this.config);
     templateEnv.addGlobal('__public__', this.config.get('app.publicPrefix', ''));
     return templateEnv;
-  }
-
-  @provide('db')
-  _db(app: Application) {
-    return new Database(app);
   }
 
   @provide('logger')
