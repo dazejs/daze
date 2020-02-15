@@ -16,7 +16,6 @@ import { Container } from '../container';
 import { Database } from '../database';
 import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
-import { Middleware } from '../middleware';
 import { HttpServer } from './http-server';
 import { Provider as BaseProvider } from '../base/provider';
 import { Provider } from '../provider';
@@ -453,7 +452,6 @@ export class Application extends Container {
   get(abstract: 'config', args?: any[], force?: boolean): Config
   get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
-  get(abstract: 'middleware', args?: any[], force?: boolean): Middleware
   get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 

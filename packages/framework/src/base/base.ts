@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { OutgoingHttpHeaders } from 'http';
-import { Messenger } from '../cluster/messenger';
+import { Messenger } from '../messenger';
 import { Config } from '../config';
 import { Container } from '../container';
 import { Database } from '../database';
