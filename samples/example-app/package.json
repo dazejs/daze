@@ -11,7 +11,7 @@
     "node": ">=10.15.0"
   },
   "dependencies": {
-    "@dazejs/framework": "2.0.14"
+    "@dazejs/framework": "2.4.3"
   },
   "devDependencies": {
     "@types/node": "^12.7.5",

@@ -1,16 +1,16 @@
 import { Provider } from '../base/provider';
 import { provide } from '../decorators/provider';
-import { Middleware } from './middleware';
+import { MiddlewareService } from './middleware-service';
 import { Application } from '../foundation/application';
 
 export class MiddlewareProvider extends Provider {
-  @provide(Middleware)
+  @provide(MiddlewareService)
   _middleware(app: Application) {
-    return new Middleware(app);
+    return new MiddlewareService(app);
   }
 
   @provide('middleware')
   _middlewareAlias(app: Application) {
-    return app.get(Middleware);
+    return app.get(MiddlewareService);
   }
 }

@@ -14,7 +14,7 @@ export type TNext = (...args: any[]) => Response | Promise<Response>
 
 export type TMiddlewareStage = (request: Request, next: TNext) => Response | Promise<Response>
 
-export class Middleware {
+export class MiddlewareService {
   app: Application;
 
   middlewares: any[] = [];
@@ -38,8 +38,8 @@ export class Middleware {
   /**
    * combine another Middleware before this middlewares
    */
-  combineBefore(anotherMiddleware: Middleware) {
-    if (!(anotherMiddleware instanceof Middleware)) return this;
+  combineBefore(anotherMiddleware: MiddlewareService) {
+    if (!(anotherMiddleware instanceof MiddlewareService)) return this;
     this.middlewares.unshift(...anotherMiddleware.middlewares);
     return this;
   }
@@ -47,8 +47,8 @@ export class Middleware {
   /**
    * combine another Middleware after this middlewares
    */
-  combineAfter(anotherMiddleware: Middleware) {
-    if (!(anotherMiddleware instanceof Middleware)) return this;
+  combineAfter(anotherMiddleware: MiddlewareService) {
+    if (!(anotherMiddleware instanceof MiddlewareService)) return this;
     this.middlewares.push(...anotherMiddleware.middlewares);
     return this;
   }

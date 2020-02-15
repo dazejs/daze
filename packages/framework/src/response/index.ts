@@ -318,7 +318,7 @@ export class Response extends Statusable {
    * @param eTag eTag
    */
   eTag(eTag: string) {
-    if (!/^(W\/)?"/.test(eTag)) {
+    if (!(/^(W\/)?"/.test(eTag))) {
       this.setHeader('ETag', `"${eTag}"`);
       return this;
     }

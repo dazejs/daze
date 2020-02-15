@@ -80,9 +80,9 @@ export class Container extends EventEmitter {
   [BIND](abstract: any, concrete: any, shared = false, callable = false) {
     if (!abstract || !concrete) return;
     let isShared = shared;
-    if (Reflect.getMetadata(symbols.MULTITON, concrete) === true) {
+    if (concrete && Reflect.getMetadata(symbols.MULTITON, concrete) === true) {
       isShared = true;
-    } else if (Reflect.getMetadata(symbols.SINGLETON, concrete) === true) {
+    } else if (concrete && Reflect.getMetadata(symbols.SINGLETON, concrete) === true) {
       isShared = false;
     }
     if (typeof concrete === 'function') {
@@ -129,7 +129,7 @@ export class Container extends EventEmitter {
       this.emit('resolving', obj, this);
     }
     // 如果是单例，保存实例到容器
-    if (shared && obj !== undefined) {
+    if (shared && obj !== undefined && !force) {
       this.instances.set(abstract, {
         concrete: obj,
         shared,

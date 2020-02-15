@@ -9,7 +9,7 @@ import { pathToRegexp, parse, Key } from 'path-to-regexp';
 
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { Middleware } from '../middleware';
+import { MiddlewareService } from '../middleware';
 import { Request } from '../request';
 import { Response } from '../response';
 import { parsePattern } from './helpers';
@@ -55,7 +55,7 @@ export class Route {
   /**
    * route middleware instance
    */
-  middleware: Middleware = new Middleware();
+  middleware: MiddlewareService;
 
   /**
    * Create Route
@@ -66,6 +66,12 @@ export class Route {
    * @param middlewares route middlewares
    */
   constructor(uri: string, methods: string[] = [], controller: any = null, action = '', middlewares: any[] = []) {
+    
+    /**
+     * middleware service
+     */
+    this.middleware = this.app.make(MiddlewareService, [], true);
+
     /**
      * @type uri URI
      */
