@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.4](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.3...@dazejs/framework@2.4.4) (2020-02-18)
+
+
+### Bug Fixes
+
+* **router:** router can not good work with * route ([0cd09da](https://github.com/dazejs/daze/commit/0cd09da8deff2b8de8757f9dc758dda83a357b62))
+
+
+
+
+
 ## [2.4.3](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.2...@dazejs/framework@2.4.3) (2020-02-12)
 
 
