@@ -23,6 +23,11 @@ export class Node {
    */
   route: Route;
 
+  /**
+   * node priority
+   */
+  priority = 0;
+
   constructor(key?: string, type?: string) {
     /**
      * @type node key: part of request path
@@ -78,11 +83,21 @@ export class Node {
 
     let child = this.matchChild(keyObj.key);
 
-    if (!child) {
+    if (!child || child.type === 'all') {
       child = new Node(keyObj.key, keyObj.type);
       this.children.push(child);
     }
+    child.priority++;
     child.insert(route, pieces, height + 1);
+    this.reorderChildren();
+  }
+
+  /**
+   * reorder children
+   */
+  reorderChildren() {
+    this.children.sort((a, b): number => b.priority - a.priority);
+    this.children.sort((_a, b): number => b.type === 'all' ? -1 : 1);
   }
 
   /**
@@ -98,10 +113,6 @@ export class Node {
 
     const key = keys[height];
     const children = this.matchChildren(key);
-
-    // if (!children.length) {
-    //   if (this.route) return this;
-    // }
 
     for (const child of children) {
       if (child.key && child.type === 'all') {

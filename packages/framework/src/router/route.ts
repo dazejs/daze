@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as http from 'http';
-import { pathToRegexp, parse, Key } from 'path-to-regexp';
+import { pathToRegexp, Key } from 'path-to-regexp';
 
 import { Container } from '../container';
 import { Application } from '../foundation/application';
@@ -108,30 +108,33 @@ export class Route {
   }
 
   get pieces() {
-    const pieces = parse(this.uri);
-    const res = [];
-    for (const piece of pieces) {
-      if (piece && typeof piece === 'string') {
-        res.push(...parsePattern(piece).map(p => {
-          if (p === '*') {
-            return {
-              key: p,
-              type: 'all',
-            };
-          }
-          return {
-            key: p,
-            type: 'static',
-          };
-        }));
-      } else if (piece && typeof piece === 'object') {
+
+    const paths = parsePattern(this.uri);
+    const res: any[] = [];
+
+    for (const _path of paths) {
+      if (_path === '*') {
         res.push({
-          key: piece.pattern,
-          type: 'reg',
+          key: _path,
+          type: 'all'
         });
+      } else {
+        const keys: any[] = [];
+        const reg = pathToRegexp(_path, keys);
+        if (!keys.length) {
+          res.push({
+            key: _path,
+            type: 'static'
+          });
+        } else {
+          res.push({
+            key: reg,
+            type: 'reg'
+          });
+        }
       }
-      
     }
+
     return res;
   }
 
