@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.5](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.4...@dazejs/framework@2.4.5) (2020-02-25)
+
+
+### Bug Fixes
+
+* **response:** fix can not return force response ([a89148c](https://github.com/dazejs/daze/commit/a89148c7ae64ac692095aa71c817f11320aae92e))
+
+
+
+
+
 ## [2.4.4](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.3...@dazejs/framework@2.4.4) (2020-02-18)
 
 
