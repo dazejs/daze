@@ -29,7 +29,7 @@ export class HttpServer {
           const code = response.getCode();
           const data = response.getData();
           const headers = response.getHeaders();
-          if (code >= 400) {
+          if (code >= 400 && !response.isForce()) {
             throw new HttpError(code, data, headers);
           }
           return response;

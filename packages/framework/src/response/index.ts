@@ -60,6 +60,11 @@ export class Response extends Statusable {
   protected cookies: Cookie[] = [];
 
   /**
+   * need to response force
+   */
+  protected _isForce = false
+
+  /**
    * patched methods
    */
   // [key: string]: any;
@@ -109,6 +114,21 @@ export class Response extends Statusable {
    */
   get data() {
     return this._data;
+  }
+  
+  /**
+   * set to force response
+   */
+  force() {
+    this._isForce = true;
+    return this;
+  }
+
+  /**
+   * is force response
+   */
+  isForce() {
+    return this._isForce;
   }
 
   /**
