@@ -11,7 +11,7 @@ import { Provider as BaseProvider } from '../../../base/provider';
 import { ControllerServiceProvider } from '../../../controller';
 import { DatabaseProvider } from '../../../database';
 import { provide, depend } from '../../../decorators/provider';
-import { Logger } from '../../../logger';
+import { LoggerProvider } from '../../../logger';
 import { MiddlewareProvider } from '../../../middleware';
 import { Router } from '../../../router';
 // import { Application } from '../../application';
@@ -19,7 +19,8 @@ import { Router } from '../../../router';
 @depend([
   DatabaseProvider,
   MiddlewareProvider,
-  ControllerServiceProvider
+  ControllerServiceProvider,
+  LoggerProvider
 ])
 export class AppProvider extends BaseProvider {
   @provide('csrf')
@@ -47,10 +48,5 @@ export class AppProvider extends BaseProvider {
     templateEnv.addGlobal('config', this.config);
     templateEnv.addGlobal('__public__', this.config.get('app.publicPrefix', ''));
     return templateEnv;
-  }
-
-  @provide('logger')
-  _logger() {
-    return new Logger();
   }
 }

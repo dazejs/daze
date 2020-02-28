@@ -8,7 +8,7 @@ const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
 beforeAll(() => app.initialize());
 
-const log = new Logger();
+const log = new Logger(app);
 describe('src/logger', () => {
   it('Logger#isDefaultDriverSupported', () => {
     expect(log.isDefaultDriverSupported('console')).toBeTruthy();
@@ -21,12 +21,12 @@ describe('src/logger', () => {
   });
 
   it('Logger#channl', () => {
-    expect(log.channel('console').logger).toBe(log.container.get('console'));
-    expect(log.channel('dailyFile').logger).toBe(log.container.get('dailyFile'));
-    expect(log.channel('file').logger).toBe(log.container.get('file'));
-    expect(log.channel('http').logger).toBe(log.container.get('http'));
-    expect(log.channel('stream').logger).toBe(log.container.get('stream'));
-    expect(log.channel('compose').logger).toEqual(log.container.get('compose'));
+    expect(log.channel('console').getLogger()).toBe(log.getContainer().get('console'));
+    expect(log.channel('dailyFile').getLogger()).toBe(log.getContainer().get('dailyFile'));
+    expect(log.channel('file').getLogger()).toBe(log.getContainer().get('file'));
+    expect(log.channel('http').getLogger()).toBe(log.getContainer().get('http'));
+    expect(log.channel('stream').getLogger()).toBe(log.getContainer().get('stream'));
+    expect(log.channel('compose').getLogger()).toEqual(log.getContainer().get('compose'));
   });
 
   it('Logger#getTransports error', () => {
