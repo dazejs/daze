@@ -11,6 +11,12 @@ import { MongoDB } from 'winston-mongodb';
 import { Container } from '../container';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 
+const defaultChannels: any = {
+  console: {
+    driver: 'console'
+  }
+};
+
 
 // import DailyRotateFile from 'winston-daily-rotate-file';
 export class Logger {
@@ -174,7 +180,9 @@ export class Logger {
    * @private
    */
   getChannelConfigure<T extends { driver: string; [key: string]: any }>(channelName: string): T {
-    return this.app.get('config').get(`logger.channels.${channelName}`);
+    const config = this.app.get('config').get(`logger.channels.${channelName}`);
+    if (!config) return defaultChannels[channelName]; 
+    return config;
   }
 
   /**

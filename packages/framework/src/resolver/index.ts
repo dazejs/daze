@@ -1,5 +1,5 @@
 // import { Container } from '../container';
-import { ControllerManager } from '../controller';
+import { ControllerService } from '../controller';
 import { Application } from '../foundation/application';
 import { Loader } from '../loader';
 import { ComponentType } from '../symbol';
@@ -58,7 +58,7 @@ export class Resolver {
     const controllers = this.loader.getComponentByType(ComponentType.Controller) || [];
     for (const Controller of controllers) {
       this.app.multiton(Controller, Controller);
-      this.app.get<ControllerManager>('controller-manager').register(Controller);
+      this.app.get<ControllerService>(ControllerService).register(Controller);
     }
     return this;
   }
