@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { View } from '.';
+import type { View } from '.';
 import { Container } from '../container';
-import { Application } from '../foundation/application';
-import { Request } from '../request';
+import type { Application } from '../foundation/application';
+import type { Request } from '../request';
 
 export class ViewFactory {
   /**
@@ -37,7 +37,7 @@ export class ViewFactory {
   }
 
   output(request: Request) {
-    const template = this.app.get('templateEngine');
+    const template = this.app.get('daze-template');
     const vars = this.combineVars(request);
     return template.render(this.view.getTemplate(), vars);
   }
