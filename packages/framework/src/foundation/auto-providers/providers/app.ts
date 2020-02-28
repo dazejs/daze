@@ -8,7 +8,7 @@ import Tokens from 'csrf';
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
 import { Provider as BaseProvider } from '../../../base/provider';
-import { ControllerManager } from '../../../controller/manager';
+import { ControllerServiceProvider } from '../../../controller';
 import { DatabaseProvider } from '../../../database';
 import { provide, depend } from '../../../decorators/provider';
 import { Logger } from '../../../logger';
@@ -18,17 +18,13 @@ import { Router } from '../../../router';
 
 @depend([
   DatabaseProvider,
-  MiddlewareProvider
+  MiddlewareProvider,
+  ControllerServiceProvider
 ])
 export class AppProvider extends BaseProvider {
   @provide('csrf')
   _csrf() {
     return new Tokens();
-  }
-
-  @provide('controller-manager')
-  _controllerManager() {
-    return new ControllerManager();
   }
 
   @provide('router')

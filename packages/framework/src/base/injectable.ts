@@ -22,9 +22,9 @@ export class Injectable extends Base {
   }
 
   /**
-  * get resource methods
-  * @param resourceName
-  */
+    * get resource methods
+    * @param resourceName
+    */
   resource(resource: string | { new(): BaseResource }) {
     return {
       item: (data: any) => {
@@ -39,10 +39,10 @@ export class Injectable extends Base {
   }
 
   /**
- * get service
- * @param serviceName
- * @param args
- */
+   * get service
+   * @param serviceName
+   * @param args
+   */
   service<T = any>(service: string | { new(): T }): T {
     if (typeof service === 'string') {
       return this.app.get(`service.${service}`, this.__context__);
@@ -63,19 +63,19 @@ export class Injectable extends Base {
   }
 
   /**
- * validate a data
- * @param data
- * @param validator
- */
+   * validate a data
+   * @param data
+   * @param validator
+   */
   validate(data: any, validator: any): Validate {
     return new Validate(data, validator);
   }
 
   /**
- * create item resource instance
- * @param data
- * @param resourceName
- */
+   * create item resource instance
+   * @param data
+   * @param resourceName
+   */
   item(data: any, resource: string | { new(): BaseResource }): Resource.Item {
     return (new Resource.Item(data, resource)).setContext(this.__context__);
   }

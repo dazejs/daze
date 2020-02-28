@@ -5,16 +5,23 @@
  * https://opensource.org/licenses/MIT
  */
 import { Controller } from '../base';
-import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ComponentType } from '../symbol';
 
 
-export class ControllerManager {
+export class ControllerService {
   /**
    * application instance
    */
-  app: Application = Container.get('app');
+  app: Application;
+
+  /**
+   * Create Controller Service
+   * @param app 
+   */
+  constructor(app: Application) {
+    this.app = app;
+  }
 
   /**
    * register a controller
