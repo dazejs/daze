@@ -5,9 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import path from 'path';
-
 import { Container } from '../container';
-import { Application } from '../foundation/application';
+import type { Application } from '../foundation/application';
 
 const FINAL_VARS = Symbol('View#finalVars');
 

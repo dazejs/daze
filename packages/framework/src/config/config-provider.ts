@@ -1,7 +1,7 @@
 import { Provider } from '../base/provider';
 import { provide } from '../decorators/provider/provide';
-import { Config } from './config';
 import { Application } from '../foundation/application';
+import { Config } from './config';
 
 export class ConfigProvider extends Provider {
   @provide(Config)

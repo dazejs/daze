@@ -5,28 +5,26 @@
  * https://opensource.org/licenses/MIT
  */
 import getType from 'cache-content-type';
-import contentDisposition from 'content-disposition';
-import { OutgoingHttpHeaders, ServerResponse } from 'http';
-import { extname } from 'path';
 import compressible from 'compressible';
+import contentDisposition from 'content-disposition';
+import type { OutgoingHttpHeaders, ServerResponse } from 'http';
+import { extname } from 'path';
+import { Stream } from 'stream';
+import * as zlib from 'zlib';
 import { Container } from '../container';
 import { Cookie } from '../cookie';
-import { Application } from '../foundation/application';
-import { Request } from '../request';
+import type { Application } from '../foundation/application';
+import type { Request } from '../request';
 import { Resource } from '../resource/resource';
 import { View } from '../view';
 import { ViewFactory } from '../view/factory';
 import { Statusable } from './statusable';
-import { Stream } from 'stream';
-import * as zlib from 'zlib';
 
 const encodingMethods = {
   gzip: zlib.createGzip,
   deflate: zlib.createDeflate
 };
 
-// import statuses from 'statuses'
-// import { IllegalArgumentError } from '../errors/illegal-argument-error'
 const defaultContentTypes = {
   JSON: 'application/json; charset=utf-8',
   PLAIN: 'text/plain; charset=utf-8',

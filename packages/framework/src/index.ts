@@ -9,15 +9,16 @@
 
 import 'reflect-metadata';
 
+export * from './base';
+export { Config } from './config';
+export { Container } from './container';
 export * from './foundation/application';
 export * from './foundation/metadata';
-export * from './container';
 export * from './response';
 export * from './response/redirect';
 export * from './view';
 export * from './cookie';
 export * from './decorators';
-export * from './base';
 export * from './request';
 export * from './loader';
 export { TMiddlewareStage, TNext } from './middleware';
