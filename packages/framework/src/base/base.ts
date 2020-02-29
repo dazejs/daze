@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { OutgoingHttpHeaders } from 'http';
-import { Messenger } from '../messenger';
-import { Config } from '../config';
+import type { OutgoingHttpHeaders } from 'http';
+import type { Config } from '../config';
 import { Container } from '../container';
-import { Database } from '../database';
-import { Application } from '../foundation/application';
+import type { Database } from '../database';
+import type { Application } from '../foundation/application';
+import type { Messenger } from '../messenger';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 

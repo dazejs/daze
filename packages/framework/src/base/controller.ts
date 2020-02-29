@@ -13,13 +13,13 @@ export abstract class Controller extends Injectable {
   /**
    * view instance cache
    */
-  _view: View;
+  private _view: View;
 
   /**
    * render view template
    * @param params
    */
-  render(...params: any[]): View {
+  public render(...params: any[]): View {
     if (!this._view) {
       this._view = new View(...params);
     }
@@ -30,7 +30,7 @@ export abstract class Controller extends Injectable {
    * assign view data
    * @param params
    */
-  assign(name: string | object, value?: any): View {
+  public assign(name: string | object, value?: any): View {
     if (!this._view) {
       this._view = new View();
     }
@@ -41,7 +41,7 @@ export abstract class Controller extends Injectable {
    * get view instance
    * @param params
    */
-  view(template = '', vars = {}): View {
+  public view(template = '', vars = {}): View {
     if (!this._view) {
       this._view = new View(template , vars);
     }

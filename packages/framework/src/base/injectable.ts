@@ -1,13 +1,8 @@
-import { Request } from '../request';
+import type { Request } from '../request';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
-// import { Entity } from './entity';
-import { Resource as BaseResource } from './resource';
-// import { Entity } from './entity';
-// import { Model } from '../model';
-// import { ModelBuilder } from '../model/builder';
-// import { Builder } from '../database/builder';
+import type { Resource as BaseResource } from './resource';
 
 @Reflect.metadata('injectable', true)
 export class Injectable extends Base {
