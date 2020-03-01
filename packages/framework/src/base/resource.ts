@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Collection, Item } from '../resource';
-import { ComponentType } from '../symbol';
+import { componentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
-@Reflect.metadata('type', ComponentType.Resource)
+@componentType('resource')
 export abstract class Resource extends Injectable {
   /**
    * use collection resource

@@ -19,7 +19,7 @@ import { Logger } from '../logger';
 import { HttpServer } from './http-server';
 import { Provider as BaseProvider } from '../base/provider';
 import { Provider } from '../provider';
-import { CommonProvider, HttpServerProvider, BuiltInProvider, ResolverProvider } from './auto-providers';
+import { CommonProvider, HttpServerProvider, AppProvider } from './auto-providers';
 
 const DEFAULT_PORT = 8080;
 
@@ -186,7 +186,7 @@ export class Application extends Container {
    * @private
    */
   async registerDefaultProviders(): Promise<void> {
-    await this.register(BuiltInProvider);
+    await this.register(AppProvider);
   }
 
   /**
@@ -359,14 +359,8 @@ export class Application extends Container {
       await this.registerDefaultProviders();
       await this.registerVendorProviders();
       await this.registerHttpServerProvider();
-      // resolver must load after all provider
-      await this.registerResolverProvider();
       await this.fireLaunchCalls();
     }
-  }
-
-  async registerResolverProvider() {
-    await this.register(ResolverProvider);
   }
 
   async registerHttpServerProvider() {

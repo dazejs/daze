@@ -2,10 +2,10 @@ import path from 'path';
 import 'reflect-metadata';
 import { Config } from '../../../src/config';
 import { Application } from '../../../src/foundation/application';
+import { InjectConfigService } from '../../daze/src/app/service/inject-config';
 import appConfig from '../../daze/src/config/app';
 import appConfig2 from '../../daze/src/config/app.test';
 import customConfig from '../../daze/src/config/custom';
-import { InjectConfigService } from '../../daze/src/app/service/inject-config';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

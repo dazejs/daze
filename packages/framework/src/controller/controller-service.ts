@@ -8,7 +8,6 @@ import { Controller } from '../base';
 import { Application } from '../foundation/application';
 import { ComponentType } from '../symbol';
 
-
 export class ControllerService {
   /**
    * application instance

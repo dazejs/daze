@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { ComponentType } from '../symbol';
+import { componentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
-@Reflect.metadata('type', ComponentType.Validator)
+@componentType('validator')
 export abstract class Validator extends Injectable {
 
 }

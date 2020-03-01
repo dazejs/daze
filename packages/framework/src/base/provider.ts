@@ -1,12 +1,8 @@
-import { ComponentType } from '../symbol';
+import { componentType } from '../decorators/component-type';
 import { Base } from './base';
 
-@Reflect.metadata('type', ComponentType.Provider)
+@componentType('provider')
 export abstract class Provider extends Base {
-  load(target: any) {
-    if (target) this.app.get('loader').load(target);
-    return this;
-  }
   register?(): void | Promise<void>;
   launch?(): void | Promise<void>;
 }

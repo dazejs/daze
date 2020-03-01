@@ -8,6 +8,7 @@
 export function ComponentType(type: any): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('type', type, constructor);
+    return constructor;
   };
 };
 
