@@ -7,8 +7,6 @@
 import { Resource as BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { ComponentType } from '../symbol';
-
 
 const DEFAULT_KEY = 'data';
 
@@ -230,7 +228,7 @@ export class Resource {
    * @param formatter 
    */
   isResourceFormatter(formatter: { new(): BaseResource } | ((...args: any[]) => any)): formatter is { new(): BaseResource }  {
-    return Reflect.getMetadata('type', formatter) === ComponentType.Resource;
+    return Reflect.getMetadata('type', formatter) === 'resource';
   }
 
   /**

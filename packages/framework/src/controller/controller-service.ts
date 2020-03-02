@@ -6,7 +6,6 @@
  */
 import { Controller } from '../base';
 import { Application } from '../foundation/application';
-import { ComponentType } from '../symbol';
 
 export class ControllerService {
   /**
@@ -26,7 +25,7 @@ export class ControllerService {
    * register a controller
    */
   public register(controller: typeof Controller) {
-    if (Reflect.getMetadata('type', controller) !== ComponentType.Controller) return this;
+    if (Reflect.getMetadata('type', controller) !== 'controller') return this;
     this.resolve(controller);
     return this;
   }

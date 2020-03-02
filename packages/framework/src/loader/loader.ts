@@ -8,8 +8,6 @@ import * as glob from 'glob';
 import * as path from 'path';
 import { Application } from '../foundation/application';
 import { VerifyCsrfToken } from '../foundation/middlewares';
-import { ComponentType } from '../symbol';
-
 
 export class Loader {
   /**
@@ -21,7 +19,7 @@ export class Loader {
    * loaded components
    */
   loadedComponents: Map<string, any[]> = new Map([
-    [ComponentType.Middleware, [VerifyCsrfToken]]
+    ['middleware', [VerifyCsrfToken]]
   ]);
 
   /**
@@ -85,7 +83,7 @@ export class Loader {
     // ignore @Ignore() decorator s target
     const isIgnore: boolean = Reflect.getMetadata('ignore', Target);
     if (isIgnore === true) return;
-    const type: ComponentType = Reflect.getMetadata('type', Target) ?? 'component';
+    const type: string = Reflect.getMetadata('type', Target) ?? 'component';
     if (this.loadedComponents.has(type)) {
       this.loadedComponents.get(type)?.push(Target);
     } else {

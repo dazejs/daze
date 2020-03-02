@@ -4,14 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { ComponentType } from '../symbol';
 import { formatPrefix } from './helpers';
 
 export function Route(...prefixs: string[]): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('isRoute', true, constructor);
-    Reflect.defineMetadata('type', ComponentType.Controller, constructor);
+    Reflect.defineMetadata('type', 'controller', constructor);
     Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => formatPrefix(prefix)) : [formatPrefix()], constructor);
     // Reflect.defineMetadata('prefix', formatPrefix(), constructor);
   };
