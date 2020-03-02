@@ -353,6 +353,7 @@ export class Parser {
   wrapColum(column: string, builder: Builder) {
     if (~column.indexOf('.')) {
       const [_alias, _column] = column.split('.');
+      if (_column === '*') return `\`${_alias}\`.${_column}`;
       return `\`${_alias}\`.\`${_column}\``;
     }
     if (builder._alias) {
