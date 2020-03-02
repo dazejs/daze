@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.6](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.5...@dazejs/framework@2.4.6) (2020-03-02)
+
+
+### Bug Fixes
+
+* **app:** fix debug use in undev env ([c8e8d3a](https://github.com/dazejs/daze/commit/c8e8d3ac22b9353e239f83335b439b193272a828))
+* **logger:** logger does not have default channels ([c0d59c3](https://github.com/dazejs/daze/commit/c0d59c36281a3a12269f3db6c8d0dc93196844a7))
+
+
+
+
+
 ## [2.4.5](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.4...@dazejs/framework@2.4.5) (2020-02-25)
 
 
