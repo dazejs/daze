@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.7...@dazejs/framework@2.5.0) (2020-03-02)
+
+
+### Features
+
+* **database:** where or orWhere support array params ([8b3e835](https://github.com/dazejs/daze/commit/8b3e835e37c9bec22804a28ae2c3e84bf5fe34db))
+
+
+
+
+
 ## [2.4.7](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.6...@dazejs/framework@2.4.7) (2020-03-02)
 
 
