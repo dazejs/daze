@@ -5,18 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-export const enum ComponentType {
-  Controller =  'controller',
-  Component = 'component',
-  Service = 'service',
-  Resource = 'resource',
-  Validator = 'validator',
-  Middleware = 'middleware',
-  Entity = 'entity',
-  Provider = 'provider'
-}
-
-
 // 容器实例多例标识 - used
 export const MULTITON = Symbol('DAZE#multiton');
 export const SINGLETON = Symbol('DAZE#singleton');

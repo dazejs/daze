@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as symbols from '../symbol';
-import { Validate } from '../validate';
+import { Validate } from '../validate/validate';
 import { Response } from './';
 
 

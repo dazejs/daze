@@ -6,6 +6,13 @@ import {
 @Route('/example')
 export default class extends Controller {
 
+  @Http.Get('/template')
+  template() {
+    return this.render('hello', {
+      name: 'dazejs'
+    });
+  }
+
   @Http.Get()
   index() {
     return this.service('example').sayHello();

@@ -1,7 +1,7 @@
 import { Model } from '../model/model';
-import { ComponentType } from '../symbol';
+import { componentType } from '../decorators/component-type';
 
-@Reflect.metadata('type', ComponentType.Entity)
+@componentType('entity')
 @Reflect.metadata('connection', 'default')
 export class Entity extends Model {
   

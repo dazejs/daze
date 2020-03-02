@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { ComponentType } from '../symbol';
 import { View } from '../view';
 import { Injectable } from './injectable';
+import { componentType } from '../decorators/component-type';
 
-@Reflect.metadata('type', ComponentType.Controller)
+@componentType('controller')
 export abstract class Controller extends Injectable {
   /**
    * view instance cache

@@ -7,4 +7,3 @@
 
 export * from './cors';
 export * from './verify-csrf-token';
-export * from './compress';
