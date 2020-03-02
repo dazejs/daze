@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.7](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.6...@dazejs/framework@2.4.7) (2020-03-02)
+
+
+### Bug Fixes
+
+* **database:** parse column when include * with alias ([7828929](https://github.com/dazejs/daze/commit/7828929fcd6657ff0879267f81520969371c730b))
+
+
+
+
+
 ## [2.4.6](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.5...@dazejs/framework@2.4.6) (2020-03-02)
 
 
