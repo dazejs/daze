@@ -148,8 +148,9 @@ export class Application extends Container {
     this.config = this.get('config');
     await this.config.initialize();
     this.port = this.config.get('app.port', DEFAULT_PORT);
-    this.isDebug = this.config.get('app.debug', false);
-
+    if (process.env.NODE_ENV === 'development' || process.env.DAZE_ENV === 'dev') {
+      this.isDebug = this.config.get('app.debug', false);
+    }
     return this;
   }
 
