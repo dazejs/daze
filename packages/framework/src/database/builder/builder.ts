@@ -231,7 +231,18 @@ export class Builder {
    * @param value 
    * @param symlink 
    */
-  where(column: string, operator: any, value?: any, symlink: TSymlink = 'and') {
+  where(
+    column: string | [string, any, any?, TSymlink?][],
+    operator?: any,
+    value?: any,
+    symlink: TSymlink = 'and'
+  ) {
+    if (Array.isArray(column)) {
+      for (const _column of column) {
+        this.where(..._column);
+      }
+      return this;
+    }
     const _symlink = this._wheres.length > 0 ? symlink : '';
     const type = 'value';
     if (value !== undefined) {
@@ -252,7 +263,11 @@ export class Builder {
    * @param operator 
    * @param value 
    */
-  orWhere(column: string, operator: any, value?: any) {
+  orWhere(
+    column: string | [string, any, any?][],
+    operator: any,
+    value?: any
+  ) {
     return this.where(column, operator, value, 'or');
   }
 
