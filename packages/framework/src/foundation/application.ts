@@ -253,8 +253,8 @@ export class Application extends Container {
   get clusterMaterInstance() {
     return new Master({
       port: this.port,
-      workers: this.config.get('app.cluster.workers', 0),
-      sticky: this.config.get('app.cluster.sticky', false)
+      workers: this.config.get('app.workers', 0),
+      sticky: this.config.get('app.sticky', false)
     });
   }
 
