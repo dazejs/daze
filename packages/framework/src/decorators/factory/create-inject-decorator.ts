@@ -23,12 +23,12 @@ function handle(args: any[], params: any, type: any, handler?: (injectedParam: a
   const injectors = Reflect.getMetadata('injectparams', target.constructor, key) || [];
   Reflect.defineMetadata('injectparams', [
     ...injectors,
-    !!handler ? [type, params, handler] : [type, params],
+    !!handler ? [type || key, params, handler] : [type || key, params],
   ], target.constructor, key);
   Reflect.defineProperty(target, key, { writable: true });
   return target; 
 }
 
-export function createInjectDecorator(type: any, handler?: (injectedParam: any) => any){
+export function createInjectDecorator(type: any, handler?: (injectedParam: any) => any) {
   return (...args: any[]) => (...argsClass: any[])  => handle(argsClass, args, type, handler);
 }
