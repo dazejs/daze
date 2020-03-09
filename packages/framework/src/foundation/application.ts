@@ -147,7 +147,7 @@ export class Application extends Container {
   async setProperties(): Promise<this> {
     this.config = this.get('config');
     await this.config.initialize();
-    this.port = this.config.get('app.port', DEFAULT_PORT);
+    if (!this.port) this.port = this.config.get('app.port', DEFAULT_PORT);
     if (process.env.NODE_ENV === 'development' || process.env.DAZE_ENV === 'dev') {
       this.isDebug = this.config.get('app.debug', false);
     }
@@ -353,10 +353,10 @@ export class Application extends Container {
    * Start the application
    */
   async run(port?: number) {
-    // Initialization application
-    await this.initialize();
     // reload port if necessary
     if (port) this.port = port;
+    // Initialization application
+    await this.initialize();
     // check app.cluster.enabled
     if (this.isCluster) {
       // 以集群工作方式运行应用
