@@ -6,12 +6,15 @@
  */
 import { Provider as BaseProvider } from '../../base/provider';
 import { provide } from '../../decorators/provider';
-import { HttpServer } from '../http-server';
-
+import { HttpServer } from './http-server';
 
 export class HttpServerProvider extends BaseProvider {
   @provide('httpServer')
   httpServer() {
     return new HttpServer();
+  }
+
+  launch() {
+    this.app.get<HttpServer>('httpServer').createServer();
   }
 }

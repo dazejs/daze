@@ -10,16 +10,16 @@ import Keygrip from 'keygrip';
 import * as path from 'path';
 import * as util from 'util';
 import * as winston from 'winston';
+import { Provider as BaseProvider } from '../base/provider';
 import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
 import { Database } from '../database';
 import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
-import { HttpServer } from './http-server';
-import { Provider as BaseProvider } from '../base/provider';
 import { Provider } from '../provider';
-import { CommonProvider, HttpServerProvider, AppProvider } from './auto-providers';
+import { AppProvider, CommonProvider } from './auto-providers';
+import { HttpServer } from './http-server';
 
 const DEFAULT_PORT = 8080;
 
@@ -206,20 +206,6 @@ export class Application extends Container {
     await this.get<Provider>('provider').resolve(Provider);
   }
 
-  // /**
-  //  * register provider in App
-  //  */
-  // async register(Provider: any): Promise<void> {
-
-  //   if (Reflect.has(Provider, 'register') && typeof Provider.register === 'function') {
-  //     await Provider.register(this);
-  //   }
-
-  //   if (Reflect.has(Provider, 'launch') && typeof Provider.launch === 'function') {
-  //     this.launchCalls.push((...args) => Provider.launch(...args));
-  //   }
-  // }
-
   async fireLaunchCalls(...args: any[]): Promise<this> {
     for (const launch of this.launchCalls) {
       await launch(...args, this);
@@ -263,10 +249,10 @@ export class Application extends Container {
   get clusterWorkerInstance() {
     return new Worker({
       port: this.port,
-      sticky: this.config.get('app.cluster.sticky', false),
-      createServer: (port: number) => {
-        this._server = this.startServer(port);
-        return this._server;
+      sticky: this.config.get('app.sticky', false),
+      createServer: (...args: any[]) => {
+        const server = this.startServer(...args);
+        return server;
       },
     });
   }
@@ -359,13 +345,8 @@ export class Application extends Container {
     if (!this.isCluster || !cluster.isMaster) {
       await this.registerDefaultProviders();
       await this.registerVendorProviders();
-      await this.registerHttpServerProvider();
       await this.fireLaunchCalls();
     }
-  }
-
-  async registerHttpServerProvider() {
-    await this.register(HttpServerProvider);
   }
 
   /**
@@ -382,7 +363,7 @@ export class Application extends Container {
       if (cluster.isMaster) {
         await this.clusterMaterInstance.run();
       } else {
-        await this.clusterWorkerInstance.run();
+        this._server = await this.clusterWorkerInstance.run();
       }
     } else {
       // 以单线程工作方式运行应用
@@ -407,13 +388,13 @@ export class Application extends Container {
   /**
    * Start the HTTP service
    */
-  startServer(port: number) {
-    return this.listen(port);
+  startServer(...args: any[]) {
+    return this.listen(...args);
   }
 
-  listen(port: number) {
+  listen(...args: any[]) {
     const server: HttpServer = this.get('httpServer');
-    return server.listen(port);
+    return server.listen(...args);
   }
 
 

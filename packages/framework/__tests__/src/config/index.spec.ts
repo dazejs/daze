@@ -21,7 +21,7 @@ describe('Config', () => {
     });
     expect(configInstance.get('custom')).toEqual(customConfig);
     expect(configInstance.get()).toEqual(configInstance._items);
-    expect(configInstance.get('app.port')).toBe(8888);
+    expect(configInstance.get('app.port')).toBe(0);
     expect(configInstance.get('app.workers')).toBe(0);
     expect(configInstance.get('custom.a.b.c')).toBe('c');
     expect(configInstance.get('custom.a.b.c', 'd')).toBe('c');
@@ -53,7 +53,7 @@ describe('Config', () => {
   it('Config#prop', async () => {
     const configInstance = app.get(Config);
     await configInstance.initialize();
-    expect(configInstance.app.port).toBe(8888);
+    expect(configInstance.app.port).toBe(0);
   });
   
   it('Config#inject', async () => {

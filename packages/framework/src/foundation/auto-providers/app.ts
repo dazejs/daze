@@ -21,6 +21,7 @@ import { ServiceProvider } from '../../service/service-provider';
 import * as symbols from '../../symbol';
 import { TemplateProvider } from '../../template/template-provider';
 import { ValidatorProvider } from '../../validate/validator-provider';
+import { HttpServerProvider } from '../http-server';
 
 @depend([
   DatabaseProvider,
@@ -32,7 +33,8 @@ import { ValidatorProvider } from '../../validate/validator-provider';
   ComponentProvider,
   ControllerServiceProvider,
   LoggerProvider,
-  TemplateProvider
+  TemplateProvider,
+  HttpServerProvider
 ])
 export class AppProvider extends Provider {
   @provide('csrf')

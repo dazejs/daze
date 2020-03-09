@@ -111,12 +111,12 @@ export class Worker {
    * Start the service
    * 启动服务
    */
-  async run() {
+  run(): Promise<http.Server> {
     const deferred = new Deferred<any>();
     this.catcheReloadSignal();
     if (!this.options.sticky) {
       this.server = this.options.createServer(this.options.port, () => {
-        deferred.resolve();
+        deferred.resolve(this.server);
       });
       this.server.on('connection', () => {
         debug(`Request handled by worker: ${process.pid}`);
@@ -134,7 +134,7 @@ export class Worker {
         connection.resume();
       });
       this.server = this.options.createServer(0, 'localhost', () => {
-        deferred.resolve();
+        deferred.resolve(this.server);
       });
     }
     return deferred.promise;
