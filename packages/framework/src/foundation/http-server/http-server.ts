@@ -17,12 +17,19 @@ export class HttpServer {
   /**
    * Application instance
    */
-  private app: Application = Container.get('app');
+  app: Application = Container.get('app');
 
   /**
    * http server instance
    */
-  private server: http.Server;
+  server: http.Server;
+
+  /**
+   * return server instance
+   */
+  getServer() {
+    return this.server;
+  }
 
   /**
    * create http Server
