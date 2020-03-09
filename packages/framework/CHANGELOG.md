@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.0...@dazejs/framework@2.5.1) (2020-03-09)
+
+
+### Bug Fixes
+
+* **cluster:** fix cluster start error and workers ([1cd9393](https://github.com/dazejs/daze/commit/1cd93936f89166d2db33b93ab88b0be6a6743456))
+* **inject:** inject decorator can not use by default ([5b03cd0](https://github.com/dazejs/daze/commit/5b03cd0c7a081299ef899e5d1c05ddebaca519a2))
+
+
+
+
+
 # [2.5.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.4.7...@dazejs/framework@2.5.0) (2020-03-02)
 
 
