@@ -63,7 +63,7 @@
     "cookies": "0.8.0",
     "crc": "3.8.0",
     "csrf": "3.0.6",
-    "date-fns": "2.8.1",
+    "date-fns": "2.10.0",
     "debug": "4.1.1",
     "formidable": "1.2.1",
     "fp-ts": "2.3.1",
