@@ -71,7 +71,7 @@
     "keygrip": "1.1.0",
     "mime-types": "2.1.24",
     "minimatch": "3.0.4",
-    "mysql": "2.17.1",
+    "mysql": "2.18.1",
     "nunjucks": "3.1.3",
     "parseurl": "1.3.2",
     "path-to-regexp": "5.0.0",
