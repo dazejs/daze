@@ -428,6 +428,7 @@ export class Application extends Container {
   get(abstract: 'config', args?: any[], force?: boolean): Config
   get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
+  get(abstract: 'httpServer', args?: any[], force?: boolean): HttpServer
   get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 
