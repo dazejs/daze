@@ -17,7 +17,7 @@
     "@commitlint/config-conventional": "8.2.0",
     "@types/debug": "4.1.5",
     "@types/express": "4.17.1",
-    "@types/jest": "25.1.0",
+    "@types/jest": "25.1.4",
     "@types/koa": "2.0.50",
     "@types/koa-router": "7.4.0",
     "@types/node": "13.1.2",
