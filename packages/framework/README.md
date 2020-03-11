@@ -53,7 +53,7 @@ $ npm start
 
 ## 文档 & 社区
 
-- [中文文档](https://dazejs.org/zh/)
+- [中文文档](https://dazejs.org/)
 
 <!-- ## 贡献者
 
