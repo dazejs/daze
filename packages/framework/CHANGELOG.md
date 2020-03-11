@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.3](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.2...@dazejs/framework@2.5.3) (2020-03-11)
+
+
+### Bug Fixes
+
+* **app:** fix app.port define sort error ([eaa1360](https://github.com/dazejs/daze/commit/eaa136077ea25c585e7cbf817b535371b40c1904))
+* **decorator:** decorator something export error ([45acbe8](https://github.com/dazejs/daze/commit/45acbe81f006779cd5ba8c3ee4183758fb1dd0da))
+
+
+
+
+
 ## [2.5.2](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.1...@dazejs/framework@2.5.2) (2020-03-09)
 
 **Note:** Version bump only for package @dazejs/framework
