@@ -31,3 +31,4 @@ export * from './injectable';
 export * from './csrf';
 export * from './model';
 export * from './provider';
+export * from './factory/create-inject-decorator';
