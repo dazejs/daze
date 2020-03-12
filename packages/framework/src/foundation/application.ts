@@ -19,6 +19,7 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
+import mainFilename from 'require-main-filename';
 
 const DEFAULT_PORT = 8080;
 
@@ -112,12 +113,20 @@ export class Application extends Container {
    */
   launchCalls: ((...args: any[]) => any)[] = [];
 
-  constructor(rootPath: string, paths: ApplicationPathsOptions = {}) {
+  constructor(rootPath?: string, paths: ApplicationPathsOptions = {}) {
     super();
-    if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
 
-    this.rootPath = rootPath;
-
+    if (!rootPath) {
+      const _filename = mainFilename();
+      if (_filename) {
+        this.rootPath = path.dirname(_filename);
+      } else {
+        throw new Error('can not find rootPath in application, may need to pass rootPath in parameters');
+      }
+    } else {
+      this.rootPath = rootPath;
+    }
+    
     this.setPaths(paths);
 
     this.initialContainer();
