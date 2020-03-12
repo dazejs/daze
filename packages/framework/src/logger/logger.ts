@@ -7,7 +7,6 @@
 import * as path from 'path';
 import * as winston from 'winston';
 import { MongoDB } from 'winston-mongodb';
-
 import { Application } from '../foundation/application';
 import { IllegalArgumentError } from '../errors/illegal-argument-error';
 

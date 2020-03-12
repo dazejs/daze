@@ -30,7 +30,7 @@ export function parseMasterOpts(opts: MasterOptions) {
  * 返回一个数组
  */
 export function getAlivedWorkers(): cluster.Worker[] {
-  const workers = [];
+  const workers: cluster.Worker[] = [];
   for (const id in cluster.workers) {
     if (Object.prototype.hasOwnProperty.call(cluster.workers, id)) {
       const worker: any = cluster.workers[id];

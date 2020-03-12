@@ -696,7 +696,7 @@ export class Builder {
    */
   getBindingsWithKeys(keys: BindingKeys[]) {
     const _keys = [...this.bindings.keys()].filter(key => keys.includes(key));
-    const bindings = [];
+    const bindings: any[] = [];
     for (const key of _keys) {
       if (this.bindings.has(key)) {
         bindings.push(
@@ -713,7 +713,7 @@ export class Builder {
    */
   getBindingsExceptKeys(keys: BindingKeys[]) {
     const _keys = [...this.bindings.keys()].filter(key => !keys.includes(key));
-    const bindings = [];
+    const bindings: any[] = [];
     for (const key of _keys) {
       if (this.bindings.has(key)) {
         bindings.push(
@@ -863,8 +863,8 @@ export class Builder {
    * @param data 
    */
   async insertAll(data: Record<string, any>[]) {
-    const results = [];
-    const params = [];
+    const results: any = [];
+    const params: any[] = [];
     for (const item of data) {
       const columns = Object.keys(item);
       results.push(columns);

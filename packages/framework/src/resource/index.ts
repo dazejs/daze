@@ -7,4 +7,3 @@
 
 export * from './item';
 export * from './collection';
-export * from './resource-provider';

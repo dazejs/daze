@@ -159,7 +159,7 @@ export class Route {
 
 
   parseMethods(methods: string[] = []) {
-    const _methods = [];
+    const _methods: string[] = [];
     for (const method of methods) {
       const _method = method.toUpperCase();
       _methods.push(_method);
