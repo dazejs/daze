@@ -1,23 +1,28 @@
 
 
 declare module 'keygrip' {
-  var x: any;
+  const x: any;
+  export = x;
+}
+
+declare module 'require-main-filename' {
+  const x: any;
   export = x;
 }
 
 declare module 'core-util-is' {
-  var x: any;
+  const x: any;
   export = x;
 }
 
 
 declare module 'cache-content-type' {
-  var x: any;
+  const x: any;
   export = x;
 }
 
 declare module '@dazejs/trace-page' {
-  var x: any;
+  const x: any;
   export = x;
 }
 

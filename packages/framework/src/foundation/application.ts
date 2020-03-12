@@ -19,6 +19,7 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
+import mainFilename from 'require-main-filename';
 
 const DEFAULT_PORT = 8080;
 
@@ -116,7 +117,7 @@ export class Application extends Container {
     super();
 
     if (!rootPath) {
-      const _filename = require.main?.filename;
+      const _filename = mainFilename();
       if (_filename) {
         this.rootPath = path.dirname(_filename);
       } else {
