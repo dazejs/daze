@@ -112,12 +112,20 @@ export class Application extends Container {
    */
   launchCalls: ((...args: any[]) => any)[] = [];
 
-  constructor(rootPath: string, paths: ApplicationPathsOptions = {}) {
+  constructor(rootPath?: string, paths: ApplicationPathsOptions = {}) {
     super();
-    if (!rootPath) throw new Error('must pass the runPath parameter when you apply the instantiation!');
 
-    this.rootPath = rootPath;
-
+    if (!rootPath) {
+      const _filename = require.main?.filename;
+      if (_filename) {
+        this.rootPath = path.dirname(_filename);
+      } else {
+        throw new Error('can not find rootPath in application, may need to pass rootPath in parameters');
+      }
+    } else {
+      this.rootPath = rootPath;
+    }
+    
     this.setPaths(paths);
 
     this.initialContainer();
