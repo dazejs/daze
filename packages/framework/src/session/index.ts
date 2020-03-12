@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import * as uuid from 'uuid';
 
 import { Container } from '../container';
 import { Application } from '../foundation/application';
@@ -163,7 +163,7 @@ export class Session {
    * create sessionId
    */
   generateSessionId() {
-    return uuid();
+    return uuid.v4();
   }
 
   /**
