@@ -121,7 +121,7 @@ export class Master {
    */
   forkWorkers() {
     const { workers } = this.options;
-    const promises = [];
+    const promises: Promise<any>[] = [];
     const env = Object.assign({}, this.env);
     for (let i = 0; i < workers; i += 1) {
       promises.push(this.forkWorker(env));

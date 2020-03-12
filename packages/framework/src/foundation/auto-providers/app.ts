@@ -5,38 +5,27 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import { Provider } from '../../base/provider';
-import { ComponentProvider } from '../../component/component-provider';
-import { ControllerServiceProvider } from '../../controller/controller-service-provider';
-import { DatabaseProvider } from '../../database/database-provider';
+import * as providers from './providers';
 import { depend, provide } from '../../decorators/provider';
-import { LoggerProvider } from '../../logger/logger-provider';
-import { MiddlewareServiceProvider } from '../../middleware/middleware-service-provider';
-import { ModelProvider } from '../../model/model-provider';
-import type { Request } from '../../request';
-import { ResourceProvider } from '../../resource/resource-provider';
+import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';
-import { ServiceProvider } from '../../service/service-provider';
 import * as symbols from '../../symbol';
-import { TemplateProvider } from '../../template/template-provider';
-import { ValidatorProvider } from '../../validate/validator-provider';
-import { HttpServerProvider } from '../http-server';
 
 @depend([
-  DatabaseProvider,
-  MiddlewareServiceProvider,
-  ServiceProvider,
-  ResourceProvider,
-  ValidatorProvider,
-  ModelProvider,
-  ComponentProvider,
-  ControllerServiceProvider,
-  LoggerProvider,
-  TemplateProvider,
-  HttpServerProvider
+  providers.DatabaseProvider,
+  providers.MiddlewareServiceProvider,
+  providers.ServiceProvider,
+  providers.ResourceProvider,
+  providers.ValidatorProvider,
+  providers.ModelProvider,
+  providers.ComponentProvider,
+  providers.ControllerServiceProvider,
+  providers.LoggerProvider,
+  providers.TemplateProvider,
+  providers.HttpServerProvider
 ])
-export class AppProvider extends Provider {
+export class AppProvider {
   @provide('csrf')
   _csrf() {
     return new Tokens();

@@ -160,7 +160,7 @@ export class Container extends EventEmitter {
   private invokeInjectAbleClass(abstract: any, args: any[]) {
     const { concrete: Concrete } = this.binds.get(abstract);
     const that = this;
-    const bindParams = [];
+    const bindParams: any[] = [];
     // 需要构造方法注入参数
     const constructorInjectors = Reflect.getMetadata(
       'injectparams', Concrete,
@@ -184,7 +184,7 @@ export class Container extends EventEmitter {
             if (typeof __target[__name] === 'function') {
               return new Proxy(__target[__name], {
                 apply(target, thisBinding, methodArgs) {
-                  const bindMethodParams = [];
+                  const bindMethodParams: any[] = [];
                   // 需要成员方法注入参数
                   const methodInjectors = Reflect.getMetadata(
                     'injectparams', Concrete, __name,

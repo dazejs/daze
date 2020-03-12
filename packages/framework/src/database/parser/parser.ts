@@ -90,7 +90,7 @@ export class Parser {
    * @param builder 
    */
   parseComponents(builder: Builder): string {
-    const sqls = [];
+    const sqls: string[] = [];
     for (const component of this.components) {
       const sql = this.parseComponent(builder, component);
       if (sql) {
@@ -183,7 +183,7 @@ export class Parser {
    */
   parseWheres(builder: Builder, conjunction = 'where') {
     if (!builder._wheres.length) return '';
-    const wheres = [];
+    const wheres: string[] = [];
     for (const where of builder._wheres) {
       const leadSymlink = where.symlink ? `${where.symlink} ` : '';
       // value type
@@ -273,7 +273,7 @@ export class Parser {
    */
   parseJoins(builder: Builder) {
     if (!builder._joins.length) return '';
-    const joins = [];
+    const joins: string[] = [];
     for (const join of builder._joins) {
       joins.push(
         `${join.type} join ${this.getTable(join.builder)} ${this.parseWheres(join.builder, 'on')}`
@@ -288,7 +288,7 @@ export class Parser {
    */
   parseHavings(builder: Builder) {
     if (!builder._havings.length) return '';
-    const havings = [];
+    const havings: string[] = [];
     for (const having of builder._havings) {
       const leadSymlink = having.symlink ? `${having.symlink} ` : '';
       havings.push(

@@ -4,18 +4,19 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Provider } from '../base';
-import { inject } from '../decorators/inject';
-import { provide } from '../decorators/provider';
-import type { Application } from '../foundation/application';
-import type { Loader } from '../loader';
-import { ControllerService } from './controller-service';
+import { inject } from '../../../decorators/inject';
+import { provide } from '../../../decorators/provider';
+import { ControllerService } from '../../../controller/controller-service';
+import { Application } from '../../application';
+import { Loader } from '../../../loader';
 
-export class ControllerServiceProvider extends Provider {
+export class ControllerServiceProvider {
+
+  @inject() app: Application;
   /**
    * inject loader
    */
-  @inject('loader') loader: Loader;
+  @inject() loader: Loader;
 
   /**
    * auto provide ControllerService

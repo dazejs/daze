@@ -740,7 +740,7 @@ export class Model {
    * @param results 
    */
   async resultsToModels(results: Record<string, any>[]) {
-    const data = [];
+    const data: Model[] = [];
     for (const item of results) {
       data.push(
         await this.resultToModel(item, true)

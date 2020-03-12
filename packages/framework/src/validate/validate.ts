@@ -97,7 +97,7 @@ export class Validate {
    */
   parseIndependenceRules(rules: { [key: string]: any[] }) {
     const _rules: RuleIndependences = rules;
-    const res = [];
+    const res: any[] = [];
     const fields = Object.keys(_rules);
     for (const field of fields) {
       const fieldRules = _rules[field] || [];

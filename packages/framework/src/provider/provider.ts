@@ -11,7 +11,7 @@ export class Provider {
     this.app = app;
   }
 
-  async resolve(ProviderClass: typeof BaseProvider) {
+  async resolve(ProviderClass: Function) {
 
     if (!ProviderClass || this.app.has(ProviderClass)) return;
     this.app.singleton(ProviderClass, ProviderClass);

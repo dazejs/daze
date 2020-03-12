@@ -1,7 +1,6 @@
 import { ProviderType } from '../../symbol';
-import { Provider as BaseProvider} from '../../base/provider';
 
-export function Depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvider)[][]) {
+export function Depend(...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
@@ -15,7 +14,7 @@ export function Depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvi
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 }
-export function depend(...providers: (typeof BaseProvider)[] | (typeof BaseProvider)[][]) {
+export function depend(...providers: Function[] | Function[][]) {
   return Depend(...providers);
 }
 
@@ -39,6 +38,6 @@ export function autoScan(...componentScans: string[] | string[][]) {
 }
 
 export interface ProviderOption {
-  depends?: (typeof BaseProvider)[];
+  depends?: Function[];
   componentScan?: string[];
 }

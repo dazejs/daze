@@ -1,22 +1,22 @@
-import { Provider } from '../base/provider';
-import { inject } from '../decorators/inject';
-import { provide } from '../decorators/provider';
-import type { Application } from '../foundation/application';
-import type { Loader } from '../loader';
-import { MiddlewareService } from './middleware-service';
+import { inject } from '../../../decorators/inject';
+import { provide } from '../../../decorators/provider';
+import { MiddlewareService } from '../../../middleware/middleware-service';
+import { Loader } from '../../../loader/loader';
+import { Application } from '../../application';
+export class MiddlewareServiceProvider {
 
-export class MiddlewareServiceProvider extends Provider {
+  @inject() app: Application;
   /**
    * inject loader
    */
-  @inject('loader') loader: Loader;
+  @inject() loader: Loader;
 
   /**
    * auto provide MiddlewareService
    * @param app 
    */
   @provide(MiddlewareService)
-  _middleware(app: Application) {
+  _middleware(app: any) {
     return new MiddlewareService(app);
   }
 
@@ -25,7 +25,7 @@ export class MiddlewareServiceProvider extends Provider {
    * @param app 
    */
   @provide('middleware')
-  _middlewareAlias(app: Application) {
+  _middlewareAlias(app: any) {
     return app.get(MiddlewareService);
   }
 

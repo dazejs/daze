@@ -10,7 +10,6 @@ import Keygrip from 'keygrip';
 import * as path from 'path';
 import * as util from 'util';
 import * as winston from 'winston';
-import { Provider as BaseProvider } from '../base/provider';
 import { Master, Worker } from '../cluster';
 import { Config } from '../config';
 import { Container } from '../container';
@@ -202,7 +201,7 @@ export class Application extends Container {
   }
 
 
-  async register(Provider: typeof BaseProvider): Promise<void> {
+  async register(Provider: Function): Promise<void> {
     await this.get<Provider>('provider').resolve(Provider);
   }
 

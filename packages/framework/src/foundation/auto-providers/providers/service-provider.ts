@@ -1,9 +1,10 @@
-import { Provider } from '../base/provider';
-import type { Loader } from '../loader';
-import { inject } from '../decorators/inject';
+import { inject } from '../../../decorators/inject';
+import { Loader } from '../../../loader/loader';
+import { Application } from '../../application';
 
-export class ServiceProvider extends Provider {
-  @inject('loader') loader: Loader;
+export class ServiceProvider {
+  @inject() app: Application;
+  @inject() loader: Loader;
 
   launch() {
     const services = this.loader.getComponentsByType('service') || [];

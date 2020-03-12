@@ -58,7 +58,7 @@ export class Node {
    * @param key node key
    */
   matchChildren(key: string) {
-    const nodes = [];
+    const nodes: Node[] = [];
     for (const child of this.children) {
       if (isMatchNodeWithType(child, key)) {
         nodes.push(child);

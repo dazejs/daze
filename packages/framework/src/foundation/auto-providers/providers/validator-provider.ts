@@ -1,9 +1,9 @@
-import { Provider } from '../base/provider';
-import { inject } from '../decorators/inject';
-import type { Loader } from '../loader';
-
-export class ValidatorProvider extends Provider {
-  @inject('loader') loader: Loader;
+import { inject } from '../../../decorators/inject';
+import { Application } from '../../application';
+import { Loader } from '../../../loader/loader';
+export class ValidatorProvider {
+  @inject() app: Application;
+  @inject() loader: Loader;
 
   launch() {
     const validators = this.loader.getComponentsByType('validator') || [];

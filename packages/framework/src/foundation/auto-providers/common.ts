@@ -4,18 +4,16 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Provider as BaseProvider } from '../../base/provider';
-import { ConfigProvider } from '../../config';
+import * as providers from './providers';
 import { provide, depend } from '../../decorators/provider';
-import { LoaderProvider } from '../../loader';
 // import { Application } from '../application';
 import { Messenger } from '../../messenger';
 
 @depend([
-  ConfigProvider,
-  LoaderProvider
+  providers.ConfigProvider,
+  providers.LoaderProvider
 ])
-export class CommonProvider extends BaseProvider {
+export class CommonProvider {
 
   @provide('messenger')
   _mssenger() {
