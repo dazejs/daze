@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.3...@dazejs/framework@2.6.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* **session:** fix uuid useage ([8571348](https://github.com/dazejs/daze/commit/85713488b9cff6134a8d34a9b49bbd718e26b615))
+
+
+### Features
+
+* **application:** add default root path ([#182](https://github.com/dazejs/daze/issues/182)) ([f1d17d7](https://github.com/dazejs/daze/commit/f1d17d71016697003d54f54ce85711a9c17a4b45))
+
+
+
+
+
 ## [2.5.3](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.2...@dazejs/framework@2.5.3) (2020-03-11)
 
 
