@@ -8,6 +8,7 @@ import * as cluster from 'cluster';
 import { Server } from 'http';
 import Keygrip from 'keygrip';
 import * as path from 'path';
+import mainFilename from 'require-main-filename';
 import * as util from 'util';
 import * as winston from 'winston';
 import { Master, Worker } from '../cluster';
@@ -19,7 +20,6 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
-import mainFilename from 'require-main-filename';
 
 const DEFAULT_PORT = 8080;
 
@@ -113,6 +113,11 @@ export class Application extends Container {
    */
   launchCalls: ((...args: any[]) => any)[] = [];
 
+  /**
+   * Create Application Instance
+   * @param rootPath 
+   * @param paths 
+   */
   constructor(rootPath?: string, paths: ApplicationPathsOptions = {}) {
     super();
 
@@ -208,7 +213,6 @@ export class Application extends Container {
       await this.register(key);
     }
   }
-
 
   async register(Provider: Function): Promise<void> {
     await this.get<Provider>('provider').resolve(Provider);

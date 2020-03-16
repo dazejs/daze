@@ -1,4 +1,5 @@
 import { Application } from '@src';
+import * as path from 'path';
 import { Provider as BaseProvider } from '../base/provider';
 import { ProvideMetaData, ProviderOption } from '../decorators/provider';
 import { Loader } from '../loader';
@@ -52,7 +53,13 @@ export class Provider {
     // auto scan componentScan
     if (providerOptions?.componentScan) {
       for (const component of providerOptions.componentScan) {
-        await this.app.get<Loader>('loader').scan(component);
+        if (path.isAbsolute(component)) {
+          await this.app.get<Loader>('loader').scan(component);
+        } else {
+          await this.app.get<Loader>('loader').scan(
+            path.resolve(this.app.rootPath, component)
+          );
+        }
       }
     }
   }

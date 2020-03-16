@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import * as providers from './providers';
-import { depend, provide } from '../../decorators/provider';
+import { autoScan, depend, provide } from '../../decorators/provider';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';
 import * as symbols from '../../symbol';
+import * as providers from './providers';
 
 @depend([
   providers.DatabaseProvider,
@@ -25,6 +25,7 @@ import * as symbols from '../../symbol';
   providers.TemplateProvider,
   providers.HttpServerProvider
 ])
+@autoScan('./app')
 export class AppProvider {
   @provide('csrf')
   _csrf() {
