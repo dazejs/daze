@@ -7,7 +7,7 @@ export class Template {
     const templateEnv = new nunjucks.Environment([new nunjucks.FileSystemLoader(app.viewPath, {
       noCache: app.isDebug,
       watch: app.isDebug,
-    }), new nunjucks.FileSystemLoader(path.resolve(__dirname, '../../errors/views'), {
+    }), new nunjucks.FileSystemLoader(path.resolve(__dirname, '../errors/views'), {
       noCache: app.isDebug,
       watch: app.isDebug,
     })], {
