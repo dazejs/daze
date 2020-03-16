@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.6.0...@dazejs/framework@2.6.1) (2020-03-16)
+
+
+### Bug Fixes
+
+* **template:** fix template error template dir error ([1ff3cda](https://github.com/dazejs/daze/commit/1ff3cda47058eabf72f030f16e374780ffeafd81))
+
+
+
+
+
 # [2.6.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.5.3...@dazejs/framework@2.6.0) (2020-03-16)
 
 
