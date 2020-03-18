@@ -48,11 +48,11 @@ describe('Loader', () => {
     loader.load(ExampleValidator);
     loader.load(ExampleComponent);
 
-    expect(loader.loadedComponents.get('controller').includes(ExampleController)).toBeTruthy();
-    expect(loader.loadedComponents.get('middleware').includes(ExampleMiddleware)).toBeTruthy();
-    expect(loader.loadedComponents.get('service').includes(ExampleService)).toBeTruthy();
-    expect(loader.loadedComponents.get('resource').includes(ExampleResource)).toBeTruthy();
-    expect(loader.loadedComponents.get('validator').includes(ExampleValidator)).toBeTruthy();
-    expect(loader.loadedComponents.get('component').includes(ExampleComponent)).toBeTruthy();
+    expect(loader.loadedComponents.get('controller')?.includes(ExampleController)).toBeTruthy();
+    expect(loader.loadedComponents.get('middleware')?.includes(ExampleMiddleware)).toBeTruthy();
+    expect(loader.loadedComponents.get('service')?.includes(ExampleService)).toBeTruthy();
+    expect(loader.loadedComponents.get('resource')?.includes(ExampleResource)).toBeTruthy();
+    expect(loader.loadedComponents.get('validator')?.includes(ExampleValidator)).toBeTruthy();
+    expect(loader.loadedComponents.get('component')?.includes(ExampleComponent)).toBeTruthy();
   });
 });
