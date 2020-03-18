@@ -8,16 +8,19 @@ import { Application } from '../foundation/application';
 import { Pipeline } from '../pipeline';
 import { Request } from '../request';
 import { Response } from '../response';
-
+import { ProviderType } from '../symbol';
 
 export type TNext = (...args: any[]) => Response | Promise<Response>
-
 export type TMiddlewareStage = (request: Request, next: TNext) => Response | Promise<Response>
+interface TMiddlewareMeta {
+  resolver(request: any, next: any): any;
+  readonly order: number;
+} 
 
 export class MiddlewareService {
   app: Application;
 
-  middlewares: any[] = [];
+  middlewares: TMiddlewareMeta[] = [];
 
   constructor(app: Application) {
     this.app = app;
@@ -32,6 +35,7 @@ export class MiddlewareService {
     } else if (typeof middleware === 'function') {
       this.parseFunctionMiddleware(middleware, args);
     }
+    this.reSortMiddlewaresByOrder();
     return this;
   }
 
@@ -40,7 +44,9 @@ export class MiddlewareService {
    */
   combineBefore(anotherMiddleware: MiddlewareService) {
     if (!(anotherMiddleware instanceof MiddlewareService)) return this;
-    this.middlewares.unshift(...anotherMiddleware.middlewares);
+    const wrappedMiddlewares = anotherMiddleware.middlewares?.map(this.wrapperMiddleware);
+    this.middlewares.unshift(...wrappedMiddlewares);
+    this.reSortMiddlewaresByOrder();
     return this;
   }
 
@@ -49,7 +55,9 @@ export class MiddlewareService {
    */
   combineAfter(anotherMiddleware: MiddlewareService) {
     if (!(anotherMiddleware instanceof MiddlewareService)) return this;
-    this.middlewares.push(...anotherMiddleware.middlewares);
+    const wrappedMiddlewares = anotherMiddleware.middlewares?.map(this.wrapperMiddleware);
+    this.middlewares.push(...wrappedMiddlewares);
+    this.reSortMiddlewaresByOrder();
     return this;
   }
 
@@ -73,7 +81,7 @@ export class MiddlewareService {
       const _middleware = new MiddlewareClass(...args);
       this.parseClassInstanceMiddleware(_middleware);
     } else {
-      this.middlewares.push(middleware);
+      this.middlewares.push(this.wrapperMiddleware(middleware));
     }
   }
 
@@ -81,7 +89,40 @@ export class MiddlewareService {
    * parse middle if middleware type is class type
    */
   parseClassInstanceMiddleware(middleware: any) {
-    this.middlewares.push(async (request: any, next: any) => middleware.resolve(request, next));
+    this.middlewares.push(this.wrapperMiddleware(middleware));
+  }
+
+  /**
+   * Wrapper a middleware with order and resolver
+   */
+  wrapperMiddleware(middleware: any): TMiddlewareMeta {
+    // check if TMiddlewareMeta
+    if ('resolver' in middleware) {
+      return middleware;
+    } 
+    // wrapper function
+    else if (typeof middleware === 'function') {
+      const order = Reflect.getMetadata(ProviderType.ORDER, middleware) ?? Number.MAX_SAFE_INTEGER;
+      return {
+        resolver: middleware,
+        order
+      };
+    } 
+    // wrapper object
+    else {
+      const order = Reflect.getMetadata(ProviderType.ORDER, middleware.constructor) ?? Number.MAX_SAFE_INTEGER;
+      return {
+        resolver: async (request: any, next: any) => middleware.resolve(request, next),
+        order
+      };
+    }
+  }
+
+  /**
+   * resort middlewares by order
+   */
+  reSortMiddlewaresByOrder() {
+    this.middlewares.sort((o1, o2) => o1.order - o2.order);
   }
 
   /**
@@ -90,7 +131,7 @@ export class MiddlewareService {
   async handle(request: Request, dispatcher: (...args: any[]) => any) {
     const result = await (new Pipeline())
       .send(request)
-      .pipe(...this.middlewares)
+      .pipe(...this.middlewares.map(o => o.resolver))
       .process(dispatcher);
     return result;
   }
