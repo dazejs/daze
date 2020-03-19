@@ -380,7 +380,7 @@ export class Application extends Container {
         await this.fireLaunchCalls();
       } else if (process.env.type === 'agent') { // 独立工作进程
         this.registerAgents();
-        this.fireAgentResolves();
+        await this.fireAgentResolves();
       }
     }
   }
