@@ -341,6 +341,9 @@ export class Application extends Container {
     this.keys = new Keygrip(keys, algorithm, encoding);
   }
 
+  /**
+   * register agent in cluster mode
+   */
   registerAgents() {
     const _agents = this.config.get('app.agents', []);
     for (const _agent of _agents) {
@@ -350,6 +353,9 @@ export class Application extends Container {
     return this;
   }
 
+  /**
+   * fire agent instance 's resolves
+   */
   async fireAgentResolves() {
     for (const agent of this.agents) {
       await agent.resolve();
@@ -433,12 +439,21 @@ export class Application extends Container {
     return this.listen(...args);
   }
 
+  /**
+   * 监听 http 服务
+   * @param args 
+   */
   listen(...args: any[]) {
     const server: HttpServer = this.get('httpServer');
     return server.listen(...args);
   }
 
 
+  /**
+   * call function type concrete
+   * @param abstract 
+   * @param args 
+   */
   call(abstract: any, args: any[] = []) {
     const concrete = this.make(abstract);
     if (typeof concrete !== 'function') return undefined;
@@ -451,8 +466,6 @@ export class Application extends Container {
   tagged(tag: string) {
     if (!this.tags[tag]) return [];
     return this.tags[tag];
-    // if (!shouldMake) return this.tags[tag];
-    // return this.tags[tag].map((abstract: any) => this.make(abstract, args));
   }
 
   /**
