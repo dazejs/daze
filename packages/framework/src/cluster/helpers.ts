@@ -23,6 +23,17 @@ export function parseMasterOpts(opts: MasterOptions) {
   return opts;
 };
 
+
+/**
+ * Determine if the work process is alive
+ * 判断工作进程是否存活状态
+ */
+export function isAliveWorker(worker: cluster.Worker) {
+  if (!worker.isConnected() || worker.isDead()) return false;
+  if (Reflect.getMetadata(WORKER_DYING, worker)) return false;
+  return true;
+};
+
 /**
  * Capture the surviving work process
  * Return an array
@@ -34,7 +45,7 @@ export function getAlivedWorkers(): cluster.Worker[] {
   for (const id in cluster.workers) {
     if (Object.prototype.hasOwnProperty.call(cluster.workers, id)) {
       const worker: any = cluster.workers[id];
-      if (exports.isAliveWorker(worker)) {
+      if (isAliveWorker(worker)) {
         workers.push(worker);
       }
     }
@@ -42,12 +53,3 @@ export function getAlivedWorkers(): cluster.Worker[] {
   return workers;
 };
 
-/**
- * Determine if the work process is alive
- * 判断工作进程是否存活状态
- */
-export function isAliveWorker(worker: cluster.Worker) {
-  if (!worker.isConnected() || worker.isDead()) return false;
-  if (Reflect.getMetadata(WORKER_DYING, worker)) return false;
-  return true;
-};

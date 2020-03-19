@@ -136,7 +136,9 @@ export class Master {
     const env = {
       type: 'agent'
     };
-    return this.forkWorker(env);
+    const agent = cluster.fork(env);
+    debug(`agent is forked, use pid: ${agent.process.pid}`);
+    return agent;
   }
 
   /**
@@ -209,13 +211,14 @@ export class Master {
    * 启动服务
    */
   async run() {
+    debug(`current master process id [${process.pid}]`);
     const serverPromise = this.options.sticky ? this.cteateStickyServer() : this.forkWorkers();
     const workers = serverPromise.then((res) => {
       // do something
       this.catchSignalToReload();
       return res;
     });
-    const agent = this.forkAgent();
-    return Promise.all([workers, agent]);
+    this.forkAgent();
+    return workers;
   }
 }
