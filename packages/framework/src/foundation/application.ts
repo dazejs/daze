@@ -373,14 +373,14 @@ export class Application extends Container {
     this.registerKeys();
 
     // 在集群模式下，主进程不运行业务代码
-    if (cluster.isWorker) {
-      if (process.env.type === 'worker') { // 业务工作进程
+    if (!this.isCluster || !cluster.isMaster) {
+      if (process.env.type === 'agent') { // 独立工作进程
+        this.registerAgents();
+        await this.fireAgentResolves();
+      } else {
         await this.registerDefaultProviders();
         await this.registerVendorProviders();
         await this.fireLaunchCalls();
-      } else if (process.env.type === 'agent') { // 独立工作进程
-        this.registerAgents();
-        await this.fireAgentResolves();
       }
     }
   }
@@ -393,6 +393,7 @@ export class Application extends Container {
     if (port) this.port = port;
     // Initialization application
     await this.initialize();
+
     // check app.cluster.enabled
     if (this.isCluster) {
       // 以集群工作方式运行应用
