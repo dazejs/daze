@@ -13,7 +13,6 @@ export * from './base';
 export { Config } from './config';
 export { Container } from './container';
 export * from './foundation/application';
-export * from './foundation/metadata';
 export * from './view';
 export * from './cookie';
 export * from './decorators';
