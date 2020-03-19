@@ -3,6 +3,7 @@ export * from './middleware';
 export * from './provider';
 export * from './resource';
 export * from './service';
+export * from './agent';
 export * from './base';
 export { Entity } from './entity';
 export { PivotEntity } from './pivot-entity';

@@ -20,6 +20,7 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
+import { Agent } from '../base/agent';
 
 const DEFAULT_PORT = 8080;
 
@@ -112,6 +113,8 @@ export class Application extends Container {
    * provider launch calls
    */
   launchCalls: ((...args: any[]) => any)[] = [];
+
+  agents: Agent[] = [];
 
   /**
    * Create Application Instance
@@ -248,7 +251,7 @@ export class Application extends Container {
   }
 
   // 获取集群主进程实例
-  get clusterMaterInstance() {
+  getClusterMaterInstance() {
     return new Master({
       port: this.port,
       workers: this.config.get('app.workers', 0),
@@ -258,7 +261,7 @@ export class Application extends Container {
 
 
   // 获取集群工作进程实例
-  get clusterWorkerInstance() {
+  getClusterWorkerInstance() {
     return new Worker({
       port: this.port,
       sticky: this.config.get('app.sticky', false),
@@ -338,6 +341,22 @@ export class Application extends Container {
     this.keys = new Keygrip(keys, algorithm, encoding);
   }
 
+  registerAgents() {
+    const _agents = this.config.get('app.agents', []);
+    for (const _agent of _agents) {
+      const agentInstance = new _agent();
+      this.agents.push(agentInstance);
+    }
+    return this;
+  }
+
+  async fireAgentResolves() {
+    for (const agent of this.agents) {
+      await agent.resolve();
+    }
+    return this;
+  }
+
   /**
    * Initialization application
    */
@@ -354,10 +373,15 @@ export class Application extends Container {
     this.registerKeys();
 
     // 在集群模式下，主进程不运行业务代码
-    if (!this.isCluster || !cluster.isMaster) {
-      await this.registerDefaultProviders();
-      await this.registerVendorProviders();
-      await this.fireLaunchCalls();
+    if (cluster.isWorker) {
+      if (process.env.type === 'worker') { // 业务工作进程
+        await this.registerDefaultProviders();
+        await this.registerVendorProviders();
+        await this.fireLaunchCalls();
+      } else if (process.env.type === 'agent') { // 独立工作进程
+        this.registerAgents();
+        this.fireAgentResolves();
+      }
     }
   }
 
@@ -373,9 +397,13 @@ export class Application extends Container {
     if (this.isCluster) {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
-        await this.clusterMaterInstance.run();
+        const master = this.getClusterMaterInstance();
+        await master.run();
       } else {
-        this._server = await this.clusterWorkerInstance.run();
+        if (process.env.type === 'worker') {
+          const worker = this.getClusterWorkerInstance();
+          this._server = await worker.run();
+        }
       }
     } else {
       // 以单线程工作方式运行应用

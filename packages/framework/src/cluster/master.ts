@@ -8,12 +8,9 @@ import * as cluster from 'cluster';
 import debuger from 'debug';
 import * as net from 'net';
 import hash from 'string-hash';
-
 import { Deferred } from '../foundation/support/defered';
 import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
 import { getAlivedWorkers, parseMasterOpts } from './helpers';
-
-
 
 const debug = debuger('daze-framework:cluster');
 
@@ -57,7 +54,9 @@ export class Master {
   // 待定
   // Environment variables for the work process
   get env() {
-    return {};
+    return {
+      type: 'worker'
+    };
   }
 
   /**
@@ -127,6 +126,17 @@ export class Master {
       promises.push(this.forkWorker(env));
     }
     return Promise.all(promises);
+  }
+
+  /**
+   * Fork a separate process
+   * fork 一条独立进程
+   */
+  forkAgent() {
+    const env = {
+      type: 'agent'
+    };
+    return this.forkWorker(env);
   }
 
   /**
@@ -200,10 +210,12 @@ export class Master {
    */
   async run() {
     const serverPromise = this.options.sticky ? this.cteateStickyServer() : this.forkWorkers();
-    return serverPromise.then((res) => {
+    const workers = serverPromise.then((res) => {
       // do something
       this.catchSignalToReload();
       return res;
     });
+    const agent = this.forkAgent();
+    return Promise.all([workers, agent]);
   }
 }
