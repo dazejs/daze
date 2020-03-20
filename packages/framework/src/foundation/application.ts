@@ -73,7 +73,7 @@ export class Application extends Container {
   /**
    * keygrip keys
    */
-  keys: any[];
+  keys: any[] = [];
 
   /**
    * http Server
@@ -115,11 +115,20 @@ export class Application extends Container {
    */
   launchCalls: ((...args: any[]) => any)[] = [];
 
+  /**
+   * agent instances
+   */
   agents: Agent[] = [];
 
+  /**
+   * cluster agent worker
+   */
+  agent?: cluster.Worker;
 
-
-  agent: cluster.Worker;
+  /**
+   * cluster workers
+   */
+  workers?: cluster.Worker[];
 
   /**
    * Create Application Instance
@@ -195,6 +204,20 @@ export class Application extends Container {
    */
   disableStaticServer() {
     this.needsStaticServer = false;
+  }
+
+  /**
+   * get cluster agent
+   */
+  getAgent() {
+    return this.agent;
+  }
+
+  /**
+   * get cluster worker (ex agent)
+   */
+  getWorkers() {
+    return this.workers;
   }
 
   /**
@@ -412,7 +435,7 @@ export class Application extends Container {
       if (cluster.isMaster) {
         const master = this.getClusterMaterInstance();
         this.agent = master.forkAgent();
-        await master.run();
+        this.workers = await master.run();
       } else {
         if (process.env.type === 'worker') {
           const worker = this.getClusterWorkerInstance();

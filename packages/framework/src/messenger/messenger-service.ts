@@ -13,11 +13,14 @@ import { Application } from '../foundation/application';
 
 const MESSENGER = 'daze-messenger';
 
+
+type MessageType = 'all' | 'worker' | 'agent'
+
 interface MessageData {
   action: string;
   channel: string;
   data: any;
-  type: string | boolean;
+  type: MessageType;
 }
 
 export class MessengerService extends EventEmitter {
@@ -43,7 +46,7 @@ export class MessengerService extends EventEmitter {
   }
 
   // 生成进程间通信（IPC）内置通信数据格式
-  getMessage(channel: string, data: any, type: string | boolean = 'broadcast'): MessageData {
+  getMessage(channel: string, data: any, type: MessageType = 'all'): MessageData {
     return {
       action: MESSENGER,
       channel,
@@ -52,21 +55,35 @@ export class MessengerService extends EventEmitter {
     };
   }
 
-  // 广播给所有工作进程，包括当前进程
-  broadcast(channel: string, data: any) {
-    const message = this.getMessage(channel, data, 'broadcast');
+  /**
+   * 广播给所有工作进程，包括当前进程
+   * @param channel 
+   * @param data 
+   * @param type 
+   */
+  broadcast(channel: string, data: any, type?: MessageType) {
+    const message = this.getMessage(channel, data, type);
     process.send?.(message);
   }
 
   /**
-   * 发送消息给独立进程
+   * broadcast to agent
    * @param channel 
    * @param data 
    */
-  sendToAgent(channel: string, data: any) {
-    const message = this.getMessage(channel, data, 'agent');
-    process.send?.(message);
+  broadcastToAgent(channel: string, data: any) {
+    return this.broadcast(channel, data, 'agent');
   }
+
+  /**
+   * broadcast to worker (ex agent)
+   * @param channel 
+   * @param data 
+   */
+  broadcastToWorker(channel: string, data: any) {
+    return this.broadcast(channel, data, 'worker');
+  }
+
 
   /**
    * 启动
@@ -77,16 +94,21 @@ export class MessengerService extends EventEmitter {
       cluster.on('message', (_worker, message) => {
         // 不处理 Messenger 以外的通信数据
         if (!message || message.action !== MESSENGER) return;
-        if (message.type === 'broadcast') { // 广播到全部进程
+        if (message.type === 'all') { // 广播到所有工作进程
           // 获取所有存活的工作进程
           const workers = getAlivedWorkers();
           // 给所有工作进程发送消息
           for (const worker of workers) {
             worker.send(message);
           }
-        } else if (message.type === 'agent') {
-          const agent = this.app.agent;
-          if (agent) agent.send(message);
+        } else if (message.type === 'worker') { // 广播到所有业务工作进程
+          const workers = this.app.getWorkers() ?? [];
+          for (const worker of workers) {
+            worker?.send(message);
+          }
+        } else if (message.type === 'agent') { // 广播到所有 agent 工作进程
+          const agent = this.app.getAgent();
+          agent?.send(message);
         }
       });
     } else { // 工作进程

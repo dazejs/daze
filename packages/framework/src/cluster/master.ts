@@ -14,11 +14,6 @@ import { getAlivedWorkers, parseMasterOpts } from './helpers';
 
 const debug = debuger('daze-framework:cluster');
 
-type TServerData = {
-  worker: cluster.Worker;
-  address: string;
-}
-
 export interface MasterOptions {
   port: number;
   workers: number;
@@ -65,7 +60,7 @@ export class Master {
   forkWorker(env = {}) {
     const worker = cluster.fork(env);
     debug(`worker is forked, use pid: ${worker.process.pid}`);
-    const deferred = new Deferred<TServerData>();
+    const deferred = new Deferred<cluster.Worker>();
     // Accepts the disconnection service signal sent by the work process,
     // indicating that the work process is about to
     // stop the service and needs to be replaced by a new work process
@@ -108,7 +103,7 @@ export class Master {
     // listening event
     worker.once('listening', (address: string) => {
       debug(`listening, address: ${JSON.stringify(address)}`);
-      deferred.resolve({ worker, address });
+      deferred.resolve(worker);
     });
 
     return deferred.promise;
@@ -147,7 +142,7 @@ export class Master {
    * reference https://github.com/uqee/sticky-cluster
    */
   cteateStickyServer()  {
-    const deferred = new Deferred<TServerData[]>();
+    const deferred = new Deferred<cluster.Worker[]>();
     const server = net.createServer({ pauseOnConnect: true }, (connection) => {
       const signature = `${connection.remoteAddress}:${connection.remotePort}`;
       this.connections[signature] = connection;
