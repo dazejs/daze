@@ -15,6 +15,7 @@ export { Container } from './container';
 export * from './foundation/application';
 export * from './view';
 export * from './cookie';
+export { MiddlewareService } from './middleware';
 export * from './decorators';
 export * from './request';
 export * from './loader';
