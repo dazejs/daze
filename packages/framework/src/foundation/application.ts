@@ -21,6 +21,7 @@ import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
 import { Agent } from '../base/agent';
+import { MessengerService } from '../messenger';
 
 const DEFAULT_PORT = 8080;
 
@@ -116,6 +117,10 @@ export class Application extends Container {
 
   agents: Agent[] = [];
 
+
+
+  agent: cluster.Worker;
+
   /**
    * Create Application Instance
    * @param rootPath 
@@ -160,13 +165,14 @@ export class Application extends Container {
     return this;
   }
 
-  async setProperties(): Promise<this> {
+  async setupApp(): Promise<this> {
     this.config = this.get('config');
     await this.config.initialize();
     if (!this.port) this.port = this.config.get('app.port', DEFAULT_PORT);
     if (process.env.NODE_ENV === 'development' || process.env.DAZE_ENV === 'dev') {
       this.isDebug = this.config.get('app.debug', false);
     }
+    this.make('messenger');
     return this;
   }
 
@@ -374,7 +380,7 @@ export class Application extends Container {
 
     await this.registerBaseProviders();
 
-    await this.setProperties();
+    await this.setupApp();
 
     this.registerKeys();
 
@@ -405,6 +411,7 @@ export class Application extends Container {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
         const master = this.getClusterMaterInstance();
+        this.agent = master.forkAgent();
         await master.run();
       } else {
         if (process.env.type === 'worker') {
@@ -483,6 +490,7 @@ export class Application extends Container {
   get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
   get(abstract: 'httpServer', args?: any[], force?: boolean): HttpServer
+  get(abstract: 'messenger', args?: any[], force?: boolean): MessengerService
   get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 

@@ -218,7 +218,6 @@ export class Master {
       this.catchSignalToReload();
       return res;
     });
-    this.forkAgent();
     return workers;
   }
 }

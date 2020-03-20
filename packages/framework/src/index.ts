@@ -16,6 +16,7 @@ export * from './foundation/application';
 export * from './view';
 export * from './cookie';
 export { MiddlewareService } from './middleware';
+export { MessengerService } from './messenger';
 export * from './decorators';
 export * from './request';
 export * from './loader';

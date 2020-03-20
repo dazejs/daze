@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import type { OutgoingHttpHeaders } from 'http';
-import type { Config } from '../config';
+import { OutgoingHttpHeaders } from 'http';
+import { Config } from '../config';
 import { Container } from '../container';
-import type { Database } from '../database';
-import type { Application } from '../foundation/application';
-import type { Messenger } from '../messenger';
+import { Database } from '../database';
+import { Application } from '../foundation/application';
+import { MessengerService } from '../messenger';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 
@@ -31,7 +31,7 @@ export abstract class Base {
   /**
    * Message instance getter
    */
-  protected get messenger(): Messenger {
+  protected get messenger(): MessengerService {
     return Container.get('messenger');
   }
 

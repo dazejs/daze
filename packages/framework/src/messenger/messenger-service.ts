@@ -4,12 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as cluster from 'cluster';
+import cluster from 'cluster';
 import { EventEmitter } from 'events';
 
 import { Config } from '../config';
 import { Container } from '../container';
 import { getAlivedWorkers } from '../cluster/helpers';
+import { Application } from '../foundation/application';
 
 const MESSENGER = 'daze-messenger';
 
@@ -20,7 +21,9 @@ interface MessageData {
   type: string | boolean;
 }
 
-export class Messenger extends EventEmitter {
+export class MessengerService extends EventEmitter {
+
+  app: Application = Container.get('app');
 
   config: Config = Container.get('config');
 
@@ -52,23 +55,39 @@ export class Messenger extends EventEmitter {
 
   // 广播给所有工作进程，包括当前进程
   broadcast(channel: string, data: any) {
-    const message = this.getMessage(channel, data, false);
-    process.send && process.send(message);
+    const message = this.getMessage(channel, data, 'broadcast');
+    process.send?.(message);
   }
 
+  /**
+   * 发送消息给独立进程
+   * @param channel 
+   * @param data 
+   */
+  sendToAgent(channel: string, data: any) {
+    const message = this.getMessage(channel, data, 'agent');
+    process.send?.(message);
+  }
+
+  /**
+   * 启动
+   */
   run() {
     if (cluster.isMaster) { // 主进程
       // 主进程监听工作进程发送的消息事件
-      process.on('message', (_worker, message) => {
+      cluster.on('message', (_worker, message) => {
         // 不处理 Messenger 以外的通信数据
         if (!message || message.action !== MESSENGER) return;
-        if (message.type === 'broadcast') {
+        if (message.type === 'broadcast') { // 广播到全部进程
           // 获取所有存活的工作进程
           const workers = getAlivedWorkers();
           // 给所有工作进程发送消息
           for (const worker of workers) {
             worker.send(message);
           }
+        } else if (message.type === 'agent') {
+          const agent = this.app.agent;
+          if (agent) agent.send(message);
         }
       });
     } else { // 工作进程

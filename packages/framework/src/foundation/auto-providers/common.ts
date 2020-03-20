@@ -7,16 +7,17 @@
 import * as providers from './providers';
 import { provide, depend } from '../../decorators/provider';
 // import { Application } from '../application';
-import { Messenger } from '../../messenger';
+import { MessengerService } from '../../messenger';
+import { Provider } from '../../base/provider';
 
 @depend([
   providers.ConfigProvider,
   providers.LoaderProvider
 ])
-export class CommonProvider {
+export class CommonProvider extends Provider {
 
   @provide('messenger')
   _mssenger() {
-    return new Messenger();
+    return new MessengerService();
   }
 }
