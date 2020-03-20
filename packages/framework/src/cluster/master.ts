@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as cluster from 'cluster';
+import cluster from 'cluster';
 import debuger from 'debug';
 import * as net from 'net';
 import hash from 'string-hash';
@@ -200,7 +200,7 @@ export class Master {
     // Receives the daze-restart restart instruction
     // sent by the work process to restart all the work processes
     // 接收工作进程发送的 daze-restart 重启指令，重启所有工作进程
-    process.on('message', (_worker, message) => {
+    cluster.on('message', (_worker, message) => {
       if (message !== 'daze-restart') return;
       this.reloadWorkers();
     });

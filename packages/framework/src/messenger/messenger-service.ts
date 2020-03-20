@@ -6,7 +6,6 @@
  */
 import cluster from 'cluster';
 import { EventEmitter } from 'events';
-
 import { Config } from '../config';
 import { Container } from '../container';
 import { getAlivedWorkers } from '../cluster/helpers';
@@ -27,13 +26,13 @@ export class MessengerService extends EventEmitter {
 
   config: Config = Container.get('config');
 
-  events: any;
+  events: Function;
 
   constructor() {
     super();
     this.events = this.config.get('messenger', () => {
       //
-    });
+    }) as Function;
     this.run();
     this.parseEvents();
   }
