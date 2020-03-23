@@ -23,7 +23,7 @@
     "@types/node": "13.9.1",
     "@types/supertest": "2.0.8",
     "@types/type-is": "1.6.3",
-    "@types/uuid": "7.0.0",
+    "@types/uuid": "7.0.2",
     "@types/validator": "12.0.1",
     "@typescript-eslint/eslint-plugin": "2.6.0",
     "@typescript-eslint/parser": "2.6.0",
