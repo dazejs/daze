@@ -45,15 +45,6 @@ export class Master {
     this.options = Object.assign({}, defaultOptions, parseMasterOpts(opts));
   }
 
-  // 工作进程的环境变量
-  // 待定
-  // Environment variables for the work process
-  get env() {
-    return {
-      type: 'worker'
-    };
-  }
-
   /**
    * Fork a work process
    */
@@ -116,7 +107,9 @@ export class Master {
   forkWorkers() {
     const { workers } = this.options;
     const promises: Promise<any>[] = [];
-    const env = Object.assign({}, this.env);
+    const env = {
+      DAZE_TYPE: 'worker'
+    };
     for (let i = 0; i < workers; i += 1) {
       promises.push(this.forkWorker(env));
     }
@@ -129,7 +122,7 @@ export class Master {
    */
   forkAgent() {
     const env = {
-      type: 'agent'
+      DAZE_TYPE: 'agent'
     };
     const agent = cluster.fork(env);
     debug(`agent is forked, use pid: ${agent.process.pid}`);

@@ -409,7 +409,7 @@ export class Application extends Container {
 
     // 在集群模式下，主进程不运行业务代码
     if (!this.isCluster || !cluster.isMaster) {
-      if (process.env.type === 'agent') { // 独立工作进程
+      if (process.env.DAZE_TYPE === 'agent') { // 独立工作进程
         this.registerAgents();
         await this.fireAgentResolves();
       } else {
