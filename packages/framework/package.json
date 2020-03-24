@@ -11,7 +11,7 @@
     "dev": "npm run clean && npm run copy &&  tsc -w",
     "lint": "tsc --noEmit && eslint \"{src,__tests__}/**/*.{js,ts}\" --quiet --fix",
     "test:coverage": "jest --runInBand --forceExit --coverage",
-    "debugger": "node --inspect-brk node_modules/.bin/jest --runInBand --no-cache --no-watchman --detectOpenHandles"
+    "debugger": "node --inspect-brk --trace-warnings node_modules/.bin/jest --runInBand --no-cache --no-watchman --detectOpenHandles "
   },
   "keywords": [
     "dazejs",

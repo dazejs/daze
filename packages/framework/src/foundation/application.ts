@@ -181,7 +181,7 @@ export class Application extends Container {
     if (process.env.NODE_ENV === 'development' || process.env.DAZE_ENV === 'dev') {
       this.isDebug = this.config.get('app.debug', false);
     }
-    this.make('messenger');
+    if (this.isCluster) this.make('messenger');
     return this;
   }
 
