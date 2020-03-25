@@ -18,7 +18,7 @@
     "@types/debug": "4.1.5",
     "@types/express": "4.17.1",
     "@types/jest": "25.1.4",
-    "@types/koa": "2.0.50",
+    "@types/koa": "2.11.2",
     "@types/koa-router": "7.4.0",
     "@types/node": "13.9.1",
     "@types/supertest": "2.0.8",
