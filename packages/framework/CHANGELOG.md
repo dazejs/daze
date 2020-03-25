@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.6.1...@dazejs/framework@2.7.0) (2020-03-25)
+
+
+### Features
+
+* **agent:** add agent process when use cluster mode ([#198](https://github.com/dazejs/daze/issues/198)) ([3c87b06](https://github.com/dazejs/daze/commit/3c87b063cf55ce0e41b2d44369ac3ba9cfa7aa53))
+* **core:** add middleware order ([5c17646](https://github.com/dazejs/daze/commit/5c176465b568a9c08a51d6b2d8ea3e3db7c6580f))
+
+
+
+
+
 ## [2.6.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.6.0...@dazejs/framework@2.6.1) (2020-03-16)
 
 
