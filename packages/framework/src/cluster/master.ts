@@ -108,7 +108,7 @@ export class Master {
     const { workers } = this.options;
     const promises: Promise<any>[] = [];
     const env = {
-      DAZE_TYPE: 'worker'
+      DAZE_PROCESS_TYPE: 'worker'
     };
     for (let i = 0; i < workers; i += 1) {
       promises.push(this.forkWorker(env));
@@ -122,7 +122,7 @@ export class Master {
    */
   forkAgent() {
     const env = {
-      DAZE_TYPE: 'agent'
+      DAZE_PROCESS_TYPE: 'agent'
     };
     const agent = cluster.fork(env);
     debug(`agent is forked, use pid: ${agent.process.pid}`);
