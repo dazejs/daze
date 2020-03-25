@@ -20,6 +20,8 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
+import { Agent } from '../base/agent';
+import { MessengerService } from '../messenger';
 
 const DEFAULT_PORT = 8080;
 
@@ -71,7 +73,7 @@ export class Application extends Container {
   /**
    * keygrip keys
    */
-  keys: any[];
+  keys: any[] = [];
 
   /**
    * http Server
@@ -112,6 +114,21 @@ export class Application extends Container {
    * provider launch calls
    */
   launchCalls: ((...args: any[]) => any)[] = [];
+
+  /**
+   * agent instances
+   */
+  agents: Agent[] = [];
+
+  /**
+   * cluster agent worker
+   */
+  agent?: cluster.Worker;
+
+  /**
+   * cluster workers
+   */
+  workers?: cluster.Worker[];
 
   /**
    * Create Application Instance
@@ -157,13 +174,14 @@ export class Application extends Container {
     return this;
   }
 
-  async setProperties(): Promise<this> {
+  async setupApp(): Promise<this> {
     this.config = this.get('config');
     await this.config.initialize();
     if (!this.port) this.port = this.config.get('app.port', DEFAULT_PORT);
     if (process.env.NODE_ENV === 'development' || process.env.DAZE_ENV === 'dev') {
       this.isDebug = this.config.get('app.debug', false);
     }
+    if (this.isCluster) this.make('messenger');
     return this;
   }
 
@@ -186,6 +204,20 @@ export class Application extends Container {
    */
   disableStaticServer() {
     this.needsStaticServer = false;
+  }
+
+  /**
+   * get cluster agent
+   */
+  getAgent() {
+    return this.agent;
+  }
+
+  /**
+   * get cluster worker (ex agent)
+   */
+  getWorkers() {
+    return this.workers;
   }
 
   /**
@@ -248,7 +280,7 @@ export class Application extends Container {
   }
 
   // 获取集群主进程实例
-  get clusterMaterInstance() {
+  getClusterMaterInstance() {
     return new Master({
       port: this.port,
       workers: this.config.get('app.workers', 0),
@@ -258,7 +290,7 @@ export class Application extends Container {
 
 
   // 获取集群工作进程实例
-  get clusterWorkerInstance() {
+  getClusterWorkerInstance() {
     return new Worker({
       port: this.port,
       sticky: this.config.get('app.sticky', false),
@@ -339,6 +371,28 @@ export class Application extends Container {
   }
 
   /**
+   * register agent in cluster mode
+   */
+  registerAgents() {
+    const _agents = this.config.get('app.agents', []);
+    for (const _agent of _agents) {
+      const agentInstance = new _agent();
+      this.agents.push(agentInstance);
+    }
+    return this;
+  }
+
+  /**
+   * fire agent instance 's resolves
+   */
+  async fireAgentResolves() {
+    for (const agent of this.agents) {
+      await agent.resolve();
+    }
+    return this;
+  }
+
+  /**
    * Initialization application
    */
   async initialize() {
@@ -349,15 +403,20 @@ export class Application extends Container {
 
     await this.registerBaseProviders();
 
-    await this.setProperties();
+    await this.setupApp();
 
     this.registerKeys();
 
     // 在集群模式下，主进程不运行业务代码
     if (!this.isCluster || !cluster.isMaster) {
-      await this.registerDefaultProviders();
-      await this.registerVendorProviders();
-      await this.fireLaunchCalls();
+      if (process.env.DAZE_PROCESS_TYPE === 'agent') { // 独立工作进程
+        this.registerAgents();
+        await this.fireAgentResolves();
+      } else {
+        await this.registerDefaultProviders();
+        await this.registerVendorProviders();
+        await this.fireLaunchCalls();
+      }
     }
   }
 
@@ -369,13 +428,19 @@ export class Application extends Container {
     if (port) this.port = port;
     // Initialization application
     await this.initialize();
+
     // check app.cluster.enabled
     if (this.isCluster) {
       // 以集群工作方式运行应用
       if (cluster.isMaster) {
-        await this.clusterMaterInstance.run();
+        const master = this.getClusterMaterInstance();
+        this.agent = master.forkAgent();
+        this.workers = await master.run();
       } else {
-        this._server = await this.clusterWorkerInstance.run();
+        if (process.env.type === 'worker') {
+          const worker = this.getClusterWorkerInstance();
+          this._server = await worker.run();
+        }
       }
     } else {
       // 以单线程工作方式运行应用
@@ -404,12 +469,21 @@ export class Application extends Container {
     return this.listen(...args);
   }
 
+  /**
+   * 监听 http 服务
+   * @param args 
+   */
   listen(...args: any[]) {
     const server: HttpServer = this.get('httpServer');
     return server.listen(...args);
   }
 
 
+  /**
+   * call function type concrete
+   * @param abstract 
+   * @param args 
+   */
   call(abstract: any, args: any[] = []) {
     const concrete = this.make(abstract);
     if (typeof concrete !== 'function') return undefined;
@@ -422,8 +496,6 @@ export class Application extends Container {
   tagged(tag: string) {
     if (!this.tags[tag]) return [];
     return this.tags[tag];
-    // if (!shouldMake) return this.tags[tag];
-    // return this.tags[tag].map((abstract: any) => this.make(abstract, args));
   }
 
   /**
@@ -441,6 +513,7 @@ export class Application extends Container {
   get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
   get(abstract: 'db', args?: any[], force?: boolean): Database
   get(abstract: 'httpServer', args?: any[], force?: boolean): HttpServer
+  get(abstract: 'messenger', args?: any[], force?: boolean): MessengerService
   get<T = any>(abstract: any, args?: any[], force?: boolean): T
   get(abstract: any, args?: any[], force?: boolean): any
 

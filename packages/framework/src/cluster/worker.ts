@@ -116,6 +116,7 @@ export class Worker {
     this.catcheReloadSignal();
     if (!this.options.sticky) {
       this.server = this.options.createServer(this.options.port, () => {
+        debug(`server resolved on: ${this.options.port}`);
         deferred.resolve(this.server);
       });
       this.server.on('connection', () => {
@@ -134,6 +135,7 @@ export class Worker {
         connection.resume();
       });
       this.server = this.options.createServer(0, 'localhost', () => {
+        debug(`server resolved on: ${0}`);
         deferred.resolve(this.server);
       });
     }

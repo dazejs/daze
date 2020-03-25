@@ -4,23 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as cluster from 'cluster';
+import cluster from 'cluster';
 import debuger from 'debug';
 import * as net from 'net';
 import hash from 'string-hash';
-
 import { Deferred } from '../foundation/support/defered';
 import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
 import { getAlivedWorkers, parseMasterOpts } from './helpers';
 
-
-
 const debug = debuger('daze-framework:cluster');
-
-type TServerData = {
-  worker: cluster.Worker;
-  address: string;
-}
 
 export interface MasterOptions {
   port: number;
@@ -53,20 +45,13 @@ export class Master {
     this.options = Object.assign({}, defaultOptions, parseMasterOpts(opts));
   }
 
-  // 工作进程的环境变量
-  // 待定
-  // Environment variables for the work process
-  get env() {
-    return {};
-  }
-
   /**
    * Fork a work process
    */
   forkWorker(env = {}) {
     const worker = cluster.fork(env);
     debug(`worker is forked, use pid: ${worker.process.pid}`);
-    const deferred = new Deferred<TServerData>();
+    const deferred = new Deferred<cluster.Worker>();
     // Accepts the disconnection service signal sent by the work process,
     // indicating that the work process is about to
     // stop the service and needs to be replaced by a new work process
@@ -109,7 +94,7 @@ export class Master {
     // listening event
     worker.once('listening', (address: string) => {
       debug(`listening, address: ${JSON.stringify(address)}`);
-      deferred.resolve({ worker, address });
+      deferred.resolve(worker);
     });
 
     return deferred.promise;
@@ -122,11 +107,26 @@ export class Master {
   forkWorkers() {
     const { workers } = this.options;
     const promises: Promise<any>[] = [];
-    const env = Object.assign({}, this.env);
+    const env = {
+      DAZE_PROCESS_TYPE: 'worker'
+    };
     for (let i = 0; i < workers; i += 1) {
       promises.push(this.forkWorker(env));
     }
     return Promise.all(promises);
+  }
+
+  /**
+   * Fork a separate process
+   * fork 一条独立进程
+   */
+  forkAgent() {
+    const env = {
+      DAZE_PROCESS_TYPE: 'agent'
+    };
+    const agent = cluster.fork(env);
+    debug(`agent is forked, use pid: ${agent.process.pid}`);
+    return agent;
   }
 
   /**
@@ -135,7 +135,7 @@ export class Master {
    * reference https://github.com/uqee/sticky-cluster
    */
   cteateStickyServer()  {
-    const deferred = new Deferred<TServerData[]>();
+    const deferred = new Deferred<cluster.Worker[]>();
     const server = net.createServer({ pauseOnConnect: true }, (connection) => {
       const signature = `${connection.remoteAddress}:${connection.remotePort}`;
       this.connections[signature] = connection;
@@ -188,7 +188,7 @@ export class Master {
     // Receives the daze-restart restart instruction
     // sent by the work process to restart all the work processes
     // 接收工作进程发送的 daze-restart 重启指令，重启所有工作进程
-    process.on('message', (_worker, message) => {
+    cluster.on('message', (_worker, message) => {
       if (message !== 'daze-restart') return;
       this.reloadWorkers();
     });
@@ -199,11 +199,13 @@ export class Master {
    * 启动服务
    */
   async run() {
+    debug(`current master process id [${process.pid}]`);
     const serverPromise = this.options.sticky ? this.cteateStickyServer() : this.forkWorkers();
-    return serverPromise.then((res) => {
+    const workers = serverPromise.then((res) => {
       // do something
       this.catchSignalToReload();
       return res;
     });
+    return workers;
   }
 }
