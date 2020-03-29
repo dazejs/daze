@@ -437,7 +437,7 @@ export class Application extends Container {
         this.agent = master.forkAgent();
         this.workers = await master.run();
       } else {
-        if (process.env.type === 'worker') {
+        if (process.env.DAZE_PROCESS_TYPE === 'worker') {
           const worker = this.getClusterWorkerInstance();
           this._server = await worker.run();
         }
