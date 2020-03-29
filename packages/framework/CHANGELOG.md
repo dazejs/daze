@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.7.0...@dazejs/framework@2.7.1) (2020-03-29)
+
+
+### Bug Fixes
+
+* **app:** process type on cluster ([80aee86](https://github.com/dazejs/daze/commit/80aee86b6c16219c62114560596b311390198f3e))
+
+
+
+
+
 # [2.7.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.6.1...@dazejs/framework@2.7.0) (2020-03-25)
 
 
