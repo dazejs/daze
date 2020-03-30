@@ -48,7 +48,7 @@
     "zepto": "1.2.0"
   },
   "devDependencies": {
-    "@types/autoprefixer": "9.6.1",
+    "@types/autoprefixer": "9.7.1",
     "@types/mini-css-extract-plugin": "0.9.1",
     "@types/stack-trace": "0.0.29",
     "@types/webpack": "4.39.1",
