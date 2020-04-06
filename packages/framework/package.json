@@ -82,7 +82,7 @@
     "statuses": "1.5.0",
     "string-hash": "1.1.3",
     "type-is": "1.6.16",
-    "uuid": "7.0.1",
+    "uuid": "7.0.3",
     "validator": "12.0.0",
     "vary": "1.1.2",
     "winston": "3.2.1",
