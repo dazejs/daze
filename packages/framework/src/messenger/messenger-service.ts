@@ -33,6 +33,7 @@ export class MessengerService extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(100);
     this.events = this.config.get('messenger', () => {
       //
     }) as Function;
