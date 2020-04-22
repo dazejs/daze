@@ -1,5 +1,5 @@
 // import { format as dateFormat, getUnixTime } from 'date-fns';
-import { BaseEntity as Entity } from '../base/entity';
+import { BaseEntity } from '../base/entity';
 import { Builder } from '../database/builder';
 import { ModelBuilder } from './builder';
 import { HasRelations } from './relations/has-relations.abstract';
@@ -13,8 +13,8 @@ export type RelationTypes = 'hasOne' | 'belongsTo' | 'hasMany' | 'belongsToMany'
 
 export interface RelationDesc {
   type: RelationTypes;
-  entityFn: () => typeof Entity;
-  pivot?: typeof Entity;
+  entityFn: () => typeof BaseEntity;
+  pivot?: typeof BaseEntity;
   foreignKey?: string;
   localKey?: string;
   relatedPivotKey?: string;
@@ -26,7 +26,7 @@ export interface ColumnDescription {
   length: number;
 };
 
-export class Model {
+export class Entity {
   /**
    * 应用实例
    */
@@ -106,7 +106,7 @@ export class Model {
    * 渴求式加载数据集合
    * Eager load data set
    */
-  private relations: Map<string, Entity | Entity[]> = new Map();
+  private relations: Map<string, BaseEntity | BaseEntity[]> = new Map();
 
   /**
    * Create Model
@@ -353,7 +353,7 @@ export class Model {
    * 渴求式加载
    * @param result 
    */
-  async eagerly(withs: Map<string, HasRelations>, result: Model) {
+  async eagerly(withs: Map<string, HasRelations>, result: Entity) {
     for (const [relation, relationImp] of withs) {
       await relationImp.eagerly(result, relation);
     }
@@ -364,7 +364,7 @@ export class Model {
    * @param withs 
    * @param results 
    */
-  async eagerlyCollection(withs: Map<string, HasRelations>, results: Model[]) {
+  async eagerlyCollection(withs: Map<string, HasRelations>, results: Entity[]) {
     for (const [relation, relationImp] of withs) {
       await relationImp.eagerlyMap(results, relation);
     }
@@ -691,11 +691,11 @@ export class Model {
    * 填充数据对象到实体属性中
    * @param attributes 
    */
-  fill(attributes: Record<string, any> | Entity = {}) {
+  fill(attributes: Record<string, any> | BaseEntity = {}) {
     // 只有在实体声明的字段才会被填充
     // Only fields declared in the entity are populated
     const keys = this.columns.keys();
-    if (attributes instanceof Model) {
+    if (attributes instanceof Entity) {
       for (const columnKey of keys) {
         if (attributes.hasAttribute(columnKey)) {
           this.attributes[columnKey] = attributes.getAttribute(columnKey);
@@ -740,7 +740,7 @@ export class Model {
    * @param results 
    */
   async resultsToModels(results: Record<string, any>[]) {
-    const data: Model[] = [];
+    const data: Entity[] = [];
     for (const item of results) {
       data.push(
         await this.resultToModel(item, true)

@@ -1,10 +1,10 @@
-import { Model } from './model';
+import { Entity } from './entity';
 import { Application } from '../foundation/application';
 import { Container } from '../container';
 import { Builder } from '../database/builder';
 import { Database } from '../database';
 
-export class ModelBuilder<M extends Model> {
+export class ModelBuilder<M extends Entity> {
   /**
    * Application instance
    */

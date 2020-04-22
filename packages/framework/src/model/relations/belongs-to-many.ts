@@ -1,6 +1,6 @@
-import { BaseEntity as Entity, BasePivotEntity as PivotEntity } from '../../base';
+import { BaseEntity, BasePivotEntity } from '../../base';
 import { HasRelations } from './has-relations.abstract';
-import { Model } from '../model';
+import { Entity } from '../entity';
 import pluralize from 'pluralize';
 import { Join } from '../../database/builder/join';
 
@@ -8,7 +8,7 @@ export class BelongsToMany extends HasRelations {
   /**
    * 中间表实体实例
    */
-  pivot: Entity;
+  pivot: BaseEntity;
 
   /**
    * 关联外键
@@ -28,7 +28,7 @@ export class BelongsToMany extends HasRelations {
    * @param foreignPivotKey 
    * @param relatedPivotKey 
    */
-  constructor(parent: Model, model: Model, Pivot?: typeof Model, foreignPivotKey?: string, relatedPivotKey?: string) {
+  constructor(parent: Entity, model: Entity, Pivot?: typeof Entity, foreignPivotKey?: string, relatedPivotKey?: string) {
     super();
     this.parent = parent;
     this.model = model;
@@ -57,12 +57,12 @@ export class BelongsToMany extends HasRelations {
   /**
    * 新建中间表实体实例
    */
-  newPivot(Pivot?: typeof Model) {
+  newPivot(Pivot?: typeof Entity) {
     
-    const _class = Pivot ?? PivotEntity;
+    const _class = Pivot ?? BasePivotEntity;
     this.app.bind(_class, _class);
     const _pivot = this.app.get(_class);
-    if (!(_pivot instanceof PivotEntity)) {
+    if (!(_pivot instanceof BasePivotEntity)) {
       throw new Error('pivot entity must extends: PivotEntity');
     }
     const table = _pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
@@ -75,7 +75,7 @@ export class BelongsToMany extends HasRelations {
    * @param resultModel 需要被加载的模型
    * @param relation 关联名
    */
-  async eagerly(resultModel: Model, relation: string) {
+  async eagerly(resultModel: Entity, relation: string) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
     // 需要被加载的模型主键值
@@ -87,7 +87,7 @@ export class BelongsToMany extends HasRelations {
 
     // const query = this.pivot.newModelBuilderInstance();
     // 获取中间表与当前模型的关联数据
-    const records: Model[] = await this.pivot
+    const records: Entity[] = await this.pivot
       .createQueryBuilder()
       .getBuilder()
       .alias('pivot')
@@ -107,7 +107,7 @@ export class BelongsToMany extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultModels: Model[], relation: string) {
+  async eagerlyMap(resultModels: Entity[], relation: string) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
     // 查询范围 - foreignPivotKey

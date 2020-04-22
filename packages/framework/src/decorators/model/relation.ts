@@ -1,4 +1,4 @@
-import { RelationDesc } from '../../model/model';
+import { RelationDesc } from '../../model/entity';
 import { BaseEntity as EntityBase } from '../../base';
 
 interface ManyRealtionOptions {

@@ -1,5 +1,5 @@
 
-import { ColumnDescription } from '../../model/model';
+import { ColumnDescription } from '../../model/entity';
 
 
 /**

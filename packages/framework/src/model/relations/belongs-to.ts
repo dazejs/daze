@@ -1,5 +1,5 @@
 // import { Entity } from '../../base/entity';
-import { Model } from '../model';
+import { Entity } from '../entity';
 import { HasRelations } from './has-relations.abstract';
 import pluralize from 'pluralize';
 
@@ -11,7 +11,7 @@ export class BelongsTo extends HasRelations {
    * @param foreignKey 
    * @param localKey 
    */
-  constructor(parent: Model, model: Model, foreignKey?: string, localKey?: string) {
+  constructor(parent: Entity, model: Entity, foreignKey?: string, localKey?: string) {
     super();
     this.parent = parent;
     this.model = model;
@@ -38,7 +38,7 @@ export class BelongsTo extends HasRelations {
    * @param resultModel 
    * @param relation 
    */
-  async eagerly(resultModel: Model, relation: string) {
+  async eagerly(resultModel: Entity, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
@@ -55,7 +55,7 @@ export class BelongsTo extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultModels: Model[], relation: string) {
+  async eagerlyMap(resultModels: Entity[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 

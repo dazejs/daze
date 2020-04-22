@@ -1,5 +1,5 @@
 import { HasRelations } from './has-relations.abstract';
-import { Model } from '../model';
+import { Entity } from '../entity';
 import pluralize from 'pluralize';
 
 export class HasOne extends HasRelations {
@@ -10,7 +10,7 @@ export class HasOne extends HasRelations {
    * @param foreignKey 
    * @param localKey 
    */
-  constructor(parent: Model, model: Model, foreignKey?: string, localKey?: string) {
+  constructor(parent: Entity, model: Entity, foreignKey?: string, localKey?: string) {
     super();
     this.parent = parent;
     this.model = model;
@@ -37,7 +37,7 @@ export class HasOne extends HasRelations {
    * @param result 
    * @param relation 
    */
-  async eagerly(resultModel: Model, relation: string) {
+  async eagerly(resultModel: Entity, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
     const record = await this.model
@@ -54,7 +54,7 @@ export class HasOne extends HasRelations {
    * @param results 
    * @param relation 
    */
-  async eagerlyMap(resultModels: Model[], relation: string) {
+  async eagerlyMap(resultModels: Entity[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
     const range = new Set();
