@@ -77,7 +77,6 @@
     "path-to-regexp": "5.0.0",
     "pluralize": "8.0.0",
     "redis": "3.0.2",
-    "reflect-metadata": "0.1.13",
     "require-main-filename": "2.0.0",
     "statuses": "1.5.0",
     "string-hash": "1.1.3",
