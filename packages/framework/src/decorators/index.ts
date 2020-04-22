@@ -33,3 +33,4 @@ export * from './model';
 export * from './provider';
 export * from './order';
 export * from './factory/create-inject-decorator';
+export * from './controller';
