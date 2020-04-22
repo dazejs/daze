@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Middleware } from '../base/middleware';
+import { BaseMiddleware } from '../base/middleware';
 import { Request } from '../request';
 import { Response } from '../response';
 import { TNext } from '../middleware';
@@ -36,18 +36,11 @@ function handle(args: any[], middleware: any) {
   return decoratorMethod(target, name, descriptor, middleware);
 }
 
-export function UseMiddleware(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+export function useMiddleware(middleware: typeof BaseMiddleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
   return (...args: any[]) => handle(args, middleware);
 };
 
-export function useMiddleware(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
-  return UseMiddleware(middleware);
+export function use(middleware: typeof BaseMiddleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
+  return useMiddleware(middleware);
 }
 
-export function Use(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
-  return UseMiddleware(middleware);
-}
-
-export function use(middleware: typeof Middleware | ((request: Request, next: TNext) => Promise<Response> | Response)) {
-  return UseMiddleware(middleware);
-}

@@ -7,10 +7,6 @@
 import { useMiddleware } from './use-middleware';
 import { VerifyCsrfToken } from '../foundation/middlewares/verify-csrf-token';
 
-export function Csrf() {
+export function csrf() {
   return (...args: any) => useMiddleware(VerifyCsrfToken)(...args);
 };
-
-export function csrf() {
-  return Csrf();
-}

@@ -1,7 +1,7 @@
 
 import 'reflect-metadata';
 import { Container } from '../../../src/container';
-import { Injectable } from '../../../src/decorators';
+import { injectable } from '../../../src/decorators';
 
 it('Container.setInstance', () => {
   const App = class { };
@@ -103,7 +103,7 @@ it('Container#callable', () => {
 });
 
 it('Container inject class', () => {
-  @Injectable()
+  @injectable()
   class App {
     param: any;
     prop: any;

@@ -1,11 +1,11 @@
 import {
-  CrossOrigin, Controller, Route, Http,
+  crossOrigin, controller, http,
 } from '../../../../../src';
 
-@Route('cross')
-export default class extends Controller {
-  @Http.Post()
-  @CrossOrigin()
+@controller('cross')
+export default class {
+  @http.post()
+  @crossOrigin()
   store() {
     return 'hello';
   }

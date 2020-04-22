@@ -2,7 +2,7 @@ import type { Request } from '../request';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
-import type { Resource as BaseResource } from './resource';
+import type { BaseResource } from './resource';
 
 @Reflect.metadata('injectable', true)
 export class Injectable extends Base {
@@ -83,11 +83,4 @@ export class Injectable extends Base {
   collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
     return (new Resource.Collection(data, resource).setContext(this.__context__));
   }
-
-  // model<TEntity extends Entity>(entity: string | { new(): TEntity })  {
-  //   return (new Model<TEntity>(
-  //     typeof entity === 'string' ? this.app.get<TEntity>(`entity.${entity}`) : this.app.get<TEntity>(entity)
-  //   )) as Model<TEntity>;
-  //   // return typeof entity === 'string' ? this.app.get<Model<TEntity>>(`entity.${entity}`) : this.app.get<Model<TEntity>>(entity);
-  // }
 }

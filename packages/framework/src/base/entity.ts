@@ -3,6 +3,6 @@ import { componentType } from '../decorators/component-type';
 
 @componentType('entity')
 @Reflect.metadata('connection', 'default')
-export class Entity extends Model {
+export class BaseEntity extends Model {
   
 }

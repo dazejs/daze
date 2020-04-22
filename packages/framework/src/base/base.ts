@@ -13,7 +13,6 @@ import { MessengerService } from '../messenger';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
 
-@Reflect.metadata('isExtendsFromBase', true)
 export abstract class Base {
   /**
    * Application instance getter

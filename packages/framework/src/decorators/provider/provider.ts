@@ -1,6 +1,6 @@
 import { ProviderType } from '../../symbol';
 
-export function Depend(...providers: Function[] | Function[][]) {
+export function depend(...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
@@ -14,11 +14,11 @@ export function Depend(...providers: Function[] | Function[][]) {
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 }
-export function depend(...providers: Function[] | Function[][]) {
-  return Depend(...providers);
+export function depends(...providers: Function[] | Function[][]) {
+  return depend(...providers);
 }
 
-export function AutoScan(...componentScans: string[] | string[][]) {
+export function autoScan(...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
@@ -33,9 +33,7 @@ export function AutoScan(...componentScans: string[] | string[][]) {
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 }
-export function autoScan(...componentScans: string[] | string[][]) {
-  return AutoScan(...componentScans);
-}
+
 
 export interface ProviderOption {
   depends?: Function[];

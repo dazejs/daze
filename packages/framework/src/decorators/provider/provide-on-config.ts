@@ -1,7 +1,7 @@
 import { ProviderType } from '../../symbol';
 import { ProvideMetaData } from './provide';
 
-export function ProvideOnConfig(key: string): ClassDecorator | MethodDecorator | any {
+export function provideOnConfig(key: string): ClassDecorator | MethodDecorator | any {
   return function (
     target: Function | object, 
     name?: string | symbol | undefined,
@@ -36,8 +36,4 @@ export function ProvideOnConfig(key: string): ClassDecorator | MethodDecorator |
       Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target);
     }
   };
-}
-
-export function provideOnConfig(key: string): ClassDecorator | MethodDecorator | any {
-  return ProvideOnConfig(key);
 }

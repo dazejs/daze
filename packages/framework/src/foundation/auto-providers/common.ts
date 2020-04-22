@@ -8,13 +8,13 @@ import * as providers from './providers';
 import { provide, depend } from '../../decorators/provider';
 // import { Application } from '../application';
 import { MessengerService } from '../../messenger';
-import { Provider } from '../../base/provider';
+import { BaseProvider } from '../../base/provider';
 
 @depend([
   providers.ConfigProvider,
   providers.LoaderProvider
 ])
-export class CommonProvider extends Provider {
+export class CommonProvider extends BaseProvider {
 
   @provide('messenger')
   _mssenger() {

@@ -1,8 +1,8 @@
-import { Entity, table, autoIncrementPrimaryColumn, column } from '../../../../../src'; 
+import { BaseEntity, table, autoIncrementPrimaryColumn, column } from '../../../../../src'; 
 
 
 @table('roles')
-export default class extends Entity {
+export default class extends BaseEntity {
   @autoIncrementPrimaryColumn()
   id: number;
 

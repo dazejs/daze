@@ -5,11 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function component(name = ''): ClassDecorator {
+export function service(name = ''): ClassDecorator {
   return function (constructor) {
-    if (!Reflect.hasMetadata('type', constructor)) {
-      Reflect.defineMetadata('type', 'component', constructor);
-    }
+    Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('name', name, constructor);
+    Reflect.defineMetadata('type', 'service', constructor);
   };
 };

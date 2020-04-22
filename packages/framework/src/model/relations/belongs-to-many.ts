@@ -1,4 +1,4 @@
-import { Entity, PivotEntity } from '../../base';
+import { BaseEntity as Entity, BasePivotEntity as PivotEntity } from '../../base';
 import { HasRelations } from './has-relations.abstract';
 import { Model } from '../model';
 import pluralize from 'pluralize';

@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import { Component } from '../../../src/decorators/component';
+import { component } from '../../../src/decorators/component';
 
 describe('Component Decorator', () => {
   it('should patch injectable and name in Component', () => {
-    @Component('example') 
+    @component('example') 
     class Example { };
     expect(Reflect.getMetadata('name', Example)).toBe('example');
   });

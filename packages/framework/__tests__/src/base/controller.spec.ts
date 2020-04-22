@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Controller } from '../../../src/base/controller';
+import { BaseController as Controller } from '../../../src/base/controller';
 import { Application } from '../../../src/foundation/application';
 import { View } from '../../../src/view';
 

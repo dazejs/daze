@@ -1,6 +1,6 @@
 import { Application } from '@src';
 import * as path from 'path';
-import { Provider as BaseProvider } from '../base/provider';
+import { BaseProvider } from '../base/provider';
 import { ProvideMetaData, ProviderOption } from '../decorators/provider';
 import { Loader } from '../loader';
 import { ProviderType } from '../symbol';

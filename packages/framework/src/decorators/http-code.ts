@@ -20,10 +20,6 @@ function handle(args: any[], code: number) {
   throw new Error('@HttpCode must be decorate on method');
 }
 
-export function HttpCode(code = 200) {
-  return (...args: any[]) => handle(args, code);
-};
-
 export function httpCode(code = 200) {
-  return HttpCode(code);
+  return (...args: any[]) => handle(args, code);
 };

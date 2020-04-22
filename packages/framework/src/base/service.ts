@@ -8,6 +8,6 @@ import { componentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
 @componentType('service')
-export abstract class Service extends Injectable {
+export abstract class BaseService extends Injectable {
 
 }

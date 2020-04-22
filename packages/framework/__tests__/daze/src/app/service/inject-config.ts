@@ -1,15 +1,15 @@
-import { Component, Config } from '../../../../../src/decorators';
+import { config, component } from '../../../../../src/decorators';
 
-@Component('injectConfigService')
+@component('injectConfigService')
 export class InjectConfigService {
 
-  @Config()
+  @config()
   private testConfig = 'testConfig';
-  @Config('custom.a.b.c')
+  @config('custom.a.b.c')
   private testConfig2 = 'testConfig2';
-  @Config('custom.a.b.c.d')
+  @config('custom.a.b.c.d')
   private testConfig3 = 'testConfig3';
-  @Config('custom.a.b.c.d', 'testConfig44')
+  @config('custom.a.b.c.d', 'testConfig44')
   testConfig4 = 'testConfig4';
 
   getTestConfig() {

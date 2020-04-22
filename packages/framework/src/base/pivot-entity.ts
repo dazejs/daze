@@ -1,5 +1,5 @@
-import { Entity } from './entity';
+import { BaseEntity } from './entity';
 
-export class PivotEntity extends Entity {
-  
+export class BasePivotEntity extends BaseEntity {
+  //
 }

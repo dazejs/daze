@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function componentType(type: any): ClassDecorator {
+export function middleware(name = ''): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('type', type, constructor);
-    return constructor;
+    Reflect.defineMetadata('name', name, constructor);
+    Reflect.defineMetadata('type', 'middleware', constructor);
   };
 };

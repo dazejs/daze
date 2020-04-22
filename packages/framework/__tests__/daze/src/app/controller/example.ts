@@ -1,24 +1,24 @@
 import {
-  Controller, Route, Http,
+  BaseController, controller, http,
 } from '../../../../../src';
 
 
-@Route('/example')
-export default class extends Controller {
+@controller('/example')
+export default class extends BaseController {
 
-  @Http.Get('/template')
+  @http.get('/template')
   template() {
     return this.render('hello', {
       name: 'dazejs'
     });
   }
 
-  @Http.Get()
+  @http.get()
   index() {
     return this.service('example').sayHello();
   }
 
-  @Http.Post('post')
+  @http.post('post')
   store() {
     return {
       body: this.request.body,
@@ -26,17 +26,17 @@ export default class extends Controller {
     };
   }
 
-  @Http.Get('/null')
+  @http.get('/null')
   sayNull() {
     return null;
   }
 
-  @Http.Get('/number')
+  @http.get('/number')
   sayNumber(): number {
     return 0;
   }
 
-  @Http.Get('/boolean')
+  @http.get('/boolean')
   sayBoolean(): boolean {
     return true;
   }

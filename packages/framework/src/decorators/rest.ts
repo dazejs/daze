@@ -16,7 +16,7 @@ const defaultRestRoutes = {
   destroy: [{ uri: '/:id', method: 'del' }],
 };
 
-export function Rest(...prefixs: string[]): ClassDecorator {
+export function rest(...prefixs: string[]): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('prefixs', prefixs?.map(prefix => formatPrefix(prefix)) ?? ['/'], constructor);
@@ -28,7 +28,3 @@ export function Rest(...prefixs: string[]): ClassDecorator {
     return constructor;
   };
 };
-
-export function rest(...prefixs: string[]): ClassDecorator {
-  return Rest(...prefixs);
-}

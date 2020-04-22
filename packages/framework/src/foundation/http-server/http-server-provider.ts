@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Provider as BaseProvider } from '../../base/provider';
+import { BaseProvider } from '../../base/provider';
 import { provide } from '../../decorators/provider';
 import { HttpServer } from './http-server';
 

@@ -8,7 +8,7 @@ import { Container } from '../container';
 import type { Application } from '../foundation/application';
 import { Message } from '../foundation/support/message';
 import * as validators from './validators';
-import { Validator as BaseValidator } from '../base/validator';
+import { BaseValidator } from '../base/validator';
 
 export interface RuleData {
   field: string;

@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import { Route } from '../../../src/decorators/route';
+import { controller } from '../../../src/decorators';
 
 describe('Controller Decorator', () => {
   it('should patch type and prefix in Controller', () => {
-    @Route('example')
+    @controller('example')
     class Example { };
     expect(Reflect.getMetadata('prefixs', Example)).toEqual(['/example']);
   });

@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Resource as BaseResource } from '../base/resource';
+import { BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 

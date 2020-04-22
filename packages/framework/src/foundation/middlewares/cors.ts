@@ -5,8 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Middleware } from '../../base/middleware';
-import { Component } from '../../decorators';
+import { BaseMiddleware } from '../../base/middleware';
 import { TNext } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
@@ -20,8 +19,7 @@ const defaultOptions = {
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
 };
 
-@Component('cors')
-export class CORSMiddleware extends Middleware {
+export class CORSMiddleware extends BaseMiddleware {
   options: any;
   constructor(options: any) {
     super();

@@ -5,13 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function Ignore(): ClassDecorator {
+export function ignore(): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('ignore', true, constructor);
     return constructor;
   };
 };
-
-export function ignore() {
-  return Ignore();
-}

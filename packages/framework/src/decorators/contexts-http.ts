@@ -5,35 +5,29 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
 /**
  * Inject original http request
  */
-export const OriginalReq = createInjectDecorator(symbols.INJECTORS.REQ);
-export const Req = OriginalReq;
-export const originalReq = OriginalReq;
-export const req = OriginalReq;
+export const originalReq = createInjectDecorator(symbols.INJECTORS.REQ);
+export const req = originalReq;
 
 /**
  * Inject original http response
  */
-export const OriginalRes = createInjectDecorator(symbols.INJECTORS.RES);
-export const Res = OriginalRes;
-export const originalRes = OriginalRes;
-export const res = OriginalRes;
+export const originalRes = createInjectDecorator(symbols.INJECTORS.RES);
+export const res = originalRes;
 
 /**
  * Inject daze http request
  */
-export const Request = createInjectDecorator(symbols.INJECTORS.REQUEST);
-export const request = Request;
+export const request = createInjectDecorator(symbols.INJECTORS.REQUEST);
 
 /**
  * Inject daze http response
  */
-export const Response = createInjectDecorator(symbols.INJECTORS.RESPONSE);
-export const response = Response;
+export const response = createInjectDecorator(symbols.INJECTORS.RESPONSE);
 
 /**
  * Inject http query
  */
-export const Query = (key?: string, defaultValue?: any) =>
+export const query = (key?: string, defaultValue?: any) =>
   createInjectDecorator(symbols.INJECTORS.QUERY, (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
@@ -41,12 +35,11 @@ export const Query = (key?: string, defaultValue?: any) =>
       return injectedParam[key] ?? defaultValue;
     }
   }).call([]);
-export const query = Query;
 
 /**
  * Inject http request params
  */
-export const Params = (key?: string, defaultValue?: any) =>
+export const params = (key?: string, defaultValue?: any) =>
   createInjectDecorator(symbols.INJECTORS.PARAMS, (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
@@ -54,12 +47,11 @@ export const Params = (key?: string, defaultValue?: any) =>
       return injectedParam[key] ?? defaultValue;
     }
   }).call([]);
-export const params = Params;
 
 /**
  * Inject http request headers
  */
-export const Header = (key?: string, defaultValue?: any) =>
+export const header = (key?: string, defaultValue?: any) =>
   createInjectDecorator(symbols.INJECTORS.HEADERS, (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
@@ -67,16 +59,14 @@ export const Header = (key?: string, defaultValue?: any) =>
       return injectedParam[key.toLowerCase()] ?? defaultValue;
     }
   }).call([]);
-export const header = Header;
-export const Headers = Header;
-export const headers = Header;
+export const headers = header;
 
 /**
  * Inject http request body
  *
  * @param key req.body | req.body[key]
  */
-export const Body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, (injectedParam: any) => {
+export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, (injectedParam: any) => {
   if (typeof injectedParam === 'undefined' || !key) {
     return injectedParam;
   } else {
@@ -86,12 +76,11 @@ export const Body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BO
     );
   }
 }).call([]);
-export const body = Body;
 
 /**
  * Inject http cookie value
  */
-export const CookieValue = (key?: string, defaultValue?: any) =>
+export const cookieValue = (key?: string, defaultValue?: any) =>
   createInjectDecorator(symbols.INJECTORS.COOKIE, (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
@@ -99,12 +88,11 @@ export const CookieValue = (key?: string, defaultValue?: any) =>
       return injectedParam.get(key) ?? defaultValue;
     }
   }).call([]);
-export const cookieValue = CookieValue;
 
 /**
  * Inject http session value
  */
-export const SessionValue = (key?: string, defaultValue?: any) =>
+export const sessionValue = (key?: string, defaultValue?: any) =>
   createInjectDecorator(symbols.INJECTORS.SESSION, (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
@@ -112,4 +100,3 @@ export const SessionValue = (key?: string, defaultValue?: any) =>
       return injectedParam.get(key) ?? defaultValue;
     }
   }).call([]);
-export const sessionValue = SessionValue;

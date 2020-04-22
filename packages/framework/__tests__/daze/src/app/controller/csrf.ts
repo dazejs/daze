@@ -1,18 +1,17 @@
 import {
-  Controller, Route, Http, Csrf,
+  controller, http, csrf,
 } from '../../../../../src';
 
-
-@Route('/csrf')
-export default class extends Controller {
-  @Http.Post()
-  @Csrf()
+@controller('/csrf')
+export default class {
+  @http.post()
+  @csrf()
   store() {
     return 'hello';
   }
 
-  @Http.Get('/get')
-  @Csrf()
+  @http.get('/get')
+  @csrf()
   show() {
     return 'hello';
   }

@@ -10,7 +10,7 @@ import { Base } from './base';
 import { componentType } from '../decorators/component-type';
 
 @componentType('middleware')
-export abstract class Middleware extends Base {
+export abstract class BaseMiddleware extends Base {
   abstract resolve(request: Request, next: TNext): any | Promise<any>
 }
 

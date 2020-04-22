@@ -29,74 +29,39 @@ function handle(args: any[], methods: any[], uri = '') {
   throw new Error('@Http[method] must be decorate on method');
 }
 
-function Verb(methods: any[], uri = '/') {
+function verb(methods: any[], uri = '/') {
   return (...args: any[]) => handle(args, methods, uri);
 }
 
-export function Get(uri = '') {
-  return Verb(['GET'], uri);
-};
-
 export function get(uri = '') {
-  return Get(uri);
-};
-
-export function Post(uri = '') {
-  return Verb(['POST'], uri);
+  return verb(['GET'], uri);
 };
 
 export function post(uri = '') {
-  return Post(uri);
-};
-
-export function Put(uri = '') {
-  return Verb(['PUT'], uri);
+  return verb(['POST'], uri);
 };
 
 export function put(uri = '') {
-  return Put(uri);
-};
-
-export function Patch(uri = '') {
-  return Verb(['PATCH'], uri);
+  return verb(['PUT'], uri);
 };
 
 export function patch(uri = '') {
-  return Patch(uri);
+  return verb(['PATCH'], uri);
 };
 
-export function Options(uri = '') {
-  return Verb(['OPTIONS'], uri);
-};
 
 export function options(uri = '') {
-  return Options(uri);
-};
-
-export function Head(uri = '') {
-  return Verb(['HEAD'], uri);
+  return verb(['OPTIONS'], uri);
 };
 
 export function head(uri = '') {
-  return Head(uri);
-};
-
-export function Delete(uri = '') {
-  return Verb(['DELETE'], uri);
+  return verb(['HEAD'], uri);
 };
 
 export function del(uri = '') {
-  return Delete(uri);
-};
-
-export function Del(uri = '') {
-  return Delete(uri);
-};
-
-export function All(uri = '', methods: any[] = http.METHODS) {
-  return Verb(methods, uri);
+  return verb(['DELETE'], uri);
 };
 
 export function all(uri = '', methods: any[] = http.METHODS) {
-  return All(uri, methods);
+  return verb(methods, uri);
 };

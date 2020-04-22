@@ -1,10 +1,11 @@
-import { Resource, Component, Http } from '../../../../../src';
+import { BaseResource, http, component } from '../../../../../src';
 
-@Component('injectable')
-export default class extends Resource {
+
+@component('injectable')
+export default class extends BaseResource {
   resolve(
-  @Http.Query('id') id: number,
-    data: any
+    @http.query('id') id: number,
+      data: any
   ) {
     return {
       ...data,

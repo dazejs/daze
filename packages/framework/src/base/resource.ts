@@ -9,7 +9,7 @@ import { componentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
 @componentType('resource')
-export abstract class Resource extends Injectable {
+export abstract class BaseResource extends Injectable {
   /**
    * use collection resource
    * @param data resource data

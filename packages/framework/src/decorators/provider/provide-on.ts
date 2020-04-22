@@ -1,7 +1,7 @@
 import { ProviderType } from '../../symbol';
 import { ProvideMetaData } from './provide';
 
-export function ProvideOn(provider: string | Function): MethodDecorator {
+export function provideOn(provider: string | Function): MethodDecorator {
   return function (target: object, key: string | symbol) {
     const metaMap: Map<string | symbol, ProvideMetaData> =
       Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
@@ -15,8 +15,4 @@ export function ProvideOn(provider: string | Function): MethodDecorator {
     }
     Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
-}
-
-export function provideOn(provider: string | Function): MethodDecorator {
-  return ProvideOn(provider);
 }

@@ -1,15 +1,15 @@
 import {
-  Controller, Route, Http,
+  controller, http,
 } from '../../../../../src';
 
-@Route('routes')
-export default class extends Controller {
-  @Http.Get('*')
+@controller('routes')
+export default class {
+  @http.get('*')
   all1() {
     return 'all1';
   }
 
-  @Http.Get('all2')
+  @http.get('all2')
   all2() {
     return 'all2';
   }

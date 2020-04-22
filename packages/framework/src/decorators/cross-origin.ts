@@ -29,10 +29,6 @@ function handle(args: any[], options: any) {
   return decoratorMethod(target, name, descriptor, options);
 }
 
-export function CrossOrigin(options: any = {}) {
-  return (...args: any[]) => handle(args, options);
-};
-
 export function crossOrigin(options: any = {}) {
-  return CrossOrigin(options);
+  return (...args: any[]) => handle(args, options);
 };

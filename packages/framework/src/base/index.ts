@@ -5,6 +5,6 @@ export * from './resource';
 export * from './service';
 export * from './agent';
 export * from './base';
-export { Entity } from './entity';
-export { PivotEntity } from './pivot-entity';
+export { BaseEntity } from './entity';
+export { BasePivotEntity } from './pivot-entity';
 export * from './validator';

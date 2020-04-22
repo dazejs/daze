@@ -1,5 +1,5 @@
 // import { format as dateFormat, getUnixTime } from 'date-fns';
-import { Entity } from '../base/entity';
+import { BaseEntity as Entity } from '../base/entity';
 import { Builder } from '../database/builder';
 import { ModelBuilder } from './builder';
 import { HasRelations } from './relations/has-relations.abstract';
