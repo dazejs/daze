@@ -20,7 +20,7 @@ import { parseBody } from './utils/parse-body';
 
 
 export interface BodyData {
-  fields?: { [key: string]: any };
+  fields?: { [key: string]: any } | string;
   files?: { [key: string]: any };
 }
 
