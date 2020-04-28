@@ -12,6 +12,8 @@ import { Application } from '../foundation/application';
 import { MessengerService } from '../messenger';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
+import { Model } from '../orm/model';
+import { Entity } from '../orm/entity';
 
 export abstract class Base {
   /**
@@ -61,5 +63,11 @@ export abstract class Base {
 
   protected logger(channel?: string) {
     return this.app.get('logger').channel(channel);
+  }
+
+  protected model<TEntity>(_Entity: { new(): TEntity }) {
+    return (new Model(
+      new _Entity()
+    )).createRepository();
   }
 }

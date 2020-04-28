@@ -36,3 +36,4 @@ export * from './service';
 export * from './middleware';
 export * from './resource';
 export * from './validator';
+export * from './entity';
