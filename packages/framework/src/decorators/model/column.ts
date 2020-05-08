@@ -1,5 +1,5 @@
 
-import { ColumnDescription } from '../../model/entity';
+import { ColumnDescription } from '../../orm/model';
 
 
 /**

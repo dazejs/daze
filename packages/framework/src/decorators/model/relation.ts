@@ -1,8 +1,7 @@
-import { RelationDesc } from '../../model/entity';
-import { BaseEntity as EntityBase } from '../../base';
+import { RelationDesc } from '../../orm/model';
 
 interface ManyRealtionOptions {
-  pivot?: typeof EntityBase;
+  pivot?: any;
   relatedPivotKey?: string;
   foreignPivotKey?: string;
 }
@@ -18,7 +17,7 @@ interface OneRelationOptions {
  *
  * @returns {PropertyDecorator}
  */
-export function hasOne(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function hasOne(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -37,7 +36,7 @@ export function hasOne(fn: () => typeof EntityBase, options: OneRelationOptions 
  *
  * @returns {PropertyDecorator}
  */
-export function belongsTo(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function belongsTo(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -56,7 +55,7 @@ export function belongsTo(fn: () => typeof EntityBase, options: OneRelationOptio
  *
  * @returns {PropertyDecorator}
  */
-export function hasMany(fn: () => typeof EntityBase, options: OneRelationOptions = {}): PropertyDecorator {
+export function hasMany(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -75,7 +74,7 @@ export function hasMany(fn: () => typeof EntityBase, options: OneRelationOptions
  *
  * @returns {PropertyDecorator}
  */
-export function belongsToMany(fn: () => typeof EntityBase, options: ManyRealtionOptions = {}): PropertyDecorator {
+export function belongsToMany(fn: () => any, options: ManyRealtionOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
