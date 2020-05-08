@@ -1,10 +1,12 @@
 import { Model } from './model';
+// import { Entity } from './entity';
 import { ModelBuilder } from './builder';
 import { Builder } from '../database/builder';
+import { HasRelations, BelongsToMany } from './relations';
 
 const inspect = Symbol.for('nodejs.util.inspect.custom');
 
-export class Repository<TEntity> {
+export class Repository<TEntity = any> {
   /**
    * 模型仓库是否已存在
    */
@@ -19,6 +21,12 @@ export class Repository<TEntity> {
    * 已更新的字段名集合
    */
   private updateAttributeColumns: Set<string> = new Set();
+
+  /**
+   * 渴求式加载对象集合
+   * Want to load a collection of objects
+   */
+  private withs: Map<string, HasRelations> = new Map();
 
   /**
    * 创建模型仓库实例
@@ -90,13 +98,13 @@ export class Repository<TEntity> {
    * 创建模型查询构造器
    */
   createQueryBuilder(): ModelBuilder<TEntity> & Builder {
-    return (new ModelBuilder(this.model)).prepare() as ModelBuilder<TEntity> & Builder;
+    return (new ModelBuilder(this.model, this)).prepare() as ModelBuilder<TEntity> & Builder;
   }
 
   /**
    * 获取主键值
    */
-  private getPrimaryValue() {
+  getPrimaryValue() {
     return (this as any)[this.model.getPrimaryKey()] ?? null;
   }
 
@@ -108,7 +116,7 @@ export class Repository<TEntity> {
     if (!data) return this;
     const keys = this.model.getColumns().keys();
     for (const key of keys) {
-      (this as any)[key] = data[key];
+      this.setAttribute(key, data[key]);
     }
     return this;
   }
@@ -122,6 +130,19 @@ export class Repository<TEntity> {
     for (const column of columns) {
       attributes[column] = (this as any)[column];
     }
+
+    const relationMap = this.model.getRelationMap();
+    for (const realtion of relationMap.keys()) {
+      const _realtion = (this as any)[realtion];
+      if (_realtion) {
+        if (Array.isArray(_realtion)) {
+          attributes[realtion] = _realtion.map(item => item?.getAttributes());
+        } else {
+          attributes[realtion] = _realtion?.getAttributes();
+        }
+      }
+    }
+
     return attributes;
   }
 
@@ -131,6 +152,7 @@ export class Repository<TEntity> {
    * @param value 
    */
   setAttribute(key: string, value: any) {
+    if (value === undefined) return this;
     (this as any)[key] = value;
     // 模型已存在的情况下配置更新字段
     // Configure update fields if the model already exists
@@ -141,6 +163,76 @@ export class Repository<TEntity> {
   }
 
   /**
+   * get attr with key
+   * @param key 
+   */
+  getAttribute(key: string) {
+    if (!key) return;
+    if (this.model.getColumns().has(key)) return (this as any)[key];
+  }
+
+  /**
+   * Eager loading
+   * @param relations 
+   */
+  with(...relations: string[]) {
+    for (const relation of relations) {
+      const relationImp = this.model.getRelationImp(relation);
+      if (relationImp) {
+        this.setWith(relation, relationImp);
+      };
+    }
+    return this;
+  }
+
+  /**
+   * 获取渴求式加载关联关系
+   */
+  getWiths() {
+    return this.withs;
+  }
+
+  /**
+   * set Eager load names
+   * @param withs 
+   */
+  setWiths(withs: Map<string, any>) {
+    this.withs = withs;
+    return this;
+  }
+
+  /**
+   * 设置渴求式加载关联关系
+   * @param relation 
+   * @param value 
+   */
+  setWith(relation: string, value: HasRelations) {
+    this.withs.set(relation, value);
+    return this;
+  }
+
+  /**
+   * 渴求式加载
+   * @param result 
+   */
+  async eagerly(withs: Map<string, HasRelations>, result: Repository) {
+    for (const [relation, relationImp] of withs) {
+      await relationImp.eagerly(result, relation);
+    }
+  }
+
+  /**
+   * 渴求式加载集合
+   * @param withs 
+   * @param results 
+   */
+  async eagerlyCollection(withs: Map<string, HasRelations>, results: Repository[]) {
+    for (const [relation, relationImp] of withs) {
+      await relationImp.eagerlyMap(results, relation);
+    }
+  }
+
+  /**
    * 对当前仓库执行删除操作
    */
   async delete() {
@@ -148,9 +240,7 @@ export class Repository<TEntity> {
       throw new Error('Primary key not defined');
     }
     if (!this.isExists()) return false;
-
     await this.executeDelete();
-
     return true;
   }
 
@@ -268,7 +358,11 @@ export class Repository<TEntity> {
     return true;
   }
 
-  private async executeInsertAndSetId(query: ModelBuilder<TEntity> & Builder) {
+  /**
+   * execute an insert operation, and set inserted id
+   * @param query 
+   */
+  private async executeInsertAndSetId(query: ModelBuilder & Builder) {
     const id = await query.insert(
       this.getAttributes()
     );
@@ -279,13 +373,48 @@ export class Repository<TEntity> {
     return this;
   }
 
-  private async executeUpdate(query: ModelBuilder<TEntity> & Builder, attributes: Record<string, any>) {
+  /**
+   * execute an update operation
+   * @param query 
+   * @param attributes 
+   */
+  private async executeUpdate(query: ModelBuilder & Builder, attributes: Record<string, any>) {
     await query.where(
       this.model.getPrimaryKey(),
       '=',
       this.getPrimaryValue()
     ).update(attributes);
     return true;
+  }
+
+  /**
+   * 创建数据库记录
+   * Create database records
+   * @param attributes
+   */
+  async create(attributes: Record<string, any>) {
+    // 创建一个不存在记录的模型
+    // Create a repos with no records
+    const repos = this.model.createRepository().fill(attributes).setExists(false);
+    await repos.save();
+    return repos;
+  }
+
+  /**
+   * 根据主键值删除模型
+   * @param ids 
+   */
+  async destroy(...ids: (number | string)[]) {
+    let count = 0;
+    if (!ids.length) return count;
+    const key = this.model.getPrimaryKey();
+    const results = await this.createQueryBuilder().whereIn(key, ids).find();
+    for (const result of results) {
+      if (await result.delete()) {
+        count++;
+      }
+    }
+    return count;
   }
 
   /**
@@ -300,5 +429,58 @@ export class Repository<TEntity> {
    */
   [inspect]() {
     return this.toJSON();
+  }
+
+  /**
+   * 设置关联关系
+   * @param relation 
+   * @param ids 
+   */
+  async attach(relation: string, ...ids: (number | string)[]) {
+    if (!this.isExists()) {
+      throw new Error('model does not exists!');
+    }
+    const relationMap = this.model.getRelationMap();
+    if (!relationMap.has(relation) || relationMap.get(relation)?.type !== 'belongsToMany') {
+      throw new Error(`model does not have many to many relation: [${relation}]!`);
+    }
+    const imp = this.model.getRelationImp(relation) as BelongsToMany;
+    const insertData: any[] = [];
+    for (const id of ids) {
+      insertData.push({
+        [`${imp.foreignPivotKey}`]: this.getPrimaryValue(),
+        [`${imp.relatedPivotKey}`]: id,
+      });
+    }
+    const repos: Repository<TEntity> = imp.pivot.createRepository();
+    await repos
+      .createQueryBuilder()
+      .getBuilder()
+      .insertAll(insertData);
+    return repos;
+  }
+
+  /**
+   * 取消关联关系
+   * @param relation 
+   * @param ids 
+   */
+  async detach(relation: string, ...ids: (number | string)[]) {
+    if (!this.isExists()) {
+      throw new Error('model does not exists!');
+    }
+    const relationMap = this.model.getRelationMap();
+    if (!relationMap.has(relation) || relationMap.get(relation)?.type !== 'belongsToMany') {
+      throw new Error(`model does not have many to many relation: [${relation}]!`);
+    }
+    const imp = this.model.getRelationImp(relation) as BelongsToMany;
+    const repos: Repository<TEntity> = imp.pivot.createRepository();
+    await repos
+      .createQueryBuilder()
+      .getBuilder()
+      .where(imp.foreignPivotKey as string, '=', this.getPrimaryValue())
+      .whereIn(imp.relatedPivotKey as string, ids)
+      .delete();
+    return repos;
   }
 }

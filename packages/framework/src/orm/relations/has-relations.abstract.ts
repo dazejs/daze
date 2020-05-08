@@ -1,8 +1,7 @@
-// import { Model } from '../model';
+import { Model } from '../model';
 import { Application } from '../../foundation/application';
 import { Container } from '../../container';
-// import { Entity } from '../../base/entity';
-import { Entity } from '../entity';
+import { Repository } from '../repository';
 
 export abstract class HasRelations {
   /**
@@ -13,12 +12,12 @@ export abstract class HasRelations {
   /**
    * 父模型
    */
-  protected parent: Entity;
+  protected parent: Model;
 
   /**
    * 当前关联模型
    */
-  protected model: Entity;
+  protected model: Model;
 
   /**
    * 外键
@@ -35,11 +34,11 @@ export abstract class HasRelations {
    * @param result 
    * @param relation 
    */
-  abstract eagerly(result: Entity, relation: string): Promise<void>
+  abstract eagerly(result: Repository, relation: string): Promise<void>
   /**
    * 渴求式加载多个模型关联数据
    * @param results 
    * @param relation 
    */
-  abstract eagerlyMap(results: Entity[], relation: string): Promise<void>
+  abstract eagerlyMap(results: Repository[], relation: string): Promise<void>
 }

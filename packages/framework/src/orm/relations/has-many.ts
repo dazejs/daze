@@ -1,5 +1,6 @@
 import { HasRelations } from './has-relations.abstract';
-import { Entity } from '../entity';
+import { Model } from '../model';
+import { Repository } from '../repository';
 import pluralize from 'pluralize';
 
 export class HasMany extends HasRelations {
@@ -10,7 +11,7 @@ export class HasMany extends HasRelations {
    * @param foreignKey 
    * @param localKey 
    */
-  constructor(parent: Entity, model: Entity, foreignKey?: string, localKey?: string) {
+  constructor(parent: Model, model: Model, foreignKey?: string, localKey?: string) {
     super();
     this.parent = parent;
     this.model = model;
@@ -37,16 +38,23 @@ export class HasMany extends HasRelations {
    * @param resultModel 
    * @param relation 
    */
-  async eagerly(resultModel: Entity, relation: string) {
+  async eagerly(resultRepos: Repository, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
-    const records = await this.model
+    const model = this.model.createRepository();
+    const records = await model
       .createQueryBuilder()
       .getBuilder()
-      .where(foreignKey, '=', resultModel.getAttribute(localKey))
+      .where(foreignKey, '=', resultRepos.getAttribute(localKey))
       .find();
-    records && resultModel.setRelation(relation, await this.model.resultsToModels(records));
+
+    if (records) {
+      resultRepos.setAttribute(
+        relation, 
+        await this.model.resultToRepositories(model, records)
+      );
+    }
   }
 
   /**
@@ -54,19 +62,20 @@ export class HasMany extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultModels: Entity[], relation: string) {
+  async eagerlyMap(resultReposes: Repository[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
     const range = new Set();
-    for (const model of resultModels) {
+    for (const repos of resultReposes) {
       // 获取关联外键列表
-      const id = model.getAttribute(localKey);
+      const id = repos.getAttribute(localKey);
       id && range.add(id);
     }
 
     if (range.size > 0) {
-      const records: Record<string, any>[] = await this.model
+      const model = this.model.createRepository();
+      const records: Record<string, any>[] = await model
         .createQueryBuilder()
         .getBuilder()
         .whereIn(foreignKey, [...range])
@@ -79,9 +88,14 @@ export class HasMany extends HasRelations {
         map.set(pk, items);
       }
 
-      for (const model of resultModels) {
-        const items = map.get(model.getAttribute(localKey));
-        items && model.setRelation(relation, await this.model.resultsToModels(items));
+      for (const repos of resultReposes) {
+        const items = map.get(repos.getAttribute(localKey));
+        if (items) {
+          repos.setAttribute(
+            relation,
+            await this.model.resultToRepositories(model, records)
+          );
+        }
       }
     }
   }

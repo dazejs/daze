@@ -1,10 +1,11 @@
-import { Application } from '../foundation/application';
 import { Container } from '../container';
-import { Builder } from '../database/builder';
 import { Database } from '../database';
+import { Builder } from '../database/builder';
+import { Application } from '../foundation/application';
 import { Model } from './model';
+import { Repository } from './repository';
 
-export class ModelBuilder<TEntity> {
+export class ModelBuilder<TEntity = any> {
   /**
    * Application instance
    */
@@ -15,19 +16,28 @@ export class ModelBuilder<TEntity> {
    */
   private builder: Builder;
 
+  /**
+   * model instance
+   */
   private model: Model<TEntity>;
+
+  /**
+   * repository instance
+   */
+  private repository: Repository;
 
   /**
    * 不走代理的接口列表
    */
-  private throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg', 'delete'];
+  private throughs: string[] = ['insert', 'update', 'delete', 'aggregate', 'count', 'max', 'min', 'sum', 'avg'];
 
   /**
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: Model<TEntity>) {
+  constructor(model: Model<TEntity>, repository: Repository) {
     this.model = model;
+    this.repository = repository;
     this.builder = this.newBuilderInstance();
     // Proxy class
     return new Proxy(this, this.proxy);
@@ -76,6 +86,9 @@ export class ModelBuilder<TEntity> {
       );
   }
 
+  /**
+   * get database builder
+   */
   getBuilder() {
     return this.builder;
   }
@@ -90,23 +103,23 @@ export class ModelBuilder<TEntity> {
     return this;
   }
 
-  // /**
-  //  * 查询数据集
-  //  */
-  // async find() {
-  //   if (this.model.isForceDelete()) {
-  //     const records = await this.builder.find();
-  //     return this.model.resultsToModels(records);
-  //   }
-  //   const records = await this.builder.whereNull(
-  //     this.model.getSoftDeleteKey()
-  //   ).find();
-  //   return this.model.resultsToModels(records);
-  // }
+  /**
+   * 查询数据集
+   */
+  async find() {
+    if (this.model.isForceDelete()) {
+      const records = await this.builder.find();
+      return this.model.resultToRepositories(this.repository, records);
+    }
+    const records = await this.builder.whereNull(
+      this.model.getSoftDeleteKey()
+    ).find();
+    return this.model.resultToRepositories(this.repository, records);
+  }
 
-  // /**
-  //  * 查询单条记录
-  //  */
+  /**
+   * 查询单条记录
+   */
   async first() {
     if (!this.model.isForceDelete()) {
       this.builder.whereNull(
@@ -114,6 +127,6 @@ export class ModelBuilder<TEntity> {
       );
     }
     const record = await this.builder.first();
-    return this.model.resultToRepository(record);
+    return this.model.resultToRepository(this.repository, record);
   }
 }

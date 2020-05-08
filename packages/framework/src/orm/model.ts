@@ -1,133 +1,164 @@
-// import { Entity } from './entity';
-import { Repository } from './repository';
 import { format as dateFormat, getUnixTime } from 'date-fns';
+import { BelongsTo, BelongsToMany, HasMany, HasOne, HasRelations } from './relations';
+import { Repository } from './repository';
 
+export interface ColumnDescription {
+  type: string;
+  length: number;
+};
 
-export interface EntityMatadata {
-  table: string;
-  connection: string;
-  columns: Map<string, any>;
-  primaryKey: string;
-  incrementing: boolean;
-  softDeleteKey?: string;
-  createTimestampKey?: string;
-  updateTimestampKey?: string;
-  relationMap: Map<string, any>;
+export type RelationTypes = 'hasOne' | 'belongsTo' | 'hasMany' | 'belongsToMany'
+
+export interface RelationDesc {
+  type: RelationTypes;
+  entityFn: () => any;
+  pivot?: any;
+  foreignKey?: string;
+  localKey?: string;
+  relatedPivotKey?: string;
+  foreignPivotKey?: string;
 }
 
-export class Model<TEntity> {
+export class Model<TEntity = {}> {
   /**
-   * 实体元数据
+   * table name
    */
-  private metadata: EntityMatadata;
+  private _table: string;
+
+  /**
+   * connection name
+   */
+  private _connection: string;
+
+  /**
+   * columns map
+   */
+  private _columns: Map<string, ColumnDescription>;
+
+  /**
+   * primary key
+   */
+  private _primaryKey: string;
+
+  /**
+   * is auto incrementing?
+   */
+  private _incrementing: boolean;
+
+  /**
+   * soft delete key
+   * If not defined, delete is forced
+   */
+  private _softDeleteKey?: string;
+
+  /**
+   * automatically insert the create timestamp
+   */
+  private _createTimestampKey?: string;
+
+  /**
+   * automatically update the update timestamp
+   */
+  private _updateTimestampKey?: string;
+
+  /**
+   * relation map
+   */
+  private _relationMap: Map<string, RelationDesc>;
 
   /**
    * 创建模型实例
    * @param entity 
    */
-  constructor(entity: TEntity) {
-    this.metadata = this.resolveMetadata(entity);
+  constructor(Entity: { new(): TEntity }) {
+    this._table = Reflect.getMetadata('table', Entity);
+    this._connection = Reflect.getMetadata('connection', Entity) ?? 'default';
+    this._columns = Reflect.getMetadata('columns', Entity) ?? new Map();
+    this._primaryKey = Reflect.getMetadata('primaryKey', Entity) ?? 'id';
+    this._incrementing = Reflect.getMetadata('incrementing', Entity) ?? true;
+    this._softDeleteKey = Reflect.getMetadata('softDeleteKey', Entity);
+    this._createTimestampKey = Reflect.getMetadata('createTimestampKey', Entity);
+    this._updateTimestampKey = Reflect.getMetadata('updateTimestampKey', Entity);
+    this._relationMap = Reflect.getMetadata('relations', Entity) || new Map();
   }
 
   /**
-   * 获取实体元数据
-   */
-  getMetadata() {
-    return this.metadata;
-  }
-
-  /**
-   * 从实体类解析出元数据
-   * @param entity 
-   */
-  resolveMetadata(entity: TEntity) {
-    const table = Reflect.getMetadata('table', (entity as any).constructor);
-    const connection = Reflect.getMetadata('connection', (entity as any).constructor) ?? 'default';
-    const columns = Reflect.getMetadata('columns', (entity as any).constructor) ?? new Map();
-    const primaryKey = Reflect.getMetadata('primaryKey', (entity as any).constructor) ?? 'id';
-    const incrementing = Reflect.getMetadata('incrementing', (entity as any).constructor) ?? true;
-    const softDeleteKey = Reflect.getMetadata('softDeleteKey', (entity as any).constructor);
-    const createTimestampKey = Reflect.getMetadata('createTimestampKey', (entity as any).constructor);
-    const updateTimestampKey = Reflect.getMetadata('updateTimestampKey', (entity as any).constructor);
-    const relationMap = Reflect.getMetadata('relations', (entity as any).constructor) || new Map();
-    return {
-      table,
-      connection,
-      columns,
-      primaryKey,
-      incrementing,
-      softDeleteKey,
-      createTimestampKey,
-      updateTimestampKey,
-      relationMap
-    };
-  }
-
-  /**
-   * 获取实体表名
+   * get table name
    */
   getTable() {
-    return this.metadata.table;
+    return this._table;
   }
 
   /**
-   * 获取实体连接名
+   * set table name
+   * @param table 
+   */
+  setTable(table: string) {
+    this._table = table;
+    return this;
+  }
+
+  /**
+   * get connection name
+   * default is `default`
    */
   getConnectionName() {
-    return this.metadata.connection ?? 'default';
+    return this._connection ?? 'default';
   }
 
   /**
-   * 获取实体主键名
+   * get primary key
+   * default id `id`
    */
   getPrimaryKey() {
-    return this.metadata.primaryKey;
+    return this._primaryKey ?? 'id';
   }
 
   /**
-   * 获取实体字段描述集合
+   * get columns map
    */
   getColumns() {
-    return this.metadata.columns;
+    return this._columns;
   }
 
   /**
-   * 实体主键是否自动增长
+   * check if is auto incrementing
    */
   isIncrementing() {
-    return !!this.metadata.incrementing;
+    return !!this._incrementing;
   }
 
   /**
-   * 获取实体软删除字段名
+   * get soft delete key
    */
   getSoftDeleteKey() {
-    return this.metadata.softDeleteKey as string;
+    return this._softDeleteKey as string;
   }
 
   /**
-   * 实体是否需要强制删除
+   * check if is force dlete
+   * if true, soft delete key is undefind
    */
   isForceDelete() {
-    return !this.metadata.softDeleteKey;
+    return !this._softDeleteKey;
   }
 
   /**
-   * 实体是否需要自动更新修改时间
+   * should update the update timestamp
    */
   hasUpdateTimestamp() {
-    return !!this.metadata.updateTimestampKey;
+    return !!this._updateTimestampKey;
   }
 
   /**
-   * 获取实体自动更新修改时间字段名
+   * get update timestap key
    */
   getUpdateTimestampKey() {
-    return this.metadata.updateTimestampKey;
+    return this._updateTimestampKey;
   }
 
   /**
-   * 根据字段类型获取当前时间
+   * get fresh date use column type
    * @param key 
    */
   getFreshDateWithColumnKey(key: string) {
@@ -136,23 +167,23 @@ export class Model<TEntity> {
   }
 
   /**
-   * 实体是否需要自动更新创建时间
+   * should insert the create timestamp
    */
   hasCreateTimestamp() {
-    return !!this.metadata.createTimestampKey;
+    return !!this._createTimestampKey;
   }
 
   /**
-   * 获取实体自动更新创建时间字段名
+   * get create timestamp key
    */
   getCreateTimestampKey() {
-    return this.metadata.createTimestampKey;
+    return this._createTimestampKey;
   }
 
   /**
-   * 创建模型仓库实例
+   * create the repository instance
    */
-  createRepository() {
+  createRepository(): Repository<TEntity> & TEntity {
     const repos = new Repository<TEntity>(this);
     return repos as Repository<TEntity> & TEntity;
   }
@@ -162,11 +193,18 @@ export class Model<TEntity> {
    * @param key 
    */
   getColumnType(key: string) {
-    return this.metadata.columns.get(key)?.type;
+    return this._columns.get(key)?.type;
   }
 
   /**
-   * 根据类型获取时间
+   * get relation map
+   */
+  getRelationMap() {
+    return this._relationMap;
+  }
+
+  /**
+   * get date with database column type
    * @param type 
    */
   getFormatedDate(type = 'int') {
@@ -188,12 +226,80 @@ export class Model<TEntity> {
   }
 
   /**
-   * 将数据转换为仓库实例
+   * get realtion instance with relation name
+   * @param relation 
+   */
+  getRelationImp(relation: string): HasRelations | undefined {
+    const relationDesc = this.getRelationMap().get(relation);
+    if (!relationDesc) return;
+    if (relationDesc) {
+      const RelationEntity = relationDesc.entityFn();
+      switch (relationDesc.type) {
+        case 'hasOne':
+          return new HasOne(
+            this,
+            new Model(RelationEntity),
+            relationDesc.foreignKey,
+            relationDesc.localKey
+          );
+        case 'belongsTo':
+          return new BelongsTo(
+            this,
+            new Model(RelationEntity),
+            relationDesc.foreignKey,
+            relationDesc.localKey
+          );
+        case 'hasMany':
+          return new HasMany(
+            this,
+            new Model(RelationEntity),
+            relationDesc.foreignKey,
+            relationDesc.localKey
+          );
+        case 'belongsToMany':
+          return new BelongsToMany(
+            this,
+            new Model(RelationEntity),
+            relationDesc.pivot,
+            relationDesc.foreignPivotKey,
+            relationDesc.relatedPivotKey
+          );
+        default:
+          return;
+      }
+    }
+    return;
+  }
+
+  /**
+   * convert data to repository instance
    * @param data 
    */
-  resultToRepository(data: Record<string, any>): Repository<TEntity> & TEntity {
-    return this.createRepository()
+  async resultToRepository(parentRepos: Repository, data: Record<string, any>, isFromCollection = false): Promise<Repository<TEntity> & TEntity> {
+    const repos =  this.createRepository()
       .setExists(true)
-      .fill(data) as Repository<TEntity> & TEntity ;
+      .fill(data);
+    // Eager loading
+    if (!isFromCollection && parentRepos.getWiths().size > 0) {
+      await repos.eagerly(parentRepos.getWiths(), repos);
+    }
+    return repos as Repository<TEntity> & TEntity;
+  }
+
+  /**‘
+   * convert data to repository instance collection
+   */
+  async resultToRepositories(parentRepos: Repository, results: Record<string, any>[]): Promise<(Repository<TEntity> & TEntity)[]> {
+    const data: Repository<TEntity>[] = [];
+    for (const item of results) {
+      data.push(
+        await this.resultToRepository(parentRepos, item, true)
+      );
+    }
+    // Eager loading
+    if (parentRepos.getWiths().size > 0) {
+      await parentRepos.eagerlyCollection(parentRepos.getWiths(), data);
+    }
+    return data as (Repository<TEntity> & TEntity)[];
   }
 }
