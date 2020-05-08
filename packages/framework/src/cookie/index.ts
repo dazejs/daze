@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 import { Container } from '../container';
-import type { Application } from '../foundation/application';
+import { Application } from '../foundation/application';
 
 export interface CookieOptions {
   maxAge?: number;

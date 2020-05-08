@@ -6,7 +6,7 @@
  */
 import path from 'path';
 import { Container } from '../container';
-import type { Application } from '../foundation/application';
+import { Application } from '../foundation/application';
 
 const FINAL_VARS = Symbol('View#finalVars');
 

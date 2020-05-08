@@ -43,13 +43,15 @@ export class Parser {
    * @param columns 
    */
   parseInsert(builder: Builder, data?: Record<string, any>[]) {
+    builder.alias('');
     if (!data || !data.length) {
       return `insert into ${this.getTable(builder)} default values`;
     }
     const columns = Object.keys(data[0]);
     const _columns = this.columnDelimite(columns, builder);
 
-    const values = data.map(() => `(${columns.map(() => this.parameter()).join(', ')})`).join(', ');
+    // const values = data.map(() => `(${columns.map(() => this.parameter()).join(', ')})`).join(', ');
+    const values = data.map(() => `(${this.parameter()})`).join(', ');
     return `insert into ${this.getTable(builder)} (${_columns}) values ${values}`;
   }
   /**
@@ -75,8 +77,8 @@ export class Parser {
    * @param builder 
    */
   parseDelete(builder: Builder) {
+    builder.alias('');
     const where = this.parseWheres(builder);
-
     if (builder._joins.length > 0) {
       const joins = this.parseJoins(builder);
       return `delete from ${this.getTable(builder)} ${joins} ${where}`;

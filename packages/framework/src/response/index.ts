@@ -7,14 +7,14 @@
 import getType from 'cache-content-type';
 import compressible from 'compressible';
 import contentDisposition from 'content-disposition';
-import type { OutgoingHttpHeaders, ServerResponse } from 'http';
+import { OutgoingHttpHeaders, ServerResponse } from 'http';
 import { extname } from 'path';
 import { Stream } from 'stream';
 import * as zlib from 'zlib';
 import { Container } from '../container';
 import { Cookie } from '../cookie';
-import type { Application } from '../foundation/application';
-import type { Request } from '../request';
+import { Application } from '../foundation/application';
+import { Request } from '../request';
 import { Resource } from '../resource/resource';
 import { View } from '../view';
 import { ViewFactory } from '../view/factory';
