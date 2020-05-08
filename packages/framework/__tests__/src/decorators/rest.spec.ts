@@ -1,6 +1,5 @@
 import 'reflect-metadata';
-import { rest } from '../../../src/decorators/rest';
-import { BaseController } from '../../../src/base/controller';
+import { BaseController, rest } from '../../../src';
 
 describe('Rest Decorator', () => {
   it('should patch rest routes and prefix by @Rest', () => {

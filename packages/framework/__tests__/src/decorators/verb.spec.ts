@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import {
   controller, http,
-} from '../../../src/decorators';
+} from '../../../src';
 
 
 describe('verb Decorator', () => {

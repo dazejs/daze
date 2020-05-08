@@ -1,7 +1,6 @@
 import path from 'path';
 import 'reflect-metadata';
-import { Config } from '../../../src/config';
-import { Application } from '../../../src/foundation/application';
+import { Application, Config } from '../../../src';
 import { InjectConfigService } from '../../daze/src/app/service/inject-config';
 import appConfig from '../../daze/src/config/app';
 import appConfig2 from '../../daze/src/config/app.test';

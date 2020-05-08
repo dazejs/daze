@@ -1,7 +1,6 @@
 
 import 'reflect-metadata';
-import { Container } from '../../../src/container';
-import { injectable } from '../../../src/decorators';
+import { Container, injectable } from '../../../src';
 
 it('Container.setInstance', () => {
   const App = class { };

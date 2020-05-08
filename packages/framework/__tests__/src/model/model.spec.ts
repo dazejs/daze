@@ -78,16 +78,6 @@ describe('save a model', () => {
 });
 
 describe('get in model', () => {
-  it('should return a model', async () => {
-    const user = new User();
-    user.id = 1;
-    user.name = 'dazejs';
-    user.age = 10;
-    user.description = 'test1';
-    await user.save();
-    const res = await user.get(1);
-    expect(res).toBeInstanceOf(User);
-  });
   it('should return rigth record attr', async () => {
     const user = new User();
     user.id = 1;

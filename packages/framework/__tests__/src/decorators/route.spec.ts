@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { controller } from '../../../src/decorators';
+import { controller } from '../../../src';
 
 describe('Controller Decorator', () => {
   it('should patch type and prefix in Controller', () => {

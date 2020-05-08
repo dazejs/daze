@@ -1,13 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Loader } from '../../../src/loader';
-import { Application } from '../../../src/foundation/application';
-import { BaseController } from '../../../src/base/controller';
-import { BaseMiddleware } from '../../../src/base/middleware';
-import { BaseService } from '../../../src/base/service';
-import { BaseValidator } from '../../../src/base/validator';
-import { BaseResource } from '../../../src/base/resource';
-import { controller, component } from '../../../src/decorators';
+import { Loader, Application, BaseController, BaseMiddleware, BaseService, BaseValidator, BaseResource, controller, component } from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

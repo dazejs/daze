@@ -2,10 +2,8 @@ import 'reflect-metadata';
 import path from 'path';
 import Accepts from 'accepts';
 import Cookies from 'cookies';
-import { Request } from '../../../src/request';
+import { Request, Application } from '../../../src';
 import { context } from '../../common/context';
-
-import { Application } from '../../../src/foundation/application';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 beforeAll(() => app.initialize());

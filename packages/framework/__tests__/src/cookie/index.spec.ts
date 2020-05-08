@@ -1,10 +1,8 @@
 import path from 'path';
 import 'reflect-metadata';
-import { Cookie } from '../../../src/cookie';
-import { Application } from '../../../src/foundation/application';
+import { Application, Cookie } from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
-
 
 beforeAll(() => app.initialize());
 

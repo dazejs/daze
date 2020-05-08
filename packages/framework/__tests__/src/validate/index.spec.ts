@@ -1,10 +1,8 @@
 import 'reflect-metadata';
 import path from 'path';
+import { Application, BaseValidator as ValidatorBase, isEmail } from '../../../src';
 import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
-import { Application } from '../../../src/foundation/application';
-import { BaseValidator as ValidatorBase } from '../../../src/base/validator';
-import { IsEmail } from '../../../src/decorators/validates';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -36,7 +34,7 @@ describe('Validate', () => {
 
     it('should return structuring object array when rules is Validator instance', () => {
       class Validator extends ValidatorBase {
-        @IsEmail()
+        @isEmail()
         field: string;
       };
       const instance = new Validate({
@@ -54,7 +52,7 @@ describe('Validate', () => {
 
     it('should return structuring object array when rules is string', () => {
       class Validator extends ValidatorBase {
-        @IsEmail()
+        @isEmail()
         field: string;
       };
 

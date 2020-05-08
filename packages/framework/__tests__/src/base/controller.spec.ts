@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { BaseController as Controller } from '../../../src/base/controller';
-import { Application } from '../../../src/foundation/application';
-import { View } from '../../../src/view';
+import { BaseController as Controller, Application, View } from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
