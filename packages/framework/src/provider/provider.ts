@@ -20,7 +20,7 @@ export class Provider {
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
     const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
 
-    // resolve next imports
+    // resolve next depends
     // 优先加载依赖的模块
     if (Array.isArray(providerOptions?.depends)) {
       for (const next of providerOptions.depends) {
@@ -60,6 +60,14 @@ export class Provider {
             path.resolve(this.app.rootPath, component)
           );
         }
+      }
+    }
+
+    // resolve next imports
+    // 最后加载依赖的模块
+    if (Array.isArray(providerOptions?.imports)) {
+      for (const next of providerOptions.imports) {
+        await this.resolve(next);
       }
     }
   }
