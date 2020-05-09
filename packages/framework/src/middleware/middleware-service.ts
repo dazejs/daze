@@ -64,10 +64,12 @@ export class MiddlewareService {
   /**
    * parse middle if middleware type is string type
    */
-  parseStringMiddleware(middleware: string, args: any[] = []) {
-    const _middleware = this.app.get(`middleware.${middleware}`, args);
-    if (!_middleware) return this;
-    this.parseClassInstanceMiddleware(_middleware);
+  parseStringMiddleware(middlewareName: string, args: any[] = []) {
+    // AMRK: COMPONENT_NAME
+    // const _middleware = this.app.get(`middleware.${middleware}`, args);
+    const middleware = this.app.get(middlewareName, args);
+    if (!middleware) return this;
+    this.parseClassInstanceMiddleware(middleware);
     return this;
   }
 

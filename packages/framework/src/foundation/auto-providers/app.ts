@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import { autoScan, depend, provide } from '../../decorators/provider';
+import { autoScan, depends, provide } from '../../decorators/provider';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';
 import * as symbols from '../../symbol';
 import * as providers from './providers';
 
-@depend([
+@depends([
   providers.DatabaseProvider,
   providers.MiddlewareServiceProvider,
   providers.ServiceProvider,

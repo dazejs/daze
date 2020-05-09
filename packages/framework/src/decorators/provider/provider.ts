@@ -1,6 +1,18 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import { ProviderType } from '../../symbol';
 
-export function depend(...providers: Function[] | Function[][]) {
+/**
+ * depends providers
+ * 
+ * @param providers 
+ */
+export const depends = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
 
@@ -13,10 +25,13 @@ export function depend(...providers: Function[] | Function[][]) {
     }
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
-}
-export function depends(...providers: Function[] | Function[][]) {
-  return depend(...providers);
-}
+};
+
+/**
+ * Alias
+ */
+export const Depends = depends;
+
 
 export function autoScan(...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
@@ -37,5 +52,6 @@ export function autoScan(...componentScans: string[] | string[][]) {
 
 export interface ProviderOption {
   depends?: Function[];
+  imports?: Function[];
   componentScan?: string[];
 }

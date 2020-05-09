@@ -37,7 +37,7 @@ export class MiddlewareServiceProvider {
       const name = Reflect.getMetadata('name', Middleware);
       this.app.singleton(Middleware, Middleware);
       if (name) {
-        this.app.singleton(`middleware.${name}`, (...args: any[]) => {
+        this.app.singleton(name, (...args: any[]) => {
           return this.app.get(Middleware, args);
         }, true);
       }

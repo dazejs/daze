@@ -39,9 +39,9 @@ export class Injectable extends Base {
    * @param args
    */
   service<T = any>(service: string | { new(): T }): T {
-    if (typeof service === 'string') {
-      return this.app.get(`service.${service}`, this.__context__);
-    };
+    // if (typeof service === 'string') {
+    //   return this.app.get(`service.${service}`, this.__context__);
+    // };
     return this.app.get<T>(service, this.__context__) as T;
   }
 
@@ -51,9 +51,9 @@ export class Injectable extends Base {
    * @param {Array} args
    */
   component<T = any>(component: string | { new(): T }) {
-    if (typeof component === 'string') {
-      return this.app.get(`component.${component}`, this.__context__);
-    };
+    // if (typeof component === 'string') {
+    //   return this.app.get(`component.${component}`, this.__context__);
+    // };
     return this.app.get<T>(component, this.__context__) as T;
   }
 

@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2018 Chan Zewail
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
 
-export function ignore(): ClassDecorator {
-  return function (constructor) {
-    Reflect.defineMetadata('ignore', true, constructor);
-    return constructor;
-  };
+export const ignore: ClassDecorator = function (constructor: any) {
+  Reflect.defineMetadata('ignore', true, constructor);
 };
+
+export const Ignore = ignore;

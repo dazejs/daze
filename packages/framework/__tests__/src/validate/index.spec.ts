@@ -56,10 +56,10 @@ describe('Validate', () => {
         field: string;
       };
 
-      app.bind('validator.example', Validator);
+      app.bind('exampleResource1', Validator);
       const instance = new Validate({
         field: 'xxx@xxx.com',
-      }, 'example');
+      }, 'exampleResource1');
       expect(instance.rules).toEqual([{
         field: 'field',
         handler: validators.isEmail,
@@ -93,7 +93,7 @@ describe('Validate', () => {
       app.bind('validator.example2', Validator);
       const instance = new Validate({
         field: 'xxx@xxx.com',
-      }, 'example2');
+      }, 'validator.example2');
       expect(instance.rules).toEqual([]);
     });
 

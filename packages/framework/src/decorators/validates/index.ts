@@ -1,369 +1,305 @@
 /**
- * Copyright (c) 2019 Chan Zewail <chanzewail@gmail.com>
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
 
 import * as validators from '../../validate/validators';
 import { validatorFactory } from './factory';
 
-
 // MARK: Custom
 
-export function Passed (options?: any) {
+export const passed  = function (options?: any) {
   return validatorFactory(validators.passed, [], {
     message: '$field must be passed!',
     ...options,
   });
 };
 
-export function passed(options?: any) {
-  return Passed(options);
-};
+export const Passed = passed;
 
 // MARK: Common
 
-export function Accepted (options?: any) {
+export const accepted = function (options?: any) {
   return validatorFactory(validators.accepted, [], {
     message: '$field must be yes,on or 1',
     ...options,
   });
 };
 
-export function accepted(options?: any) {
-  return Accepted(options);
-};
+export const Accepted = accepted;
 
-export function Is (comparison: any, options?: any) {
+export const is = function (comparison: any, options?: any) {
   return validatorFactory(validators.is, [comparison], {
     message: '$field must is $1',
     ...options,
   });
 };
 
-export function is(comparison: any, options?: any) {
-  return Is(comparison, options);
-};
+export const Is = is;
 
-export function Required (options?: any) {
+export const required = function (options?: any) {
   return validatorFactory(validators.required, [], {
     message: '$feild must not be undefined',
     ...options,
   });
 };
 
-export function required(options?: any) {
-  return Required(options);
-};
+export const Required = required;
 
-export function Equals(comparison: any, options?: any) {
+export const equals = function (comparison: any, options?: any) {
   return validatorFactory(validators.equals, [comparison], {
     message: '$field must be equal to $1',
     ...options,
   });
 };
 
-export function equals(comparison: any, options?: any) {
-  return Equals(comparison, options);
-};
+export const Equals = equals;
 
-export function NotEquals(comparison: any, options?: any) {
+export const notEquals = function (comparison: any, options?: any) {
   return validatorFactory(validators.notEquals, [comparison], {
     message: '$field shoud not equal to $1',
     ...options,
   });
 };
 
-export function notEquals(comparison: any, options?: any) {
-  return NotEquals(comparison, options);
-};
+export const NotEquals = notEquals;
 
-export function IsEmpty (options?: any) {
+export const isEmpty  = function (options?: any) {
   return validatorFactory(validators.isEmpty, [], {
     message: '$field must be empty',
     ...options,
   });
 };
 
-export function isEmpty(options?: any) {
-  return IsEmpty(options);
-};
+export const IsEmpty = isEmpty;
 
-export function IsNotEmpty (options?: any) {
+export const isNotEmpty  = function (options?: any) {
   return validatorFactory(validators.isNotEmpty, [], {
     message: '$field should not be empty',
     ...options,
   });
 };
 
-export function isNotEmpty(options?: any) {
-  return IsNotEmpty(options);
-};
+export const IsNotEmpty = isNotEmpty;
 
 // MARK: Number
 
-export function IsDivisibleBy(num: any, options?: any) {
+export const isDivisibleBy = function (num: any, options?: any) {
   return validatorFactory(validators.isDivisibleBy, [num], {
     message: '$field must be divisible by $1',
     ...options,
   });
 };
 
-export function isDivisibleBy(num: any, options?: any) {
-  return IsDivisibleBy(num, options);
-};
+export const IsDivisibleBy = isDivisibleBy;
 
-export function IsPositive (options?: any) {
+export const isPositive  = function (options?: any) {
   return validatorFactory(validators.isPositive, [], {
     message: '$field must be a positive number',
     ...options,
   });
 };
 
-export function isPositive(options?: any) {
-  return IsPositive(options);
-};
+export const IsPositive = isPositive;
 
-export function IsNegative (options?: any) {
+export const isNegative  = function (options?: any) {
   return validatorFactory(validators.isNegative, [], {
     message: '$field must be a negative number',
     ...options,
   });
 };
 
-export function isNegative(options?: any) {
-  return IsNegative(options);
-};
+export const IsNegative = isNegative;
 
-export function Min(min: any, options?: any) {
+export const min = function (min: any, options?: any) {
   return validatorFactory(validators.min, [min], {
     message: '$field must not be less than $1',
     ...options,
   });
 };
 
-export function min(min: any, options?: any) {
-  return Min(min, options);
-};
+export const Min = min;
 
-export function Max(max: any, options?: any) {
+export const max = function (max: any, options?: any) {
   return validatorFactory(validators.max, [max], {
     message: '$field must not be greater than $1',
     ...options,
   });
 };
 
-export function max(max: any, options?: any) {
-  return Max(max, options);
-};
-
+export const Max = max;
 
 // MARK: Date
 
-export function AfterDate(date: any, options?: any) {
+export const afterDate = function (date: any, options?: any) {
   return validatorFactory(validators.afterDate, [date], {
     message: '$field date must not be before than $1',
     ...options,
   });
 };
 
-export function afterDate(date: any, options?: any) {
-  return AfterDate(date, options);
-};
+export const AfterDate = afterDate;
 
-export function BeforeDate(date: any, options?: any) {
+export const beforeDate = function (date: any, options?: any) {
   return validatorFactory(validators.beforeDate, [date], {
     message: '$field date must not be after than $1',
     ...options,
   });
 };
 
-export function beforeDate(date: any, options?: any) {
-  return BeforeDate(date, options);
-};
+export const BeforeDate = beforeDate;
 
 // MARK: Type
 
-export function IsBoolean (options?: any) {
+export const isBoolean  = function (options?: any) {
   return validatorFactory(validators.isBoolean, [], {
     message: '$field must be a boolean value',
     ...options,
   });
 };
 
-export function isBoolean(options?: any) {
-  return IsBoolean(options);
-};
+export const IsBoolean = isBoolean;
 
-export function IsDate (options?: any) {
+export const isDate  = function (options?: any) {
   return validatorFactory(validators.isDate, [], {
     message: '$field must be a date value',
     ...options,
   });
 };
 
-export function isDate(options?: any) {
-  return IsDate(options);
-};
+export const IsDate = isDate;
 
-export function IsString (options?: any) {
+export const isString  = function (options?: any) {
   return validatorFactory(validators.isString, [], {
     message: '$field must be a string value',
     ...options,
   });
 };
 
-export function isString(options?: any) {
-  return IsString(options);
-};
+export const IsString = isString;
 
-export function IsNumber (options?: any) {
+export const isNumber  = function (options?: any) {
   return validatorFactory(validators.isNumber, [], {
     message: '$field must be a number value',
     ...options,
   });
 };
 
-export function isNumber(options?: any) {
-  return IsNumber(options);
-};
+export const IsNumber = isNumber;
 
-export function IsArray (options?: any) {
+export const isArray  = function (options?: any) {
   return validatorFactory(validators.isArray, [], {
     message: '$field must be a array value',
     ...options,
   });
 };
 
-export function isArray(options?: any) {
-  return IsArray(options);
-};
+export const IsArray = isArray;
 
-export function IsError (options?: any) {
+export const isError  = function (options?: any) {
   return validatorFactory(validators.isError, [], {
     message: '$field must be an error',
     ...options,
   });
 };
 
-export function isError(options?: any) {
-  return IsError(options);
-};
+export const IsError = isError;
 
-export function IsFunction (options?: any) {
+export const isFunction  = function (options?: any) {
   return validatorFactory(validators.isFunction, [], {
     message: '$field must be a function',
     ...options,
   });
 };
 
-export function isFunction(options?: any) {
-  return IsFunction(options);
-};
+export const IsFunction = isFunction;
 
-export function IsBuffer (options?: any) {
+export const isBuffer  = function (options?: any) {
   return validatorFactory(validators.isBuffer, [], {
     message: '$field must be a buffer',
     ...options,
   });
 };
 
-export function isBuffer(options?: any) {
-  return IsBuffer(options);
-};
+export const IsBuffer = isBuffer;
 
-export function IsObject (options?: any) {
+export const isObject  = function (options?: any) {
   return validatorFactory(validators.isObject, [], {
     message: '$field must be an object value',
     ...options,
   });
 };
 
-export function isObject(options?: any) {
-  return IsObject(options);
-};
+export const IsObject = isObject;
 
-export function IsRegExp (options?: any) {
+export const isRegExp  = function (options?: any) {
   return validatorFactory(validators.isRegExp, [], {
     message: '$field must be a regexp',
     ...options,
   });
 };
 
-export function isRegExp(options?: any) {
-  return IsRegExp(options);
-};
+export const IsRegExp = isRegExp;
 
-export function IsSymbol (options?: any) {
+export const isSymbol  = function (options?: any) {
   return validatorFactory(validators.isSymbol, [], {
     message: '$field must be a symbol value',
     ...options,
   });
 };
 
-export function isSymbol(options?: any) {
-  return IsSymbol(options);
-};
+export const IsSymbol = isSymbol;
 
-export function IsNullOrUndefined (options?: any) {
+export const isNullOrUndefined  = function (options?: any) {
   return validatorFactory(validators.isNullOrUndefined, [], {
     message: '$field must be null or undefined',
     ...options,
   });
 };
 
-export function isNullOrUndefined(options?: any) {
-  return IsNullOrUndefined(options);
-};
+export const IsNullOrUndefined = isNullOrUndefined;
 
-export function IsNull (options?: any) {
+export const isNull  = function (options?: any) {
   return validatorFactory(validators.isNull, [], {
     message: '$field must be null',
     ...options,
   });
 };
 
-export function isNull(options?: any) {
-  return IsNull(options);
-};
+export const IsNull = isNull;
 
-export function IsUndefined (options?: any) {
+export const isUndefined  = function (options?: any) {
   return validatorFactory(validators.isUndefined, [], {
     message: '$field must be undefined',
     ...options,
   });
 };
 
-export function isUndefined(options?: any) {
-  return IsUndefined(options);
-};
+export const IsUndefined = isUndefined;
 
 // MARK: String Type
 
-export function IsDateString (options?: any) {
+export const isDateString  = function (options?: any) {
   return validatorFactory(validators.isDateString, [], {
     message: '$field must be a date string value',
     ...options,
   });
 };
 
-export function isDateString(options?: any) {
-  return IsDateString(options);
-};
+export const IsDateString = isDateString;
 
-export function IsBooleanString (options?: any) {
+export const isBooleanString  = function (options?: any) {
   return validatorFactory(validators.isBooleanString, [], {
     message: '$field must be a boolean string value',
     ...options,
   });
 };
 
-export function isBooleanString(options?: any) {
-  return IsBooleanString(options);
-};
+export const IsBooleanString = isBooleanString;
 
-export function IsNumberString (options?: any) {
+export const isNumberString  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isNumberString, _options, {
     message: '$field must be a number string value',
@@ -371,35 +307,29 @@ export function IsNumberString (options?: any) {
   });
 };
 
-export function isNumberString(options?: any) {
-  return IsNumberString(options);
-};
+export const IsNumberString = isNumberString;
 
 // MARK: String
 
-export function Contains(seed: any, options?: any) {
+export const contains = function (seed: any, options?: any) {
   return validatorFactory(validators.contains, [seed], {
     message: '$field must contain a $1 string',
     ...options,
   });
 };
 
-export function contains(seed: any, options?: any) {
-  return Contains(seed, options);
-};
+export const Contains = contains;
 
-export function NotContains(seed: any, options?: any) {
+export const notContains = function (seed: any, options?: any) {
   return validatorFactory(validators.notContains, [seed], {
     message: '$field should not contain a $1 string',
     ...options,
   });
 };
 
-export function notContains(seed: any, options?: any) {
-  return NotContains(seed, options);
-};
+export const NotContains = notContains;
 
-export function IsAlpha(locale?: any, options?: any) {
+export const isAlpha = function (locale?: any, options?: any) {
   const defaultMessage = '$field must contain only letters (a-zA-Z)';
   if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isAlpha, [locale.locale], {
@@ -413,11 +343,9 @@ export function IsAlpha(locale?: any, options?: any) {
   });
 };
 
-export function isAlpha(locale: any, options?: any) {
-  return IsAlpha(locale, options);
-};
+export const IsAlpha = isAlpha;
 
-export function IsAlphanumeric(locale?: any, options?: any) {
+export const isAlphanumeric = function (locale?: any, options?: any) {
   const defaultMessage = '$field must contain only letters and numbers';
   if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isAlphanumeric, [locale.locale], {
@@ -431,55 +359,45 @@ export function IsAlphanumeric(locale?: any, options?: any) {
   });
 };
 
-export function isAlphanumeric(locale: any, options?: any) {
-  return IsAlphanumeric(locale, options);
-};
+export const IsAlphanumeric = isAlphanumeric;
 
-export function IsAscii (options?: any) {
+export const isAscii  = function (options?: any) {
   return validatorFactory(validators.isAscii, [], {
     message: '$field must contain only ASCII characters',
     ...options,
   });
 };
 
-export function isAscii(options?: any) {
-  return IsAscii(options);
-};
+export const IsAscii = isAscii;
 
-export function IsBase64 (options?: any) {
+export const isBase64  = function (options?: any) {
   return validatorFactory(validators.isBase64, [], {
     message: '$field must be base64 encoded',
     ...options,
   });
 };
 
-export function isBase64(options?: any) {
-  return IsBase64(options);
-};
+export const IsBase64 = isBase64;
 
-export function IsByteLength(min: any, max: any, options?: any) {
+export const isByteLength = function (min: any, max: any, options?: any) {
   return validatorFactory(validators.isByteLength, [min, max], {
     message: '$field\'s byte length must fall into($1, $2) range',
     ...options,
   });
 };
 
-export function isByteLength(min: any, max: any, options?: any) {
-  return IsByteLength(min, max, options);
-};
+export const IsByteLength = isByteLength;
 
-export function IsCreditCard (options?: any) {
+export const isCreditCard  = function (options?: any) {
   return validatorFactory(validators.isCreditCard, [], {
     message: '$field must be a credit card',
     ...options,
   });
 };
 
-export function isCreditCard(options?: any) {
-  return IsCreditCard(options);
-};
+export const IsCreditCard = isCreditCard;
 
-export function IsCurrency (options?: any) {
+export const isCurrency  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isCurrency, _options, {
     message: '$field must be a currency',
@@ -487,11 +405,9 @@ export function IsCurrency (options?: any) {
   });
 };
 
-export function isCurrency(options?: any) {
-  return IsCurrency(options);
-};
+export const IsCurrency = isCurrency;
 
-export function IsEmail (options?: any) {
+export const isEmail  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isEmail, _options, {
     message: '$field must be an email',
@@ -499,11 +415,9 @@ export function IsEmail (options?: any) {
   });
 };
 
-export function isEmail(options?: any) {
-  return IsEmail(options);
-};
+export const IsEmail = isEmail;
 
-export function IsFQDN (options?: any) {
+export const isFQDN  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isFQDN, _options, {
     message: '$field must be a valid domain name',
@@ -511,55 +425,45 @@ export function IsFQDN (options?: any) {
   });
 };
 
-export function isFQDN(options?: any) {
-  return IsFQDN(options);
-};
+export const IsFQDN = isFQDN;
 
-export function IsFullWidth (options?: any) {
+export const isFullWidth  = function (options?: any) {
   return validatorFactory(validators.isFullWidth, [], {
     message: '$field must contain a full-width characters',
     ...options,
   });
 };
 
-export function isFullWidth(options?: any) {
-  return IsFullWidth(options);
-};
+export const IsFullWidth = isFullWidth;
 
-export function IsHalfWidth (options?: any) {
+export const isHalfWidth  = function (options?: any) {
   return validatorFactory(validators.isHalfWidth, [], {
     message: '$field must contain a half-width characters',
     ...options,
   });
 };
 
-export function isHalfWidth(options?: any) {
-  return IsHalfWidth(options);
-};
+export const IsHalfWidth = isHalfWidth;
 
-export function IsHexColor (options?: any) {
+export const isHexColor  = function (options?: any) {
   return validatorFactory(validators.isHexColor, [], {
     message: '$field must be a hex color',
     ...options,
   });
 };
 
-export function isHexColor(options?: any) {
-  return IsHexColor(options);
-};
+export const IsHexColor = isHexColor;
 
-export function IsHexadecimal (options?: any) {
+export const isHexadecimal  = function (options?: any) {
   return validatorFactory(validators.isHexadecimal, [], {
     message: '$field must be a hexadecimal number',
     ...options,
   });
 };
 
-export function isHexadecimal(options?: any) {
-  return IsHexadecimal(options);
-};
+export const IsHexadecimal = isHexadecimal;
 
-export function IsIP(version?: any, options?: any) {
+export const isIP = function (version?: any, options?: any) {
   const defaultMessage = '$field must be an ip address';
   if (version && typeof version === 'object') {
     return validatorFactory(validators.isIP, [version.version], {
@@ -573,11 +477,9 @@ export function IsIP(version?: any, options?: any) {
   });
 };
 
-export function isIP(version?: any, options?: any) {
-  return IsIP(version, options);
-};
+export const IsIP = isIP;
 
-export function IsISBN(version?: any, options?: any) {
+export const isISBN = function (version?: any, options?: any) {
   const defaultMessage = '$field must be an ISBN';
   if (version && typeof version === 'object') {
     return validatorFactory(validators.isISBN, [version.version], {
@@ -591,11 +493,9 @@ export function IsISBN(version?: any, options?: any) {
   });
 };
 
-export function isISBN(version?: any, options?: any) {
-  return IsISBN(version, options);
-};
+export const IsISBN = isISBN;
 
-export function IsISSN (options?: any) {
+export const isISSN  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isISSN, _options, {
     message: '$field must be an ISSN',
@@ -603,55 +503,45 @@ export function IsISSN (options?: any) {
   });
 };
 
-export function isISSN(options?: any) {
-  return IsISSN(options);
-};
+export const IsISSN = isISSN;
 
-export function IsISIN (options?: any) {
+export const isISIN  = function (options?: any) {
   return validatorFactory(validators.isISIN, [], {
     message: '$field must be an ISIN (stock/security identifier)',
     ...options,
   });
 };
 
-export function isISIN(options?: any) {
-  return IsISIN(options);
-};
+export const IsISIN = isISIN;
 
-export function IsISO8601 (options?: any) {
+export const isISO8601  = function (options?: any) {
   return validatorFactory(validators.isISO8601, [], {
     message: '$field must be a valid ISO 8601 date string',
     ...options,
   });
 };
 
-export function isISO8601(options?: any) {
-  return IsISO8601(options);
-};
+export const IsISO8601 = isISO8601;
 
-export function IsJSON (options?: any) {
+export const isJSON  = function (options?: any) {
   return validatorFactory(validators.isJSON, [], {
     message: '$field must be a json string',
     ...options,
   });
 };
 
-export function isJSON(options?: any) {
-  return IsJSON(options);
-};
+export const IsJSON = isJSON;
 
-export function IsLowercase (options?: any) {
+export const isLowercase  = function (options?: any) {
   return validatorFactory(validators.isLowercase, [], {
     message: '$field must be a lowercase string',
     ...options,
   });
 };
 
-export function isLowercase(options?: any) {
-  return IsLowercase(options);
-};
+export const IsLowercase = isLowercase;
 
-export function IsMobilePhone(locale?: any, options?: any) {
+export const isMobilePhone = function (locale?: any, options?: any) {
   if (locale && typeof locale === 'object') {
     return validatorFactory(validators.isMobilePhone, [locale.locale, locale], locale);
   }
@@ -661,44 +551,36 @@ export function IsMobilePhone(locale?: any, options?: any) {
   });
 };
 
-export function isMobilePhone(locale?: any, options?: any) {
-  return IsMobilePhone(locale, options);
-};
+export const IsMobilePhone = isMobilePhone;
 
-export function IsMongoId (options?: any) {
+export const isMongoId  = function (options?: any) {
   return validatorFactory(validators.isMongoId, [], {
     message: '$field must be a mongodb id',
     ...options,
   });
 };
 
-export function isMongoId(options?: any) {
-  return IsMongoId(options);
-};
+export const IsMongoId = isMongoId;
 
-export function IsMultibyte (options?: any) {
+export const isMultibyte  = function (options?: any) {
   return validatorFactory(validators.isMultibyte, [], {
     message: '$field must contain one or more multibyte chars',
     ...options,
   });
 };
 
-export function isMultibyte(options?: any) {
-  return IsMultibyte(options);
-};
+export const IsMultibyte = isMultibyte;
 
-export function IsSurrogatePair (options?: any) {
+export const isSurrogatePair  = function (options?: any) {
   return validatorFactory(validators.isSurrogatePair, [], {
     message: '$field must contain any surrogate pairs chars',
     ...options,
   });
 };
 
-export function isSurrogatePair(options?: any) {
-  return IsSurrogatePair(options);
-};
+export const IsSurrogatePair = isSurrogatePair;
 
-export function IsURL (options?: any) {
+export const isURL  = function (options?: any) {
   const _options = options ? [options] : [];
   return validatorFactory(validators.isURL, _options, {
     message: '$field must be an URL address',
@@ -706,11 +588,9 @@ export function IsURL (options?: any) {
   });
 };
 
-export function isURL(options?: any) {
-  return IsURL(options);
-};
+export const IsURL = isURL;
 
-export function IsUUID(version?: any, options?: any) {
+export const isUUID = function (version?: any, options?: any) {
   const defaultMessage = '$field must be an UUID';
   if (version && typeof version === 'object') {
     return validatorFactory(validators.isUUID, [version.version], {
@@ -724,55 +604,45 @@ export function IsUUID(version?: any, options?: any) {
   });
 };
 
-export function isUUID(version?: any, options?: any) {
-  return IsUUID(version, options);
-};
+export const IsUUID = isUUID;
 
-export function IsUppercase (options?: any) {
+export const isUppercase  = function (options?: any) {
   return validatorFactory(validators.isUppercase, [], {
     message: '$field must be an uppercase string',
     ...options,
   });
 };
 
-export function isUppercase(options?: any) {
-  return IsUppercase(options);
-};
+export const IsUppercase = isUppercase;
 
-export function Length(min: any, max: any, options?: any) {
+export const length = function (min: any, max: any, options?: any) {
   return validatorFactory(validators.length, [min, max], {
     message: '$field must be between $1 and $2',
     ...options,
   });
 };
 
-export function length(min: any, max: any, options?: any) {
-  return Length(min, max, options);
-};
+export const Length = length;
 
-export function MinLength(min: any, options?: any) {
+export const minLength = function (min: any, options?: any) {
   return validatorFactory(validators.minLength, [min], {
     message: '$field must not be shorter than $1',
     ...options,
   });
 };
 
-export function minLength(min: any, options?: any) {
-  return MinLength(min, options);
-};
+export const MinLength = minLength;
 
-export function MaxLength(max: any, options?: any) {
+export const maxLength = function (max: any, options?: any) {
   return validatorFactory(validators.maxLength, [max], {
     message: '$field must not be longer than $1',
     ...options,
   });
 };
 
-export function maxLength(max: any, options?: any) {
-  return MaxLength(max, options);
-};
+export const MaxLength = maxLength;
 
-export function Matches(pattern: any, modifiers?: any, options?: any) {
+export const matches = function (pattern: any, modifiers?: any, options?: any) {
   const defaultMessage = '$field must match $1 regular expression';
   if (modifiers && typeof modifiers === 'object') {
     return validatorFactory(
@@ -790,6 +660,4 @@ export function Matches(pattern: any, modifiers?: any, options?: any) {
   });
 };
 
-export function matches(pattern: any, modifiers?: any, options?: any) {
-  return Matches(pattern, modifiers, options);
-};
+export const Matches = matches;

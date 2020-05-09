@@ -5,10 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function resource(name = ''): ClassDecorator {
+export const resource = function (name = ''): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('name', name, constructor);
     Reflect.defineMetadata('type', 'resource', constructor);
   };
 };
+
+export const Resource = resource;

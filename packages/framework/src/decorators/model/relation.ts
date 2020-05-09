@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import { RelationDesc } from '../../orm/model';
 
 interface ManyRealtionOptions {
@@ -11,13 +18,12 @@ interface OneRelationOptions {
   localKey?: string;
 }
 
-
 /**
- * HasOne
+ * Has One
  *
  * @returns {PropertyDecorator}
  */
-export function hasOne(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
+export const hasOne = function (fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -29,14 +35,19 @@ export function hasOne(fn: () => any, options: OneRelationOptions = {}): Propert
     });
     Reflect.defineMetadata('relations', relations, target.constructor);
   };
-}
+};
 
 /**
- * BelongsTo
+ * Alias
+ */
+export const HasOne = hasOne;
+
+/**
+ * Belongs To
  *
  * @returns {PropertyDecorator}
  */
-export function belongsTo(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
+export const belongsTo = function (fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -48,14 +59,19 @@ export function belongsTo(fn: () => any, options: OneRelationOptions = {}): Prop
     });
     Reflect.defineMetadata('relations', relations, target.constructor);
   };
-}
+};
+
+/**
+ * Alias
+ */
+export const BelongsTo = belongsTo;
 
 /**
  * HasMany
  *
  * @returns {PropertyDecorator}
  */
-export function hasMany(fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
+export const hasMany = function (fn: () => any, options: OneRelationOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -67,14 +83,19 @@ export function hasMany(fn: () => any, options: OneRelationOptions = {}): Proper
     });
     Reflect.defineMetadata('relations', relations, target.constructor);
   };
-}
+};
 
 /**
- * HasMany
+ * Alias
+ */
+export const HasMany = hasMany;
+
+/**
+ * belongsToMany
  *
  * @returns {PropertyDecorator}
  */
-export function belongsToMany(fn: () => any, options: ManyRealtionOptions = {}): PropertyDecorator {
+export const belongsToMany = function (fn: () => any, options: ManyRealtionOptions = {}): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const relations: Map<string, RelationDesc> = Reflect.getMetadata('relations', target.constructor) ?? new Map();
@@ -87,4 +108,9 @@ export function belongsToMany(fn: () => any, options: ManyRealtionOptions = {}):
     });
     Reflect.defineMetadata('relations', relations, target.constructor);
   };
-}
+};
+
+/**
+ * Alias
+ */
+export const BelongsToMany = belongsToMany;

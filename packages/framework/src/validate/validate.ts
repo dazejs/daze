@@ -78,9 +78,10 @@ export class Validate {
     }
     // if string type
     if (typeof validator === 'string') {
-      const containerKey = `validator.${validator}`;
-      if (!this.app.has(containerKey)) return [];
-      return Reflect.getMetadata('rules', this.app.get(containerKey).constructor) || [];
+      // AMRK: COMPONENT_NAME
+      // const containerKey = `validator.${validator}`;
+      if (!this.app.has(validator)) return [];
+      return Reflect.getMetadata('rules', this.app.get(validator).constructor) || [];
     }
     // if type function
     if (typeof validator === 'function') {

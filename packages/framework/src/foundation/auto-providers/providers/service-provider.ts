@@ -12,7 +12,7 @@ export class ServiceProvider {
       const name = Reflect.getMetadata('name', Service);
       this.app.multiton(Service, Service);
       if (name) {
-        this.app.multiton(`service.${name}`, (...args: any[]) => {
+        this.app.multiton(name, (...args: any[]) => {
           return this.app.get(Service, args);
         }, true);
       }

@@ -5,9 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function injectable(): ClassDecorator {
-  return function (constructor) {
-    Reflect.defineMetadata('injectable', true, constructor);
-    return constructor;
-  };
+export const injectable: ClassDecorator = function (constructor: any) {
+  Reflect.defineMetadata('injectable', true, constructor);
 };
+
+export const Injectable = injectable;

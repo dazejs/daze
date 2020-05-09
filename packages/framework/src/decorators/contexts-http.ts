@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import * as symbols from '../symbol';
 import { A, pipe } from './helpers';
 import { createInjectDecorator } from './factory/create-inject-decorator';
@@ -6,23 +13,29 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
  * Inject original http request
  */
 export const originalReq = () => createInjectDecorator(symbols.INJECTORS.REQ);
+export const OriginalReq = originalReq;
 export const req = originalReq;
+export const Req = originalReq;
 
 /**
  * Inject original http response
  */
 export const originalRes = () => createInjectDecorator(symbols.INJECTORS.RES);
+export const OriginalRes = originalRes;
 export const res = originalRes;
+export const Res = originalRes;
 
 /**
  * Inject daze http request
  */
 export const request = () => createInjectDecorator(symbols.INJECTORS.REQUEST);
+export const Request = request;
 
 /**
  * Inject daze http response
  */
 export const response = () => createInjectDecorator(symbols.INJECTORS.RESPONSE);
+export const Response = response;
 
 /**
  * Inject http query
@@ -35,6 +48,7 @@ export const query = (key?: string, defaultValue?: any) =>
       return injectedParam[key] ?? defaultValue;
     }
   });
+export const Query = query;
 
 /**
  * Inject http request params
@@ -47,6 +61,7 @@ export const params = (key?: string, defaultValue?: any) =>
       return injectedParam[key] ?? defaultValue;
     }
   });
+export const Params = params;
 
 /**
  * Inject http request headers
@@ -59,7 +74,10 @@ export const header = (key?: string, defaultValue?: any) =>
       return injectedParam[key.toLowerCase()] ?? defaultValue;
     }
   });
+export const Header = header;
 export const headers = header;
+export const Headers = header;
+
 
 /**
  * Inject http request body
@@ -76,6 +94,7 @@ export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BO
     );
   }
 });
+export const Body = body;
 
 /**
  * Inject http cookie value
@@ -88,6 +107,7 @@ export const cookieValue = (key?: string, defaultValue?: any) =>
       return injectedParam.get(key) ?? defaultValue;
     }
   });
+export const CookieValue = cookieValue;
 
 /**
  * Inject http session value
@@ -100,3 +120,4 @@ export const sessionValue = (key?: string, defaultValue?: any) =>
       return injectedParam.get(key) ?? defaultValue;
     }
   });
+export const SessionValue = sessionValue;

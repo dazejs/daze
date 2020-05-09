@@ -1,67 +1,63 @@
 /**
- * Copyright (c) 2018 Chan Zewail
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
-import * as http from 'http';
 
+import * as http from 'http';
 import { formatPrefix } from './helpers';
 
-function decorateMethod(target: any, name: string, descriptor: any, methods: any, uri: string) {
-  const routes = Reflect.getMetadata('routes', target.constructor) || {};
-  if (!routes[name]) routes[name] = [];
-  for (const method of methods) {
-    routes[name].push({
-      uri: formatPrefix(uri),
-      method,
-    });
-  }
-  Reflect.defineMetadata('routes', routes, target.constructor);
-  return descriptor;
+function verb(methods: any[], uri = '/'): MethodDecorator {
+  return function (target, propertyKey) {
+    const routes = Reflect.getMetadata('routes', target.constructor) || {};
+    if (!routes[propertyKey]) routes[propertyKey] = [];
+    for (const method of methods) {
+      routes[propertyKey].push({
+        uri: formatPrefix(uri),
+        method,
+      });
+    }
+    Reflect.defineMetadata('routes', routes, target.constructor);
+  };
 }
 
-function handle(args: any[], methods: any[], uri = '') {
-  if (args.length > 1) {
-    const [target, name, descriptor] = args;
-    return decorateMethod(target, name, descriptor, methods, uri);
-  }
-  throw new Error('@Http[method] must be decorate on method');
-}
-
-function verb(methods: any[], uri = '/') {
-  return (...args: any[]) => handle(args, methods, uri);
-}
-
-export function get(uri = '') {
+export const get = function (uri = '') {
   return verb(['GET'], uri);
 };
+export const Get = get;
 
-export function post(uri = '') {
+export const post = function (uri = '') {
   return verb(['POST'], uri);
 };
+export const Post = post;
 
-export function put(uri = '') {
+export const put = function (uri = '') {
   return verb(['PUT'], uri);
 };
+export const Put = put;
 
-export function patch(uri = '') {
+export const patch = function (uri = '') {
   return verb(['PATCH'], uri);
 };
+export const Patch = patch;
 
-
-export function options(uri = '') {
+export const options = function (uri = '') {
   return verb(['OPTIONS'], uri);
 };
+export const Options = options;
 
-export function head(uri = '') {
+export const head = function (uri = '') {
   return verb(['HEAD'], uri);
 };
+export const Head = head;
 
-export function del(uri = '') {
+export const del = function (uri = '') {
   return verb(['DELETE'], uri);
 };
+export const Del = del;
 
-export function all(uri = '', methods: any[] = http.METHODS) {
+export const all = function (uri = '', methods: any[] = http.METHODS) {
   return verb(methods, uri);
 };
+export const All = all;

@@ -4,7 +4,7 @@ import { MULTITON } from '../../../src/symbol';
 
 describe('Multiton Decorator', () => {
   it('should patch Multiton flag in Multiton', () => {
-    @multiton()
+    @multiton
     class Example {
      
     };

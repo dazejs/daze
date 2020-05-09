@@ -3,7 +3,7 @@ import { ignore } from '../../../src/decorators/ignore';
 
 describe('Ignore Decorator', () => {
   it('should patch Ignore by @Ignore', () => {
-    @ignore()
+    @ignore
     class Example { }
     expect(Reflect.getMetadata('ignore', Example)).toBeTruthy();
   });

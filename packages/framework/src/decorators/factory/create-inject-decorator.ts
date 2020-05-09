@@ -5,8 +5,14 @@
  * https: //opensource.org/licenses/MIT
  */
 
+/**
+ * Create a decorator for dependency injection
+ * 
+ * @param abstract The injection of the key
+ * @param params Injection parameters
+ * @param handler Post-injection functions that need to manipulate post-injection properties
+ */
 export function createInjectDecorator(abstract: any, params: any[] = [], handler?: (injectedParam: any) => any) {
-  // return (...args: any[]) => (...argsClass: any[])  => handle(argsClass, args, type, handler);
   return function (...decoratorParams: any[]) {
     if (decoratorParams.length === 1) { // class
       const [target] = decoratorParams;

@@ -5,10 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function validator(name = ''): ClassDecorator {
+export const validator = function (name = ''): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
     Reflect.defineMetadata('name', name, constructor);
     Reflect.defineMetadata('type', 'validator', constructor);
   };
 };
+
+export const Validator = validator;

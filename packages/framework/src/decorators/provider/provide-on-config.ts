@@ -1,7 +1,19 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import { ProviderType } from '../../symbol';
 import { ProvideMetaData } from './provide';
 
-export function provideOnConfig(key: string): ClassDecorator | MethodDecorator | any {
+/**
+ * Provides the service when the specified configuration item exists
+ * 
+ * @param key 
+ */
+export const provideOnConfig = function (key: string): ClassDecorator | MethodDecorator | any {
   return function (
     target: Function | object, 
     name?: string | symbol | undefined,
@@ -36,4 +48,9 @@ export function provideOnConfig(key: string): ClassDecorator | MethodDecorator |
       Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target);
     }
   };
-}
+};
+
+/**
+ * Alias
+ */
+export const ProvideOnConfig = provideOnConfig;

@@ -11,7 +11,7 @@ export class ValidatorProvider {
       const name = Reflect.getMetadata('name', Validator);
       this.app.multiton(Validator, Validator);
       if (name) {
-        this.app.multiton(`validator.${name}`, (...args: any[]) => {
+        this.app.multiton(name, (...args: any[]) => {
           return this.app.get(Validator, args);
         }, true);
       }

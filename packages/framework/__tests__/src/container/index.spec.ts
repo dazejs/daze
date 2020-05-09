@@ -102,7 +102,7 @@ it('Container#callable', () => {
 });
 
 it('Container inject class', () => {
-  @injectable()
+  @injectable
   class App {
     param: any;
     prop: any;

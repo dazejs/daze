@@ -236,8 +236,10 @@ export class Resource {
    * @param formatter 
    * @param data 
    */
-  useStringFormatter(formatter: string, data: any) {
-    const Transformer = this.app.get(`resource.${formatter}`, this.__context__);
+  useStringFormatter(formatterName: string, data: any) {
+    // AMRK: COMPONENT_NAME
+    // const Transformer = this.app.get(`resource.${formatter}`, this.__context__);
+    const Transformer = this.app.get(formatterName, this.__context__);
     return Transformer.resolve(data);
   }
 
