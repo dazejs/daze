@@ -14,7 +14,7 @@ import { ProviderType } from '../../symbol';
  */
 export const depends = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
 
     for (const provider of providers) {
       if (Array.isArray(provider)) {
@@ -32,10 +32,40 @@ export const depends = function (...providers: Function[] | Function[][]) {
  */
 export const Depends = depends;
 
-
-export function autoScan(...componentScans: string[] | string[][]) {
+/**
+ * imports providers
+ * 
+ * @param providers 
+ */
+export const imports = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
-    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], componentScan: [] };
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
+
+    for (const provider of providers) {
+      if (Array.isArray(provider)) {
+        option.imports?.push(...provider);
+      } else {
+        option.imports?.push(provider);
+      }
+    }
+    Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
+  };
+};
+
+/**
+ * Alias
+ */
+export const Imports = imports;
+
+
+/**
+ * auto scan components
+ * 
+ * @param componentScans 
+ */
+export const autoScan = function (...componentScans: string[] | string[][]) {
+  return function (constructor: Function) {
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
 
     for (const componentScan of componentScans) {
       if (Array.isArray(componentScan)) {
@@ -47,7 +77,9 @@ export function autoScan(...componentScans: string[] | string[][]) {
    
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
-}
+};
+
+export const AutoScan = autoScan;
 
 
 export interface ProviderOption {
