@@ -42,11 +42,11 @@ export default class extends BaseController {
 
   @http.get('resource')
   _resource() {
-    return this.resource('injectable').item({name: 'dazejs'});
+    return this.resource('injectable-resource').item({name: 'dazejs'});
   }
 
   @http.get('service')
   _service() {
-    return this.service('injectable').sayId();
+    return this.service('injectable-service').sayId();
   }
 }

@@ -1,4 +1,4 @@
-import { inject } from '../../../decorators/inject';
+import { inject } from '../../../decorators';
 import { Application } from '../../application';
 import { Loader } from '../../../loader/loader';
 export class ValidatorProvider {

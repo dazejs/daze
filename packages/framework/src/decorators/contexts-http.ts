@@ -5,60 +5,60 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
 /**
  * Inject original http request
  */
-export const originalReq = createInjectDecorator(symbols.INJECTORS.REQ);
+export const originalReq = () => createInjectDecorator(symbols.INJECTORS.REQ);
 export const req = originalReq;
 
 /**
  * Inject original http response
  */
-export const originalRes = createInjectDecorator(symbols.INJECTORS.RES);
+export const originalRes = () => createInjectDecorator(symbols.INJECTORS.RES);
 export const res = originalRes;
 
 /**
  * Inject daze http request
  */
-export const request = createInjectDecorator(symbols.INJECTORS.REQUEST);
+export const request = () => createInjectDecorator(symbols.INJECTORS.REQUEST);
 
 /**
  * Inject daze http response
  */
-export const response = createInjectDecorator(symbols.INJECTORS.RESPONSE);
+export const response = () => createInjectDecorator(symbols.INJECTORS.RESPONSE);
 
 /**
  * Inject http query
  */
 export const query = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.QUERY, (injectedParam: any) => {
+  createInjectDecorator(symbols.INJECTORS.QUERY, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key] ?? defaultValue;
     }
-  }).call([]);
+  });
 
 /**
  * Inject http request params
  */
 export const params = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.PARAMS, (injectedParam: any) => {
+  createInjectDecorator(symbols.INJECTORS.PARAMS, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key] ?? defaultValue;
     }
-  }).call([]);
+  });
 
 /**
  * Inject http request headers
  */
 export const header = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.HEADERS, (injectedParam: any) => {
+  createInjectDecorator(symbols.INJECTORS.HEADERS, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key.toLowerCase()] ?? defaultValue;
     }
-  }).call([]);
+  });
 export const headers = header;
 
 /**
@@ -66,7 +66,7 @@ export const headers = header;
  *
  * @param key req.body | req.body[key]
  */
-export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, (injectedParam: any) => {
+export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, [], (injectedParam: any) => {
   if (typeof injectedParam === 'undefined' || !key) {
     return injectedParam;
   } else {
@@ -75,28 +75,28 @@ export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BO
       A.reduce<string, any>(injectedParam, (r: any, k: string) => r && r[k]) ?? {},
     );
   }
-}).call([]);
+});
 
 /**
  * Inject http cookie value
  */
 export const cookieValue = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.COOKIE, (injectedParam: any) => {
+  createInjectDecorator(symbols.INJECTORS.COOKIE, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam.get(key) ?? defaultValue;
     }
-  }).call([]);
+  });
 
 /**
  * Inject http session value
  */
 export const sessionValue = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.SESSION, (injectedParam: any) => {
+  createInjectDecorator(symbols.INJECTORS.SESSION, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam.get(key) ?? defaultValue;
     }
-  }).call([]);
+  });

@@ -1,6 +1,6 @@
-import { BaseResource, http, component } from '../../../../../src';
+import { BaseResource, http, resource } from '../../../../../src';
 
-@component('injectable')
+@resource('injectable-resource')
 export default class extends BaseResource {
   resolve(@http.query('id') id: number, data: any) {
     return {

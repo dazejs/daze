@@ -15,7 +15,7 @@ export default class extends BaseController {
 
   @http.get()
   index() {
-    return this.service('example').sayHello();
+    return this.service('example-service').sayHello();
   }
 
   @http.post('post')

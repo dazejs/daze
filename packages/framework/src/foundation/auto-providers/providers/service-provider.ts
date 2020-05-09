@@ -1,4 +1,4 @@
-import { inject } from '../../../decorators/inject';
+import { inject } from '../../../decorators';
 import { Loader } from '../../../loader/loader';
 import { Application } from '../../application';
 

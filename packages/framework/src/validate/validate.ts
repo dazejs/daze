@@ -80,7 +80,7 @@ export class Validate {
     if (typeof validator === 'string') {
       const containerKey = `validator.${validator}`;
       if (!this.app.has(containerKey)) return [];
-      return Reflect.getMetadata('rules', this.app.get(`validator.${validator}`).constructor) || [];
+      return Reflect.getMetadata('rules', this.app.get(containerKey).constructor) || [];
     }
     // if type function
     if (typeof validator === 'function') {

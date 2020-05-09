@@ -1,7 +1,7 @@
-import { BaseService, http, component } from '../../../../../src';
+import { BaseService, http, service } from '../../../../../src';
 
 
-@component('injectable')
+@service('injectable-service')
 export default class extends BaseService {
   sayId(
   @http.query('id') id: number

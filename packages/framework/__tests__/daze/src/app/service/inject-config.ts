@@ -1,6 +1,6 @@
-import { config, component } from '../../../../../src/decorators';
+import { config, service } from '../../../../../src/decorators';
 
-@component('injectConfigService')
+@service('injectConfigService')
 export class InjectConfigService {
 
   @config()

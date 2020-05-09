@@ -1,5 +1,4 @@
-import { inject } from '../../../decorators/inject';
-import { provide } from '../../../decorators/provider';
+import { inject, provide } from '../../../decorators';
 import { Loader } from '../../../loader/loader';
 import { Application } from '../../application';
 

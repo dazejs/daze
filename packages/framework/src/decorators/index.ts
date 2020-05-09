@@ -20,7 +20,7 @@ export * from './singleton';
 export * from './component';
 export * from './component-type';
 export * from './ignore';
-export * from './use-middleware';
+export * from './use';
 export * from './contexts';
 export * from './inject';
 export * from './cross-origin';

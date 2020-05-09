@@ -1,6 +1,6 @@
-import { BaseService, component } from '../../../../../src';
+import { BaseService, service } from '../../../../../src';
 
-@component('example')
+@service('example-service')
 export default class extends BaseService {
   sayHello() {
     return 'Hello Dazejs';
