@@ -25,6 +25,7 @@ export * from './model';
 export * from './multiton';
 export * from './order';
 export * from './provider';
+export * from './provide';
 export * from './resource';
 export * from './rest';
 export * from './service';

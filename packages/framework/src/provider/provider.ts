@@ -1,9 +1,9 @@
 import { Application } from '@src';
 import * as path from 'path';
-import { BaseProvider } from '../base/provider';
-import { ProvideMetaData, ProviderOption } from '../decorators/provider';
+import { ProvideMetaData, ProviderOption } from '../decorators/provide';
 import { Loader } from '../loader';
 import { ProviderType } from '../symbol';
+import { ProviderInterface } from '../interfaces';
 
 export class Provider {
   private app: Application;
@@ -76,7 +76,7 @@ export class Provider {
    * Perform the register hook
    * @param provider 
    */
-  async performRegisterHook(provider: BaseProvider) {
+  async performRegisterHook(provider: ProviderInterface) {
     if (Reflect.has(provider, 'register') && typeof provider.register === 'function') {
       await provider.register();
     }
@@ -86,7 +86,7 @@ export class Provider {
    * register launch hook to application
    * @param provider 
    */
-  registerLaunchHook(provider: BaseProvider) {
+  registerLaunchHook(provider: ProviderInterface) {
     if (Reflect.has(provider, 'launch') && typeof provider.launch === 'function') {
       this.app.launchCalls.push(() => provider.launch?.());
     }

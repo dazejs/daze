@@ -1,4 +1,4 @@
-import { depends, provide, provideOn, provideOnMissing } from "../../../../src/decorators/provider";
+import { depends, provide, provideOn, provideOnMissing } from "../../../../src/decorators";
 import { config } from "../../../../src/decorators";
 import { TestLogger, TestLogger2 } from "../app/component/TestLogger";
 

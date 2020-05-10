@@ -6,7 +6,7 @@
  */
 import minimatch from 'minimatch';
 import { BaseMiddleware } from '../../base/middleware';
-import { TNext } from '../../middleware';
+import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
 
@@ -59,7 +59,7 @@ export class VerifyCsrfToken extends BaseMiddleware {
     return true;
   }
 
-  resolve(request: Request, next: TNext) {
+  resolve(request: Request, next: Next) {
     const session = request.session();
     if (!session.get('secret')) {
       session.set('secret', this.app.get('csrf').secretSync());

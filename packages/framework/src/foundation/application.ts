@@ -20,7 +20,7 @@ import { Logger } from '../logger';
 import { Provider } from '../provider';
 import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
-import { Agent } from '../base/agent';
+import { AgentInterface } from '../interfaces';
 import { MessengerService } from '../messenger';
 
 const DEFAULT_PORT = 8080;
@@ -118,7 +118,7 @@ export class Application extends Container {
   /**
    * agent instances
    */
-  agents: Agent[] = [];
+  agents: AgentInterface[] = [];
 
   /**
    * cluster agent worker

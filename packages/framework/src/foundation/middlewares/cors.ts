@@ -6,7 +6,7 @@
  */
 
 import { BaseMiddleware } from '../../base/middleware';
-import { TNext } from '../../middleware';
+import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
 
@@ -61,7 +61,7 @@ export class CORSMiddleware extends BaseMiddleware {
     return this.options.allowHeaders || ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'];
   }
 
-  async resolve(request: Request, next: TNext): Promise<Response> {
+  async resolve(request: Request, next: Next): Promise<Response> {
     const requestOrigin = request.getHeader('Origin');
     if (!requestOrigin) return next();
     if (request.isOptions()) {

@@ -46,11 +46,5 @@ export abstract class BaseResource extends Injectable {
       },
     };
   }
-
-  /**
-   * default resolve method
-   * @param data
-   */
-  abstract resolve(...args: any[]): any
 }
 

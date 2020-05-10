@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import { autoScan, depends, provide } from '../../decorators/provider';
+import { autoScan, depends, provide } from '../../decorators';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';

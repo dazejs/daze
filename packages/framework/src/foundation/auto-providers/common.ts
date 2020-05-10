@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as providers from './providers';
-import { provide, depends } from '../../decorators/provider';
+import { provide, depends } from '../../decorators';
 // import { Application } from '../application';
 import { MessengerService } from '../../messenger';
 import { BaseProvider } from '../../base/provider';

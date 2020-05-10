@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import path from 'path';
 import { OutgoingHttpHeaders } from 'http';
-import { Base, Application, Config, Response, Redirect } from '../../../src';
+import { Base, Application, Response, Redirect } from '../../../src';
+import { Config } from '../../../src/config';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

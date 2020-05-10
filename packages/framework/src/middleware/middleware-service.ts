@@ -10,8 +10,8 @@ import { Request } from '../request';
 import { Response } from '../response';
 import { ProviderType } from '../symbol';
 
-export type TNext = (...args: any[]) => Response | Promise<Response>
-export type TMiddlewareStage = (request: Request, next: TNext) => Response | Promise<Response>
+export type Next = (...args: any[]) => Promise<Response>
+export type MiddlewareStage = (request: Request, next: Next) => Promise<Response>
 interface TMiddlewareMeta {
   resolver(request: any, next: any): any;
   readonly order: number;
