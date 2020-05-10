@@ -1,6 +1,6 @@
 import { Application } from '@src';
 import * as path from 'path';
-import { ProvideMetaData, ProviderOption } from '../decorators/provide';
+import { ProvideMetaData, ProviderOption } from '../decorators';
 import { Loader } from '../loader';
 import { ProviderType } from '../symbol';
 import { ProviderInterface } from '../interfaces';

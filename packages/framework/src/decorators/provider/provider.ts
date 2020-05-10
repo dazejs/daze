@@ -81,6 +81,43 @@ export const autoScan = function (...componentScans: string[] | string[][]) {
 
 export const AutoScan = autoScan;
 
+export const provider = function (providerOption?: ProviderOption): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata('type', 'provider', constructor);
+    const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
+    if (providerOption?.depends) {
+      for (const depend of providerOption.depends) {
+        if (Array.isArray(depend)) {
+          option.depends?.push(...depend);
+        } else {
+          option.depends?.push(depend);
+        }
+      }
+    }
+    if (providerOption?.imports) {
+      for (const imports of providerOption.imports) {
+        if (Array.isArray(imports)) {
+          option.imports?.push(...imports);
+        } else {
+          option.imports?.push(imports);
+        }
+      }
+    }
+    if (providerOption?.componentScan) {
+      for (const componentScan of providerOption.componentScan) {
+        if (Array.isArray(componentScan)) {
+          option.componentScan?.push(...componentScan);
+        } else if (typeof componentScan === 'string') {
+          option.componentScan?.push(componentScan);
+        }
+      }
+    }
+    Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
+  };
+};
+
+export const Provider = provider;
+
 
 export interface ProviderOption {
   depends?: Function[];

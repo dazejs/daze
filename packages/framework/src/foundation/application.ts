@@ -131,6 +131,11 @@ export class Application extends Container {
   workers?: cluster.Worker[];
 
   /**
+   * init providers
+   */
+  static initProviders: Function[] = [];
+
+  /**
    * Create Application Instance
    * @param rootPath 
    * @param paths 
@@ -246,8 +251,25 @@ export class Application extends Container {
     }
   }
 
+  async registerInitProviders(): Promise<void>  {
+    for (const Provider of Application.initProviders) {
+      await this.register(Provider);
+    }
+  }
+
   async register(Provider: Function): Promise<void> {
     await this.get<Provider>('provider').resolve(Provider);
+  }
+
+  static create(...Providers: Function[] | Function[][]) {
+    for (const Provider of Providers) {
+      if (Array.isArray(Provider)) {
+        this.initProviders.push(...Provider);
+      } else {
+        this.initProviders.push(Provider);
+      }
+    }
+    return new Application();
   }
 
   async fireLaunchCalls(...args: any[]): Promise<this> {
@@ -414,6 +436,7 @@ export class Application extends Container {
         await this.fireAgentResolves();
       } else {
         await this.registerDefaultProviders();
+        await this.registerInitProviders();
         await this.registerVendorProviders();
         await this.fireLaunchCalls();
       }
