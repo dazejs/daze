@@ -525,10 +525,17 @@ export class Request {
 
   get mergedParams() {
     if (!this._params) {
-      this._params = {
-        ...this.query,
-        ...this.body,
-      };
+      if (typeof this.body === 'string') {
+        this._params = {
+          ...this.query,
+          body: this.body,
+        };
+      } else {
+        this._params = {
+          ...this.query,
+          ...this.body,
+        };
+      }
     }
     return this._params;
   }
