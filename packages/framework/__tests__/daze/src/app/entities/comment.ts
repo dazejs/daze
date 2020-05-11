@@ -12,9 +12,6 @@ export default class extends BaseEntity {
   @column()
   comment: string;
 
-  @belongsTo(() => User, {
-    localKey: 'id',
-    foreignKey: 'user_id'
-  })
+  @belongsTo(() => User)
   user: User;
 }

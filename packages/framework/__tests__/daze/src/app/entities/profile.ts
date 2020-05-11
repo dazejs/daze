@@ -1,4 +1,5 @@
-import { BaseEntity, table, autoIncrementPrimaryColumn, column } from '../../../../../src';
+import { BaseEntity, table, autoIncrementPrimaryColumn, column, belongsTo } from '../../../../../src';
+import User from './user';
 
 @table('profiles')
 export default class extends BaseEntity {
@@ -10,4 +11,7 @@ export default class extends BaseEntity {
 
   @column()
   motto: string;
+
+  @belongsTo(() => User)
+  user: User;
 }

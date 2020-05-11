@@ -90,11 +90,11 @@ export class BelongsTo extends HasRelations {
       }
 
       for (const repos of resultReposes) {
-        const items = map.get(repos.getAttribute(foreignKey));
-        if (items) {
+        const item = map.get(repos.getAttribute(foreignKey));
+        if (item) {
           repos.setAttribute(
             relation,
-            await this.model.resultToRepositories(model, records)
+            await this.model.resultToRepository(model, item)
           );
         }
       }

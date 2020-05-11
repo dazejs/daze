@@ -450,7 +450,7 @@ export class Application extends Container {
   /**
    * Initialization application
    */
-  protected async initialize() {
+  async initialize() {
     // 加载运行环境
     this.loadEnv();
 

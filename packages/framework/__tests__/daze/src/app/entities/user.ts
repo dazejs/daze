@@ -17,21 +17,12 @@ export default class extends BaseEntity {
   @column()
   description: string;
 
-  @hasOne(() => Profile, {
-    localKey: 'id',
-    foreignKey: 'user_id'
-  })
+  @hasOne(() => Profile)
   profile: Profile;
 
-  @hasMany(() => Comment, {
-    localKey: 'id',
-    foreignKey: 'user_id'
-  })
+  @hasMany(() => Comment)
   comments: Comment[];
 
-  @belongsToMany(() => Role, {
-    foreignPivotKey: 'user_id',
-    relatedPivotKey: 'role_id',
-  })
+  @belongsToMany(() => Role)
   roles: Role[];
 }

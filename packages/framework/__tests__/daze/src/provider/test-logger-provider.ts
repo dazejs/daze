@@ -1,17 +1,17 @@
 import { depends, provide, provideOn, provideOnMissing } from "../../../../src/decorators";
-import { config } from "../../../../src/decorators";
+import { conf } from "../../../../src/decorators";
 import { TestLogger, TestLogger2 } from "../app/component/TestLogger";
 
 @depends()
 export class TestLoggerProvider {
 
-  @config("custom.a.b.c")
+  @conf("custom.a.b.c")
   private testConfig = "testConfig";
 
-  @config("custom.a.b.c1")
+  @conf("custom.a.b.c1")
   testConfig2 = "testConfig2";
 
-  @config("custom.a.b.c1", "defaultConfig")
+  @conf("custom.a.b.c1", "defaultConfig")
   testConfig3 = "testConfig3";
 
   @provide()
