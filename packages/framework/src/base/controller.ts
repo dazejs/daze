@@ -9,7 +9,7 @@ import { Injectable } from './injectable';
 import { componentType } from '../decorators/component-type';
 
 @componentType('controller')
-export abstract class Controller extends Injectable {
+export abstract class BaseController extends Injectable {
   /**
    * view instance cache
    */

@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import {
-  Route, Http,
-} from '../../../src/decorators';
+  controller, http,
+} from '../../../src';
 
 
 describe('verb Decorator', () => {
   it('should patch get route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Get()
+      @http.get()
       index() {
         //
       }
@@ -23,9 +23,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch post route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Post(':id')
+      @http.post(':id')
       store() {
         //
       }
@@ -40,9 +40,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch put route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Put(':id')
+      @http.put(':id')
       put() {
         //
       }
@@ -57,9 +57,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch options route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Options(':id')
+      @http.options(':id')
       options() {
         //
       }
@@ -74,9 +74,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch head route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Head(':id')
+      @http.head(':id')
       head() {
         //
       }
@@ -91,9 +91,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch delete route', () => {
-    @Route('users')
+    @controller('users')
     class Example {
-      @Http.Delete(':id')
+      @http.del(':id')
       del() {
         //
       }

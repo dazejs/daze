@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import * as path from 'path';
-import { Application } from '../../../src/foundation/application';
-import { inject } from '../../../src/decorators/inject';
+import { Application, inject } from '../../../src';
 
 const app = new Application(
   path.resolve(__dirname, '../../daze')

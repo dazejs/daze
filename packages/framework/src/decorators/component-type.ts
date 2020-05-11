@@ -5,13 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function ComponentType(type: any): ClassDecorator {
+/**
+ * set type for component
+ * @param type 
+ */
+export const componentType = function (type: any): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('type', type, constructor);
     return constructor;
   };
 };
 
-export function componentType(type: any) {
-  return ComponentType(type);
-}
+/**
+ * Alias
+ */
+export const ComponentType = componentType;

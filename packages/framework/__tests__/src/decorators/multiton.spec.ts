@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { Multiton } from '../../../src/decorators/multiton';
+import { multiton } from '../../../src/decorators/multiton';
 import { MULTITON } from '../../../src/symbol';
 
 describe('Multiton Decorator', () => {
   it('should patch Multiton flag in Multiton', () => {
-    @Multiton()
+    @multiton
     class Example {
      
     };

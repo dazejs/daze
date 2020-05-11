@@ -81,9 +81,9 @@ export class Container extends EventEmitter {
     if (!abstract || !concrete) return;
     let isShared = shared;
     if (concrete && Reflect.getMetadata(symbols.MULTITON, concrete) === true) {
-      isShared = true;
-    } else if (concrete && Reflect.getMetadata(symbols.SINGLETON, concrete) === true) {
       isShared = false;
+    } else if (concrete && Reflect.getMetadata(symbols.SINGLETON, concrete) === true) {
+      isShared = true;
     }
     if (typeof concrete === 'function') {
       this.binds.set(abstract, {

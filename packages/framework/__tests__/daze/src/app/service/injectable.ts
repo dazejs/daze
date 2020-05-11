@@ -1,9 +1,10 @@
-import { Service, Component, Http } from '../../../../../src';
+import { BaseService, http, service } from '../../../../../src';
 
-@Component('injectable')
-export default class extends Service {
+
+@service('injectable-service')
+export default class extends BaseService {
   sayId(
-  @Http.Query('id') id: number
+  @http.query('id') id: number
   ) {
     return id ?? 'Hello Dazejs';
   }

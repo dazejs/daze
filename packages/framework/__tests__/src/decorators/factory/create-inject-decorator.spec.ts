@@ -4,7 +4,7 @@ import { createInjectDecorator } from '../../../../src/decorators/factory/create
 describe('Descrators/factory/create-inject-decorator', () => {
   describe('patchClass', () => {
     it('should patch injectable and types in constructor', () => {
-      @createInjectDecorator('request')('a', 'b')
+      @createInjectDecorator('request', ['a', 'b'])
       class Klass {
         testname: string;
         constructor() {
@@ -21,7 +21,7 @@ describe('Descrators/factory/create-inject-decorator', () => {
   describe('patchProperty', () => {
     it('should patch injectable and types in property', () => {
       class Klass {
-        @createInjectDecorator('request')('a', 'b')
+        @createInjectDecorator('request', ['a', 'b'])
         testname = '';
       };
       expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
@@ -34,7 +34,7 @@ describe('Descrators/factory/create-inject-decorator', () => {
   describe('patchMethod', () => {
     it('should patch injectable and types in method', () => {
       class Klass {
-        @createInjectDecorator('request')('a', 'b')
+        @createInjectDecorator('request', ['a', 'b'])
         index() {
           //
         }

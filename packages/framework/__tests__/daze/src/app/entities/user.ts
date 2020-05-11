@@ -1,10 +1,10 @@
-import { Entity, table, autoIncrementPrimaryColumn, column, hasOne, hasMany, belongsToMany } from '../../../../../src';
+import { BaseEntity, table, autoIncrementPrimaryColumn, column, hasOne, hasMany, belongsToMany } from '../../../../../src';
 import Profile from './profile';
 import Comment from './comment';
 import Role from './role';
 
 @table('users')
-export default class extends Entity {
+export default class extends BaseEntity {
   @autoIncrementPrimaryColumn()
   id: number;
 
@@ -17,21 +17,12 @@ export default class extends Entity {
   @column()
   description: string;
 
-  @hasOne(() => Profile, {
-    localKey: 'id',
-    foreignKey: 'user_id'
-  })
+  @hasOne(() => Profile)
   profile: Profile;
 
-  @hasMany(() => Comment, {
-    localKey: 'id',
-    foreignKey: 'user_id'
-  })
+  @hasMany(() => Comment)
   comments: Comment[];
 
-  @belongsToMany(() => Role, {
-    foreignPivotKey: 'user_id',
-    relatedPivotKey: 'role_id',
-  })
+  @belongsToMany(() => Role)
   roles: Role[];
 }

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import * as symbols from '../symbol';
 import { A, pipe } from './helpers';
 import { createInjectDecorator } from './factory/create-inject-decorator';
@@ -5,78 +12,79 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
 /**
  * Inject original http request
  */
-export const OriginalReq = createInjectDecorator(symbols.INJECTORS.REQ);
-export const Req = OriginalReq;
-export const originalReq = OriginalReq;
-export const req = OriginalReq;
+export const originalReq = () => createInjectDecorator(symbols.INJECTORS.REQ);
+export const OriginalReq = originalReq;
+export const req = originalReq;
+export const Req = originalReq;
 
 /**
  * Inject original http response
  */
-export const OriginalRes = createInjectDecorator(symbols.INJECTORS.RES);
-export const Res = OriginalRes;
-export const originalRes = OriginalRes;
-export const res = OriginalRes;
+export const originalRes = () => createInjectDecorator(symbols.INJECTORS.RES);
+export const OriginalRes = originalRes;
+export const res = originalRes;
+export const Res = originalRes;
 
 /**
  * Inject daze http request
  */
-export const Request = createInjectDecorator(symbols.INJECTORS.REQUEST);
-export const request = Request;
+export const request = () => createInjectDecorator(symbols.INJECTORS.REQUEST);
+export const Request = request;
 
 /**
  * Inject daze http response
  */
-export const Response = createInjectDecorator(symbols.INJECTORS.RESPONSE);
-export const response = Response;
+export const response = () => createInjectDecorator(symbols.INJECTORS.RESPONSE);
+export const Response = response;
 
 /**
  * Inject http query
  */
-export const Query = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.QUERY, (injectedParam: any) => {
+export const query = (key?: string, defaultValue?: any) =>
+  createInjectDecorator(symbols.INJECTORS.QUERY, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key] ?? defaultValue;
     }
-  }).call([]);
-export const query = Query;
+  });
+export const Query = query;
 
 /**
  * Inject http request params
  */
-export const Params = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.PARAMS, (injectedParam: any) => {
+export const params = (key?: string, defaultValue?: any) =>
+  createInjectDecorator(symbols.INJECTORS.PARAMS, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key] ?? defaultValue;
     }
-  }).call([]);
-export const params = Params;
+  });
+export const Params = params;
 
 /**
  * Inject http request headers
  */
-export const Header = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.HEADERS, (injectedParam: any) => {
+export const header = (key?: string, defaultValue?: any) =>
+  createInjectDecorator(symbols.INJECTORS.HEADERS, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam[key.toLowerCase()] ?? defaultValue;
     }
-  }).call([]);
-export const header = Header;
-export const Headers = Header;
-export const headers = Header;
+  });
+export const Header = header;
+export const headers = header;
+export const Headers = header;
+
 
 /**
  * Inject http request body
  *
  * @param key req.body | req.body[key]
  */
-export const Body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, (injectedParam: any) => {
+export const body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BODY, [], (injectedParam: any) => {
   if (typeof injectedParam === 'undefined' || !key) {
     return injectedParam;
   } else {
@@ -85,31 +93,31 @@ export const Body = (key?: string) => createInjectDecorator(symbols.INJECTORS.BO
       A.reduce<string, any>(injectedParam, (r: any, k: string) => r && r[k]) ?? {},
     );
   }
-}).call([]);
-export const body = Body;
+});
+export const Body = body;
 
 /**
  * Inject http cookie value
  */
-export const CookieValue = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.COOKIE, (injectedParam: any) => {
+export const cookieValue = (key?: string, defaultValue?: any) =>
+  createInjectDecorator(symbols.INJECTORS.COOKIE, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam.get(key) ?? defaultValue;
     }
-  }).call([]);
-export const cookieValue = CookieValue;
+  });
+export const CookieValue = cookieValue;
 
 /**
  * Inject http session value
  */
-export const SessionValue = (key?: string, defaultValue?: any) =>
-  createInjectDecorator(symbols.INJECTORS.SESSION, (injectedParam: any) => {
+export const sessionValue = (key?: string, defaultValue?: any) =>
+  createInjectDecorator(symbols.INJECTORS.SESSION, [], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
       return injectedParam.get(key) ?? defaultValue;
     }
-  }).call([]);
-export const sessionValue = SessionValue;
+  });
+export const SessionValue = sessionValue;

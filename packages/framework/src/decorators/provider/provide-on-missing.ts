@@ -1,8 +1,19 @@
+/**
+ * Copyright (c) 2020 Chan Zewail
+ *
+ * This software is released under the MIT License.
+ * https: //opensource.org/licenses/MIT
+ */
+
 import { ProviderType } from '../../symbol';
 import { ProvideMetaData } from './provide';
 
-
-export function ProvideOnMissing(provider: string | Function): MethodDecorator {
+/**
+ * Provide a service when no specified service exists
+ * 
+ * @param provider 
+ */
+export const provideOnMissing = function (provider: string | Function): MethodDecorator {
   return function (target: object, name: string | symbol) {
     const metaMap: Map<string | symbol, ProvideMetaData> = 
       Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
@@ -15,8 +26,9 @@ export function ProvideOnMissing(provider: string | Function): MethodDecorator {
     }
     Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
-}
+};
 
-export function provideOnMissing(provider: string | Function): MethodDecorator {
-  return ProvideOnMissing(provider);
-}
+/**
+ * Alias
+ */
+export const ProvideOnMissing = provideOnMissing;

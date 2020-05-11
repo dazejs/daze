@@ -1,19 +1,15 @@
-import { Model } from './model';
-import { Application } from '../foundation/application';
 import { Container } from '../container';
-import { Builder } from '../database/builder';
 import { Database } from '../database';
+import { Builder } from '../database/builder';
+import { Application } from '../foundation/application';
+import { Model } from './model';
+import { Repository } from './repository';
 
-export class ModelBuilder<M extends Model> {
+export class ModelBuilder<TEntity = any> {
   /**
    * Application instance
    */
   private app: Application = Container.get('app');
-
-  /**
-   * Model instance
-   */
-  private model: M;
 
   /**
    * Database query builder instance
@@ -21,20 +17,31 @@ export class ModelBuilder<M extends Model> {
   private builder: Builder;
 
   /**
+   * model instance
+   */
+  private model: Model<TEntity>;
+
+  /**
+   * repository instance
+   */
+  private repository: Repository;
+
+  /**
    * 不走代理的接口列表
    */
-  private throughs: string[] = ['insert', 'aggregate', 'count', 'max', 'min', 'sum', 'avg', 'delete']; 
+  private throughs: string[] = ['insert', 'update', 'delete', 'aggregate', 'count', 'max', 'min', 'sum', 'avg'];
 
   /**
    * Create Builder For Model
    * @param model 
    */
-  constructor(model: M) {
+  constructor(model: Model<TEntity>, repository: Repository) {
     this.model = model;
+    this.repository = repository;
     this.builder = this.newBuilderInstance();
     // Proxy class
     return new Proxy(this, this.proxy);
-  } 
+  }
 
   /**
    * Model builder proxy
@@ -72,7 +79,7 @@ export class ModelBuilder<M extends Model> {
   newBuilderInstance() {
     return this.app.get<Database>('db')
       .connection(
-        this.model.getConnectioName()
+        this.model.getConnectionName()
       )
       .table(
         this.model.getTable()
@@ -80,23 +87,10 @@ export class ModelBuilder<M extends Model> {
   }
 
   /**
-   * set new model
-   * @param model 
+   * get database builder
    */
-  setModel(model: M) {
-    this.model = model;
-    return this;
-  }
-
   getBuilder() {
     return this.builder;
-  }
-
-  /**
-   * get builder model
-   */
-  getModel() {
-    return this.model;
   }
 
   /**
@@ -115,24 +109,24 @@ export class ModelBuilder<M extends Model> {
   async find() {
     if (this.model.isForceDelete()) {
       const records = await this.builder.find();
-      return this.model.resultsToModels(records);
+      return this.model.resultToRepositories(this.repository, records);
     }
     const records = await this.builder.whereNull(
       this.model.getSoftDeleteKey()
     ).find();
-    return this.model.resultsToModels(records);
+    return this.model.resultToRepositories(this.repository, records);
   }
 
   /**
    * 查询单条记录
    */
   async first() {
-    if (!this.model.isForceDelete()) { 
+    if (!this.model.isForceDelete()) {
       this.builder.whereNull(
         this.model.getSoftDeleteKey()
       );
     }
     const record = await this.builder.first();
-    return this.model.resultToModel(record);
+    return this.model.resultToRepository(this.repository, record);
   }
 }

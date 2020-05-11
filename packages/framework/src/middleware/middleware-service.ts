@@ -10,8 +10,8 @@ import { Request } from '../request';
 import { Response } from '../response';
 import { ProviderType } from '../symbol';
 
-export type TNext = (...args: any[]) => Response | Promise<Response>
-export type TMiddlewareStage = (request: Request, next: TNext) => Response | Promise<Response>
+export type Next = (...args: any[]) => Promise<Response>
+export type MiddlewareStage = (request: Request, next: Next) => Promise<Response>
 interface TMiddlewareMeta {
   resolver(request: any, next: any): any;
   readonly order: number;
@@ -64,10 +64,12 @@ export class MiddlewareService {
   /**
    * parse middle if middleware type is string type
    */
-  parseStringMiddleware(middleware: string, args: any[] = []) {
-    const _middleware = this.app.get(`middleware.${middleware}`, args);
-    if (!_middleware) return this;
-    this.parseClassInstanceMiddleware(_middleware);
+  parseStringMiddleware(middlewareName: string, args: any[] = []) {
+    // AMRK: COMPONENT_NAME
+    // const _middleware = this.app.get(`middleware.${middleware}`, args);
+    const middleware = this.app.get(middlewareName, args);
+    if (!middleware) return this;
+    this.parseClassInstanceMiddleware(middleware);
     return this;
   }
 

@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Logger } from '../../../src/logger';
-import { Application } from '../../../src/foundation/application';
+import { Logger, Application } from '../../../src';
 import { IllegalArgumentError } from '../../../src/errors/illegal-argument-error';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));

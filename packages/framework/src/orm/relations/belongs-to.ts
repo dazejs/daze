@@ -1,5 +1,6 @@
 // import { Entity } from '../../base/entity';
 import { Model } from '../model';
+import { Repository } from '../repository';
 import { HasRelations } from './has-relations.abstract';
 import pluralize from 'pluralize';
 
@@ -38,16 +39,22 @@ export class BelongsTo extends HasRelations {
    * @param resultModel 
    * @param relation 
    */
-  async eagerly(resultModel: Model, relation: string) {
+  async eagerly(resultRepos: Repository, relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
-    const data = await this.model
+    const model = this.model.createRepository();
+    const data = await model
       .createQueryBuilder()
-      .getBuilder()
-      .where(localKey, '=', resultModel.getAttribute(foreignKey))
+      .where(localKey, '=', resultRepos.getAttribute(foreignKey))
       .first();
-    data && resultModel.setRelation(relation, await this.model.resultToModel(data));
+
+    if (data) {
+      resultRepos.setAttribute(
+        relation, 
+        await this.model.resultToRepository(model, data)
+      );
+    }
   }
 
   /**
@@ -55,21 +62,22 @@ export class BelongsTo extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultModels: Model[], relation: string) {
+  async eagerlyMap(resultReposes: Repository[], relation: string) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
     const range = new Set();
-    for (const model of resultModels) {
+    for (const repos of resultReposes) {
       // 获取关联外键列表
-      const id = model.getAttribute(foreignKey);
+      const id = repos.getAttribute(foreignKey);
       if (id) {
         range.add(id);
       }
     }
 
     if (range.size > 0) {
-      const records: Record<string, any>[] = await this.model
+      const model = this.model.createRepository();
+      const records: Record<string, any>[] = await model
         .createQueryBuilder()
         .getBuilder()
         .whereIn(localKey, [...range])
@@ -81,9 +89,14 @@ export class BelongsTo extends HasRelations {
         map.set(pk, record);
       }
 
-      for (const model of resultModels) {
-        const items = map.get(model.getAttribute(foreignKey));
-        items && model.setRelation(relation, await this.model.resultToModel(items, true));
+      for (const repos of resultReposes) {
+        const item = map.get(repos.getAttribute(foreignKey));
+        if (item) {
+          repos.setAttribute(
+            relation,
+            await this.model.resultToRepository(model, item)
+          );
+        }
       }
     }
   }

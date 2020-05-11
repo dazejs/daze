@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { Controller } from '../base';
+import { BaseController } from '../base';
 import { Application } from '../foundation/application';
 
 export class ControllerService {
@@ -24,7 +24,7 @@ export class ControllerService {
   /**
    * register a controller
    */
-  public register(controller: typeof Controller) {
+  public register(controller: typeof BaseController) {
     if (Reflect.getMetadata('type', controller) !== 'controller') return this;
     this.resolve(controller);
     return this;
@@ -33,7 +33,7 @@ export class ControllerService {
   /**
    * resolve this controller
    */
-  public resolve(controller: typeof Controller) {
+  public resolve(controller: typeof BaseController) {
     const routes = Reflect.getMetadata('routes', controller) || {};
     const prefixs = Reflect.getMetadata('prefixs', controller) || [''];
     const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller) || [];

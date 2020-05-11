@@ -1,8 +1,8 @@
-import type { Request } from '../request';
+import { Request } from '../request';
 import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
-import type { Resource as BaseResource } from './resource';
+import { BaseResource } from './resource';
 
 @Reflect.metadata('injectable', true)
 export class Injectable extends Base {
@@ -39,9 +39,9 @@ export class Injectable extends Base {
    * @param args
    */
   service<T = any>(service: string | { new(): T }): T {
-    if (typeof service === 'string') {
-      return this.app.get(`service.${service}`, this.__context__);
-    };
+    // if (typeof service === 'string') {
+    //   return this.app.get(`service.${service}`, this.__context__);
+    // };
     return this.app.get<T>(service, this.__context__) as T;
   }
 
@@ -51,9 +51,9 @@ export class Injectable extends Base {
    * @param {Array} args
    */
   component<T = any>(component: string | { new(): T }) {
-    if (typeof component === 'string') {
-      return this.app.get(`component.${component}`, this.__context__);
-    };
+    // if (typeof component === 'string') {
+    //   return this.app.get(`component.${component}`, this.__context__);
+    // };
     return this.app.get<T>(component, this.__context__) as T;
   }
 
@@ -83,11 +83,4 @@ export class Injectable extends Base {
   collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
     return (new Resource.Collection(data, resource).setContext(this.__context__));
   }
-
-  // model<TEntity extends Entity>(entity: string | { new(): TEntity })  {
-  //   return (new Model<TEntity>(
-  //     typeof entity === 'string' ? this.app.get<TEntity>(`entity.${entity}`) : this.app.get<TEntity>(entity)
-  //   )) as Model<TEntity>;
-  //   // return typeof entity === 'string' ? this.app.get<Model<TEntity>>(`entity.${entity}`) : this.app.get<Model<TEntity>>(entity);
-  // }
 }

@@ -8,7 +8,7 @@ import { componentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
 @componentType('validator')
-export abstract class Validator extends Injectable {
+export abstract class BaseValidator extends Injectable {
 
 }
 
