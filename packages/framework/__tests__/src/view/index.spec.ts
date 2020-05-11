@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { View } from '../../../src/view';
-import { Application } from '../../../src/foundation/application';
+import { Application, View } from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

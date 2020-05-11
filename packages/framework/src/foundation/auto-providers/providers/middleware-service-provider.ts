@@ -1,5 +1,4 @@
-import { inject } from '../../../decorators/inject';
-import { provide } from '../../../decorators/provider';
+import { inject, provide } from '../../../decorators';
 import { MiddlewareService } from '../../../middleware/middleware-service';
 import { Loader } from '../../../loader/loader';
 import { Application } from '../../application';
@@ -38,7 +37,7 @@ export class MiddlewareServiceProvider {
       const name = Reflect.getMetadata('name', Middleware);
       this.app.singleton(Middleware, Middleware);
       if (name) {
-        this.app.singleton(`middleware.${name}`, (...args: any[]) => {
+        this.app.singleton(name, (...args: any[]) => {
           return this.app.get(Middleware, args);
         }, true);
       }

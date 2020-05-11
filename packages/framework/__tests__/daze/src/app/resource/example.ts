@@ -1,8 +1,7 @@
-import { Resource, Component } from '../../../../../src';
+import { BaseResource, resource } from '../../../../../src';
 
-@Component('example')
-export default class extends Resource {
-
+@resource('example-resource')
+export default class extends BaseResource {
   resolve(data: any) {
     return {
       ...data,

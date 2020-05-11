@@ -1,6 +1,6 @@
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
-import type { Application } from '../foundation/application';
+import { Application } from '../foundation/application';
 
 export class Template {
   static create(app: Application) {

@@ -827,8 +827,10 @@ export class Builder {
    */
   private buildDebugSql(sql: string, params: any[] = []) {
     let _sql = sql;
+    let i = 0;
     while (~_sql.indexOf('?')) {
-      _sql = _sql.replace(/(\?)/i, params.shift());
+      _sql = _sql.replace(/(\?)/i, params[i]);
+      i++;
     }
     return _sql;
   }
@@ -862,13 +864,12 @@ export class Builder {
    * 批量插入
    * @param data 
    */
-  async insertAll(data: Record<string, any>[]) {
-    const results: any = [];
+  async insertAll(data: Record<string, any>[] = []) {
     const params: any[] = [];
     for (const item of data) {
-      const columns = Object.keys(item);
-      results.push(columns);
-      params.push(...columns.map(column => item[column]));
+      params.push([
+        ...Object.values(item)
+      ]);
     }
     const sql = this.parser.parseInsert(this, data);
     if (this.shouldLogSql) {
@@ -886,8 +887,8 @@ export class Builder {
    * @param data 
    */
   async insert(data: Record<string, any>) {
-    const columns = Object.keys(data);
-    const params = columns.map(column => data[column]);
+    const params = [];
+    params.push(Object.values(data));
     const sql = this.parser.parseInsert(this, [data]);
     if (this.shouldLogSql) {
       this.logDebugSql(sql, params);

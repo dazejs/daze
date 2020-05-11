@@ -1,16 +1,16 @@
 import { ProviderType } from '../symbol';
 
 /**
- * 按优先级组织组件执行的顺序, 比如Middleware的执行顺序
+ * Organize the order in which components are executed by priority, such as the order in which Middleware is executed
  * 
- * @param value 优先级, 越小优先级越高
+ * @param value Priority, the smaller the higher the priority
  */
-export function Order(value: number = Number.MAX_SAFE_INTEGER): ClassDecorator {
+export const order = function (value: number = Number.MAX_SAFE_INTEGER): ClassDecorator {
   return function (target: Function) {
     Reflect.defineMetadata(ProviderType.ORDER, value, target);
   };
-}
+};
 
-export function order(value: number = Number.MAX_SAFE_INTEGER): ClassDecorator {
-  return Order(value);
-}
+export const Order = order;
+export const priority = order;
+export const Priority = order;

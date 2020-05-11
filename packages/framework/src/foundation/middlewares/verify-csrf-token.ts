@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import minimatch from 'minimatch';
-import { Middleware } from '../../base/middleware';
-import { TNext } from '../../middleware';
+import { BaseMiddleware } from '../../base/middleware';
+import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
 
@@ -14,7 +14,7 @@ import { Response } from '../../response';
 const defaultExcludedMethods = ['HEAD', 'GET', 'OPTIONS'];
 const defaultInvalidTokenMessage = 'Invalid CSRF token';
 
-export class VerifyCsrfToken extends Middleware {
+export class VerifyCsrfToken extends BaseMiddleware {
   get except(): any[] {
     return [];
   }
@@ -59,7 +59,7 @@ export class VerifyCsrfToken extends Middleware {
     return true;
   }
 
-  resolve(request: Request, next: TNext) {
+  resolve(request: Request, next: Next) {
     const session = request.session();
     if (!session.get('secret')) {
       session.set('secret', this.app.get('csrf').secretSync());

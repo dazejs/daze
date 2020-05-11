@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Container } from '../container';
-import type { Application } from '../foundation/application';
+import { Application } from '../foundation/application';
 import { Message } from '../foundation/support/message';
 import * as validators from './validators';
-import { Validator as BaseValidator } from '../base/validator';
+import { BaseValidator } from '../base/validator';
 
 export interface RuleData {
   field: string;
@@ -78,9 +78,10 @@ export class Validate {
     }
     // if string type
     if (typeof validator === 'string') {
-      const containerKey = `validator.${validator}`;
-      if (!this.app.has(containerKey)) return [];
-      return Reflect.getMetadata('rules', this.app.get(`validator.${validator}`).constructor) || [];
+      // AMRK: COMPONENT_NAME
+      // const containerKey = `validator.${validator}`;
+      if (!this.app.has(validator)) return [];
+      return Reflect.getMetadata('rules', this.app.get(validator).constructor) || [];
     }
     // if type function
     if (typeof validator === 'function') {

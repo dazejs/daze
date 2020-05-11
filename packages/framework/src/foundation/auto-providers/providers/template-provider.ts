@@ -1,4 +1,4 @@
-import { provide } from '../../../decorators/provider';
+import { provide } from '../../../decorators';
 import { Template } from '../../../template';
 import { Application } from '../../application';
 

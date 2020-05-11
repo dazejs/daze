@@ -4,9 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { provide } from '../../../decorators/provider';
 import { HttpServer } from '../../http-server/http-server';
-import { inject } from '../../../decorators/inject';
+import { inject, provide } from '../../../decorators';
 import { Application } from '../../application';
 
 export class HttpServerProvider {

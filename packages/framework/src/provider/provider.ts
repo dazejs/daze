@@ -1,9 +1,9 @@
 import { Application } from '@src';
 import * as path from 'path';
-import { Provider as BaseProvider } from '../base/provider';
-import { ProvideMetaData, ProviderOption } from '../decorators/provider';
+import { ProvideMetaData, ProviderOption } from '../decorators';
 import { Loader } from '../loader';
 import { ProviderType } from '../symbol';
+import { ProviderInterface } from '../interfaces';
 
 export class Provider {
   private app: Application;
@@ -20,7 +20,7 @@ export class Provider {
     const provideMetaMap: Map<any, ProvideMetaData> = Reflect.getMetadata(ProviderType.PROVIDE, ProviderClass) ?? new Map();
     const providerOptions: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, ProviderClass) ?? {};
 
-    // resolve next imports
+    // resolve next depends
     // 优先加载依赖的模块
     if (Array.isArray(providerOptions?.depends)) {
       for (const next of providerOptions.depends) {
@@ -62,13 +62,21 @@ export class Provider {
         }
       }
     }
+
+    // resolve next imports
+    // 最后加载依赖的模块
+    if (Array.isArray(providerOptions?.imports)) {
+      for (const next of providerOptions.imports) {
+        await this.resolve(next);
+      }
+    }
   }
 
   /**
    * Perform the register hook
    * @param provider 
    */
-  async performRegisterHook(provider: BaseProvider) {
+  async performRegisterHook(provider: ProviderInterface) {
     if (Reflect.has(provider, 'register') && typeof provider.register === 'function') {
       await provider.register();
     }
@@ -78,7 +86,7 @@ export class Provider {
    * register launch hook to application
    * @param provider 
    */
-  registerLaunchHook(provider: BaseProvider) {
+  registerLaunchHook(provider: ProviderInterface) {
     if (Reflect.has(provider, 'launch') && typeof provider.launch === 'function') {
       this.app.launchCalls.push(() => provider.launch?.());
     }

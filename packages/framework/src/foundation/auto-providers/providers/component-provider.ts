@@ -1,4 +1,4 @@
-import { inject } from '../../../decorators/inject';
+import { inject } from '../../../decorators';
 import { Application } from '../../application';
 import { Loader } from '../../../loader';
 
@@ -13,7 +13,7 @@ export class ComponentProvider {
       const name = Reflect.getMetadata('name', Component);
       this.app.multiton(Component, Component);
       if (name) {
-        this.app.multiton(`component.${name}`, (...args: any[]) => {
+        this.app.multiton(name, (...args: any[]) => {
           return this.app.get(Component, args);
         }, true);
       }

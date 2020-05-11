@@ -10,8 +10,10 @@ import { Container } from '../container';
 import { Database } from '../database';
 import { Application } from '../foundation/application';
 import { MessengerService } from '../messenger';
+import { Model } from '../orm/model';
 import { Response } from '../response';
 import { Redirect } from '../response/redirect';
+// import { Entity } from '../orm/entity';
 
 export abstract class Base {
   /**
@@ -61,5 +63,9 @@ export abstract class Base {
 
   protected logger(channel?: string) {
     return this.app.get('logger').channel(channel);
+  }
+
+  protected model<TEntity>(_Entity: { new(): TEntity }) {
+    return (new Model(_Entity)).createRepository();
   }
 }

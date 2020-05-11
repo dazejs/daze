@@ -4,8 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { inject } from '../../../decorators/inject';
-import { provide } from '../../../decorators/provider';
+import { inject, provide } from '../../../decorators';
 import { ControllerService } from '../../../controller/controller-service';
 import { Application } from '../../application';
 import { Loader } from '../../../loader';

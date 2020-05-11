@@ -1,7 +1,7 @@
-import { Middleware, Request, TNext } from '../../../../../src';
+import { BaseMiddleware, Request, Next } from '../../../../../src';
 
-export class Example1 extends Middleware {
-  resolve(request: Request, next: TNext) {
+export class Example1 extends BaseMiddleware {
+  resolve(request: Request, next: Next) {
     if (request.getQuery('name') === 'example1') {
       return this.response().success('Hello Example1');
     }

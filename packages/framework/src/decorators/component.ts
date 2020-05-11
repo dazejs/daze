@@ -1,13 +1,16 @@
 /**
- * Copyright (c) 2018 Chan Zewail
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
 
-export function Component(name = ''): ClassDecorator {
+/**
+ * component metadata
+ * @param name 
+ */
+export const component = function (name = ''): ClassDecorator {
   return function (constructor) {
-    // Reflect.defineMetadata('injectable', true, constructor);
     if (!Reflect.hasMetadata('type', constructor)) {
       Reflect.defineMetadata('type', 'component', constructor);
     }
@@ -15,6 +18,8 @@ export function Component(name = ''): ClassDecorator {
   };
 };
 
-export function component(name = '') {
-  return Component(name);
-}
+/**
+ * Alias
+ */
+export const Component = component;
+

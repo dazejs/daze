@@ -1,7 +1,8 @@
-import { Entity, table, autoIncrementPrimaryColumn, column } from '../../../../../src';
+import { BaseEntity, table, autoIncrementPrimaryColumn, column, belongsTo } from '../../../../../src';
+import User from './user';
 
 @table('profiles')
-export default class extends Entity {
+export default class extends BaseEntity {
   @autoIncrementPrimaryColumn()
   id: number;
 
@@ -10,4 +11,7 @@ export default class extends Entity {
 
   @column()
   motto: string;
+
+  @belongsTo(() => User)
+  user: User;
 }

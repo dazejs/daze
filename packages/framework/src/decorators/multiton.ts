@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2018 Chan Zewail
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
+
 import { MULTITON, SINGLETON } from '../symbol';
 
-
-export function Multiton(): ClassDecorator {
-  return function (target) {
-    Reflect.defineMetadata(SINGLETON, false, target);
-    Reflect.defineMetadata(MULTITON, true, target);
-  };
+export const multiton: ClassDecorator = function (target: any) {
+  Reflect.defineMetadata(SINGLETON, false, target);
+  Reflect.defineMetadata(MULTITON, true, target);
 };
 
-export function multiton(): ClassDecorator {
-  return Multiton();
-}
+/**
+ * Alias
+ */
+export const Multiton = multiton;

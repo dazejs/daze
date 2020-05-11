@@ -1,6 +1,6 @@
 
-import { Provider } from '../../../../src';
+import { BaseProvider } from '../../../../src';
 
-export default class extends Provider {
+export default class extends BaseProvider {
 
 }

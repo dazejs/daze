@@ -1,12 +1,14 @@
 /**
- * Copyright (c) 2018 zewail
+ * Copyright (c) 2020 Chan Zewail
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * https: //opensource.org/licenses/MIT
  */
-import { Resource as BaseResource } from '../base/resource';
+
+import { BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
+import { ResourceInterface } from '../interfaces';
 
 const DEFAULT_KEY = 'data';
 
@@ -236,8 +238,10 @@ export class Resource {
    * @param formatter 
    * @param data 
    */
-  useStringFormatter(formatter: string, data: any) {
-    const Transformer = this.app.get(`resource.${formatter}`, this.__context__);
+  useStringFormatter(formatterName: string, data: any) {
+    // AMRK: COMPONENT_NAME
+    // const Transformer = this.app.get(`resource.${formatter}`, this.__context__);
+    const Transformer = this.app.get<ResourceInterface>(formatterName, this.__context__);
     return Transformer.resolve(data);
   }
 
@@ -247,7 +251,7 @@ export class Resource {
    * @param data 
    */
   useResourceFormatter(formatter: { new(): BaseResource }, data: any) {
-    const Transformer = this.app.get(formatter, this.__context__);
+    const Transformer = this.app.get<ResourceInterface>(formatter, this.__context__);
     return Transformer.resolve(data);
   }
 
