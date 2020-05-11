@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.7.1...@dazejs/framework@3.0.0) (2020-05-11)
+
+
+### Bug Fixes
+
+* **app:** fix isShare value ([#226](https://github.com/dazejs/daze/issues/226)) ([c9f2f5c](https://github.com/dazejs/daze/commit/c9f2f5cc87d72bd9be29e4d1e2fe2bf9fc8aee75))
+* **request:** fix request body merge string type ([d409d3c](https://github.com/dazejs/daze/commit/d409d3c8d6abef52a0460bdb134919db34ee6bb9))
+
+
+
+
+
 ## [2.7.1](https://github.com/dazejs/daze/compare/@dazejs/framework@2.7.0...@dazejs/framework@2.7.1) (2020-03-29)
 
 
