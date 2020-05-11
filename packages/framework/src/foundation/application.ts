@@ -118,22 +118,22 @@ export class Application extends Container {
   /**
    * agent instances
    */
-  agents: AgentInterface[] = [];
+  private agents: AgentInterface[] = [];
 
   /**
    * cluster agent worker
    */
-  agent?: cluster.Worker;
+  private agent?: cluster.Worker;
 
   /**
    * cluster workers
    */
-  workers?: cluster.Worker[];
+  private workers?: cluster.Worker[];
 
   /**
    * init providers
    */
-  static initProviders: Function[] = [];
+  private static initProviders: Function[] = [];
 
   /**
    * Create Application Instance
@@ -164,7 +164,7 @@ export class Application extends Container {
   /**
    *  Set the paths for the application.
    */
-  setPaths(paths: ApplicationPathsOptions): this {
+  private setPaths(paths: ApplicationPathsOptions): this {
     /** app workspace path */
     this.appPath = path.resolve(this.rootPath, paths.app || 'app');
     /** config file path */
@@ -179,7 +179,7 @@ export class Application extends Container {
     return this;
   }
 
-  async setupApp(): Promise<this> {
+  private async setupApp(): Promise<this> {
     this.config = this.get('config');
     await this.config.initialize();
     if (!this.port) this.port = this.config.get('app.port', DEFAULT_PORT);
@@ -244,24 +244,35 @@ export class Application extends Container {
    * register vendor providers
    * @private
    */
-  async registerVendorProviders(): Promise<void> {
+  private async registerVendorProviders(): Promise<void> {
     const _providers = this.config.get('app.providers', []);
     for (const key of _providers) {
       await this.register(key);
     }
   }
 
-  async registerInitProviders(): Promise<void>  {
+  /**
+   * register static init providers
+   */
+  private async registerInitProviders(): Promise<void>  {
     for (const Provider of Application.initProviders) {
       await this.register(Provider);
     }
   }
 
+  /**
+   * register Provider
+   * @param Provider 
+   */
   async register(Provider: Function): Promise<void> {
     await this.get<Provider>('provider').resolve(Provider);
   }
 
-  static create(...Providers: Function[] | Function[][]) {
+  /**
+   * add init providers
+   * @param Providers 
+   */
+  private static addInitProviders(...Providers: Function[] | Function[][]) {
     for (const Provider of Providers) {
       if (Array.isArray(Provider)) {
         this.initProviders.push(...Provider);
@@ -269,9 +280,31 @@ export class Application extends Container {
         this.initProviders.push(Provider);
       }
     }
+  }
+
+  /**
+   * create Application instance with Providers
+   * @param Providers 
+   */
+  static create(...Providers: Function[] | Function[][]) {
+    this.addInitProviders(...Providers);
     return new Application();
   }
 
+  /**
+   * create with root path
+   * @param rootPath 
+   * @param Providers 
+   */
+  static createWithPath(rootPath: string, ...Providers: Function[] | Function[][]) {
+    this.addInitProviders(...Providers);
+    return new Application(rootPath);
+  }
+
+  /**
+   * fire launch calls
+   * @param args 
+   */
   async fireLaunchCalls(...args: any[]): Promise<this> {
     for (const launch of this.launchCalls) {
       await launch(...args, this);
@@ -282,7 +315,7 @@ export class Application extends Container {
   /**
    * initial Container
    */
-  initialContainer(): void {
+  private initialContainer(): void {
     Container.setInstance(this);
     this.bind('app', this);
   }
@@ -290,7 +323,7 @@ export class Application extends Container {
   /**
    * initial Provider
    */
-  initProvider(): void {
+  private initProvider(): void {
     this.singleton('provider', Provider);
   }
 
@@ -302,7 +335,7 @@ export class Application extends Container {
   }
 
   // 获取集群主进程实例
-  getClusterMaterInstance() {
+  private getClusterMaterInstance() {
     return new Master({
       port: this.port,
       workers: this.config.get('app.workers', 0),
@@ -312,7 +345,7 @@ export class Application extends Container {
 
 
   // 获取集群工作进程实例
-  getClusterWorkerInstance() {
+  private getClusterWorkerInstance() {
     return new Worker({
       port: this.port,
       sticky: this.config.get('app.sticky', false),
@@ -326,7 +359,7 @@ export class Application extends Container {
   /**
    * 自动配置框架运行环境
    */
-  loadEnv() {
+  private loadEnv() {
     const nodeEnv = process.env.NODE_ENV;
     const dazeEnv = process.env.DAZE_ENV;
     if (!nodeEnv) {
@@ -348,7 +381,7 @@ export class Application extends Container {
   /**
    * env getter
    */
-  get env() {
+  private get env() {
     return process.env.DAZE_ENV || (process.env.NODE_ENV && envMap.get(process.env.NODE_ENV)) || process.env.NODE_ENV;
   }
 
@@ -362,7 +395,7 @@ export class Application extends Container {
   /**
    * load default listener
    */
-  loadListeners() {
+  protected loadListeners() {
     if (!this.listenerCount('error')) {
       this.on('error', this.onerror.bind(this));
     }
@@ -372,7 +405,7 @@ export class Application extends Container {
    * app error listener
    * @param err 
    */
-  onerror(err: ErrorCollection) {
+  protected onerror(err: ErrorCollection) {
     if (!(err instanceof Error)) throw new TypeError(util.format('non-error thrown: %j', err));
     // eslint-disable-next-line
     console.error();
@@ -385,7 +418,7 @@ export class Application extends Container {
   /**
    * register Keygrip keys
    */
-  registerKeys() {
+  private registerKeys() {
     const keys = this.config.get('app.keys', ['DAZE_KEY_1']);
     const algorithm = this.config.get('app.algorithm', 'sha1');
     const encoding = this.config.get('app.encoding', 'base64');
@@ -395,7 +428,7 @@ export class Application extends Container {
   /**
    * register agent in cluster mode
    */
-  registerAgents() {
+  private registerAgents() {
     const _agents = this.config.get('app.agents', []);
     for (const _agent of _agents) {
       const agentInstance = new _agent();
@@ -407,7 +440,7 @@ export class Application extends Container {
   /**
    * fire agent instance 's resolves
    */
-  async fireAgentResolves() {
+  private async fireAgentResolves() {
     for (const agent of this.agents) {
       await agent.resolve();
     }
@@ -417,7 +450,7 @@ export class Application extends Container {
   /**
    * Initialization application
    */
-  async initialize() {
+  protected async initialize() {
     // 加载运行环境
     this.loadEnv();
 
@@ -488,7 +521,7 @@ export class Application extends Container {
   /**
    * Start the HTTP service
    */
-  startServer(...args: any[]) {
+  protected startServer(...args: any[]) {
     return this.listen(...args);
   }
 
@@ -496,7 +529,7 @@ export class Application extends Container {
    * 监听 http 服务
    * @param args 
    */
-  listen(...args: any[]) {
+  protected listen(...args: any[]) {
     const server: HttpServer = this.get('httpServer');
     return server.listen(...args);
   }
