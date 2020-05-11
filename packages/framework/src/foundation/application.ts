@@ -39,6 +39,12 @@ export interface ApplicationPathsOptions {
   log?: string;
 }
 
+interface ApplicationCreateOption {
+  rootPath?: string;
+  paths?: ApplicationPathsOptions;
+  providers?: Function[];
+}
+
 export class Application extends Container {
   /**
    * The base path for the Application installation.
@@ -269,10 +275,10 @@ export class Application extends Container {
   }
 
   /**
-   * add init providers
-   * @param Providers 
-   */
-  private static addInitProviders(...Providers: Function[] | Function[][]) {
+ * add init providers
+ * @param Providers 
+ */
+  private static addInitProviders(...Providers: (Function | Function[])[]) {
     for (const Provider of Providers) {
       if (Array.isArray(Provider)) {
         this.initProviders.push(...Provider);
@@ -286,19 +292,17 @@ export class Application extends Container {
    * create Application instance with Providers
    * @param Providers 
    */
-  static create(...Providers: Function[] | Function[][]) {
-    this.addInitProviders(...Providers);
+  static create(option: ApplicationCreateOption | Function | Function[], ...restProviders: (Function | Function[])[]) {
+    if (Reflect.apply(Object.prototype.toString, option, []) === '[object Object]') {
+      this.addInitProviders(...restProviders);
+      return new Application((option as ApplicationCreateOption).rootPath, (option as ApplicationCreateOption).paths);
+    }
+    const providers = [
+      option as Function | Function[],
+      ...restProviders
+    ];
+    this.addInitProviders(...providers);
     return new Application();
-  }
-
-  /**
-   * create with root path
-   * @param rootPath 
-   * @param Providers 
-   */
-  static createWithPath(rootPath: string, ...Providers: Function[] | Function[][]) {
-    this.addInitProviders(...Providers);
-    return new Application(rootPath);
   }
 
   /**
