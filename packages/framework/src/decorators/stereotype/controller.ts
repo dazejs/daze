@@ -11,7 +11,7 @@ import { component } from './component';
 export const controller = function (...prefixs: string[]): ClassDecorator {
   return function (constructor) {
     component('', 'controller')(constructor);
-    Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => Str.formatPrefix(prefix)) : [formatPrefix()], constructor);
+    Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => Str.formatPrefix(prefix)) : [Str.formatPrefix()], constructor);
   };
 };
 export const Controller = controller;

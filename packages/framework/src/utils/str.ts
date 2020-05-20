@@ -61,4 +61,9 @@ export class Str {
   static quote = _.quote;
   static unquote = _.unquote;
   static toBoolean = _.toBoolean;
+  static strRight = _.strRight;
+  static strRightBack = _.strRightBack;
+  static strLeft = _.strLeft;
+  static strLeftBack = _.strLeftBack;
+  static stripTags = _.stripTags;
 }
