@@ -1,4 +1,4 @@
-import { defer } from '../../src/utils';
+import { Tool } from '../../../src/utils';
 
 
 exports.defer = function () {
@@ -12,7 +12,7 @@ exports.defer = function () {
 
 describe('daze#utils', () => {
   it('should defer', async () => {
-    const deferred = defer();
+    const deferred = Tool.defer();
     deferred.resolve('hello');
     const res = await deferred.promise;
     expect(res).toBe('hello');

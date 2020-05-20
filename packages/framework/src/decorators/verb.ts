@@ -6,7 +6,7 @@
  */
 
 import * as http from 'http';
-import { formatPrefix } from './helpers';
+import { Str } from '../utils';
 
 function verb(methods: any[], uri = '/'): MethodDecorator {
   return function (target, propertyKey) {
@@ -14,7 +14,7 @@ function verb(methods: any[], uri = '/'): MethodDecorator {
     if (!routes[propertyKey]) routes[propertyKey] = [];
     for (const method of methods) {
       routes[propertyKey].push({
-        uri: formatPrefix(uri),
+        uri: Str.formatPrefix(uri),
         method,
       });
     }

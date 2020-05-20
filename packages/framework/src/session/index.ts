@@ -4,7 +4,7 @@ import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { Request } from '../request';
 import * as symbols from '../symbol';
-import { decode, encode } from './helpers';
+import { Str } from '../utils';
 
 
 export interface SessionOptions {
@@ -113,7 +113,7 @@ export class Session {
     }
     let json = {};
     try {
-      json = decode(cookie);
+      json = Str.decodeBASE64(cookie);
     } catch (err) {
       return this.generate();
     }
@@ -245,7 +245,7 @@ export class Session {
   async commit() {
     this.ageFlashSession();
     if (!this.store) {
-      const encodedSession = encode(this.session);
+      const encodedSession = Str.encodeBASE64(this.session);
       this.request.cookies.set(this.options.key, encodedSession, this.options);
     } else {
       await this.store.set(this.id, this.session);

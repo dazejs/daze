@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { createInjectDecorator } from '../factory/create-inject-decorator';
+import { createInjectDecorator } from './factory/create-inject-decorator';
 
 /**
  * Inject by custom name

@@ -5,13 +5,13 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { formatPrefix } from './helpers';
+import { Str } from '../../utils';
+import { component } from './component';
 
 export const controller = function (...prefixs: string[]): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('injectable', true, constructor);
-    Reflect.defineMetadata('type', 'controller', constructor);
-    Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => formatPrefix(prefix)) : [formatPrefix()], constructor);
+    component('', 'controller')(constructor);
+    Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => Str.formatPrefix(prefix)) : [formatPrefix()], constructor);
   };
 };
 export const Controller = controller;

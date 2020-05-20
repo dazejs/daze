@@ -6,8 +6,10 @@
  */
 
 import * as symbols from '../symbol';
-import { A, pipe } from './helpers';
+import { Tool } from '../utils';
 import { createInjectDecorator } from './factory/create-inject-decorator';
+
+const { A, pipe } = Tool;
 
 /**
  * Inject original http request

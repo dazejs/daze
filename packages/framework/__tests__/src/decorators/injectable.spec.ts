@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { injectable } from '../../../src/decorators/injectable';
+import { injectable } from '../../../src/decorators/stereotype/injectable';
 
 describe('Injectable Decorator', () => {
   it('should patch Injectable by @Injectable', () => {

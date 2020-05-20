@@ -8,6 +8,7 @@ import { inject, provide } from '../../../decorators';
 import { ControllerService } from '../../../controller/controller-service';
 import { Application } from '../../application';
 import { Loader } from '../../../loader';
+import { Str } from '../../../utils';
 
 export class ControllerServiceProvider {
 
@@ -33,6 +34,9 @@ export class ControllerServiceProvider {
     const controllers = this.loader.getComponentsByType('controller') || [];
     for (const Controller of controllers) {
       this.app.multiton(Controller, Controller);
+      this.app.multiton(Str.decapitalize(Controller?.name), (...args: any[]) => {
+        return this.app.get(Controller, args);
+      }, true);
       this.app.get<ControllerService>('daze-controller-service').register(Controller);
     }
   }

@@ -81,6 +81,7 @@
     "statuses": "1.5.0",
     "string-hash": "1.1.3",
     "type-is": "1.6.16",
+    "underscore.string": "3.3.5",
     "uuid": "7.0.3",
     "validator": "12.0.0",
     "vary": "1.1.2",
@@ -105,6 +106,7 @@
     "@types/pluralize": "0.0.29",
     "@types/redis": "2.8.17",
     "@types/statuses": "1.5.0",
-    "@types/string-hash": "1.1.1"
+    "@types/string-hash": "1.1.1",
+    "@types/underscore.string": "0.0.38"
   }
 }

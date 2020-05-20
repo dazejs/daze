@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { component } from './component';
 
-export const middleware = function (name = ''): ClassDecorator {
+export const middleware = function (name?: string): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('name', name, constructor);
-    Reflect.defineMetadata('type', 'middleware', constructor);
+    component(name, 'middleware')(constructor);
   };
 };
 

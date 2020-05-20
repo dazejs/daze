@@ -5,16 +5,18 @@
  * https: //opensource.org/licenses/MIT
  */
 
+import { injectable } from './injectable';
+
 /**
  * component metadata
- * @param name 
+ * @param name
+ * @param type
  */
-export const component = function (name = ''): ClassDecorator {
+export const component = function (name?: string, type = 'component'): ClassDecorator {
   return function (constructor) {
-    if (!Reflect.hasMetadata('type', constructor)) {
-      Reflect.defineMetadata('type', 'component', constructor);
-    }
+    injectable(constructor);
     Reflect.defineMetadata('name', name, constructor);
+    Reflect.defineMetadata('type', type, constructor);
   };
 };
 
