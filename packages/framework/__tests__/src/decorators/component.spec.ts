@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { component } from '../../../src/decorators/component';
+import { component } from '../../../src/decorators/stereotype/component';
 
 describe('Component Decorator', () => {
   it('should patch injectable and name in Component', () => {

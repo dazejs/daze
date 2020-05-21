@@ -1,6 +1,7 @@
 import { inject } from '../../../decorators';
 import { Loader } from '../../../loader/loader';
 import { Application } from '../../application';
+import { Str } from '../../../utils';
 
 
 export class ResourceProvider{
@@ -11,7 +12,7 @@ export class ResourceProvider{
   launch() {
     const resources = this.loader.getComponentsByType('resource') || [];
     for (const Resource of resources) {
-      const name = Reflect.getMetadata('name', Resource);
+      const name = Reflect.getMetadata('name', Resource) ?? Str.decapitalize(Resource?.name);
       this.app.multiton(Resource, Resource);
       if (name) {
         this.app.multiton(name, (...args: any[]) => {

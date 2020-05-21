@@ -4,12 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { component } from './component';
 
 export const validator = function (name = ''): ClassDecorator {
   return function (constructor) {
-    Reflect.defineMetadata('injectable', true, constructor);
-    Reflect.defineMetadata('name', name, constructor);
-    Reflect.defineMetadata('type', 'validator', constructor);
+    component(name, 'validator')(constructor);
   };
 };
 

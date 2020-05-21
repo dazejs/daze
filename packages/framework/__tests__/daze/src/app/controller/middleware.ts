@@ -6,7 +6,7 @@ import { Example2 } from '../middleware/example-2';
 
 @controller('/middleware')
 @useMiddleware(Example2)
-export class Middleware {
+export class MiddlewareController {
   @http.get('/example1')
   @useMiddleware(Example1)
   store() {

@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { formatPrefix } from './helpers';
+import { Str } from '../utils';
 
 const defaultRestRoutes = {
   index: [{ uri: '/', method: 'get' }],
@@ -19,7 +19,7 @@ const defaultRestRoutes = {
 export const rest = function (...prefixs: string[]): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('injectable', true, constructor);
-    Reflect.defineMetadata('prefixs', prefixs?.map(prefix => formatPrefix(prefix)) ?? ['/'], constructor);
+    Reflect.defineMetadata('prefixs', prefixs?.map(prefix => Str.formatPrefix(prefix)) ?? ['/'], constructor);
     const routes = Reflect.getMetadata('routes', constructor);
     Reflect.defineMetadata('routes', {
       ...defaultRestRoutes,

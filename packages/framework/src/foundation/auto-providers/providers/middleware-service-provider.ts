@@ -2,6 +2,8 @@ import { inject, provide } from '../../../decorators';
 import { MiddlewareService } from '../../../middleware/middleware-service';
 import { Loader } from '../../../loader/loader';
 import { Application } from '../../application';
+import { Str } from '../../../utils';
+
 export class MiddlewareServiceProvider {
 
   @inject() app: Application;
@@ -34,7 +36,7 @@ export class MiddlewareServiceProvider {
   launch() {
     const middlewares = this.loader.getComponentsByType('middleware') || [];
     for (const Middleware of middlewares) {
-      const name = Reflect.getMetadata('name', Middleware);
+      const name = Reflect.getMetadata('name', Middleware) ?? Str.decapitalize(Middleware?.name);
       this.app.singleton(Middleware, Middleware);
       if (name) {
         this.app.singleton(name, (...args: any[]) => {

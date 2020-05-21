@@ -1,6 +1,17 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Loader, Application, BaseController, BaseMiddleware, BaseService, BaseValidator, BaseResource, controller, component } from '../../../src';
+import {
+  Loader,
+  Application,
+  BaseController,
+  BaseMiddleware,
+  BaseService,
+  BaseValidator,
+  BaseResource,
+  controller,
+  component,
+  service, resource, middleware, validator
+} from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
@@ -11,20 +22,20 @@ describe('Loader', () => {
     @controller()
     class ExampleController extends BaseController { }
 
-    @component('example')
+    @service('example')
     class ExampleService extends BaseService { }
 
-    @component('example')
+    @resource('example')
     class ExampleResource extends BaseResource {
       resolve(data: any) {
         return data;
       }
     }
 
-    @component('example')
+    @validator('example')
     class ExampleValidator extends BaseValidator { }
 
-    @component('example')
+    @middleware('example')
     class ExampleMiddleware extends BaseMiddleware {
       resolve(_request: any, next: any) {
         return next();
