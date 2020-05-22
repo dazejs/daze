@@ -11,11 +11,11 @@ export class ComponentProvider {
   launch() {
     const components = this.loader.getComponentsByType('component') || [];
     for (const Component of components) {
-      const name = Reflect.getMetadata('name', Component) ?? Str.decapitalize(Component?.name);
+      const injectionName: string | undefined = Reflect.getMetadata('name', Component) ?? Str.decapitalize(Component?.name);
       this.app.multiton(Component, Component);
-      // TODO: check exclude default_1, default_2, ...
-      if (name) {
-        this.app.multiton(name, (...args: any[]) => {
+      if (injectionName && !injectionName.startsWith('default')) {
+        if (this.app.has(injectionName)) throw new Error(`specified component name ${injectionName} conflicts with existing!`);
+        this.app.multiton(injectionName, (...args: any[]) => {
           return this.app.get(Component, args);
         }, true);
       }

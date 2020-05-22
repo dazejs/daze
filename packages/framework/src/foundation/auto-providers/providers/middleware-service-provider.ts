@@ -36,10 +36,11 @@ export class MiddlewareServiceProvider {
   launch() {
     const middlewares = this.loader.getComponentsByType('middleware') || [];
     for (const Middleware of middlewares) {
-      const name = Reflect.getMetadata('name', Middleware) ?? Str.decapitalize(Middleware?.name);
+      const injectionName: string | undefined = Reflect.getMetadata('name', Middleware) ?? Str.decapitalize(Middleware?.name);
       this.app.singleton(Middleware, Middleware);
-      if (name) {
-        this.app.singleton(name, (...args: any[]) => {
+      if (injectionName && !injectionName.startsWith('default')) {
+        if (this.app.has(injectionName)) throw new Error(`specified middleware name ${injectionName} conflicts with existing!`);
+        this.app.singleton(injectionName, (...args: any[]) => {
           return this.app.get(Middleware, args);
         }, true);
       }

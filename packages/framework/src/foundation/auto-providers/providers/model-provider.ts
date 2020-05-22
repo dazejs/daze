@@ -11,10 +11,11 @@ export class ModelProvider{
   launch() {
     const models = this.loader.getComponentsByType('entity') || [];
     for (const Model of models) {
-      const name = Reflect.getMetadata('name', Model) ?? Str.decapitalize(Model?.name);
+      const injectionName: string | undefined = Reflect.getMetadata('name', Model) ?? Str.decapitalize(Model?.name);
       this.app.multiton(Model, Model);
-      if (name) {
-        this.app.multiton(name, (...args: any[]) => {
+      if(injectionName && !injectionName.startsWith('default')) {
+        if (this.app.has(injectionName)) throw new Error(`specified entity name ${injectionName} conflicts with existing!`);
+        this.app.multiton(injectionName, (...args: any[]) => {
           return this.app.get(Model, args);
         }, true);
       }

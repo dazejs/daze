@@ -10,10 +10,11 @@ export class ServiceProvider {
   launch() {
     const services = this.loader.getComponentsByType('service') || [];
     for (const Service of services) {
-      const name = Reflect.getMetadata('name', Service) ?? Str.decapitalize(Service?.name);
+      const injectionName: string | undefined = Reflect.getMetadata('name', Service) ?? Str.decapitalize(Service?.name);
       this.app.multiton(Service, Service);
-      if (name) {
-        this.app.multiton(name, (...args: any[]) => {
+      if (injectionName && !injectionName.startsWith('default')) {
+        if (this.app.has(injectionName)) throw new Error(`specified service name ${injectionName} conflicts with existing!`);
+        this.app.multiton(injectionName, (...args: any[]) => {
           return this.app.get(Service, args);
         }, true);
       }

@@ -10,10 +10,11 @@ export class ValidatorProvider {
   launch() {
     const validators = this.loader.getComponentsByType('validator') || [];
     for (const Validator of validators) {
-      const name = Reflect.getMetadata('name', Validator) ?? Str.decapitalize(Validator?.name);
+      const injectionName: string | undefined = Reflect.getMetadata('name', Validator) ?? Str.decapitalize(Validator?.name);
       this.app.multiton(Validator, Validator);
-      if (name) {
-        this.app.multiton(name, (...args: any[]) => {
+      if (injectionName && !injectionName.startsWith('default')) {
+        if (this.app.has(injectionName)) throw new Error(`specified resource name ${injectionName} conflicts with existing!`);
+        this.app.multiton(injectionName, (...args: any[]) => {
           return this.app.get(Validator, args);
         }, true);
       }
