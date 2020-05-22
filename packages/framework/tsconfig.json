@@ -5,7 +5,9 @@
     "outDir": "dist",
     "module": "commonjs",
     "paths": {
-      "@src": ["./src"]
+      "@src/*": [
+        "./src/*"
+      ],
     }
   },
   "include": [
