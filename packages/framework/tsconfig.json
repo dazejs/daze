@@ -3,12 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "dist",
-    "module": "commonjs",
-    "paths": {
-      "@src/*": [
-        "./src/*"
-      ],
-    }
+    "module": "commonjs"
   },
   "include": [
     "src/**/*.ts",

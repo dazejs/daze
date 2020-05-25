@@ -14,13 +14,7 @@ import * as providers from './providers';
 
 @depends([
   providers.DatabaseProvider,
-  providers.MiddlewareServiceProvider,
-  providers.ServiceProvider,
-  providers.ResourceProvider,
-  providers.ValidatorProvider,
-  providers.ModelProvider,
-  providers.ComponentProvider,
-  providers.ControllerServiceProvider,
+  providers.StereotypeProvider,
   providers.LoggerProvider,
   providers.TemplateProvider,
   providers.HttpServerProvider
