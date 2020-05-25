@@ -63,6 +63,16 @@ $ npm start
 
 感谢所有为这个项目做出贡献的人！
 
+<table style="text-align:center;">
+  <tr>
+    <td>
+      <a href="https://github.com/czewail" target="_blank">
+        <img src="https://avatars2.githubusercontent.com/u/14213748?s=80&v=4" width="80" valign="middle" />
+      </a>
+      <p>Chan Zewail</p>
+    </td>
+  </tr>
+</table>
 
 ## 基准测试
 
