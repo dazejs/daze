@@ -1,4 +1,4 @@
-import { Application } from '@src';
+import { Application } from '../foundation/application';
 import * as path from 'path';
 import { ProvideMetaData, ProviderOption } from '../decorators';
 import { Loader } from '../loader';
