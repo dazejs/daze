@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.0.0...@dazejs/framework@3.1.0) (2020-05-25)
+
+
+### Bug Fixes
+
+* **provider:** Fixed an overwrite problem with the same name ([#236](https://github.com/dazejs/daze/issues/236)) ([4f0d7ed](https://github.com/dazejs/daze/commit/4f0d7edc4130634bfaeb27402eca2bbdfdb7a6ac))
+
+
+### Features
+
+* **core:** add stereotype with default decapitalize name inject ([#234](https://github.com/dazejs/daze/issues/234)) ([931c930](https://github.com/dazejs/daze/commit/931c930d3b7c8b8a4304f15897789ed1bc7468be))
+
+
+
+
+
 # [3.0.0](https://github.com/dazejs/daze/compare/@dazejs/framework@2.7.1...@dazejs/framework@3.0.0) (2020-05-11)
 
 
