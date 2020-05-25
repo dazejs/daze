@@ -63,17 +63,6 @@ $ npm start
 
 感谢所有为这个项目做出贡献的人！
 
-<table style="text-align:center;">
-  <tr>
-    <td>
-      <a href="https://github.com/czewail" target="_blank">
-        <img src="https://avatars2.githubusercontent.com/u/14213748?s=80&v=4" width="80" valign="middle" />
-      </a>
-      <p>Chan Zewail</p>
-    </td>
-  </tr>
-</table>
-
 ## 基准测试
 
 基准测试对比了一些其他的框架，主要通过没有路由与定义1000个路由的情况下进行比较，详见[benchmarks](benchmarks/README.md)
