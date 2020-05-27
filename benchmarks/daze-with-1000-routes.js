@@ -1,8 +1,8 @@
-const { Application, Controller, Provider, Response } = require('../packages/framework/dist')
+const { Application, BaseController, BaseProvider, Response } = require('../packages/framework/dist')
 
 const app = new Application(__dirname)
 
-class Hello extends Controller {
+class Hello extends BaseController {
   index() {
     return 'Hello World'
   }
@@ -10,7 +10,7 @@ class Hello extends Controller {
 
 app.multiton(Hello, Hello)
 
-class RoutesProvider extends Provider {
+class RoutesProvider extends BaseProvider {
   launch() {
     const router = this.app.get('router')
     for (let index1 = 0; index1 < 10; index1++) {
