@@ -6,6 +6,7 @@
  */
 import buddy from 'co-body';
 import formidable from 'formidable';
+import { Request } from '../index';
 
 function parseForm(req: any) {
   return new Promise(((resolve, reject) => {
@@ -40,7 +41,7 @@ function parseForm(req: any) {
   }));
 }
 
-export async function parseBody(request: any) {
+export async function parseBody(request: Request) {
   let body: any = {};
   if (request.is('json')) {
     body.fields = await buddy.json(request.req);

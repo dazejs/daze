@@ -1,9 +1,9 @@
-const { Application, Controller, Provider, Response } = require('../packages/framework/dist')
+const { Application, Controller, BaseProvider, Response } = require('../packages/framework/dist')
 
 const app = new Application(__dirname)
 
 
-class RoutesProvider extends Provider {
+class RoutesProvider extends BaseProvider {
   launch() {
     this.app.get('middleware').register(() => (new Response()).OK('Hello World'))
   }
