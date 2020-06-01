@@ -10,6 +10,9 @@
   "engines": {
     "node": ">=10.15.0"
   },
+  "peerDependencies": {
+    "reflect-metadata": ">=0.1.13"
+  },
   "dependencies": {
     "@dazejs/framework": "2.4.3"
   },
