@@ -53,6 +53,9 @@
     "access": "public"
   },
   "readmeFilename": "README.md",
+  "peerDependencies": {
+    "reflect-metadata": ">=0.1.13"
+  },
   "dependencies": {
     "@dazejs/trace-page": "1.0.1",
     "accepts": "1.3.7",
