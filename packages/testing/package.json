@@ -1,0 +1,41 @@
+{
+  "name": "@dazejs/testing",
+  "version": "0.1.0",
+  "description": "Testing for dazejs",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "build": "npm run clean && tsc",
+    "dev": "npm run clean &&  tsc -w",
+    "lint": "tsc --noEmit && eslint \"{src,__tests__}/**/*.{js,ts}\" --quiet --fix"
+  },
+  "keywords": [
+    "dazejs",
+    "framework",
+    "nodejs",
+    "test"
+  ],
+  "author": "Zewail Chan",
+  "contributors": [
+    {
+      "name": "chan zewail",
+      "email": "chanzewail@gmail.com"
+    }
+  ],
+  "homepage": "https://dazejs.org/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dazejs/daze"
+  },
+  "bugs": {
+    "url": "https://github.com/dazejs/daze/issues"
+  },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "readmeFilename": "README.md"
+}
