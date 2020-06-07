@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.2...@dazejs/framework@3.1.3) (2020-06-07)
+
+
+### Bug Fixes
+
+* **resource:** fix resource meta object ([3af8f98](https://github.com/dazejs/daze/commit/3af8f9893227a2b20a657b14f83976112ae32bb4))
+
+
+
+
+
 ## [3.1.2](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.1...@dazejs/framework@3.1.2) (2020-05-29)
 
 **Note:** Version bump only for package @dazejs/framework
