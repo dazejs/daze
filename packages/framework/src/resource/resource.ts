@@ -230,7 +230,7 @@ export class Resource {
    * @param formatter 
    */
   isResourceFormatter(formatter: { new(): BaseResource } | ((...args: any[]) => any)): formatter is { new(): BaseResource }  {
-    return Reflect.getMetadata('type', formatter) === 'resource';
+    return formatter && Reflect.getMetadata('type', formatter) === 'resource';
   }
 
   /**
@@ -310,10 +310,10 @@ export class Resource {
    * transform data
    */
   transform(isOverstore = true) {
-    const data = this.serializeResourceData(isOverstore);
-    const meta = this.serializeResourceMeta();
+    const data = this.serializeResourceData(isOverstore) || {};
+    const meta = this.serializeResourceMeta() || {};
     if (meta) {
-      return { data, meta };
+      return { ...data, ...meta };
     }
     return data;
   }
