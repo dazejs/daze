@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.4](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.3...@dazejs/framework@3.1.4) (2020-06-08)
+
+
+### Bug Fixes
+
+* **decorator:** fix rest s delete method ([9db7741](https://github.com/dazejs/daze/commit/9db77419514fe7729ef18106201d3da4785cf773))
+
+
+
+
+
 ## [3.1.3](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.2...@dazejs/framework@3.1.3) (2020-06-07)
 
 
