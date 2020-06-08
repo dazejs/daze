@@ -13,7 +13,7 @@ const defaultRestRoutes = {
   store: [{ uri: '/', method: 'post' }],
   edit: [{ uri: '/:id/edit', method: 'get' }],
   update: [{ uri: '/:id', method: 'put' }],
-  destroy: [{ uri: '/:id', method: 'del' }],
+  destroy: [{ uri: '/:id', method: 'delete' }],
 };
 
 export const rest = function (...prefixs: string[]): ClassDecorator {
