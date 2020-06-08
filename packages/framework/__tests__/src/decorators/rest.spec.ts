@@ -12,7 +12,7 @@ describe('Rest Decorator', () => {
       store: [{ uri: '/', method: 'post' }],
       edit: [{ uri: '/:id/edit', method: 'get' }],
       update: [{ uri: '/:id', method: 'put' }],
-      destroy: [{ uri: '/:id', method: 'del' }],
+      destroy: [{ uri: '/:id', method: 'delete' }],
     });
     expect(Reflect.getMetadata('prefixs', Example)).toEqual(['/example']);
   });
