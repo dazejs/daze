@@ -268,7 +268,7 @@ export class Resource {
     * serialize Rource data
     * @param isWrapCollection is collection use wrap key
     */
-  serializeResourceData(isOverstore = true) {
+  serializeResourceData(isOverstore = true, hasMeta = false) {
     const data = this.transformResourceData();
     if (this.type === EResourceTypeList.Collection) {
       if (this.key) {
@@ -276,7 +276,7 @@ export class Resource {
           [this.key]: data,
         };
       }
-      return isOverstore ? {
+      return (isOverstore || hasMeta) ? {
         data,
       } : data;
     }
@@ -310,8 +310,8 @@ export class Resource {
    * transform data
    */
   transform(isOverstore = true) {
-    const data = this.serializeResourceData(isOverstore) || {};
-    const meta = this.serializeResourceMeta() || {};
+    const meta = this.serializeResourceMeta();
+    const data = this.serializeResourceData(isOverstore, !!meta) || {};
     if (meta) {
       return { ...data, ...meta };
     }
