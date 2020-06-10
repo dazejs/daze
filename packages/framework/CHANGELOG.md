@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.5](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.4...@dazejs/framework@3.1.5) (2020-06-10)
+
+
+### Bug Fixes
+
+* **resource:** fix relation resource collection struct ([779fbc4](https://github.com/dazejs/daze/commit/779fbc417e5cbce21aac669631b382c70429e833))
+
+
+
+
+
 ## [3.1.4](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.3...@dazejs/framework@3.1.4) (2020-06-08)
 
 
