@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.6](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.5...@dazejs/framework@3.1.6) (2020-06-11)
+
+
+### Bug Fixes
+
+* **orm:** fix many to many relation ([d4a0868](https://github.com/dazejs/daze/commit/d4a0868bf3250191590332ad4a9df7509e4d3f8b))
+
+
+
+
+
 ## [3.1.5](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.4...@dazejs/framework@3.1.5) (2020-06-10)
 
 
