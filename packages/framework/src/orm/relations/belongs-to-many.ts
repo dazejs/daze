@@ -60,7 +60,7 @@ export class BelongsToMany extends HasRelations {
    */
   newPivot(Pivot?: any) {
     const _class = Pivot ?? BasePivotEntity;
-    const _pivot = new Model(new _class());
+    const _pivot = new Model(_class);
     const table = _pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
     _pivot.setTable(`${table} as pivot`);
     return _pivot;
