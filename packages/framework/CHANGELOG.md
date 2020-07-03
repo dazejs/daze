@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.6...@dazejs/framework@3.2.0) (2020-07-03)
+
+
+### Features
+
+* **app:** add https support ([2f1ff72](https://github.com/dazejs/daze/commit/2f1ff72557a864c621d9fe9cc5f6365a4e4fa1f8))
+
+
+
+
+
 ## [3.1.6](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.5...@dazejs/framework@3.1.6) (2020-06-11)
 
 
