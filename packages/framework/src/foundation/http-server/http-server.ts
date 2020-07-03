@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as http from 'http';
+import * as https from 'https';
 import { Container } from '../../container';
 import { ErrorCollection, ErrorHandler } from '../../errors/handle';
 import { HttpError } from '../../errors/http-error';
@@ -22,7 +23,7 @@ export class HttpServer {
   /**
    * http server instance
    */
-  server: http.Server;
+  server: http.Server | https.Server;
 
   /**
    * return server instance
@@ -37,7 +38,9 @@ export class HttpServer {
   createServer() {
     const routeHandler = this.app.get('router').resolve();
     const middleware = this.app.get('middleware');
-    this.server = http.createServer(async (req, res) => {
+
+
+    const callback: http.RequestListener = async (req, res) => {
       const request = new Request(req, res);
       await request.initialize();
       return middleware
@@ -66,7 +69,14 @@ export class HttpServer {
             return new ResponseManager(handler.render()).output(request);
           }
         });
-    });
+    }
+
+    if (this.app.isHttps) {
+      this.server = https.createServer(this.app.httpsOptions as any, callback);
+    } else {
+      this.server = http.createServer(callback);
+    }
+    
     return this.server;
   }
 

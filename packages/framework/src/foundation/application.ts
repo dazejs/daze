@@ -22,6 +22,7 @@ import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
 import { AgentInterface } from '../interfaces';
 import { MessengerService } from '../messenger';
+import { HttpsOptions } from '../interfaces/external/https-options'
 
 const DEFAULT_PORT = 8080;
 
@@ -120,6 +121,16 @@ export class Application extends Container {
    * provider launch calls
    */
   launchCalls: ((...args: any[]) => any)[] = [];
+
+  /**
+   * is https
+   */
+  isHttps = false;
+
+  /**
+   * https Options
+   */
+  httpsOptions?: HttpsOptions;
 
   /**
    * agent instances
@@ -478,6 +489,12 @@ export class Application extends Container {
         await this.fireLaunchCalls();
       }
     }
+  }
+
+  enableHttps(httpsOptions: HttpsOptions) {
+    this.isHttps = true;
+    this.httpsOptions = httpsOptions;
+    return this;
   }
 
   /**
