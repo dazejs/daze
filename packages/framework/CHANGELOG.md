@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/dazejs/daze/compare/@dazejs/framework@3.2.0...@dazejs/framework@3.2.1) (2020-07-03)
+
+
+### Bug Fixes
+
+* **cors:** fix cors middleware sort ([f9123f1](https://github.com/dazejs/daze/commit/f9123f11dead9c553ec7bb4a4366e8361764dd3b))
+
+
+
+
+
 # [3.2.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.1.6...@dazejs/framework@3.2.0) (2020-07-03)
 
 
