@@ -397,7 +397,7 @@ export class Repository<TEntity = any> {
     // Create a repos with no records
     const repos = this.model.createRepository().fill(attributes).setExists(false);
     await repos.save();
-    return repos;
+    return repos.setExists(true);
   }
 
   /**
