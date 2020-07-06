@@ -20,7 +20,7 @@ export class Injectable extends Base {
     * get resource methods
     * @param resourceName
     */
-  resource(resource: string | { new(): BaseResource }) {
+  resource(resource?: string | { new(): BaseResource }) {
     return {
       item: (data: any) => {
         return (new Resource.Item(data, resource))
@@ -71,7 +71,7 @@ export class Injectable extends Base {
    * @param data
    * @param resourceName
    */
-  item(data: any, resource: string | { new(): BaseResource }): Resource.Item {
+  item(data: any, resource?: string | { new(): BaseResource }): Resource.Item {
     return (new Resource.Item(data, resource)).setContext(this.__context__);
   }
 
@@ -80,7 +80,7 @@ export class Injectable extends Base {
    * @param data
    * @param resourceName
    */
-  collection(data: any, resource: string | { new(): BaseResource }): Resource.Collection {
+  collection(data: any, resource?: string | { new(): BaseResource }): Resource.Collection {
     return (new Resource.Collection(data, resource).setContext(this.__context__));
   }
 }
