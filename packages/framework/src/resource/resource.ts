@@ -9,6 +9,7 @@ import { BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ResourceInterface } from '../interfaces';
+import { Repository } from '../orm/repository'
 
 const DEFAULT_KEY = 'data';
 
@@ -38,7 +39,10 @@ export class Resource {
   /**
    * @var formatter resource data formatter
    */
-  formatter: FormatterType;
+  formatter: FormatterType = (data: any) => {
+    if (data instanceof Repository) return data.getAttributes()
+    return data;
+  };
 
   /**
    * @var formatter resource meta data formatter
