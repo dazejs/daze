@@ -12,7 +12,6 @@ export * from './component-type';
 export * from './cross-origin';
 export * from './csrf';
 export * from './factory/create-inject-decorator';
-export * from './http-code';
 export * from './ignore';
 export * from './inject';
 export * from './model';
