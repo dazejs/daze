@@ -22,7 +22,7 @@ import { AppProvider, CommonProvider } from './auto-providers';
 import { HttpServer } from './http-server';
 import { AgentInterface } from '../interfaces';
 import { MessengerService } from '../messenger';
-import { HttpsOptions } from '../interfaces/external/https-options'
+import { HttpsOptions } from '../interfaces/external/https-options';
 
 const DEFAULT_PORT = 8080;
 

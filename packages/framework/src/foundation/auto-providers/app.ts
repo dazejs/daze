@@ -36,6 +36,11 @@ export class AppProvider {
     return request;
   }
 
+  @provide(Request, false)
+  __request(request: Request) {
+    return request;
+  }
+
   @provide(symbols.INJECTORS.RESPONSE, false)
   _response() {
     return new Response();
