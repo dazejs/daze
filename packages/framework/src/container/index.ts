@@ -115,14 +115,11 @@ export class Container extends EventEmitter {
     }
     // if a binding object exists, the binding object is instantiated
     if (this.binds.has(abstract)) {
-      const { concrete, callable } = this.binds.get(abstract);
+      const { callable } = this.binds.get(abstract);
       if (callable) {
         // 普通函数
         obj = this.invokeFunction(abstract, args);
-      } else if (Reflect.getMetadata('injectable', concrete) === true) {
-        // 可注入的class
-        obj = this.invokeInjectAbleClass(abstract, args);
-      } else {
+      }else {
         // 构造函数（class 和 function）
         obj = this.invokeConstructor(abstract, args);
       }
@@ -147,77 +144,168 @@ export class Container extends EventEmitter {
   }
 
   /**
-   * 调用构造函数
+   * 调用可注入的 Class
    */
   private invokeConstructor(abstract: any, args: any[]) {
     const { concrete: Concrete } = this.binds.get(abstract);
-    return new Concrete(...args, this);
+    const that = this;
+    const constructorBindParams = this.getConstructorBindParams(Concrete, args);
+
+    const instance = Reflect.construct(Concrete, [...constructorBindParams, ...args, this]);
+    instance.__context__ = args;
+    return new Proxy(instance, {
+      get(target, property, receiver) {
+        if (property === 'constructor') { 
+          return Reflect.get(target, property, receiver);
+        }
+        if (typeof target[property] === 'function') {
+          return new Proxy(target[property], {
+            apply(methodTarget, thisBinding, methodArgs) {
+              const methodBindParams = that.getMethodBindParams(Concrete, property, args);
+              return Reflect.apply(methodTarget, thisBinding, [...methodBindParams, ...methodArgs]);
+            },
+          });
+        }
+        const propertyPrams = that.getPropertyParam(Concrete, property, args);
+        const originalValue = Reflect.get(target, property, receiver);
+        return propertyPrams ?? originalValue;
+      },
+    });
+  }
+
+  private isBuildInType(type: any) { 
+    return type === Number ||
+      type === String ||
+      type === Object ||
+      type === Boolean ||
+      type === Array ||
+      type === null ||
+      type === undefined ||
+      type === BigInt ||
+      type === Map ||
+      type === Set ||
+      type === Error ||
+      type === Function ||
+      type === RegExp;
   }
 
   /**
-   * 调用可注入的 Class
+   * 获取构造函数注入类型
+   * @param Concrete 
+   * @param args 
    */
-  private invokeInjectAbleClass(abstract: any, args: any[]) {
-    const { concrete: Concrete } = this.binds.get(abstract);
-    const that = this;
+  private getConstructorBindParams(Concrete: any, args: any[] = []) { 
     const bindParams: any[] = [];
-    // 需要构造方法注入参数
-    const constructorInjectors = Reflect.getMetadata(
-      'injectparams', Concrete,
-    ) || [];
-
-
-    for (const [type, params = [], handler] of constructorInjectors) {
-      let injectedParam = this.make(type, [...params, ...args]);
-      if (typeof handler === 'function') {
-        injectedParam = handler(injectedParam);
-      }
+    const constructorParamtypes = Reflect.getMetadata(
+      symbols.PARAMTYPES_METADATA, Concrete,
+    ) ?? [];
+    for (const paramtype of constructorParamtypes) {
+      const injectedParam = this.make(paramtype, [...args]);
       bindParams.push(injectedParam);
     }
-    const ConcreteProxy = new Proxy(Concrete, {
-      construct(_target, _args, _ext) {
-        const instance = Reflect.construct(_target, _args, _ext);
-        instance.__context__ = args;
-        return new Proxy(instance, {
-          get(__target, __name, __receiver) {
-            if (__name === 'name' || __name === 'constructor' || typeof __name !== 'string') return Reflect.get(__target, __name, __receiver);
-            if (typeof __target[__name] === 'function') {
-              return new Proxy(__target[__name], {
-                apply(target, thisBinding, methodArgs) {
-                  const bindMethodParams: any[] = [];
-                  // 需要成员方法注入参数
-                  const methodInjectors = Reflect.getMetadata(
-                    'injectparams', Concrete, __name,
-                  ) || [];
-
-                  for (const [type, params = [], handler] of methodInjectors) {
-                    let injectedParam = that.make(type, [...params, ...args]);
-                    if (typeof handler === 'function') {
-                      injectedParam = handler(injectedParam);
-                    }
-                    bindMethodParams.push(injectedParam);
-                  }
-                  return Reflect.apply(target, thisBinding, [...bindMethodParams.reverse(), ...methodArgs]);
-                },
-              });
-            }
-            // 需要成员变量注入参数
-            const propertyInjectors = Reflect.getMetadata(
-              'injectparams', Concrete, __name,
-            ) || [];
-            const [type = '', params = [], handler] = propertyInjectors[0] || [];
-            const originalValue = Reflect.get(__target, __name, __receiver);
-            let injectedParam = type ? that.make(type, [...params, ...args]) : originalValue;
-            if (typeof handler === 'function') {
-              injectedParam = handler(injectedParam);
-            }
-            return injectedParam ?? originalValue;
-          },
-        });
-      },
-    });
-    return Reflect.construct(ConcreteProxy, [...bindParams, ...args, this]);
+    return bindParams;
   }
+
+  /**
+   * 获取类方法参数注入类型
+   * @param Concrete 
+   * @param key 
+   * @param args 
+   */
+  private getMethodBindParams(Concrete: any, key: string | number | symbol, args: any[] = []) { 
+    const bindParams: any[] = [];
+    const methodParamtypes = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete, key.toString()) ?? [];
+    console.log(methodParamtypes, 111);
+    for (const paramtype of methodParamtypes) {
+      const injectedParam = this.make(paramtype, [...args]);
+      bindParams.push(injectedParam);
+    }
+    return bindParams;
+  }
+
+  /**
+   * 获取属性注入类型
+   * @param Concrete 
+   * @param key 
+   * @param args 
+   */
+  private getPropertyParam(Concrete: any, key: string | number | symbol, args: any[] = []) { 
+    const propertytype = Reflect.getMetadata(symbols.PROPERTYTYPE_METADATA, Concrete, key.toString());
+    return this.make(propertytype, [...args]);
+  }
+
+  // /**
+  //  * 调用构造函数
+  //  */
+  // private invokeConstructor(abstract: any, args: any[]) {
+  //   const { concrete: Concrete } = this.binds.get(abstract);
+  //   return new Concrete(...args, this);
+  // }
+
+  // /**
+  //  * 调用可注入的 Class
+  //  */
+  // private invokeInjectAbleClass(abstract: any, args: any[]) {
+  //   const { concrete: Concrete } = this.binds.get(abstract);
+  //   const that = this;
+  //   const bindParams: any[] = [];
+  //   // 需要构造方法注入参数
+  //   const constructorInjectors = Reflect.getMetadata(
+  //     'injectparams', Concrete,
+  //   ) || [];
+
+
+  //   for (const [type, params = [], handler] of constructorInjectors) {
+  //     let injectedParam = this.make(type, [...params, ...args]);
+  //     if (typeof handler === 'function') {
+  //       injectedParam = handler(injectedParam);
+  //     }
+  //     bindParams.push(injectedParam);
+  //   }
+  //   const ConcreteProxy = new Proxy(Concrete, {
+  //     construct(_target, _args, _ext) {
+  //       const instance = Reflect.construct(_target, _args, _ext);
+  //       instance.__context__ = args;
+  //       return new Proxy(instance, {
+  //         get(__target, __name, __receiver) {
+  //           if (__name === 'name' || __name === 'constructor' || typeof __name !== 'string') return Reflect.get(__target, __name, __receiver);
+  //           if (typeof __target[__name] === 'function') {
+  //             return new Proxy(__target[__name], {
+  //               apply(target, thisBinding, methodArgs) {
+  //                 const bindMethodParams: any[] = [];
+  //                 // 需要成员方法注入参数
+  //                 const methodInjectors = Reflect.getMetadata(
+  //                   'injectparams', Concrete, __name,
+  //                 ) || [];
+
+  //                 for (const [type, params = [], handler] of methodInjectors) {
+  //                   let injectedParam = that.make(type, [...params, ...args]);
+  //                   if (typeof handler === 'function') {
+  //                     injectedParam = handler(injectedParam);
+  //                   }
+  //                   bindMethodParams.push(injectedParam);
+  //                 }
+  //                 return Reflect.apply(target, thisBinding, [...bindMethodParams.reverse(), ...methodArgs]);
+  //               },
+  //             });
+  //           }
+  //           // 需要成员变量注入参数
+  //           const propertyInjectors = Reflect.getMetadata(
+  //             'injectparams', Concrete, __name,
+  //           ) || [];
+  //           const [type = '', params = [], handler] = propertyInjectors[0] || [];
+  //           const originalValue = Reflect.get(__target, __name, __receiver);
+  //           let injectedParam = type ? that.make(type, [...params, ...args]) : originalValue;
+  //           if (typeof handler === 'function') {
+  //             injectedParam = handler(injectedParam);
+  //           }
+  //           return injectedParam ?? originalValue;
+  //         },
+  //       });
+  //     },
+  //   });
+  //   return Reflect.construct(ConcreteProxy, [...bindParams, ...args, this]);
+  // }
 
   /**
    * set abstract in groups

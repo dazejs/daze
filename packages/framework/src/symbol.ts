@@ -45,3 +45,6 @@ export const ProviderType = {
   PROVIDE: Symbol("DAZE#PROVIDE"),
   ORDER: Symbol("DAZE#ORDER"),
 };
+
+export const PARAMTYPES_METADATA = '__daze_param_types_metadata__$$';
+export const PROPERTYTYPE_METADATA = '__daze_property_type_metadata__$$';
