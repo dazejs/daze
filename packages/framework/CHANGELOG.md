@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.3.0...@dazejs/framework@3.4.0) (2020-07-28)
+
+
+### Features
+
+* **decorator:** add create custom decorator fn ([5e87506](https://github.com/dazejs/daze/commit/5e87506c72f0edc05143c14e1eeacad827ff704c))
+
+
+
+
+
 # [3.3.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.2.3...@dazejs/framework@3.3.0) (2020-07-28)
 
 
