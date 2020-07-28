@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { createInjectDecorator } from '../../../../src/decorators/factory/create-inject-decorator';
+import * as symbols from '../../../../src/symbol';
 
 describe('Descrators/factory/create-inject-decorator', () => {
   describe('patchClass', () => {
@@ -11,9 +12,13 @@ describe('Descrators/factory/create-inject-decorator', () => {
           this.testname = '';
         }
       };
-      expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
-      expect(Reflect.getMetadata('injectparams', Klass)).toEqual([
-        ['request', ['a', 'b']],
+      expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
+      expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass)).toEqual([
+        {
+          abstract: 'request',
+          params: ['a', 'b'],
+          handler: undefined
+        }
       ]);
     });
   });
@@ -24,9 +29,13 @@ describe('Descrators/factory/create-inject-decorator', () => {
         @createInjectDecorator('request', ['a', 'b'])
         testname = '';
       };
-      expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
-      expect(Reflect.getMetadata('injectparams', Klass, 'testname')).toEqual([
-        ['request', ['a', 'b']]
+      expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
+      expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass, 'testname')).toEqual([
+        {
+          abstract: 'request',
+          params: ['a', 'b'],
+          handler: undefined
+        }
       ]);
     });
   });
@@ -39,9 +48,13 @@ describe('Descrators/factory/create-inject-decorator', () => {
           //
         }
       };
-      expect(Reflect.getMetadata('injectable', Klass)).toBeTruthy();
-      expect(Reflect.getMetadata('injectparams', Klass, 'index')).toEqual([
-        ['request', ['a', 'b']],
+      expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
+      expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass, 'index')).toEqual([
+        {
+          abstract: 'request',
+          params: ['a', 'b'],
+          handler: undefined
+        }
       ]);
     });
   });
