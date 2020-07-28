@@ -8,6 +8,7 @@ import * as glob from 'glob';
 import * as path from 'path';
 import { Application } from '../foundation/application';
 import { VerifyCsrfToken } from '../foundation/middlewares';
+import { INJECTABLE } from '../symbol';
 
 export class Loader {
   /**
@@ -81,7 +82,7 @@ export class Loader {
   load(Target: any) {
     if (!Target || !Target.prototype) return;
     // check if injectable
-    const injectable = Reflect.getMetadata('injectable', Target);
+    const injectable = Reflect.getMetadata(INJECTABLE, Target);
     if (injectable !== true) return;
     // ignore @Ignore() decorator s target
     const isIgnore: boolean = Reflect.getMetadata('ignore', Target);

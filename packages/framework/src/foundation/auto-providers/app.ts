@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import { autoScan, depends, provide } from '../../decorators';
+import { autoScan, depends, provide, disable } from '../../decorators';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';
@@ -31,52 +31,68 @@ export class AppProvider {
     return new Router();
   }
 
+  @provide(Request, false)
+  @disable
+  _requestInstance(request: Request) {
+    return request;
+  }
+
   @provide(symbols.INJECTORS.REQUEST, false)
+  @disable
   _request(request: Request) {
     return request;
   }
 
-  @provide(symbols.INJECTORS.RESPONSE, false)
-  _response() {
+  @provide(Response, false)
+  @disable
+  _responseInstance() {
     return new Response();
   }
 
   @provide(symbols.INJECTORS.REQ, false)
+  @disable
   _req(request: Request) {
     return request.req;
   }
 
   @provide(symbols.INJECTORS.RES, false)
+  @disable
   _res(request: Request) {
     return request.res;
   }
 
   @provide(symbols.INJECTORS.QUERY, false)
+  @disable
   _query(request: Request) {
     return request.getQuery();
   }
 
   @provide(symbols.INJECTORS.PARAMS, false)
+  @disable
   _params(request: Request) {
     return request.getParams();
   }
 
   @provide(symbols.INJECTORS.HEADERS, false)
+  @disable
   _headers(request: Request) {
     return request.getHeaders();
   }
 
   @provide(symbols.INJECTORS.BODY, false)
+  @disable
   _body(request: Request) {
     return request.getBody();
   }
 
   @provide(symbols.INJECTORS.COOKIE, false)
+  @disable
   _cookie(request: Request) {
     return request.cookies;
   }
 
   @provide(symbols.INJECTORS.SESSION, false)
+  @disable
   _session(request: Request) {
     return request.session();
   }

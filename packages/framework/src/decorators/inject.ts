@@ -5,9 +5,10 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { createInjectDecorator } from './factory/create-inject-decorator';
+import { decoratorFactory } from './factory/decorator-factory';
 
 /**
+ * for javascript
  * Inject by custom name
  * Supports injection in a variety of ways, including but not limited to methods, properties, and constructors
  * 
@@ -15,7 +16,7 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
  * @param args 
  */
 export const inject = function (name?: any, ...args: any[]) {
-  return createInjectDecorator(name, args);
+  return decoratorFactory(name, args);
 };
 
 /**

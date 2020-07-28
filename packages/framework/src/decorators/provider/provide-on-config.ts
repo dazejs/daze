@@ -30,14 +30,12 @@ export const provideOnConfig = function (key: string): ClassDecorator | MethodDe
       } else {
         metaMap.set(name, { onConfigKey: key });
       }
-     
       Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
     }
     // Decorator on class
     else {
       const metaMap: Map<any, ProvideMetaData> = 
         Reflect.getMetadata(ProviderType.PROVIDE, target) ?? new Map();
-
       if (metaMap.has(target)) {
         const options = (metaMap.get(target) ?? {}) as ProvideMetaData;
         options.onConfigKey = key;

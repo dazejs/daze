@@ -3,8 +3,9 @@ import * as Resource from '../resource';
 import { Validate } from '../validate';
 import { Base } from './base';
 import { BaseResource } from './resource';
+import { INJECTABLE } from '../symbol';
 
-@Reflect.metadata('injectable', true)
+@Reflect.metadata(INJECTABLE, true)
 export class Injectable extends Base {
   // inject __context__
   __context__: any[];

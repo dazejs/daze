@@ -2,6 +2,7 @@ import path from 'path';
 import request from 'supertest';
 import { Application } from '../../../src';
 
+
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
 beforeAll(() => app.run());
@@ -71,5 +72,11 @@ describe('injectable', () => {
     const res = await request(app._server)
       .get('/injectable/service?id=1');
     expect(res.text).toBe('1');
+  });
+
+  it('should return example method', async () => {
+    const res = await request(app._server)
+      .get('/autoinject');
+    expect(res.text).toBe('Hello Dazejs');
   });
 });

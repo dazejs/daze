@@ -5,8 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { INJECTABLE } from '../../symbol';
+
 export const injectable: ClassDecorator = function (constructor: any) {
-  Reflect.defineMetadata('injectable', true, constructor);
+  Reflect.defineMetadata(INJECTABLE, true, constructor);
 };
 
 export const Injectable = injectable;

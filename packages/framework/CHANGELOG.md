@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.2.3...@dazejs/framework@3.3.0) (2020-07-28)
+
+
+### Features
+
+* **container:** update di logic ([ab88960](https://github.com/dazejs/daze/commit/ab88960ff8ffb537d97e5b37f296f211e3e2416d))
+* **sterotype:** remove default inject name ([72ec8a6](https://github.com/dazejs/daze/commit/72ec8a61fafaedb09955c9a0ec430e892f47f483))
+
+
+
+
+
 ## [3.2.3](https://github.com/dazejs/daze/compare/@dazejs/framework@3.2.2...@dazejs/framework@3.2.3) (2020-07-06)
 
 

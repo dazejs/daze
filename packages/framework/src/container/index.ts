@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { EventEmitter } from 'events';
-
+import { InjectParamsOption } from '../decorators/factory/decorator-factory';
 import * as symbols from '../symbol';
 
 const BIND = Symbol('Container#bind');
@@ -116,14 +116,16 @@ export class Container extends EventEmitter {
     // if a binding object exists, the binding object is instantiated
     if (this.binds.has(abstract)) {
       const { concrete, callable } = this.binds.get(abstract);
+      // 普通函数
       if (callable) {
-        // 普通函数
         obj = this.invokeFunction(abstract, args);
-      } else if (Reflect.getMetadata('injectable', concrete) === true) {
-        // 可注入的class
+      }
+      // 可注入的class
+      else if (Reflect.getMetadata(symbols.INJECTABLE, concrete) === true) {
         obj = this.invokeInjectAbleClass(abstract, args);
-      } else {
-        // 构造函数（class 和 function）
+      }
+      // 构造函数（class 和 function）
+      else {
         obj = this.invokeConstructor(abstract, args);
       }
       this.emit('resolving', obj, this);
@@ -155,68 +157,156 @@ export class Container extends EventEmitter {
   }
 
   /**
-   * 调用可注入的 Class
+   * 调用可注入的类
    */
   private invokeInjectAbleClass(abstract: any, args: any[]) {
     const { concrete: Concrete } = this.binds.get(abstract);
     const that = this;
-    const bindParams: any[] = [];
-    // 需要构造方法注入参数
-    const constructorInjectors = Reflect.getMetadata(
-      'injectparams', Concrete,
-    ) || [];
-
-
-    for (const [type, params = [], handler] of constructorInjectors) {
-      let injectedParam = this.make(type, [...params, ...args]);
-      if (typeof handler === 'function') {
-        injectedParam = handler(injectedParam);
-      }
-      bindParams.push(injectedParam);
-    }
     const ConcreteProxy = new Proxy(Concrete, {
-      construct(_target, _args, _ext) {
-        const instance = Reflect.construct(_target, _args, _ext);
+      construct(target: any, targetArgArray: any[] = [], newTarget?: any) { 
+        const params = that.bindConstructorParams(Concrete, args, targetArgArray);
+        const instance = Reflect.construct(target, [...params], newTarget);
         instance.__context__ = args;
         return new Proxy(instance, {
-          get(__target, __name, __receiver) {
-            if (__name === 'name' || __name === 'constructor' || typeof __name !== 'string') return Reflect.get(__target, __name, __receiver);
-            if (typeof __target[__name] === 'function') {
-              return new Proxy(__target[__name], {
-                apply(target, thisBinding, methodArgs) {
-                  const bindMethodParams: any[] = [];
-                  // 需要成员方法注入参数
-                  const methodInjectors = Reflect.getMetadata(
-                    'injectparams', Concrete, __name,
-                  ) || [];
-
-                  for (const [type, params = [], handler] of methodInjectors) {
-                    let injectedParam = that.make(type, [...params, ...args]);
-                    if (typeof handler === 'function') {
-                      injectedParam = handler(injectedParam);
-                    }
-                    bindMethodParams.push(injectedParam);
-                  }
-                  return Reflect.apply(target, thisBinding, [...bindMethodParams.reverse(), ...methodArgs]);
-                },
+          get(instanceTarget: any, propertyKey: string | number | symbol, receiver: any) { 
+            if (propertyKey === 'constructor') return Reflect.get(instanceTarget, propertyKey, receiver);
+            if (typeof instanceTarget[propertyKey] === 'function') { // Method
+              return new Proxy(instanceTarget[propertyKey], {
+                apply(methodTarget: any, thisArg: any, argArray?: any) { 
+                  const methodParams = that.bindMethodParams(Concrete, propertyKey.toString(), args, argArray);
+                  return Reflect.apply(methodTarget, thisArg, [...methodParams, ...args, this]);
+                }
               });
             }
-            // 需要成员变量注入参数
-            const propertyInjectors = Reflect.getMetadata(
-              'injectparams', Concrete, __name,
-            ) || [];
-            const [type = '', params = [], handler] = propertyInjectors[0] || [];
-            const originalValue = Reflect.get(__target, __name, __receiver);
-            let injectedParam = type ? that.make(type, [...params, ...args]) : originalValue;
-            if (typeof handler === 'function') {
-              injectedParam = handler(injectedParam);
-            }
-            return injectedParam ?? originalValue;
-          },
+            const propertyParam = that.bindPropterty(Concrete, args, propertyKey.toString());
+            return propertyParam ?? Reflect.get(instanceTarget, propertyKey, receiver);
+          }
         });
-      },
+      }
     });
-    return Reflect.construct(ConcreteProxy, [...bindParams, ...args, this]);
+    return Reflect.construct(ConcreteProxy, [...args, this]);
+  }
+
+  /**
+   * 内建类型
+   * @param type 
+   */
+  private isBuildInType(type: any) { 
+    return type === Number ||
+      type === String ||
+      type === Object ||
+      type === Boolean ||
+      type === Array ||
+      type === Function;
+  }
+
+  /**
+   * 绑定构造函数参数
+   * @param Concrete 
+   * @param args 
+   * @param vars 
+   */
+  private bindConstructorParams(Concrete: any, args: any[] = [], vars: any[] = []) { 
+    const argsLength = Concrete.length;
+    const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
+    if (disableInject) return vars;
+    const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete) ?? [];
+    const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete.prototype) ?? [];
+    return this.bindParams(argsLength, injectParams, typeParams, args, vars);
+  }
+
+  /**
+   * 绑定类方法参数
+   * @param Concrete 
+   * @param key 
+   * @param args 
+   * @param vars 
+   */
+  private bindMethodParams(Concrete: any, key: string | symbol, args: any[] = [], vars: any[] = []) { 
+    const argsLength = Concrete.prototype[key].length;
+    const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete, key);
+    if (disableInject) return vars;
+    const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete, key) ?? [];
+    const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete.prototype, key) ?? [];
+    return this.bindParams(argsLength, injectParams, typeParams, args, vars);
+  }
+
+  /**
+   * 绑定类属性
+   * @param Concrete 
+   * @param args 
+   * @param key 
+   */
+  private bindPropterty(Concrete: any, args: any[] = [], key: string | symbol) { 
+    const injects: InjectParamsOption[] = Reflect.getMetadata(
+      symbols.INJECTTYPE_METADATA, Concrete, key
+    ) ?? [];
+    const disableAutowried = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
+    if (disableAutowried) return;
+    const typeParam: any = !disableAutowried && Reflect.getMetadata(symbols.PROPERTYTYPE_METADATA, Concrete);
+
+    if (injects[0]) { 
+      const { abstract, params, handler } = injects[0];
+      const injectedParam = this.make(abstract, [...params ?? [], ...args]);
+      if (typeof handler === 'function') {
+        return handler(injectedParam);
+      }
+      return injectedParam;
+    }
+    return this.make(
+      typeParam, [...args]
+    );
+  }
+
+  /**
+   * 参数绑定
+   * @param argsLength 
+   * @param injectParams 
+   * @param typeParams 
+   * @param args 
+   * @param vars 
+   */
+  private bindParams(argsLength: number, injectParams: InjectParamsOption[], typeParams: any[], args: any[], vars: any[]) { 
+    const params: any[] = [];
+    // 未确认位置的手动注入的参数数组
+    // 新数组
+    const unPositionInjectParams = injectParams.filter(item => item.index === undefined);
+    for (let index = 0; index < argsLength; index++) { 
+      // 找到手动注入的匹配参数
+      const injectParam = injectParams.find(item => item.index === index);
+      // 当前位置的类型参数
+      const typeParam = typeParams[index];
+      // 存在当前位置的手动注入，优先使用
+      if (injectParam) {
+        const { abstract, params: _params, handler } = injectParam;
+        const injected = this.make(abstract, [...(_params ?? []), ...args]);
+        params.push(
+          typeof handler === 'function' ? handler(injected) : injected
+        );
+      }
+      // 存在当前位置的类型注入,并且非内置类型
+      else if (typeParam && !this.isBuildInType(typeParam)) {
+        const injected = this.make(typeParams[index], [...args]);
+        params.push(injected);
+      }
+      // 还有剩余的未确认位置的手动注入参数
+      else if (unPositionInjectParams.length > 0) {
+        const { abstract, params: _params, handler } = unPositionInjectParams.pop() as InjectParamsOption;
+        const injected = this.make(abstract, [...(_params ?? []), ...args]);
+        params.push(
+          typeof handler === 'function' ? handler(injected) : injected
+        );
+      }
+      // 还有剩余传入的实参
+      else if (vars.length > 0) {
+        params.push(
+          vars.shift()
+        );
+      }
+    }
+    // 将多余的实参附加上去
+    params.push(...vars);
+    return params;
   }
 
   /**
