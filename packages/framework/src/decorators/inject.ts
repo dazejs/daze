@@ -8,6 +8,7 @@
 import { createInjectDecorator } from './factory/create-inject-decorator';
 
 /**
+ * for javascript
  * Inject by custom name
  * Supports injection in a variety of ways, including but not limited to methods, properties, and constructors
  * 

@@ -69,7 +69,7 @@ export class HttpServer {
             return new ResponseManager(handler.render()).output(request);
           }
         });
-    }
+    };
 
     if (this.app.isHttps) {
       this.server = https.createServer(this.app.httpsOptions as any, callback);

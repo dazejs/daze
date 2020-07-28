@@ -1,5 +1,5 @@
 import { BaseProvider } from '../../../base';
-import { inject, provide } from '../../../decorators';
+import { provide } from '../../../decorators';
 import { ProviderInterface } from '../../../interfaces';
 import { Loader } from '../../../loader';
 import { Str } from '../../../utils/str';
@@ -8,7 +8,7 @@ import { Application } from '../../../foundation/application';
 import { MiddlewareService } from '../../../middleware/middleware-service';
 
 export class StereotypeProvider extends BaseProvider implements ProviderInterface {
-  @inject() loader: Loader;
+  // @inject() loader: Loader;
 
   @provide(ControllerService)
   _controllerService(app: Application) {
@@ -44,7 +44,7 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   }
 
   private loadControllers() {
-    const controllers = this.loader.getComponentsByType('controller') || [];
+    const controllers = this.app.get<Loader>('loader').getComponentsByType('controller') || [];
     for (const controller of controllers) {
       this.bindStereotype(controller, false);
       this.app.get<ControllerService>(ControllerService).register(controller);
@@ -52,42 +52,42 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   }
 
   private loadComponents() {
-    const components = this.loader.getComponentsByType('component') || [];
+    const components = this.app.get<Loader>('loader').getComponentsByType('component') || [];
     for (const component of components) {
       this.bindStereotype(component, false);
     }
   }
 
   private loadMiddlewares() {
-    const middlewares = this.loader.getComponentsByType('middleware') || [];
+    const middlewares = this.app.get<Loader>('loader').getComponentsByType('middleware') || [];
     for (const middleware of middlewares) {
       this.bindStereotype(middleware, true);
     }
   }
 
   private loadServices() {
-    const services = this.loader.getComponentsByType('service') || [];
+    const services = this.app.get<Loader>('loader').getComponentsByType('service') || [];
     for (const service of services) {
       this.bindStereotype(service, false);
     }
   } 
 
   private loadValidators() {
-    const validators = this.loader.getComponentsByType('validator') || [];
+    const validators = this.app.get<Loader>('loader').getComponentsByType('validator') || [];
     for (const validator of validators) {
       this.bindStereotype(validator, false);
     }
   }
 
   private loadResources() {
-    const resources = this.loader.getComponentsByType('resource') || [];
+    const resources = this.app.get<Loader>('loader').getComponentsByType('resource') || [];
     for (const resource of resources) {
       this.bindStereotype(resource, false);
     }
   }
 
   private loadEntities() {
-    const entities = this.loader.getComponentsByType('entity') || [];
+    const entities = this.app.get<Loader>('loader').getComponentsByType('entity') || [];
     for (const entity of entities) {
       this.bindStereotype(entity, false);
     }

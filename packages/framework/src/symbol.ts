@@ -46,5 +46,12 @@ export const ProviderType = {
   ORDER: Symbol("DAZE#ORDER"),
 };
 
-export const PARAMTYPES_METADATA = '__daze_param_types_metadata__$$';
-export const PROPERTYTYPE_METADATA = '__daze_property_type_metadata__$$';
+// 禁用依赖注入标记
+export const DISABLE_INJECT = 'daze:disable_inject';
+
+// 自动依赖注入
+// 由 TS 编译器注入
+export const PARAMTYPES_METADATA = 'design:paramtypes';
+export const PROPERTYTYPE_METADATA = 'daze:property_type_metadata';
+// 手动依赖注入
+export const INJECTTYPE_METADATA = 'daze:inject_type_metadata';

@@ -10,6 +10,7 @@ import 'reflect-metadata';
 export * from './base';
 export * from './container';
 export * from './cookie';
+export * from './config';
 export * from './database';
 export * from './decorators';
 export * from './foundation/application';
