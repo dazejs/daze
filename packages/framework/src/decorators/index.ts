@@ -9,14 +9,15 @@ import * as httpContext from './contexts-http';
 import * as verbs from './verb';
 
 export * from './stereotype';
+export * from './disbale';
 export * from './component-type';
 export * from './contexts';
 export * from './cross-origin';
 export * from './csrf';
-export * from './factory/create-inject-decorator';
 export * from './http-code';
 export * from './ignore';
 export * from './inject';
+export * from './autowired';
 export * from './model';
 export * from './multiton';
 export * from './order';

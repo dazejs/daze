@@ -1,16 +1,12 @@
-import { Application } from '../foundation/application';
+// import { Application } from '../foundation/application';
 import * as path from 'path';
 import { ProvideMetaData, ProviderOption } from '../decorators';
 import { Loader } from '../loader';
 import { ProviderType } from '../symbol';
 import { ProviderInterface } from '../interfaces';
+import { BaseProvider } from '../base';
 
-export class Provider {
-  private app: Application;
-
-  constructor(app: Application) {
-    this.app = app;
-  }
+export class Provider extends BaseProvider {
 
   async resolve(ProviderClass: Function) {
 
