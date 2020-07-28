@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https: //opensource.org/licenses/MIT
  */
-import { INJECTTYPE_METADATA } from '../../symbol';
+import { INJECTTYPE_METADATA, INJECTABLE } from '../../symbol';
 
 export interface InjectParamsOption { 
   abstract: any;
@@ -23,11 +23,10 @@ export interface InjectParamsOption {
 export function createInjectDecorator(abstract: any, params: any[] = [], handler?: (injectedParam: any) => any) {
   return (target: any, propertyKey?: string | symbol, descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number) => {
     if (!propertyKey) { // Class
-      Reflect.defineMetadata('injectable', true, target);
+      Reflect.defineMetadata(INJECTABLE, true, target);
       const injectors: InjectParamsOption[] = Reflect.getMetadata(INJECTTYPE_METADATA, target) || [];
       Reflect.defineMetadata(INJECTTYPE_METADATA, [
         ...injectors,
-        // !!handler ? [abstract, params, handler] : [abstract, params],
         {
           abstract,
           params,
@@ -35,7 +34,7 @@ export function createInjectDecorator(abstract: any, params: any[] = [], handler
         }
       ], target);
     } else if (typeof descriptorOrParameterIndex !== 'number') { // Property or Method
-      Reflect.defineMetadata('injectable', true, target.constructor);
+      Reflect.defineMetadata(INJECTABLE, true, target.constructor);
       const injectors: InjectParamsOption[] = Reflect.getMetadata(INJECTTYPE_METADATA, target.constructor, propertyKey) || [];
       Reflect.defineMetadata(INJECTTYPE_METADATA, [
         ...injectors,
@@ -47,7 +46,7 @@ export function createInjectDecorator(abstract: any, params: any[] = [], handler
       ], target.constructor, propertyKey);
       Reflect.defineProperty(target.constructor, propertyKey, { writable: true });
     } else {  // Paramer
-      Reflect.defineMetadata('injectable', true, target.constructor);
+      Reflect.defineMetadata(INJECTABLE, true, target.constructor);
       const injectors: InjectParamsOption[] = Reflect.getMetadata(INJECTTYPE_METADATA, target.constructor, propertyKey) || [];
       Reflect.defineMetadata(INJECTTYPE_METADATA, [
         ...injectors,
@@ -60,24 +59,5 @@ export function createInjectDecorator(abstract: any, params: any[] = [], handler
       ], target.constructor, propertyKey);
       Reflect.defineProperty(target.constructor, propertyKey, { writable: true });
     }
-  
-    // if (decoratorParams.length === 1) { // class
-    //   const [target] = decoratorParams;
-    //   Reflect.defineMetadata('injectable', true, target);
-    //   const injectors = Reflect.getMetadata(INJECTTYPE_METADATA, target) || [];
-    //   Reflect.defineMetadata(INJECTTYPE_METADATA, [
-    //     ...injectors,
-    //     !!handler ? [abstract, params, handler] : [abstract, params],
-    //   ], target);
-    // } else {
-    //   const [target, key] = decoratorParams;
-    //   Reflect.defineMetadata('injectable', true, target.constructor);
-    //   const injectors = Reflect.getMetadata(INJECTTYPE_METADATA, target.constructor, key) || [];
-    //   Reflect.defineMetadata(INJECTTYPE_METADATA, [
-    //     ...injectors,
-    //     !!handler ? [abstract || key, params, handler] : [abstract || key, params],
-    //   ], target.constructor, key);
-    //   Reflect.defineProperty(target, key, { writable: true });
-    // }
   };
 }

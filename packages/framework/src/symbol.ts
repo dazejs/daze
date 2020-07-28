@@ -48,6 +48,8 @@ export const ProviderType = {
 
 // 禁用依赖注入标记
 export const DISABLE_INJECT = 'daze:disable_inject';
+// 可注入的标记
+export const INJECTABLE = 'daze:injectable';
 
 // 自动依赖注入
 // 由 TS 编译器注入

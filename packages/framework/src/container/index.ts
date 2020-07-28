@@ -115,12 +115,17 @@ export class Container extends EventEmitter {
     }
     // if a binding object exists, the binding object is instantiated
     if (this.binds.has(abstract)) {
-      const { callable } = this.binds.get(abstract);
+      const { concrete, callable } = this.binds.get(abstract);
+      // 普通函数
       if (callable) {
-        // 普通函数
         obj = this.invokeFunction(abstract, args);
-      } else {
-        // 构造函数（class 和 function）
+      }
+      // 可注入的class
+      else if (Reflect.getMetadata(symbols.INJECTABLE, concrete) === true) {
+        obj = this.invokeInjectAbleClass(abstract, args);
+      }
+      // 构造函数（class 和 function）
+      else {
         obj = this.invokeConstructor(abstract, args);
       }
       this.emit('resolving', obj, this);
@@ -147,6 +152,14 @@ export class Container extends EventEmitter {
    * 调用构造函数
    */
   private invokeConstructor(abstract: any, args: any[]) {
+    const { concrete: Concrete } = this.binds.get(abstract);
+    return new Concrete(...args, this);
+  }
+
+  /**
+   * 调用可注入的类
+   */
+  private invokeInjectAbleClass(abstract: any, args: any[]) {
     const { concrete: Concrete } = this.binds.get(abstract);
     const that = this;
     const ConcreteProxy = new Proxy(Concrete, {
