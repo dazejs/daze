@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { createInjectDecorator } from './factory/create-inject-decorator';
+import { decoratorFactory } from './factory/decorator-factory';
 
 /**
  * for javascript
@@ -16,7 +16,7 @@ import { createInjectDecorator } from './factory/create-inject-decorator';
  * @param args 
  */
 export const inject = function (name?: any, ...args: any[]) {
-  return createInjectDecorator(name, args);
+  return decoratorFactory(name, args);
 };
 
 /**

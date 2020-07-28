@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { EventEmitter } from 'events';
-import { InjectParamsOption } from '../decorators/factory/create-inject-decorator';
+import { InjectParamsOption } from '../decorators/factory/decorator-factory';
 import * as symbols from '../symbol';
 
 const BIND = Symbol('Container#bind');

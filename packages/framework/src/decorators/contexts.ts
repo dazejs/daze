@@ -5,10 +5,10 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { createInjectDecorator } from './factory/create-inject-decorator';
+import { decoratorFactory } from './factory/decorator-factory';
 
 export const conf = (key?: string, defaultValue?: any) =>
-  createInjectDecorator('config', [key], (injectedParam: any) => {
+  decoratorFactory('config', [key], (injectedParam: any) => {
     if (typeof injectedParam === 'undefined' || !key) {
       return defaultValue ?? injectedParam;
     } else {
@@ -17,8 +17,8 @@ export const conf = (key?: string, defaultValue?: any) =>
   });
 export const Conf = conf;
 
-export const app = () => createInjectDecorator('app');
+export const app = () => decoratorFactory('app');
 export const App = app;
 
-export const messenger = () => createInjectDecorator('messenger');
+export const messenger = () => decoratorFactory('messenger');
 export const Messenger = messenger;

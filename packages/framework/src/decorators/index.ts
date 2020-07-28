@@ -26,6 +26,7 @@ export * from './rest';
 export * from './singleton';
 export * from './use-middleware';
 export * from './validates';
+export * from './create-decorator';
 export const http = {
   ...verbs,
   ...httpContext

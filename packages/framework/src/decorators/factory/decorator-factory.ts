@@ -20,7 +20,7 @@ export interface InjectParamsOption {
  * @param params Injection parameters
  * @param handler Post-injection functions that need to manipulate post-injection properties
  */
-export function createInjectDecorator(abstract: any, params: any[] = [], handler?: (injectedParam: any) => any) {
+export function decoratorFactory(abstract: any, params: any[] = [], handler?: (injectedParam: any) => any) {
   return (target: any, propertyKey?: string | symbol, descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number) => {
     if (!propertyKey) { // Class
       Reflect.defineMetadata(INJECTABLE, true, target);
