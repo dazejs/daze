@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist/*",
-    "test": "../../node_modules/.bin/jest --verbose --runInBand",
+    "test": "jest --verbose --runInBand",
     "copy": "copyfiles -u 1 src/**/*.njk dist",
     "build": "npm run clean && npm run copy && tsc",
     "dev": "npm run clean && npm run copy &&  tsc -w",
