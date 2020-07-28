@@ -73,4 +73,10 @@ describe('injectable', () => {
       .get('/injectable/service?id=1');
     expect(res.text).toBe('1');
   });
+
+  it('should return example method', async () => {
+    const res = await request(app._server)
+      .get('/autoinject');
+    expect(res.text).toBe('Hello Dazejs');
+  });
 });

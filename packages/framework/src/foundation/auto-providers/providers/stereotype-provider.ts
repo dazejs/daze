@@ -2,7 +2,7 @@ import { BaseProvider } from '../../../base';
 import { provide } from '../../../decorators';
 import { ProviderInterface } from '../../../interfaces';
 import { Loader } from '../../../loader';
-import { Str } from '../../../utils/str';
+// import { Str } from '../../../utils/str';
 import { ControllerService } from '../../../controller/controller-service';
 import { Application } from '../../../foundation/application';
 import { MiddlewareService } from '../../../middleware/middleware-service';
@@ -96,8 +96,8 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   private bindStereotype(Concrete: any, isShare = true) {
     // bind
     this.app.bind(Concrete, Concrete, isShare);
-    const injectionName: string | undefined = Reflect.getMetadata('name', Concrete) ?? Str.decapitalize(Concrete?.name);
-    if (injectionName && !injectionName.startsWith('default')) {
+    const injectionName: string | undefined = Reflect.getMetadata('name', Concrete);
+    if (injectionName) {
       if (this.app.has(injectionName)) {
         const type: string | undefined = Reflect.getMetadata('type', Concrete);
         throw new Error(`specified ${type} name ${injectionName} conflicts with existing!`);
