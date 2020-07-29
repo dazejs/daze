@@ -178,7 +178,7 @@ export class Container extends EventEmitter {
                 }
               });
             }
-            const propertyParam = that.bindPropterty(Concrete, args, propertyKey.toString());
+            const propertyParam = that.bindProperty(Concrete, args, propertyKey.toString());
             return propertyParam ?? Reflect.get(instanceTarget, propertyKey, receiver);
           }
         });
@@ -237,14 +237,11 @@ export class Container extends EventEmitter {
    * @param args 
    * @param key 
    */
-  private bindPropterty(Concrete: any, args: any[] = [], key: string | symbol) { 
+  private bindProperty(Concrete: any, args: any[] = [], key: string | symbol) { 
     const injects: InjectParamsOption[] = Reflect.getMetadata(
       symbols.INJECTTYPE_METADATA, Concrete, key
     ) ?? [];
-    const disableAutowried = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
-    if (disableAutowried) return;
-    const typeParam: any = !disableAutowried && Reflect.getMetadata(symbols.PROPERTYTYPE_METADATA, Concrete);
-
+    const typeParam: any = Reflect.getMetadata(symbols.PROPERTYTYPE_METADATA, Concrete, key);
     if (injects[0]) { 
       const { abstract, params, handler } = injects[0];
       const injectedParam = this.make(abstract, [...params ?? [], ...args]);
