@@ -174,7 +174,7 @@ export class Container extends EventEmitter {
               return new Proxy(instanceTarget[propertyKey], {
                 apply(methodTarget: any, thisArg: any, argArray?: any) { 
                   const methodParams = that.bindMethodParams(Concrete, propertyKey.toString(), args, argArray);
-                  return Reflect.apply(methodTarget, thisArg, [...methodParams, ...args, this]);
+                  return Reflect.apply(methodTarget, thisArg, [...methodParams]);
                 }
               });
             }
