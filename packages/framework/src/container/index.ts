@@ -207,11 +207,11 @@ export class Container extends EventEmitter {
    * @param vars 
    */
   private bindConstructorParams(Concrete: any, args: any[] = [], vars: any[] = []) { 
-    const argsLength = Concrete.length;
     const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
     if (disableInject) return vars;
     const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete) ?? [];
     const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete.prototype) ?? [];
+    const argsLength = Math.max(Concrete.length, injectParams.length, typeParams.length, vars.length);
     return this.bindParams(argsLength, injectParams, typeParams, args, vars);
   }
 
@@ -223,11 +223,11 @@ export class Container extends EventEmitter {
    * @param vars 
    */
   private bindMethodParams(Concrete: any, key: string | symbol, args: any[] = [], vars: any[] = []) { 
-    const argsLength = Concrete.prototype[key].length;
     const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete, key);
     if (disableInject) return vars;
     const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete, key) ?? [];
     const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete.prototype, key) ?? [];
+    const argsLength = Math.max(Concrete.prototype[key].length, injectParams.length, typeParams.length, vars.length);
     return this.bindParams(argsLength, injectParams, typeParams, args, vars);
   }
 
@@ -270,10 +270,18 @@ export class Container extends EventEmitter {
     const params: any[] = [];
     // 未确认位置的手动注入的参数数组
     // 新数组
-    const unPositionInjectParams = injectParams.filter(item => item.index === undefined);
+    const unPositionInjectParams = [];
+    const positionInjectParams = [];
+    for (const item of injectParams) {
+      if (item.index !== undefined) {
+        positionInjectParams.push(item);
+      } else { 
+        unPositionInjectParams.push(item);
+      }
+    }
     for (let index = 0; index < argsLength; index++) { 
       // 找到手动注入的匹配参数
-      const injectParam = injectParams.find(item => item.index === index);
+      const injectParam = positionInjectParams.find(item => item.index === index);
       // 当前位置的类型参数
       const typeParam = typeParams[index];
       // 存在当前位置的手动注入，优先使用
