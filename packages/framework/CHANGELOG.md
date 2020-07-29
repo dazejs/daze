@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.0...@dazejs/framework@3.4.1) (2020-07-29)
+
+
+### Bug Fixes
+
+* **container:** fix injectable class method apply params ([f16c783](https://github.com/dazejs/daze/commit/f16c783238847f72d1b57bbab3f906951d115414))
+
+
+
+
+
 # [3.4.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.3.0...@dazejs/framework@3.4.0) (2020-07-28)
 
 
