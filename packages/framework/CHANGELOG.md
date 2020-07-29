@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.1...@dazejs/framework@3.4.2) (2020-07-29)
+
+
+### Bug Fixes
+
+* **conatiner:** fix default inject param value error ([c82e2c4](https://github.com/dazejs/daze/commit/c82e2c48614cd5f1e2a3233abf8d61e03570f6a1))
+
+
+
+
+
 ## [3.4.1](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.0...@dazejs/framework@3.4.1) (2020-07-29)
 
 

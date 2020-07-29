@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/framework",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "Daze.js - A powerful web framework for Node.js",
   "main": "dist/index.js",
   "scripts": {
