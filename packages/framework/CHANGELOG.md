@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.2...@dazejs/framework@3.4.3) (2020-07-29)
+
+
+### Bug Fixes
+
+* **container:** fix property autowried not effect ([527b004](https://github.com/dazejs/daze/commit/527b004a47e67325c85c3c49a2cba56b0a2a57e8))
+
+
+
+
+
 ## [3.4.2](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.1...@dazejs/framework@3.4.2) (2020-07-29)
 
 
