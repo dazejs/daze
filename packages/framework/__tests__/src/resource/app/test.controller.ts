@@ -1,5 +1,6 @@
 import { controller, BaseController, http, useItemResource, useCollectionResource } from '../../../../src';
 import { TestResource } from './test.resource';
+import { WrapResource } from './wrap.resource';
 
 @controller('/resource')
 export class TestController extends BaseController {
@@ -41,5 +42,15 @@ export class TestController extends BaseController {
         name: 'dazejs'
       }
     ];
+  }
+
+  @http.get('/wrap')
+  wrapAction() {
+    return new WrapResource().item({
+      name: 'dazejs',
+      wrap: {
+        key: 'daze',
+      }
+    });
   }
 }
