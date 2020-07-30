@@ -81,9 +81,9 @@ export class Loader {
    */
   load(Target: any) {
     if (!Target || !Target.prototype) return;
-    // check if injectable
-    const injectable = Reflect.getMetadata(INJECTABLE, Target);
-    if (injectable !== true) return;
+    // // check if injectable
+    // const injectable = Reflect.getMetadata(INJECTABLE, Target);
+    // if (injectable !== true) return;
     // ignore @Ignore() decorator s target
     const isIgnore: boolean = Reflect.getMetadata('ignore', Target);
     if (isIgnore === true) return;

@@ -56,23 +56,7 @@ describe('injectable', () => {
       .set({ "my-header": "daze" });
     expect(res.text).toEqual('daze');
   });
-  
-  it('should patch id when inject in resource', async () => {
-    const res = await request(app._server)
-      .get('/injectable/resource?id=1');
-    expect(res.body).toEqual({
-      data: {
-        id: '1',
-        name: 'dazejs'
-      }
-    });
-  });
-  
-  it('should patch id when inject in service', async () => {
-    const res = await request(app._server)
-      .get('/injectable/service?id=1');
-    expect(res.text).toBe('1');
-  });
+
 
   it('should return example method', async () => {
     const res = await request(app._server)

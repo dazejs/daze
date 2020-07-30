@@ -39,14 +39,4 @@ export default class extends BaseController {
   getHeader(@http.header('my-header') host: string) {
     return host;
   }
-
-  @http.get('resource')
-  _resource() {
-    return this.resource('injectable-resource').item({name: 'dazejs'});
-  }
-
-  @http.get('service')
-  _service() {
-    return this.service('injectable-service').sayId();
-  }
 }

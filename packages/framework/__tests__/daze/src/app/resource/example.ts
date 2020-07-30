@@ -1,6 +1,6 @@
 import { BaseResource, resource } from '../../../../../src';
 
-@resource('example-resource')
+@resource()
 export default class extends BaseResource {
   resolve(data: any) {
     return {

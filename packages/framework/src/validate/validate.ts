@@ -6,6 +6,8 @@
  */
 import { Message } from '../foundation/support/message';
 import * as validators from './validators';
+import { Container } from '../container';
+import { Application } from '../foundation/application';
 
 export interface RuleData {
   field: string;
@@ -19,9 +21,14 @@ export interface RuleIndependences {
   [key: string]: [keyof typeof validators, any[]?, { [key2: string]: any }?][];
 }
 
-export type validatorType<TValidator> = { new(): TValidator } | Record<string, any>
+export type validatorType<TValidator> = { new(): TValidator } | Record<string, any> | string;
 
 export class Validate<TValidator> {
+  /**
+   * application
+   */
+  app: Application = Container.get('app');
+
   /**
    * validate rules
    */
@@ -63,6 +70,12 @@ export class Validate<TValidator> {
    * @param rules rules
    */
   private getValidatorRules(validator: validatorType<TValidator>) {
+    // if string type
+    if (typeof validator === 'string') {
+      // AMRK: COMPONENT_NAME
+      if (!this.app.has(validator)) return [];
+      return Reflect.getMetadata('rules', this.app.get(validator).constructor) ?? [];
+    }
     // if @Validator rules
     if (Reflect.getMetadata('type', validator) === 'validator') {
       return Reflect.getMetadata('rules', validator) ?? [];
