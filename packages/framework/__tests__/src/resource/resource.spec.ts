@@ -1,76 +1,97 @@
-import 'reflect-metadata';
-import '../../daze/src/app/controller/example';
-import '../../daze/src/provider/app';
-import path from 'path';
-import { Application } from '../../../src/foundation/application';
-import { Resource } from '../../../src/resource/resource';
+import * as path from 'path';
+import request from 'supertest';
+import { Application } from '../../../src';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
-beforeAll(() => app.initialize());
+const app = new Application(path.resolve(__dirname, './'));
 
-describe('Resource', () => {
-  it('should setFormatter and getFmatter suucessful', () => {
-    const resource = new Resource();
-    const formatter = () => {
-      //
-    };
-    resource.setFormatter(formatter);
-    expect(resource.getFormatter()).toBe(formatter);
+beforeAll(() => app.run(7777));
+afterAll(() => app.close());
+
+describe('Resource Feature', () => {
+  it('should return resource when return resource instance in controller (item)', async () => {
+    const res = await request(app._server)
+      .get('/resource/item')
+      .expect(200);
+
+    expect(res.text).toBe(JSON.stringify({
+      data: {
+        name: 'dazejs',
+        type: 'node',
+      },
+    }));
   });
 
-  it('should setMetaFormatter and getMetaFmatter suucessful', () => {
-    const resource = new Resource();
-    const formatter = () => {
-      //
-    };
-    resource.setMetaFormatter(formatter);
-    expect(resource.getMetaFormatter()).toBe(formatter);
+  it('should return resource when return resource instance in controller (collection)', async () => {
+    const res = await request(app._server)
+      .get('/resource/collection')
+      .expect(200);
+    expect(res.text).toBe(JSON.stringify({
+      data: [{
+        name: 'dazejs',
+        type: 'node',
+      }, {
+        name: 'dazejs',
+        type: 'node',
+      }],
+    }));
   });
 
-  it('should getKey and setKey scuessful', () => {
-    const resource = new Resource();
-    resource.setKey('data');
-    expect(resource.getKey()).toBe('data');
+  it('should return resource when use @useItemResource in controller (item)', async () => {
+    const res = await request(app._server)
+      .get('/resource/useItemResource')
+      .expect(200);
+
+    expect(res.text).toBe(JSON.stringify({
+      data: {
+        name: 'dazejs',
+        type: 'node',
+      },
+    }));
   });
 
-  it('should setData and getData successful', () => {
-    const resource = new Resource();
-    const data = {};
-    resource.setData(data);
-    expect(resource.getData()).toBe(data);
+  it('should return resource when use @useCollectionResource in controller (collection)', async () => {
+    const res = await request(app._server)
+      .get('/resource/useCollectionResource')
+      .expect(200);
+    expect(res.text).toBe(JSON.stringify({
+      data: [{
+        name: 'dazejs',
+        type: 'node',
+      }, {
+        name: 'dazejs',
+        type: 'node',
+      }],
+    }));
   });
 
-  it('should setMeta and getMeta successful', () => {
-    const resource = new Resource();
-    const data = {};
-    resource.setMeta(data);
-    expect(resource.getMeta()).toBe(data);
-  });
-
-  describe('Resource#addMeta', () => {
-    it('should add meta with string params', () => {
-      const resource = new Resource();
-      resource.addMeta('key', 'value');
-      expect(resource.getMeta()).toEqual({
-        key: 'value',
-      });
-    });
-
-    it('should add meta with object params', () => {
-      const resource = new Resource();
-      resource.addMeta({
-        aaa: 'bbb',
-      });
-      expect(resource.getMeta()).toEqual({
-        aaa: 'bbb',
-      });
-    });
-  });
-
-  it('should set null with withoutKey method', () => {
-    const resource = new Resource();
-    resource.withoutKey();
-    expect(resource.getKey()).toBeUndefined();
-  });
 });
+
+// describe('Resource Feature', () => {
+//   it('should return resource when return resource instance in controller (item)', async () => {
+//     const res = await request(app._server)
+//       .get('/resource/item')
+//       .expect(200);
+//     expect(res.text).toBe(JSON.stringify({
+//       data: {
+//         name: 'dazejs',
+//         type: 'node',
+//       },
+//     }));
+//   });
+
+//   it('should return resource when return resource instance in controller (collection)', async () => {
+//     const res = await request(app._server)
+//       .get('/resource/collection')
+//       .expect(200);
+//     expect(res.text).toBe(JSON.stringify({
+//       data: [{
+//         name: 'dazejs',
+//         type: 'node',
+//       }, {
+//         name: 'dazejs',
+//         type: 'node',
+//       }],
+//     }));
+//   });
+// });

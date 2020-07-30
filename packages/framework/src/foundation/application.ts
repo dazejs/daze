@@ -18,7 +18,7 @@ import { Database } from '../database';
 import { ErrorCollection } from '../errors/handle';
 import { Logger } from '../logger';
 import { Provider } from '../provider';
-import { AppProvider, CommonProvider } from './auto-providers';
+import { AppProvider, CommonProvider, StereotypeProvider } from './auto-providers';
 import { HttpServer } from './http-server';
 import { AgentInterface } from '../interfaces';
 import { MessengerService } from '../messenger';
@@ -270,6 +270,14 @@ export class Application extends Container {
   }
 
   /**
+   * register Stereotype providers
+   * @private
+   */
+  private async registerStereotypeProviders(): Promise<void> {
+    await this.register(StereotypeProvider);
+  }
+
+  /**
    * register static init providers
    */
   private async registerInitProviders(): Promise<void>  {
@@ -487,6 +495,7 @@ export class Application extends Container {
         await this.registerDefaultProviders();
         await this.registerInitProviders();
         await this.registerVendorProviders();
+        await this.registerStereotypeProviders();
         await this.fireLaunchCalls();
       }
     }

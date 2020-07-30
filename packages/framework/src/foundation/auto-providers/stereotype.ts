@@ -1,11 +1,11 @@
-import { BaseProvider } from '../../../base';
-import { provide } from '../../../decorators';
-import { ProviderInterface } from '../../../interfaces';
-import { Loader } from '../../../loader';
+import { BaseProvider } from '../../base';
+import { provide } from '../../decorators';
+import { ProviderInterface } from '../../interfaces';
+import { Loader } from '../../loader';
 // import { Str } from '../../../utils/str';
-import { ControllerService } from '../../../controller/controller-service';
-import { Application } from '../../../foundation/application';
-import { MiddlewareService } from '../../../middleware/middleware-service';
+import { ControllerService } from '../../controller/controller-service';
+import { Application } from '../application';
+import { MiddlewareService } from '../../middleware/middleware-service';
 
 export class StereotypeProvider extends BaseProvider implements ProviderInterface {
   // @inject() loader: Loader;

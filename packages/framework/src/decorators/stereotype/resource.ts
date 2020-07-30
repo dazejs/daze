@@ -5,11 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { component } from './component';
-import { injectable } from './injectable';
 
 export const resource = function (name?: string): ClassDecorator {
   return function (constructor) {
-    injectable(constructor);
     component(name, 'resource')(constructor);
   };
 };
