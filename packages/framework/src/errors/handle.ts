@@ -75,7 +75,7 @@ export class ErrorHandler {
    */
   render() {
     if (this.error instanceof HttpError) {
-      const contentType = this.error.headers && this.error.headers['content-type'] as string || '';
+      const contentType = this.error.headers?.['content-type'] as string ?? this.request?.getHeader('content-type') ?? '';
       const headersType = typeis.is(contentType, ['html', 'text', 'json']) || 'text';
       if (headersType && renderTypes.includes(headersType)) {
         return this[headersType as 'html' | 'text' | 'json']();
@@ -109,6 +109,7 @@ export class ErrorHandler {
    * @private
    */
   json() {
+    console.log(this.error, 'this.error');
     if (this.error instanceof HttpError) {
       const message = this.error.message || statuses[+this.error.code || 500];
       const { errors } = this.error;

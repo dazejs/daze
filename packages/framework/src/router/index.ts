@@ -13,6 +13,7 @@ import { Request } from '../request';
 import { Dispatcher } from './dispatcher';
 import { Route } from './route';
 import { Trie } from './trie';
+import { UseMiddlewareOption } from '../decorators/use/interface';
 // import * as zlib from 'zlib';
 // import { Stream } from 'stream';
 
@@ -35,9 +36,12 @@ export class Router {
     };
   }
 
-  register(uri: string, methods: string[], controller: any, action: string, middlewares: any[]) {
+  register(uri: string, methods: string[], controller: any, action: string, middlewareOptions: UseMiddlewareOption[]) {
     if (Reflect.getMetadata('type', controller) !== 'controller') throw new Error('route must be register an controller!');
-    const route = new Route(uri, methods, controller, action, middlewares);
+    const route = new Route(uri, methods, controller, action);
+    for (const middlewareOption of middlewareOptions) {
+      route.registerMiddleware(middlewareOption.middleware, middlewareOption.args);
+    }
     const controllerCrossOrigin = Reflect.getMetadata('controllerCrossOrigin', controller);
     const routeCrossOrigin = Reflect.getMetadata('routeCrossOrigin', controller) || {};
     if (controllerCrossOrigin) {

@@ -6,6 +6,8 @@
  */
 import { BaseController } from '../base';
 import { Application } from '../foundation/application';
+import { Router } from '../router';
+import { UseMiddlewareOption } from '../decorators/use/interface';
 
 export class ControllerService {
   /**
@@ -36,24 +38,26 @@ export class ControllerService {
   public resolve(controller: typeof BaseController) {
     const routes = Reflect.getMetadata('routes', controller) || {};
     const prefixs = Reflect.getMetadata('prefixs', controller) || [''];
-    const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller) || [];
-    const routeMiddlewares = Reflect.getMetadata('routeMiddlewares', controller) || {};
+    // const controllerMiddlewares = Reflect.getMetadata('controllerMiddlewares', controller) || [];
+    // const routeMiddlewares = Reflect.getMetadata('routeMiddlewares', controller) || {};
 
     for (const prefix of prefixs) {
-      this.registerRoutes(controller, routes, prefix, controllerMiddlewares, routeMiddlewares);
+      this.registerRoutes(controller, routes, prefix);
     }
   }
 
   /**
    * register controller routes
    */
-  private registerRoutes(controller: any, routes: any, prefix = '', controllerMiddlewares?: any, routeMiddlewares?: any) {
-    const Router = this.app.get('router');
+  private registerRoutes(controller: any, routes: any, prefix = '') {
+    const router = this.app.get<Router>('router');
+    const controllerMiddlewareOptions: UseMiddlewareOption[] = Reflect.getMetadata('use-middlewares', controller) ?? [];
     for (const key of Object.keys(routes)) {
+      const routeMiddlewares: { [key: string]: UseMiddlewareOption[] } = Reflect.getMetadata('use-middlewares', controller, key) ?? {};
       for (const route of routes[key]) {
         const { uri, method } = route;
-        const actionMiddlewares = routeMiddlewares[key] || [];
-        Router.register(`${prefix}${uri}`, [method], controller, key, [...controllerMiddlewares, ...actionMiddlewares]);
+        const actionMiddlewareOptions = routeMiddlewares[key] ?? [];
+        router.register(`${prefix}${uri}`, [method], controller, key, [...controllerMiddlewareOptions, ...actionMiddlewareOptions]);
       }
     }
   }

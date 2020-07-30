@@ -7,9 +7,9 @@
 import { EResourceTypeList, FormatterType, Resource } from './resource';
 
 
-export class Collection extends Resource {
-  constructor(data: any, formatter?: FormatterType, key?: string) {
-    super(data, formatter, key);
+export class ResourceCollection<TFormater = any> extends Resource<TFormater> {
+  constructor(formatter?: FormatterType<TFormater>) {
+    super(formatter);
     this.type = EResourceTypeList.Collection;
   }
 }

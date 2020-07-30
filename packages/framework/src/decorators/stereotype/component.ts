@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { injectable } from './injectable';
+// import { injectable } from './injectable';
 // import { PARAMTYPES_METADATA } from '../../symbol';
 
 // /**
@@ -36,7 +36,6 @@ import { injectable } from './injectable';
  */
 export const component = function (name?: string, type = 'component'): ClassDecorator {
   return function (constructor) {
-    injectable(constructor);
     Reflect.defineMetadata('name', name, constructor);
     Reflect.defineMetadata('type', type, constructor);
     // patchConstructorParamtypes(constructor);
