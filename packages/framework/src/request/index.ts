@@ -633,8 +633,8 @@ export class Request {
    * validate request
    */
   validate(validator: any, message = 'Validation error') {
-    const validate = new Validate(this.mergedParams, validator);
-    if (validate.fails) {
+    const validate = new Validate(validator);
+    if (!validate.check(this.mergedParams)) {
       throw new ValidateHttpError(message, validate);
     }
   }

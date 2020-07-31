@@ -210,7 +210,7 @@ export class Container extends EventEmitter {
     const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
     if (disableInject) return vars;
     const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete) ?? [];
-    const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete.prototype) ?? [];
+    const typeParams: any[] = Reflect.getMetadata(symbols.PARAMTYPES_METADATA, Concrete) ?? [];
     const argsLength = Math.max(Concrete.length, injectParams.length, typeParams.length, vars.length);
     return this.bindParams(argsLength, injectParams, typeParams, args, vars);
   }
@@ -266,8 +266,8 @@ export class Container extends EventEmitter {
   private bindParams(argsLength: number, injectParams: InjectParamsOption[], typeParams: any[], args: any[], vars: any[]) { 
     const params: any[] = [];
     // 未确认位置的手动注入的参数数组
-    // 新数组
     const unPositionInjectParams = [];
+    // 已确认位置的手动注入的参数数组
     const positionInjectParams = [];
     for (const item of injectParams) {
       if (item.index !== undefined) {

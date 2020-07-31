@@ -19,6 +19,7 @@ export * from './logger';
 export * from './messenger';
 export * from './middleware';
 export * from './request';
+export * from './resource';
 export * from './response';
 export * from './response/redirect';
 export * from './view';

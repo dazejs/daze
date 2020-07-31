@@ -1,10 +1,13 @@
 import {
-  BaseController, controller, http,
+  BaseController, controller, http, autowired
 } from '../../../../../src';
+import ExampleService from '../service/example';
 
 
 @controller('/example')
 export default class extends BaseController {
+  @autowired
+  exampleService: ExampleService;
 
   @http.get('/template')
   template() {
@@ -15,7 +18,7 @@ export default class extends BaseController {
 
   @http.get()
   index() {
-    return this.service('example-service').sayHello();
+    return this.exampleService.sayHello();
   }
 
   @http.post('post')

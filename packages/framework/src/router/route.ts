@@ -65,7 +65,7 @@ export class Route {
    * @param action controller action
    * @param middlewares route middlewares
    */
-  constructor(uri: string, methods: string[] = [], controller: any = null, action = '', middlewares: any[] = []) {
+  constructor(uri: string, methods: string[] = [], controller: any = null, action = '') {
     
     /**
      * middleware service
@@ -104,7 +104,7 @@ export class Route {
       this.methods.push('HEAD');
     }
 
-    this.registerControllerMiddlewares(middlewares);
+    // this.registerControllerMiddlewares(middlewares);
   }
 
   get pieces() {

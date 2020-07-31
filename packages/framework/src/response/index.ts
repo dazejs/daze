@@ -403,6 +403,7 @@ export class Response extends Statusable {
     const data = this.getData();
     if (!data) return data;
     if (data instanceof Resource) {
+      this.setType('json');
       return data.output();
     }
     if (data instanceof View) {

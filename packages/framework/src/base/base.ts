@@ -12,6 +12,7 @@ import { Application } from '../foundation/application';
 import { MessengerService } from '../messenger';
 import { Model } from '../orm/model';
 import { Response } from '../response';
+import { ResourceItem, ResourceCollection } from '../resource';
 import { Redirect } from '../response/redirect';
 // import { Entity } from '../orm/entity';
 
@@ -49,8 +50,23 @@ export abstract class Base {
    * create redirect instance
    * @param params redirect constructor params
    */
-  protected redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}): Redirect {
+  protected redirect(url?: string, code = 302, header: OutgoingHttpHeaders = {}): Redirect {
     return new Redirect(url, code, header);
+  }
+
+  /**
+   * create resource
+   * @param formater 
+   */
+  protected resource(formater?: any) {
+    return {
+      item: (data: Record<string, any>) => {
+        return new ResourceItem(formater).setData(data);
+      },
+      collection: (data: Record<string, any>[]) => {
+        return new ResourceCollection(formater).setData(data);
+      }
+    };
   }
 
   /**

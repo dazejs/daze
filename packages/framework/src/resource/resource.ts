@@ -5,11 +5,10 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { BaseResource } from '../base/resource';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ResourceInterface } from '../interfaces';
-import { Repository } from '../orm/repository'
+import { Repository } from '../orm/repository';
 
 const DEFAULT_KEY = 'data';
 
@@ -18,9 +17,9 @@ export const enum EResourceTypeList {
   Collection = 'collection'
 }
 
-export type FormatterType = string | { new(): BaseResource } | ((...args: any[]) => any)
+export type FormatterType<TFormatter> = string | { new(): TFormatter } | ((...args: any[]) => any)
 
-export class Resource {
+export class Resource<TFormatter = any> {
   /**
    * @var app Application instance
    */
@@ -39,8 +38,8 @@ export class Resource {
   /**
    * @var formatter resource data formatter
    */
-  formatter: FormatterType = (data: any) => {
-    if (data instanceof Repository) return data.getAttributes()
+  formatter: FormatterType<TFormatter> = (data: any) => {
+    if (data instanceof Repository) return data.getAttributes();
     return data;
   };
 
@@ -60,28 +59,11 @@ export class Resource {
   type: EResourceTypeList;
 
   /**
-   * controller context in container
-   */
-  __context__: any[] = []
-
-  /**
    * Create Resource
    */
-  constructor(data?: any, formatter?: FormatterType, key?: any) {
-    this.data = data;
-    if (key) this.key = key;
+  constructor(formatter?: FormatterType<TFormatter>) {
     if (formatter) this.formatter = formatter;
   }
-
-  /**
-   * set inject context
-   * @param context 
-   */
-  setContext(context: any[]) {
-    this.__context__ = context;
-    return this;
-  }
-
 
   /**
    * set resource data formatter
@@ -211,20 +193,20 @@ export class Resource {
    * @param formatter resource formatter
    * @param data resource meta or data
    */
-  useTransformer(formatter: FormatterType, data: any) {
+  useTransformer(formatter: FormatterType<TFormatter>, data: any) {
     if (!data) return null;
     // 如果是字符串
     if (typeof formatter === 'string') {
       return this.useStringFormatter(formatter, data);
     }
     // 如果是资源类
-    if (this.isResourceFormatter(formatter)) {
-      return this.useResourceFormatter(formatter, data);
+    if (this.isResourceFormatter(formatter as any)) {
+      return this.useResourceFormatter(formatter as any, data);
     }
     // 如果是回调函数/类
     if (typeof formatter === 'function') {
       // 容器中已绑定
-      return this.useCallbackFormatter(formatter, data);
+      return this.useCallbackFormatter(formatter as any, data);
     }
     return data;
   }
@@ -233,7 +215,7 @@ export class Resource {
    * check if is resource component
    * @param formatter 
    */
-  isResourceFormatter(formatter: { new(): BaseResource } | ((...args: any[]) => any)): formatter is { new(): BaseResource }  {
+  isResourceFormatter(formatter: { new(): TFormatter } | ((...args: any[]) => any)): formatter is { new(): TFormatter }  {
     return formatter && Reflect.getMetadata('type', formatter) === 'resource';
   }
 
@@ -245,7 +227,7 @@ export class Resource {
   useStringFormatter(formatterName: string, data: any) {
     // AMRK: COMPONENT_NAME
     // const Transformer = this.app.get(`resource.${formatter}`, this.__context__);
-    const Transformer = this.app.get<ResourceInterface>(formatterName, this.__context__);
+    const Transformer = this.app.get<ResourceInterface>(formatterName);
     return Transformer.resolve(data);
   }
 
@@ -254,8 +236,8 @@ export class Resource {
    * @param formatter 
    * @param data 
    */
-  useResourceFormatter(formatter: { new(): BaseResource }, data: any) {
-    const Transformer = this.app.get<ResourceInterface>(formatter, this.__context__);
+  useResourceFormatter(formatter: { new(): TFormatter }, data: any) {
+    const Transformer = this.app.get<ResourceInterface>(formatter);
     return Transformer.resolve(data);
   }
 
@@ -326,6 +308,12 @@ export class Resource {
    * output result
    */
   output(isOverstore = true) {
-    return this.transform(isOverstore);
+    const data = this.transform(isOverstore);
+    return JSON.stringify(data, (_k, v) => {
+      if (v instanceof Resource) {
+        return v.withoutKey().transform(false);
+      }
+      return v;
+    });
   }
 }

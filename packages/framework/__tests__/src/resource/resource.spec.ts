@@ -1,15 +1,93 @@
-import 'reflect-metadata';
-import '../../daze/src/app/controller/example';
-import '../../daze/src/provider/app';
-import path from 'path';
-import { Application } from '../../../src/foundation/application';
+/* eslint-disable @typescript-eslint/camelcase */
+import * as path from 'path';
+import request from 'supertest';
+import { Application } from '../../../src';
 import { Resource } from '../../../src/resource/resource';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
-beforeAll(() => app.initialize());
+const app = new Application(path.resolve(__dirname, './'));
 
-describe('Resource', () => {
+beforeAll(() => app.run(7777));
+afterAll(() => app.close());
+
+describe('Resource Feature', () => {
+  it('should return resource when return resource instance in controller (item)', async () => {
+    const res = await request(app._server)
+      .get('/resource/item')
+      .expect(200);
+
+    expect(res.text).toBe(JSON.stringify({
+      data: {
+        name: 'dazejs',
+        type: 'node',
+      },
+    }));
+  });
+
+  it('should return resource when return resource instance in controller (collection)', async () => {
+    const res = await request(app._server)
+      .get('/resource/collection')
+      .expect(200);
+    expect(res.text).toBe(JSON.stringify({
+      data: [{
+        name: 'dazejs',
+        type: 'node',
+      }, {
+        name: 'dazejs',
+        type: 'node',
+      }],
+    }));
+  });
+
+  it('should return resource when use @useItemResource in controller (item)', async () => {
+    const res = await request(app._server)
+      .get('/resource/useItemResource')
+      .expect(200);
+
+    expect(res.text).toBe(JSON.stringify({
+      data: {
+        name: 'dazejs',
+        type: 'node',
+      },
+    }));
+  });
+
+  it('should return resource when use @useCollectionResource in controller (collection)', async () => {
+    const res = await request(app._server)
+      .get('/resource/useCollectionResource')
+      .expect(200);
+    expect(res.text).toBe(JSON.stringify({
+      data: [{
+        name: 'dazejs',
+        type: 'node',
+      }, {
+        name: 'dazejs',
+        type: 'node',
+      }],
+    }));
+  });
+
+  it('should return resource when nest resource in controller', async () => {
+    const res = await request(app._server)
+      .get('/resource/wrap')
+      .expect(200);
+    expect(res.text).toBe(JSON.stringify({
+      data: {
+        name: 'dazejs',
+        wrap: {
+          key: 'daze',
+          type: 'node',
+        }
+      }
+    }));
+  });
+
+});
+
+// MARK: Units
+
+
+describe('Resource units', () => {
   it('should setFormatter and getFmatter suucessful', () => {
     const resource = new Resource();
     const formatter = () => {
@@ -73,4 +151,5 @@ describe('Resource', () => {
     resource.withoutKey();
     expect(resource.getKey()).toBeUndefined();
   });
+
 });

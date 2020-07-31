@@ -16,11 +16,11 @@ describe('Validate', () => {
           ['isEmail', [], { message: '$field must be email' }],
         ],
       };
-      const instance = new Validate({
+      const instance: any = new Validate(struct).make({
         field: 'xxx@xxx.com',
-      }, struct);
+      });
 
-      expect(instance.rules).toEqual([
+      expect(instance._rules).toEqual([
         {
           field: 'field',
           handler: validators.isEmail,
@@ -37,10 +37,10 @@ describe('Validate', () => {
         @isEmail()
         field: string;
       };
-      const instance = new Validate({
+      const instance: any = new Validate(Validator).make({
         field: 'xxx@xxx.com',
-      }, new Validator());
-      expect(instance.rules).toEqual([{
+      });
+      expect(instance._rules).toEqual([{
         field: 'field',
         handler: validators.isEmail,
         args: [],
@@ -57,10 +57,10 @@ describe('Validate', () => {
       };
 
       app.bind('exampleResource1', Validator);
-      const instance = new Validate({
+      const instance: any = new Validate('exampleResource1').make({
         field: 'xxx@xxx.com',
-      }, 'exampleResource1');
-      expect(instance.rules).toEqual([{
+      });
+      expect(instance._rules).toEqual([{
         field: 'field',
         handler: validators.isEmail,
         args: [],
@@ -72,36 +72,36 @@ describe('Validate', () => {
 
     it('should return empty array when rules is empty stuct object', () => {
       const struct = {};
-      const instance = new Validate({
+      const instance: any = new Validate(struct).make({
         field: 'xxx@xxx.com',
-      }, struct);
+      });
 
-      expect(instance.rules).toEqual([]);
+      expect(instance._rules).toEqual([]);
     });
 
     it('should return empty array when rules is Validator instance without rules', () => {
       const Validator = class extends ValidatorBase {};
-      const instance = new Validate({
+      const instance: any = new Validate(Validator).make({
         field: 'xxx@xxx.com',
-      }, new Validator());
-      expect(instance.rules).toEqual([]);
+      });
+      expect(instance._rules).toEqual([]);
     });
 
     it('should return empty array when rules is conatiner instance without rules', () => {
       const Validator = class {};
       Reflect.defineMetadata('type', 'validator', Validator);
       app.bind('validator.example2', Validator);
-      const instance = new Validate({
+      const instance: any = new Validate('validator.example2').make({
         field: 'xxx@xxx.com',
-      }, 'validator.example2');
-      expect(instance.rules).toEqual([]);
+      });
+      expect(instance._rules).toEqual([]);
     });
 
     it('should return empty array when rules is a not bind conatiner instance string', () => {
-      const instance = new Validate({
+      const instance: any = new Validate('example3').make({
         field: 'xxx@xxx.com',
-      }, 'example3');
-      expect(instance.rules).toEqual([]);
+      });
+      expect(instance._rules).toEqual([]);
     });
   });
 
@@ -115,7 +115,7 @@ describe('Validate', () => {
           message: '$field: $value must be between $1 and $2',
         },
       };
-      const instance = new Validate({});
+      const instance: any = new Validate({});
       expect(instance.replaceSpecialMessageFields(100, rule)).toBe('username: 100 must be between 10 and 20');
     });
   });
@@ -131,10 +131,10 @@ describe('Validate', () => {
           message: '$field: $value must be between $1 and $2',
         },
       };
-      const instance = new Validate({
+      const instance: any = new Validate({});
+      const res = instance.validateField(rule, {
         username: 'xxxxxxxxxxx',
       });
-      const res = instance.validateField(rule);
       expect(res).toBeTruthy();
       expect(instance.message.messages.length).toBe(0);
     });
@@ -149,10 +149,10 @@ describe('Validate', () => {
           message: '$field: $value must be between $1 and $2',
         },
       };
-      const instance = new Validate({
+      const instance: any = new Validate({});
+      const res = instance.validateField(rule, {
         username: 'xxx',
       });
-      const res = instance.validateField(rule);
       expect(res).toBeFalsy();
       expect(instance.message.messages.length).toBe(1);
     });
@@ -167,10 +167,10 @@ describe('Validate', () => {
           message: '$field: $value must be between $1 and $2',
         },
       };
-      const instance = new Validate({
+      const instance: any = new Validate({});
+      const res = instance.validateField(rule, {
         username: 'xxxxx',
       });
-      const res = instance.validateField(rule);
       expect(res).toBeFalsy();
       expect(instance.message.messages.length).toBe(1);
     });
@@ -179,22 +179,22 @@ describe('Validate', () => {
   describe('Validate#passes', () => {
     it('should return true when rules passed', () => {
       const instance = new Validate({
-        passed: 'xxxxxxxxxxxx',
-      }, {
         passed: [
           ['length', [10, 20]],
         ],
+      }).make({
+        passed: 'xxxxxxxxxxxx',
       });
       expect(instance.passes).toBeTruthy();
     });
 
     it('should return false when rules failed', () => {
       const instance = new Validate({
-        passes: 'xxx',
-      }, {
         passes: [
           ['length', [10, 20]],
         ],
+      }).make({
+        passes: 'xxx',
       });
       expect(instance.passes).toBeFalsy();
     });
@@ -203,22 +203,22 @@ describe('Validate', () => {
   describe('Validate#fails', () => {
     it('should return false when rules passed', () => {
       const instance = new Validate({
-        failed: 'xxxxxxxxxxxx',
-      }, {
         failed: [
           ['length', [10, 20]],
         ],
+      }).make({
+        failed: 'xxxxxxxxxxxx',
       });
       expect(instance.fails).toBeFalsy();
     });
 
     it('should return true when rules failed', () => {
       const instance = new Validate({
-        failed: 'xxx',
-      }, {
         failed: [
           ['length', [10, 20]],
         ],
+      }).make({
+        failed: 'xxx',
       });
       expect(instance.fails).toBeTruthy();
     });
@@ -227,13 +227,13 @@ describe('Validate', () => {
   describe('Validate#errors', () => {
     it('should return errors when validate failed', () => {
       const instance = new Validate({
-        username: 'xxxxxxxxxxxx',
-      }, {
         username: [
           ['length', [10, 20]],
         ],
       });
-      instance.check();
+      instance.check({
+        username: 'xxxxxxxxxxxx',
+      });
       expect(instance.errors).toBe(instance.message.messages);
     });
   });
