@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.3...@dazejs/framework@4.0.0) (2020-07-31)
+
+
+### Code Refactoring
+
+* **resource:** refactor resource and validator module ([#281](https://github.com/dazejs/daze/issues/281)) ([5e309f0](https://github.com/dazejs/daze/commit/5e309f01e7221760b80d8302cc72e44e11e24ff2))
+
+
+### BREAKING CHANGES
+
+* **resource:** refactor resource and validator module
+
+
+
+
+
 ## [3.4.3](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.2...@dazejs/framework@3.4.3) (2020-07-29)
 
 
