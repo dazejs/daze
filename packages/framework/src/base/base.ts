@@ -12,6 +12,7 @@ import { Application } from '../foundation/application';
 import { MessengerService } from '../messenger';
 import { Model } from '../orm/model';
 import { Response } from '../response';
+import { Validate } from '../validate';
 import { ResourceItem, ResourceCollection } from '../resource';
 import { Redirect } from '../response/redirect';
 // import { Entity } from '../orm/entity';
@@ -67,6 +68,10 @@ export abstract class Base {
         return new ResourceCollection(formater).setData(data);
       }
     };
+  }
+
+  protected validate(validator: any) {
+    return new Validate(validator);
   }
 
   /**

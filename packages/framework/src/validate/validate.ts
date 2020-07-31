@@ -21,9 +21,7 @@ export interface RuleIndependences {
   [key: string]: [keyof typeof validators, any[]?, { [key2: string]: any }?][];
 }
 
-export type validatorType<TValidator> = { new(): TValidator } | Record<string, any> | string;
-
-export class Validate<TValidator> {
+export class Validate {
   /**
    * application
    */
@@ -32,7 +30,7 @@ export class Validate<TValidator> {
   /**
    * validate rules
    */
-  private _rules: RuleData[];
+  private _rules: RuleData[] = [];
 
   /**
    * validate message
@@ -49,11 +47,11 @@ export class Validate<TValidator> {
    * @param data
    * @param rules
    */
-  constructor(validator: validatorType<TValidator>) {
+  constructor(validator?: any) {
     /**
      * @type rules validator rules
      */
-    this._rules = this.getValidatorRules(validator);
+    if (validator) this._rules = this.getValidatorRules(validator);
   }
 
   /**
@@ -69,7 +67,7 @@ export class Validate<TValidator> {
    * parse different type rulse
    * @param rules rules
    */
-  private getValidatorRules(validator: validatorType<TValidator>) {
+  private getValidatorRules(validator: any) {
     // if string type
     if (typeof validator === 'string') {
       // AMRK: COMPONENT_NAME

@@ -65,8 +65,6 @@ export class MiddlewareService {
    * parse middle if middleware type is string type
    */
   parseStringMiddleware(middlewareName: string, args: any[] = []) {
-    // AMRK: COMPONENT_NAME
-    // const _middleware = this.app.get(`middleware.${middleware}`, args);
     const middleware = this.app.get(middlewareName, args);
     if (!middleware) return this;
     this.parseClassInstanceMiddleware(middleware);
@@ -80,7 +78,9 @@ export class MiddlewareService {
     // 使用了 @Middleware 装饰器
     if (middleware.prototype && Reflect.getMetadata('type', middleware) === 'middleware') {
       const MiddlewareClass = middleware;
-      const _middleware = new MiddlewareClass(...args);
+      // const _middleware = new MiddlewareClass(...args);
+      console.log(MiddlewareClass, this.app.has(MiddlewareClass));
+      const _middleware = this.app.get(MiddlewareClass, args);
       this.parseClassInstanceMiddleware(_middleware);
     } else {
       this.middlewares.push(this.wrapperMiddleware(middleware));
