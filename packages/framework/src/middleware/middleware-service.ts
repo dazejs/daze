@@ -78,8 +78,6 @@ export class MiddlewareService {
     // 使用了 @Middleware 装饰器
     if (middleware.prototype && Reflect.getMetadata('type', middleware) === 'middleware') {
       const MiddlewareClass = middleware;
-      // const _middleware = new MiddlewareClass(...args);
-      console.log(MiddlewareClass, this.app.has(MiddlewareClass));
       const _middleware = this.app.get(MiddlewareClass, args);
       this.parseClassInstanceMiddleware(_middleware);
     } else {
