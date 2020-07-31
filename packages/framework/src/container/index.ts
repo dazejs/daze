@@ -266,8 +266,8 @@ export class Container extends EventEmitter {
   private bindParams(argsLength: number, injectParams: InjectParamsOption[], typeParams: any[], args: any[], vars: any[]) { 
     const params: any[] = [];
     // 未确认位置的手动注入的参数数组
-    // 新数组
     const unPositionInjectParams = [];
+    // 已确认位置的手动注入的参数数组
     const positionInjectParams = [];
     for (const item of injectParams) {
       if (item.index !== undefined) {
