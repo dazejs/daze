@@ -50,7 +50,7 @@ export abstract class Base {
    * create redirect instance
    * @param params redirect constructor params
    */
-  protected redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}): Redirect {
+  protected redirect(url?: string, code = 302, header: OutgoingHttpHeaders = {}): Redirect {
     return new Redirect(url, code, header);
   }
 
