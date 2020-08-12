@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { EResourceTypeList, FormatterType, Resource } from './resource';
+import { EResourceTypeList, Resource } from './resource';
 
 
-export class ResourceCollection<TFormater = any> extends Resource<TFormater> {
-  constructor(formatter?: FormatterType<TFormater>) {
+export class ResourceCollection extends Resource {
+  constructor(formatter?: any) {
     super(formatter);
     this.type = EResourceTypeList.Collection;
   }

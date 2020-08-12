@@ -66,9 +66,8 @@ export class MiddlewareService {
    */
   parseStringMiddleware(middlewareName: string, args: any[] = []) {
     const middleware = this.app.get(middlewareName, args);
-    if (!middleware) return this;
+    if (!middleware) return;
     this.parseClassInstanceMiddleware(middleware);
-    return this;
   }
 
   /**
@@ -77,8 +76,8 @@ export class MiddlewareService {
   parseFunctionMiddleware(middleware: any, args: any[] = []) {
     // 使用了 @Middleware 装饰器
     if (middleware.prototype && Reflect.getMetadata('type', middleware) === 'middleware') {
-      const MiddlewareClass = middleware;
-      const _middleware = this.app.get(MiddlewareClass, args);
+      const _middleware = this.app.get(middleware, args);
+      if (!_middleware) return;
       this.parseClassInstanceMiddleware(_middleware);
     } else {
       this.middlewares.push(this.wrapperMiddleware(middleware));

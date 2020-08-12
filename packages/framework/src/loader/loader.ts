@@ -7,7 +7,7 @@
 import * as glob from 'glob';
 import * as path from 'path';
 import { Application } from '../foundation/application';
-import { VerifyCsrfToken } from '../foundation/middlewares';
+import { VerifyCsrfToken, CORSMiddleware } from '../foundation/middlewares';
 // import { INJECTABLE } from '../symbol';
 
 export class Loader {
@@ -20,7 +20,7 @@ export class Loader {
    * loaded components
    */
   loadedComponents: Map<string, any[]> = new Map([
-    ['middleware', [VerifyCsrfToken]]
+    ['middleware', [VerifyCsrfToken, CORSMiddleware]], // 系统默认的中间件
   ]);
 
   /**

@@ -39,33 +39,6 @@ describe('Resource Feature', () => {
     }));
   });
 
-  it('should return resource when use @useItemResource in controller (item)', async () => {
-    const res = await request(app._server)
-      .get('/resource/useItemResource')
-      .expect(200);
-
-    expect(res.text).toBe(JSON.stringify({
-      data: {
-        name: 'dazejs',
-        type: 'node',
-      },
-    }));
-  });
-
-  it('should return resource when use @useCollectionResource in controller (collection)', async () => {
-    const res = await request(app._server)
-      .get('/resource/useCollectionResource')
-      .expect(200);
-    expect(res.text).toBe(JSON.stringify({
-      data: [{
-        name: 'dazejs',
-        type: 'node',
-      }, {
-        name: 'dazejs',
-        type: 'node',
-      }],
-    }));
-  });
 
   it('should return resource when nest resource in controller', async () => {
     const res = await request(app._server)

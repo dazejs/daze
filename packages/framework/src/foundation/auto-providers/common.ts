@@ -12,7 +12,8 @@ import { BaseProvider } from '../../base/provider';
 
 @depends([
   providers.ConfigProvider,
-  providers.LoaderProvider
+  providers.LoaderProvider,
+  providers.StereotypeProvider,
 ])
 export class CommonProvider extends BaseProvider {
 

@@ -21,4 +21,8 @@ export class HttpError extends Error {
     this.errors = errors;
     Error.captureStackTrace(this, this.constructor);
   }
+
+  getErrors() {
+    return this.errors;
+  }
 }

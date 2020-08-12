@@ -13,8 +13,8 @@ import * as symbols from '../../symbol';
 import * as providers from './providers';
 
 @depends([
+  // providers.StereotypeProvider,
   providers.DatabaseProvider,
-  providers.StereotypeProvider,
   providers.LoggerProvider,
   providers.TemplateProvider,
   providers.HttpServerProvider

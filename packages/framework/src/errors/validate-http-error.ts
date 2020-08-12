@@ -23,12 +23,4 @@ export class ValidateHttpError extends HttpError {
   getValidate() {
     return this._validate;
   }
-
-  get errors() {
-    return this._validate.getErrors();
-  }
-
-  getErrors() {
-    return this._validate.getErrors();
-  }
 }

@@ -1,4 +1,4 @@
-import { controller, BaseController, http, useItemResource, useCollectionResource } from '../../../../src';
+import { controller, BaseController, http } from '../../../../src';
 import { TestResource } from './test.resource';
 import { WrapResource } from './wrap.resource';
 
@@ -23,26 +23,6 @@ export class TestController extends BaseController {
     ]);
   }
 
-  @http.get('/useItemResource')
-  @useItemResource(TestResource)
-  useItemResourceAction() {
-    return {
-      name: 'dazejs'
-    };
-  }
-
-  @http.get('/useCollectionResource')
-  @useCollectionResource(TestResource)
-  useCollectionResourceAction() {
-    return [
-      {
-        name: 'dazejs'
-      },
-      {
-        name: 'dazejs'
-      }
-    ];
-  }
 
   @http.get('/wrap')
   wrapAction() {

@@ -17,9 +17,8 @@ export const enum EResourceTypeList {
   Collection = 'collection'
 }
 
-export type FormatterType<TFormatter> = string | { new(): TFormatter } | ((...args: any[]) => any)
 
-export class Resource<TFormatter = any> {
+export class Resource {
   /**
    * @var app Application instance
    */
@@ -38,7 +37,7 @@ export class Resource<TFormatter = any> {
   /**
    * @var formatter resource data formatter
    */
-  formatter: FormatterType<TFormatter> = (data: any) => {
+  formatter: any = (data: any) => {
     if (data instanceof Repository) return data.getAttributes();
     return data;
   };
@@ -61,7 +60,7 @@ export class Resource<TFormatter = any> {
   /**
    * Create Resource
    */
-  constructor(formatter?: FormatterType<TFormatter>) {
+  constructor(formatter?: any) {
     if (formatter) this.formatter = formatter;
   }
 
@@ -193,7 +192,7 @@ export class Resource<TFormatter = any> {
    * @param formatter resource formatter
    * @param data resource meta or data
    */
-  useTransformer(formatter: FormatterType<TFormatter>, data: any) {
+  useTransformer(formatter: any, data: any) {
     if (!data) return null;
     // 如果是字符串
     if (typeof formatter === 'string') {
@@ -215,7 +214,7 @@ export class Resource<TFormatter = any> {
    * check if is resource component
    * @param formatter 
    */
-  isResourceFormatter(formatter: { new(): TFormatter } | ((...args: any[]) => any)): formatter is { new(): TFormatter }  {
+  isResourceFormatter(formatter: { new(): any } | ((...args: any[]) => any)): formatter is { new(): any }  {
     return formatter && Reflect.getMetadata('type', formatter) === 'resource';
   }
 
@@ -236,7 +235,7 @@ export class Resource<TFormatter = any> {
    * @param formatter 
    * @param data 
    */
-  useResourceFormatter(formatter: { new(): TFormatter }, data: any) {
+  useResourceFormatter(formatter: { new(): ResourceInterface }, data: any) {
     const Transformer = this.app.get<ResourceInterface>(formatter);
     return Transformer.resolve(data);
   }

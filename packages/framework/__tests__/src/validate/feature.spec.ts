@@ -20,18 +20,6 @@ describe('Validate Feature', () => {
       .expect(422);
   });
 
-  it('should success when request legal (@useValidator)', async () => {
-    await request(app._server)
-      .get('/validate/test2?username=test@example.com')
-      .expect(200);
-  });
-
-  it('should success when request ilegal (@useValidator)', async () => {
-    await request(app._server)
-      .get('/validate/test2?username=ilegal')
-      .expect(422);
-  });
-
   it('should success when request legal (check)', async () => {
     await request(app._server)
       .get('/validate/test3?username=test@example.com')

@@ -1,4 +1,4 @@
-import { controller, BaseController, http, Request, useValidator } from '../../../../src';
+import { controller, BaseController, http, Request } from '../../../../src';
 import { TestValidator } from './test.validator';
 
 @controller('/validate')
@@ -6,12 +6,6 @@ export class TestController extends BaseController {
   @http.get('/test1')
   test1(request: Request) {
     request.validate(TestValidator);
-    return 'hello dazejs';
-  }
-
-  @http.get('/test2')
-  @useValidator(TestValidator)
-  test2() {
     return 'hello dazejs';
   }
 

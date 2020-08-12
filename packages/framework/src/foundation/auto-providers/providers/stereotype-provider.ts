@@ -34,13 +34,13 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   }
 
   launch() {
-    this.loadMiddlewares();
-    this.loadControllers();
+    this.loadResources();
     this.loadComponents();
     this.loadServices();
-    this.loadResources();
     this.loadEntities();
     this.loadValidators();
+    this.loadMiddlewares();
+    this.loadControllers();
   }
 
   private loadControllers() {
