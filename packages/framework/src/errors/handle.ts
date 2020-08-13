@@ -109,7 +109,6 @@ export class ErrorHandler {
    * @private
    */
   json() {
-    console.log(this.error, 'this.error');
     if (this.error instanceof HttpError) {
       const message = this.error.message || statuses[+this.error.code || 500];
       const { errors } = this.error;

@@ -10,5 +10,5 @@ import { Request } from '../request';
 import { Next } from '../middleware';
 
 export interface MiddlewareInterface {
-  resolve(request: Request, next: Next): Promise<Response>;
+  resolve(request: Request, next: Next): Promise<Response> | Response;
 }

@@ -9,7 +9,7 @@ import { componentType } from '../decorators/component-type';
 
 @componentType('middleware')
 export class BaseMiddleware extends Base {
-  
+
 }
 
 

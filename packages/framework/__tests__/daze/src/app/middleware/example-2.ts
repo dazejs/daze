@@ -1,5 +1,6 @@
-import { BaseMiddleware, Request, Next } from '../../../../../src';
+import { BaseMiddleware, Request, Next, middleware } from '../../../../../src';
 
+@middleware()
 export class Example2 extends BaseMiddleware {
   resolve(request: Request, next: Next) {
     if (request.getQuery('name') === 'example2') {

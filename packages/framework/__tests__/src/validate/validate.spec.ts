@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Application, BaseValidator as ValidatorBase, isEmail } from '../../../src';
+import { Application, BaseValidator as ValidatorBase, isEmail, validator } from '../../../src';
 import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
 
@@ -33,7 +33,7 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is Validator instance', () => {
-      class Validator extends ValidatorBase {
+      @validator() class Validator extends ValidatorBase {
         @isEmail()
         field: string;
       };
@@ -51,7 +51,7 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is string', () => {
-      class Validator extends ValidatorBase {
+      @validator() class Validator extends ValidatorBase {
         @isEmail()
         field: string;
       };
@@ -80,7 +80,7 @@ describe('Validate', () => {
     });
 
     it('should return empty array when rules is Validator instance without rules', () => {
-      const Validator = class extends ValidatorBase {};
+      @validator() class Validator extends ValidatorBase {};
       const instance: any = new Validate(Validator).make({
         field: 'xxx@xxx.com',
       });
@@ -88,8 +88,7 @@ describe('Validate', () => {
     });
 
     it('should return empty array when rules is conatiner instance without rules', () => {
-      const Validator = class {};
-      Reflect.defineMetadata('type', 'validator', Validator);
+      @validator() class Validator {};
       app.bind('validator.example2', Validator);
       const instance: any = new Validate('validator.example2').make({
         field: 'xxx@xxx.com',

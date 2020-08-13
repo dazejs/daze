@@ -9,7 +9,7 @@ import { BaseMiddleware } from '../../base/middleware';
 import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
-import { order } from '../../decorators'
+import { order, middleware } from '../../decorators';
 
 
 const defaultOptions = {
@@ -20,6 +20,7 @@ const defaultOptions = {
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
 };
 
+@middleware()
 @order(Number.MIN_SAFE_INTEGER)
 export class CORSMiddleware extends BaseMiddleware {
   options: any;

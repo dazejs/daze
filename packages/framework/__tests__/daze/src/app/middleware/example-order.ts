@@ -1,5 +1,6 @@
-import { BaseMiddleware, order } from '../../../../../src';
+import { BaseMiddleware, order, middleware } from '../../../../../src';
 
+@middleware()
 export class ExampleMiddlewareOrder extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrder';
@@ -7,6 +8,7 @@ export class ExampleMiddlewareOrder extends BaseMiddleware {
 }
 
 @order(0)
+@middleware()
 export class ExampleMiddlewareOrder0 extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrder0';
@@ -14,6 +16,7 @@ export class ExampleMiddlewareOrder0 extends BaseMiddleware {
 }
 
 @order(1)
+@middleware()
 export class ExampleMiddlewareOrder1 extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrder1';
@@ -21,6 +24,7 @@ export class ExampleMiddlewareOrder1 extends BaseMiddleware {
 }
 
 @order(Number.MAX_SAFE_INTEGER)
+@middleware()
 export class ExampleMiddlewareOrderMax extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrderMax';
@@ -28,6 +32,7 @@ export class ExampleMiddlewareOrderMax extends BaseMiddleware {
 }
 
 @order(Number.MIN_SAFE_INTEGER)
+@middleware()
 export class ExampleMiddlewareOrderMin extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrderMin';
@@ -35,6 +40,7 @@ export class ExampleMiddlewareOrderMin extends BaseMiddleware {
 }
 
 @order(Number.MAX_SAFE_INTEGER + 1)
+@middleware()
 export class ExampleMiddlewareOrderMax1 extends BaseMiddleware {
   resolve(): any | Promise<any> {
     return 'ExampleMiddlewareOrderMax1';

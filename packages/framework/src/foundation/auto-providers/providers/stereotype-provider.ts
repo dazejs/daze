@@ -6,6 +6,7 @@ import { Loader } from '../../../loader';
 import { ControllerService } from '../../../controller/controller-service';
 import { Application } from '../../application';
 import { MiddlewareService } from '../../../middleware/middleware-service';
+import * as symbols from '../../../symbol';
 
 export class StereotypeProvider extends BaseProvider implements ProviderInterface {
   // @inject() loader: Loader;
@@ -59,8 +60,9 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   }
 
   private loadMiddlewares() {
-    const middlewares = this.app.get<Loader>('loader').getComponentsByType('middleware') || [];
+    const middlewares: Function[] = this.app.get<Loader>('loader').getComponentsByType('middleware') || [];
     for (const middleware of middlewares) {
+      Reflect.defineMetadata(symbols.DISABLE_INJECT, true, middleware, 'resolve');
       this.bindStereotype(middleware, true);
     }
   }

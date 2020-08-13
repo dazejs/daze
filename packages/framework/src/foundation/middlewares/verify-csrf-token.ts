@@ -9,11 +9,13 @@ import { BaseMiddleware } from '../../base/middleware';
 import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
+import { middleware } from '../../decorators';
 
 
 const defaultExcludedMethods = ['HEAD', 'GET', 'OPTIONS'];
 const defaultInvalidTokenMessage = 'Invalid CSRF token';
 
+@middleware()
 export class VerifyCsrfToken extends BaseMiddleware {
   get except(): any[] {
     return [];
