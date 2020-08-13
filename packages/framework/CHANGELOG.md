@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.0.0...@dazejs/framework@4.0.1) (2020-08-13)
+
+
+### Bug Fixes
+
+* **decorator:** fix decorator error ([bf81093](https://github.com/dazejs/daze/commit/bf810938642d14e6a0d2007beb6812bc27d55307))
+* **middleware:** fix undefined cross middleware ([9b46d5b](https://github.com/dazejs/daze/commit/9b46d5bb08f38ee2f81daad6e4ab6ce942ee6ffd))
+* **middleware:** update load sort ([79bd073](https://github.com/dazejs/daze/commit/79bd073d09bcf07250190ac54881485b3a4b0fb0))
+
+
+
+
+
 # [4.0.0](https://github.com/dazejs/daze/compare/@dazejs/framework@3.4.3...@dazejs/framework@4.0.0) (2020-07-31)
 
 
