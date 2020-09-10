@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.0...@dazejs/framework@4.1.1) (2020-09-10)
+
+
+### Bug Fixes
+
+* **model:** fix model relation ([ca26879](https://github.com/dazejs/daze/commit/ca268792e4170674587bb7abf6917489d656306f))
+* **type:** fix model type ([4e89048](https://github.com/dazejs/daze/commit/4e8904846cecfc5ffd0a354ee37476ff326fb0f2))
+
+
+
+
+
 # [4.1.0](https://github.com/dazejs/daze/compare/@dazejs/framework@4.0.1...@dazejs/framework@4.1.0) (2020-09-10)
 
 
