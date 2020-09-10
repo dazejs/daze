@@ -303,6 +303,21 @@ export class Resource {
     return data;
   }
 
+  // private recursive(data: Record<string, any>) {
+  //   const res: any = {};
+  //   for (const key in data) {
+  //     if (Object.prototype.hasOwnProperty.call(data, key)) {
+  //       const element = data[key];
+  //       if (element instanceof Resource) {
+  //         res[key] = element.withoutKey().transform(false);
+  //       } else {
+  //         res[key] = element;
+  //       }
+  //     }
+  //   }
+  //   return res;
+  // }
+
   /**
    * output result
    */

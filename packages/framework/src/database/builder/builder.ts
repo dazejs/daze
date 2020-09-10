@@ -777,6 +777,15 @@ export class Builder {
   }
 
   /**
+   *  query multiple records and count from database,
+   */
+  async findAndCount(): Promise<[any[], number]> {
+    const results: any[] = await this.find();
+    const count: number = await this.count();
+    return [results, count];
+  }
+
+  /**
    * query first record from database
    */
   async first(){

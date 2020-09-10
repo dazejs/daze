@@ -76,6 +76,32 @@ describe('find record use builder', () => {
   });
 });
 
+describe('find record and count use builder', () => {
+  it('should return records when find success', async () => {
+    await app.get('db').connection().table('users').insert({
+      id: 1,
+      name: 'dazejs',
+      age: 18
+    });
+    await app.get('db').connection().table('users').insert({
+      id: 2,
+      name: 'dazejs',
+      age: 20
+    });
+    const [records, count] = await app.get('db').connection().table('users').columns('id', 'name', 'age').findAndCount();
+    expect(count).toBe(2);
+    expect(records).toEqual([{
+      id: 1,
+      name: 'dazejs',
+      age: 18
+    }, {
+      id: 2,
+      name: 'dazejs',
+      age: 20
+    }]);
+  });
+});
+
 
 describe('get record by id use builder', () => {
   it('should return record when get success', async () => {

@@ -118,6 +118,22 @@ export class ModelBuilder<TEntity = any> {
   }
 
   /**
+   * 查询数据集和 count
+   */
+  async findAndCount(): Promise<[(Repository<TEntity> & TEntity)[], number]> {
+    if (this.model.isForceDelete()) {
+      const [records, count] = await this.builder.findAndCount();
+      const results = await this.model.resultToRepositories(this.repository, records);
+      return [results, count];
+    }
+    const [records, count] = await this.builder.whereNull(
+      this.model.getSoftDeleteKey()
+    ).findAndCount();
+    const results = await this.model.resultToRepositories(this.repository, records);
+    return [results, count];
+  }
+
+  /**
    * 查询单条记录
    */
   async first() {
