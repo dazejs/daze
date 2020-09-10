@@ -28,7 +28,7 @@ export class Repository<TEntity = any> {
    */
   private withs: Map<string, {
     relation: HasRelations;
-    queryCallback: (query: Builder) => void;
+    queryCallback?: (query: Builder) => void;
   }> = new Map();
 
   /**
@@ -178,7 +178,7 @@ export class Repository<TEntity = any> {
    * Eager loading
    * @param relations 
    */
-  with(relation: string, callback: (query: Builder) => void) {
+  with(relation: string, callback?: (query: Builder) => void) {
     const relationImp = this.model.getRelationImp(relation);
     if (relationImp) {
       this.setWith(relation, relationImp, callback);
@@ -207,7 +207,7 @@ export class Repository<TEntity = any> {
    * @param relation 
    * @param value 
    */
-  setWith(relation: string, value: HasRelations, queryCallback: (query: Builder) => void) {
+  setWith(relation: string, value: HasRelations, queryCallback?: (query: Builder) => void) {
     this.withs.set(relation, {
       relation: value,
       queryCallback
@@ -221,7 +221,7 @@ export class Repository<TEntity = any> {
    */
   async eagerly(withs: Map<string, {
     relation: HasRelations;
-    queryCallback: (query: Builder) => void;
+    queryCallback?: (query: Builder) => void;
   }>, result: Repository) {
     for (const [relation, relationOption] of withs) {
       const { relation: relationImp, queryCallback} = relationOption; 
@@ -236,7 +236,7 @@ export class Repository<TEntity = any> {
    */
   async eagerlyCollection(withs: Map<string, {
     relation: HasRelations;
-    queryCallback: (query: Builder) => void;
+    queryCallback?: (query: Builder) => void;
   }>, results: Repository[]) {
     for (const [relation, relationOption] of withs) {
       const { relation: relationImp, queryCallback} = relationOption; 

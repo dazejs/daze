@@ -26,7 +26,7 @@ export class BaseEntity {
    * 关联预加载
    * @param relations 
    */
-  with(relation: string, callback: (query: Builder) => void): Repository<this> & this {
+  with(relation: string, callback?: (query: Builder) => void): Repository<this> & this {
     return (new Model(this.constructor as any)).createRepository().with(relation, callback) as any;
   }
 
