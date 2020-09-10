@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/dazejs/daze/compare/@dazejs/framework@4.0.1...@dazejs/framework@4.1.0) (2020-09-10)
+
+
+### Features
+
+* **database, model:** add findAndCount ([8ba8269](https://github.com/dazejs/daze/commit/8ba826905e4f92698e3cd30bc6b9478741ffcdd8))
+
+
+
+
+
 ## [4.0.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.0.0...@dazejs/framework@4.0.1) (2020-08-13)
 
 
