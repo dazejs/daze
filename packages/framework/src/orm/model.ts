@@ -234,32 +234,33 @@ export class Model<TEntity = {}> {
     if (!relationDesc) return;
     if (relationDesc) {
       const RelationEntity = relationDesc.entityFn();
+      const model = new Model(RelationEntity);
       switch (relationDesc.type) {
         case 'hasOne':
           return new HasOne(
             this,
-            new Model(RelationEntity),
+            model,
             relationDesc.foreignKey,
             relationDesc.localKey
           );
         case 'belongsTo':
           return new BelongsTo(
             this,
-            new Model(RelationEntity),
+            model,
             relationDesc.foreignKey,
             relationDesc.localKey
           );
         case 'hasMany':
           return new HasMany(
             this,
-            new Model(RelationEntity),
+            model,
             relationDesc.foreignKey,
             relationDesc.localKey
           );
         case 'belongsToMany':
           return new BelongsToMany(
             this,
-            new Model(RelationEntity),
+            model,
             relationDesc.pivot,
             relationDesc.foreignPivotKey,
             relationDesc.relatedPivotKey

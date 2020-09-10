@@ -26,7 +26,10 @@ export class Repository<TEntity = any> {
    * 渴求式加载对象集合
    * Want to load a collection of objects
    */
-  private withs: Map<string, HasRelations> = new Map();
+  private withs: Map<string, {
+    relation: HasRelations;
+    queryCallback: (query: Builder) => void;
+  }> = new Map();
 
   /**
    * 创建模型仓库实例
@@ -175,13 +178,11 @@ export class Repository<TEntity = any> {
    * Eager loading
    * @param relations 
    */
-  with(...relations: string[]) {
-    for (const relation of relations) {
-      const relationImp = this.model.getRelationImp(relation);
-      if (relationImp) {
-        this.setWith(relation, relationImp);
-      };
-    }
+  with(relation: string, callback: (query: Builder) => void) {
+    const relationImp = this.model.getRelationImp(relation);
+    if (relationImp) {
+      this.setWith(relation, relationImp, callback);
+    };
     return this;
   }
 
@@ -206,8 +207,11 @@ export class Repository<TEntity = any> {
    * @param relation 
    * @param value 
    */
-  setWith(relation: string, value: HasRelations) {
-    this.withs.set(relation, value);
+  setWith(relation: string, value: HasRelations, queryCallback: (query: Builder) => void) {
+    this.withs.set(relation, {
+      relation: value,
+      queryCallback
+    });
     return this;
   }
 
@@ -215,9 +219,13 @@ export class Repository<TEntity = any> {
    * 渴求式加载
    * @param result 
    */
-  async eagerly(withs: Map<string, HasRelations>, result: Repository) {
-    for (const [relation, relationImp] of withs) {
-      await relationImp.eagerly(result, relation);
+  async eagerly(withs: Map<string, {
+    relation: HasRelations;
+    queryCallback: (query: Builder) => void;
+  }>, result: Repository) {
+    for (const [relation, relationOption] of withs) {
+      const { relation: relationImp, queryCallback} = relationOption; 
+      await relationImp.eagerly(result, relation, queryCallback);
     }
   }
 
@@ -226,9 +234,13 @@ export class Repository<TEntity = any> {
    * @param withs 
    * @param results 
    */
-  async eagerlyCollection(withs: Map<string, HasRelations>, results: Repository[]) {
-    for (const [relation, relationImp] of withs) {
-      await relationImp.eagerlyMap(results, relation);
+  async eagerlyCollection(withs: Map<string, {
+    relation: HasRelations;
+    queryCallback: (query: Builder) => void;
+  }>, results: Repository[]) {
+    for (const [relation, relationOption] of withs) {
+      const { relation: relationImp, queryCallback} = relationOption; 
+      await relationImp.eagerlyMap(results, relation, queryCallback);
     }
   }
 

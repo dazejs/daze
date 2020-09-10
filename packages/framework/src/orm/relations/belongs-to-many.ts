@@ -4,6 +4,7 @@ import { Model } from '../model';
 import { Repository } from '../repository';
 import pluralize from 'pluralize';
 import { Join } from '../../database/builder/join';
+import { Builder } from '../../database/builder';
 
 export class BelongsToMany extends HasRelations {
   /**
@@ -71,7 +72,7 @@ export class BelongsToMany extends HasRelations {
    * @param resultModel 需要被加载的模型
    * @param relation 关联名
    */
-  async eagerly(resultRepos: Repository, relation: string) {
+  async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: Builder) => void) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
     // 需要被加载的模型主键值
@@ -85,9 +86,9 @@ export class BelongsToMany extends HasRelations {
     // 获取中间表与当前模型的关联数据
 
     const model = this.model.createRepository();
-    const records: Record<string, any>[] = await model
-      .createQueryBuilder()
-      .getBuilder()
+    const query = model.createQueryBuilder().getBuilder();
+    if (queryCallback) queryCallback(query);
+    const records: Record<string, any>[] = await query
       .alias('relate')
       .join((join: Join) => {
         return join.table(this.pivot.getTable(), 'pivot')
@@ -109,7 +110,7 @@ export class BelongsToMany extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultReposes: Repository[], relation: string) {
+  async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: Builder) => void) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
     // 查询范围 - foreignPivotKey
@@ -128,9 +129,9 @@ export class BelongsToMany extends HasRelations {
       // 获取中间表与当前模型的关联数据
 
       const model = this.model.createRepository();
-      const records: Record<string, any>[] = await model
-        .createQueryBuilder()
-        .getBuilder()
+      const query = model.createQueryBuilder().getBuilder();
+      if (queryCallback) queryCallback(query);
+      const records: Record<string, any>[] = await query
         .alias('relate')
         .columns(`pivot.${foreignPivotKey}`)
         .join((join: Join) => {

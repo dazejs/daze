@@ -2,6 +2,7 @@ import { HasRelations } from './has-relations.abstract';
 import { Model } from '../model';
 import { Repository } from '../repository';
 import pluralize from 'pluralize';
+import { Builder } from '../../database/builder';
 
 export class HasMany extends HasRelations {
   /**
@@ -38,17 +39,14 @@ export class HasMany extends HasRelations {
    * @param resultModel 
    * @param relation 
    */
-  async eagerly(resultRepos: Repository, relation: string) {
+  async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: Builder) => void) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
     const model = this.model.createRepository();
-    const records = await model
-      .createQueryBuilder()
-      .getBuilder()
-      .where(foreignKey, '=', resultRepos.getAttribute(localKey))
-      .find();
-
+    const query = model.createQueryBuilder().getBuilder();
+    if (queryCallback) queryCallback(query);
+    const records = await query.where(foreignKey, '=', resultRepos.getAttribute(localKey)).find();
     if (records) {
       resultRepos.setAttribute(
         relation, 
@@ -62,7 +60,7 @@ export class HasMany extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultReposes: Repository[], relation: string) {
+  async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: Builder) => void) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
@@ -75,11 +73,9 @@ export class HasMany extends HasRelations {
 
     if (range.size > 0) {
       const model = this.model.createRepository();
-      const records: Record<string, any>[] = await model
-        .createQueryBuilder()
-        .getBuilder()
-        .whereIn(foreignKey, [...range])
-        .find();
+      const query = model.createQueryBuilder().getBuilder();
+      if (queryCallback) queryCallback(query);
+      const records: Record<string, any>[] = await query.whereIn(foreignKey, [...range]).find();
       const map = new Map();
       for (const record of records) {
         const pk = record[foreignKey];

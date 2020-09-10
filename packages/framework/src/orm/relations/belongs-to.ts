@@ -3,6 +3,7 @@ import { Model } from '../model';
 import { Repository } from '../repository';
 import { HasRelations } from './has-relations.abstract';
 import pluralize from 'pluralize';
+import { Builder } from '../../database/builder';
 
 export class BelongsTo extends HasRelations {
   /**
@@ -39,13 +40,14 @@ export class BelongsTo extends HasRelations {
    * @param resultModel 
    * @param relation 
    */
-  async eagerly(resultRepos: Repository, relation: string) {
+  async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: Builder) => void) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
     const model = this.model.createRepository();
-    const data = await model
-      .createQueryBuilder()
+    const query = model.createQueryBuilder().getBuilder();
+    if (queryCallback) queryCallback(query);
+    const data = await query
       .where(localKey, '=', resultRepos.getAttribute(foreignKey))
       .first();
 
@@ -62,7 +64,7 @@ export class BelongsTo extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultReposes: Repository[], relation: string) {
+  async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: Builder) => void) {
     const foreignKey = this.foreignKey;
     const localKey = this.localKey;
 
@@ -77,10 +79,9 @@ export class BelongsTo extends HasRelations {
 
     if (range.size > 0) {
       const model = this.model.createRepository();
-      const records: Record<string, any>[] = await model
-        .createQueryBuilder()
-        .getBuilder()
-        .whereIn(localKey, [...range])
+      const query = model.createQueryBuilder().getBuilder();
+      if (queryCallback) queryCallback(query);
+      const records: Record<string, any>[] = await query.whereIn(localKey, [...range])
         .find();
       const map = new Map();
 
