@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.1...@dazejs/framework@4.1.2) (2020-09-11)
+
+
+### Bug Fixes
+
+* **database:** fix aggregate with limit and offset ([f2d95c5](https://github.com/dazejs/daze/commit/f2d95c5154b2869de34b9e457287f34ffea91e25))
+
+
+
+
+
 ## [4.1.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.0...@dazejs/framework@4.1.1) (2020-09-10)
 
 
