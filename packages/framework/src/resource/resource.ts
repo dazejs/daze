@@ -65,6 +65,27 @@ export class Resource {
   }
 
   /**
+   * 返回 item 类型资源
+   * @param data 
+   */
+  item(data: any) {
+    this.type = EResourceTypeList.Item;
+    this.setData(data);
+    return this;
+  }
+
+  /**
+   * 返回 collection 类型资源
+   * @param data 
+   */
+  collection(data: any) {
+    this.type = EResourceTypeList.Collection;
+    this.setData(data);
+    return this;
+  }
+
+
+  /**
    * set resource data formatter
    * @param formatter resource data formatter
    */
