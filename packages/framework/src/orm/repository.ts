@@ -224,7 +224,7 @@ export class Repository<TEntity = any> {
     queryCallback?: (query: Builder) => void;
   }>, result: Repository) {
     for (const [relation, relationOption] of withs) {
-      const { relation: relationImp, queryCallback} = relationOption; 
+      const { relation: relationImp, queryCallback } = relationOption; 
       await relationImp.eagerly(result, relation, queryCallback);
     }
   }
@@ -239,7 +239,7 @@ export class Repository<TEntity = any> {
     queryCallback?: (query: Builder) => void;
   }>, results: Repository[]) {
     for (const [relation, relationOption] of withs) {
-      const { relation: relationImp, queryCallback} = relationOption; 
+      const { relation: relationImp, queryCallback } = relationOption; 
       await relationImp.eagerlyMap(results, relation, queryCallback);
     }
   }

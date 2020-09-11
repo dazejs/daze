@@ -79,12 +79,12 @@ export class Builder {
   /**
    * The maximum number of records
    */
-  _limit: number;
+  _limit?: number;
 
   /**
    * The number of records to skip
    */
-  _offset: number;
+  _offset?: number;
 
   /**
    * The lock
@@ -420,6 +420,8 @@ export class Builder {
       func: type,
       column,
     };
+    this._limit = undefined;
+    this._offset = undefined;
     const sql = this.toSql();
     const params = this.getBindings();
     const results = await this.actuator.select(sql, params);

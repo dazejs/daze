@@ -130,6 +130,7 @@ export class BelongsToMany extends HasRelations {
 
       const model = this.model.createRepository();
       const query = model.createQueryBuilder().getBuilder();
+      
       if (queryCallback) queryCallback(query);
       const records: Record<string, any>[] = await query
         .alias('relate')

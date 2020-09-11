@@ -250,14 +250,14 @@ export class Parser {
    * @param builder 
    */
   parseLimit(builder: Builder) {
-    return builder._limit >= 0 ? `limit ${builder._limit}` : '';
+    return builder._limit && builder._limit >= 0 ? `limit ${builder._limit}` : '';
   }
 
   /**
    * parse offset
    */
   parseOffset(builder: Builder) {
-    return builder._offset >= 0 ? `offset ${builder._offset}` : '';
+    return builder._offset && builder._offset >= 0 ? `offset ${builder._offset}` : '';
   }
 
   /**
