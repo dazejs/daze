@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.2...@dazejs/framework@4.2.0) (2020-09-14)
+
+
+### Bug Fixes
+
+* **resource:** fix missing default resource ([7b422c2](https://github.com/dazejs/daze/commit/7b422c2f67f3f3d2e3f0d807c21deb95a73285e9))
+
+
+### Features
+
+* **resource,pagination:** add paginator model and refactor resource ([85fb847](https://github.com/dazejs/daze/commit/85fb8475656d49bb565d15764acfb5f3f105c7e5))
+
+
+
+
+
 ## [4.1.2](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.1...@dazejs/framework@4.1.2) (2020-09-11)
 
 
