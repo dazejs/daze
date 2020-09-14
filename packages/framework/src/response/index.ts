@@ -19,6 +19,7 @@ import { Resource } from '../resource/resource';
 import { View } from '../view';
 import { ViewFactory } from '../view/factory';
 import { Statusable } from './statusable';
+import { Paginator } from '../pagination';
 
 const encodingMethods = {
   gzip: zlib.createGzip,
@@ -409,6 +410,10 @@ export class Response extends Statusable {
     if (data instanceof View) {
       this.setType('html');
       return (new ViewFactory(data)).output(request);
+    }
+    if (data instanceof Paginator) {
+      this.setType('json');
+      return data.toJSON();
     }
     return data;
   }

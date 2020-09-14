@@ -10,7 +10,7 @@ import {
   BaseResource,
   controller,
   component,
-  service, resource, middleware, validator
+  service, resourcer, middleware, validator
 } from '../../../src';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
@@ -25,7 +25,7 @@ describe('Loader', () => {
     @service('example')
     class ExampleService extends BaseService { }
 
-    @resource('example')
+    @resourcer('example')
     class ExampleResource extends BaseResource {
       resolve(data: any) {
         return data;

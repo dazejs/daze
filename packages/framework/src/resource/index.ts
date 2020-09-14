@@ -5,6 +5,4 @@
  * https://opensource.org/licenses/MIT
  */
 
-export * from './item';
-export * from './collection';
 export * from './resource';
