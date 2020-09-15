@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.0...@dazejs/framework@4.2.1) (2020-09-15)
+
+
+### Bug Fixes
+
+* **resource:** fix pagination api ([1e9bb43](https://github.com/dazejs/daze/commit/1e9bb438904174b69130e1ed190fe0017c751ade))
+
+
+
+
+
 # [4.2.0](https://github.com/dazejs/daze/compare/@dazejs/framework@4.1.2...@dazejs/framework@4.2.0) (2020-09-14)
 
 
