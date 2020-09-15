@@ -105,7 +105,7 @@ export class Resource {
     return this;
   }
 
-  static collection(data: any[]) {
+  static collection(data: any) {
     return new Resource().collection(data);
   }
 
