@@ -85,6 +85,22 @@ export class Resource {
    */
   collection(data: any) {
     this.type = EResourceTypeList.Collection;
+    if (data instanceof Paginator) {
+      this.setData(data.getData());
+      this.addMeta(
+        data.getCurrentPageKey(),
+        data.getCurrentPage()
+      );
+      this.addMeta(
+        data.getTotalKey(),
+        data.getTotal()
+      );
+      this.addMeta(
+        data.getPerPageKey(),
+        data.getPerPage()
+      );
+      return this;
+    }
     this.setData(data);
     return this;
   }
@@ -92,33 +108,6 @@ export class Resource {
   static collection(data: any[]) {
     return new Resource().collection(data);
   }
-
-  /**
-   * 返回分页数据
-   * @param paginator 
-   */
-  pagination(paginator: Paginator) {
-    this.type = EResourceTypeList.Collection;
-    this.data = paginator.getData();
-    this.addMeta(
-      paginator.getCurrentPageKey(),
-      paginator.getCurrentPage()
-    );
-    this.addMeta(
-      paginator.getTotalKey(),
-      paginator.getTotal()
-    );
-    this.addMeta(
-      paginator.getPerPageKey(),
-      paginator.getPerPage()
-    );
-    return this;
-  }
-
-  static pagination(paginator: Paginator) {
-    return new Resource().pagination(paginator);
-  }
-
 
   /**
    * set resource data formatter
