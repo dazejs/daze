@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.1...@dazejs/framework@4.2.2) (2020-09-15)
+
+
+### Bug Fixes
+
+* **resource:** fix collection param type error ([e4e77bf](https://github.com/dazejs/daze/commit/e4e77bfa15984370dbd48ebfb2df0ebcd3162033))
+
+
+
+
+
 ## [4.2.1](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.0...@dazejs/framework@4.2.1) (2020-09-15)
 
 
