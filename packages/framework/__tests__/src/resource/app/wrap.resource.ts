@@ -1,7 +1,7 @@
-import { resource, BaseResource, ResourceInterface } from '../../../../src';
+import { resourcer, BaseResource, ResourceInterface } from '../../../../src';
 import { TestResource } from './test.resource';
 
-@resource()
+@resourcer()
 export class WrapResource extends BaseResource implements ResourceInterface {
   resolve(data: any) {
     return {

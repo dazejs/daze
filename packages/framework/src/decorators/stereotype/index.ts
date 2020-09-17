@@ -5,5 +5,5 @@ export * from './service';
 export * from './entity';
 export * from './injectable';
 export * from './middleware';
-export * from './resource';
+export * from './resourcer';
 export * from './validator';

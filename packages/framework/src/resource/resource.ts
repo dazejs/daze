@@ -9,6 +9,7 @@ import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ResourceInterface } from '../interfaces';
 import { Repository } from '../orm/repository';
+import { Paginator } from '../pagination';
 
 const DEFAULT_KEY = 'data';
 
@@ -74,16 +75,39 @@ export class Resource {
     return this;
   }
 
+  static item(data: any) {
+    return new Resource().item(data);
+  }
+
   /**
    * 返回 collection 类型资源
    * @param data 
    */
   collection(data: any) {
     this.type = EResourceTypeList.Collection;
+    if (data instanceof Paginator) {
+      this.setData(data.getData());
+      this.addMeta(
+        data.getCurrentPageKey(),
+        data.getCurrentPage()
+      );
+      this.addMeta(
+        data.getTotalKey(),
+        data.getTotal()
+      );
+      this.addMeta(
+        data.getPerPageKey(),
+        data.getPerPage()
+      );
+      return this;
+    }
     this.setData(data);
     return this;
   }
 
+  static collection(data: any) {
+    return new Resource().collection(data);
+  }
 
   /**
    * set resource data formatter
@@ -217,18 +241,24 @@ export class Resource {
     if (!data) return null;
     // 如果是字符串
     if (typeof formatter === 'string') {
-      return this.useStringFormatter(formatter, data);
+      return this.recursiveFilter(
+        this.useStringFormatter(formatter, data)
+      );
     }
     // 如果是资源类
     if (this.isResourceFormatter(formatter as any)) {
-      return this.useResourceFormatter(formatter as any, data);
+      return this.recursiveFilter(
+        this.useResourceFormatter(formatter as any, data)
+      );
     }
     // 如果是回调函数/类
     if (typeof formatter === 'function') {
       // 容器中已绑定
-      return this.useCallbackFormatter(formatter as any, data);
+      return this.recursiveFilter(
+        this.useCallbackFormatter(formatter as any, data)
+      );
     }
-    return data;
+    return this.recursiveFilter(data);
   }
 
   /**
@@ -324,31 +354,45 @@ export class Resource {
     return data;
   }
 
-  // private recursive(data: Record<string, any>) {
-  //   const res: any = {};
-  //   for (const key in data) {
-  //     if (Object.prototype.hasOwnProperty.call(data, key)) {
-  //       const element = data[key];
-  //       if (element instanceof Resource) {
-  //         res[key] = element.withoutKey().transform(false);
-  //       } else {
-  //         res[key] = element;
-  //       }
-  //     }
-  //   }
-  //   return res;
-  // }
+  /**
+   * 递归过滤数据
+   * @param data 
+   */
+  private recursiveFilter(data: any): any {
+    // 资源类进行转换
+    if (data instanceof Resource) {
+      return data.withoutKey().transform(false);
+    }
+    // 模型类进行属性获取
+    else if (data instanceof Repository) {
+      return data.getAttributes();
+    }
+    // 数组过滤
+    else if (Array.isArray(data)) {
+      return data.map(item => this.recursiveFilter(item));
+    } 
+    // 对象过滤
+    else if (data !== null && typeof data === 'object') {
+      const res: any = {};
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          const item = data[key];
+          res[key] = this.recursiveFilter(item);
+        }
+      }
+      return res;
+    }
+    // 其他直接使用
+    else {
+      return data;
+    }
+  }
 
   /**
    * output result
    */
   output(isOverstore = true) {
     const data = this.transform(isOverstore);
-    return JSON.stringify(data, (_k, v) => {
-      if (v instanceof Resource) {
-        return v.withoutKey().transform(false);
-      }
-      return v;
-    });
+    return data;
   }
 }

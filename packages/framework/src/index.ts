@@ -25,4 +25,5 @@ export * from './response/redirect';
 export * from './view';
 export * from './interfaces';
 export * from './utils';
+export * from './pagination';
 

@@ -3,7 +3,8 @@ import { Database } from '../database';
 import { Builder } from '../database/builder';
 import { Application } from '../foundation/application';
 import { Model } from './model';
-import { Repository } from './repository';
+import { Repository } from './repository'; 
+import { Paginator, PaginatorOption } from '../pagination';
 
 export class ModelBuilder<TEntity = any> {
   /**
@@ -131,6 +132,24 @@ export class ModelBuilder<TEntity = any> {
     ).findAndCount();
     const results = await this.model.resultToRepositories(this.repository, records);
     return [results, count];
+  }
+
+  /**
+   * 分页查询
+   * @param page 
+   * @param perPage 
+   */
+  async pagination(page: number, perPage = 10, option?: PaginatorOption) {
+    this.builder.take(perPage).skip((page - 1) * perPage);
+    const [items, count] = await this.findAndCount();
+    const paginator: Paginator = new Paginator(
+      items.map(item => item.getAttributes()),
+      count,
+      page,
+      perPage,
+      option
+    );
+    return paginator;
   }
 
   /**

@@ -1,7 +1,7 @@
-import { resource, BaseResource, ResourceInterface } from '../../../../src';
+import { resourcer, BaseResource, ResourceInterface } from '../../../../src';
 
 
-@resource()
+@resourcer()
 export class TestResource extends BaseResource implements ResourceInterface {
   resolve(data: any) {
     return {

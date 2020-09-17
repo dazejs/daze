@@ -6,10 +6,10 @@
  */
 import { component } from './component';
 
-export const resource = function (name?: string): ClassDecorator {
+export const resourcer = function (name?: string): ClassDecorator {
   return function (constructor) {
     component(name, 'resource')(constructor);
   };
 };
 
-export const Resource = resource;
+export const Resourcer = resourcer;

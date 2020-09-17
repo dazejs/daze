@@ -13,8 +13,8 @@ import { MessengerService } from '../messenger';
 import { Model } from '../orm/model';
 import { Response } from '../response';
 import { Validate } from '../validate';
-import { ResourceItem, ResourceCollection } from '../resource';
 import { Redirect } from '../response/redirect';
+import { Resource } from '../resource';
 // import { Entity } from '../orm/entity';
 
 export abstract class Base {
@@ -62,10 +62,10 @@ export abstract class Base {
   protected resource(formater?: any) {
     return {
       item: (data: Record<string, any>) => {
-        return new ResourceItem(formater).setData(data);
+        return new Resource(formater).item(data);
       },
       collection: (data: Record<string, any>[]) => {
-        return new ResourceCollection(formater).setData(data);
+        return new Resource(formater).collection(data);
       }
     };
   }
