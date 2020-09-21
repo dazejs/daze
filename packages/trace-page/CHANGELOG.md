@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/dazejs/daze/compare/@dazejs/trace-page@1.0.2...@dazejs/trace-page@1.0.3) (2020-09-21)
+
+
+### Bug Fixes
+
+* **page:** fix pahe build ([dc048ea](https://github.com/dazejs/daze/commit/dc048ea790797fbd1a6147e0ae6d1234a410bfd9))
+
+
+
+
+
 ## [1.0.2](https://github.com/dazejs/daze/compare/@dazejs/trace-page@1.0.1...@dazejs/trace-page@1.0.2) (2020-09-21)
 
 
