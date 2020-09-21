@@ -931,6 +931,36 @@ export class Builder {
   }
 
   /**
+   * 根据给定的值自增字段
+   * @param column 
+   * @param amount 
+   * @param extra 
+   */
+  async increment(column: string, amount = 1, extra?: Record<string, any>) {
+    const wrapedColumn = this.parser.wrapColum(column, this);
+    const columns = {
+      [`${column}`]: `${wrapedColumn} + ${amount}`,
+      ...extra
+    };
+    return this.update(columns);
+  }
+
+  /**
+   * 根据给定的值自减字段
+   * @param column 
+   * @param amount 
+   * @param extra 
+   */
+  async decrement(column: string, amount = 1, extra?: Record<string, any>) {
+    const wrapedColumn = this.parser.wrapColum(column, this);
+    const columns = {
+      [`${column}`]: `${wrapedColumn} - ${amount}`,
+      ...extra
+    };
+    return this.update(columns);
+  }
+
+  /**
    * delete by id
    * @param id 
    */

@@ -30,7 +30,7 @@ export class ModelBuilder<TEntity = any> {
   /**
    * 不走代理的接口列表
    */
-  private throughs: string[] = ['insert', 'update', 'delete', 'aggregate', 'count', 'max', 'min', 'sum', 'avg'];
+  private throughs: string[] = ['insert', 'update', 'increment', 'decrement', 'delete', 'aggregate', 'count', 'max', 'min', 'sum', 'avg'];
 
   /**
    * Create Builder For Model
