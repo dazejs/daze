@@ -790,7 +790,7 @@ export class Builder {
   /**
    * query first record from database
    */
-  async first(){
+  async first(): Promise<Record<string, any> | undefined> {
     const sql = this.take(1).toSql();
     const params = this.getBindings();
     if (this.shouldLogSql) {
@@ -801,7 +801,7 @@ export class Builder {
     if (!results[0]) return;
     return {
       ...results[0]
-    };
+    } as Record<string, any>;
   }
   /**
    * get binding parmas for update

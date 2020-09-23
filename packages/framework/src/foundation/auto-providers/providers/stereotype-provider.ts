@@ -7,6 +7,7 @@ import { ControllerService } from '../../../controller/controller-service';
 import { Application } from '../../application';
 import { MiddlewareService } from '../../../middleware/middleware-service';
 import * as symbols from '../../../symbol';
+import { Job } from '../../../job';
 
 export class StereotypeProvider extends BaseProvider implements ProviderInterface {
   // @inject() loader: Loader;
@@ -34,6 +35,16 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
     return app.get(MiddlewareService);
   }
 
+  @provide(Job)
+  _database(app: Application) {
+    return new Job(app);
+  }
+
+  @provide('job')
+  _databaseAlias(app: Application) {
+    return app.get(Job);
+  }
+
   launch() {
     this.loadResources();
     this.loadComponents();
@@ -42,6 +53,14 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
     this.loadValidators();
     this.loadMiddlewares();
     this.loadControllers();
+    this.loadJobs();
+  }
+
+  private loadJobs() {
+    const components = this.app.get<Loader>('loader').getComponentsByType('job') || [];
+    for (const component of components) {
+      this.bindStereotype(component, false);
+    }
   }
 
   private loadControllers() {

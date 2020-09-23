@@ -47,8 +47,8 @@ export class HasOne extends HasRelations {
     if (queryCallback) queryCallback(query);
     const record = await query.where(foreignKey, '=', resultRepos.getAttribute(localKey))
       .first();
-    const repos = await this.model.resultToRepository(model, record);
     if (record) {
+      const repos = await this.model.resultToRepository(model, record);
       resultRepos.setAttribute(relation, repos);
     }
   }

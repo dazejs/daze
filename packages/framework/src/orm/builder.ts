@@ -162,6 +162,7 @@ export class ModelBuilder<TEntity = any> {
       );
     }
     const record = await this.builder.first();
+    if (!record) return;
     return this.model.resultToRepository(this.repository, record);
   }
 }
