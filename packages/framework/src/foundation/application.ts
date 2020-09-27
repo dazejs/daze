@@ -13,6 +13,7 @@ import * as util from 'util';
 import * as winston from 'winston';
 import { Master, Worker } from '../cluster';
 import { Config } from '../config';
+import { Job } from '../job';
 import { Container } from '../container';
 import { Database } from '../database';
 import { ErrorCollection } from '../errors/handle';
@@ -589,6 +590,7 @@ export class Application extends Container {
   get(abstract: 'app', args?: any[], force?: boolean): Application
   get(abstract: 'config', args?: any[], force?: boolean): Config
   get(abstract: 'logger', args?: any[], force?: boolean): Logger & winston.Logger
+  get(abstract: 'job', args?: any[], force?: boolean): Job
   get(abstract: 'db', args?: any[], force?: boolean): Database
   get(abstract: 'httpServer', args?: any[], force?: boolean): HttpServer
   get(abstract: 'messenger', args?: any[], force?: boolean): MessengerService

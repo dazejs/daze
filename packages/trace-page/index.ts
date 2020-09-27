@@ -6,7 +6,7 @@ import { promisify } from 'util';
 import * as nunjucks from 'nunjucks';
 
 const contextLinesNumber = 10;
-const WRITE_CONTENT_IN_LINE = Symbol('Trace#writeContentInLine');
+const WRITE_CONTENT_IN_LINE = Symbol('Symbol#Trace#writeContentInLine');
 const READ_FILE = Symbol('Trace#readFile');
 const env = nunjucks.configure(path.resolve(__dirname, './template/view'));
 

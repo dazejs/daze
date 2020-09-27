@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.5](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.4...@dazejs/framework@4.2.5) (2020-09-21)
+
+**Note:** Version bump only for package @dazejs/framework
+
+
+
+
+
+## [4.2.4](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.3...@dazejs/framework@4.2.4) (2020-09-21)
+
+**Note:** Version bump only for package @dazejs/framework
+
+
+
+
+
+## [4.2.3](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.2...@dazejs/framework@4.2.3) (2020-09-21)
+
+
+### Bug Fixes
+
+* **db:** add inc and dec op ([7c37b84](https://github.com/dazejs/daze/commit/7c37b840d328913c6f95a198e5335c56e07e5884))
+* **shourcemap:** fix trace-page cannot open resource ([16464bf](https://github.com/dazejs/daze/commit/16464bf9f8d256aacd12fa584f05c6d4473d3315))
+
+
+
+
+
 ## [4.2.2](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.1...@dazejs/framework@4.2.2) (2020-09-15)
 
 

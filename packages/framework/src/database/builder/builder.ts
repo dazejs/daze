@@ -790,7 +790,7 @@ export class Builder {
   /**
    * query first record from database
    */
-  async first(){
+  async first(): Promise<Record<string, any> | undefined> {
     const sql = this.take(1).toSql();
     const params = this.getBindings();
     if (this.shouldLogSql) {
@@ -801,7 +801,7 @@ export class Builder {
     if (!results[0]) return;
     return {
       ...results[0]
-    };
+    } as Record<string, any>;
   }
   /**
    * get binding parmas for update
@@ -928,6 +928,36 @@ export class Builder {
       sql,
       params
     );
+  }
+
+  /**
+   * 根据给定的值自增字段
+   * @param column 
+   * @param amount 
+   * @param extra 
+   */
+  async increment(column: string, amount = 1, extra?: Record<string, any>) {
+    const wrapedColumn = this.parser.wrapColum(column, this);
+    const columns = {
+      [`${column}`]: `${wrapedColumn} + ${amount}`,
+      ...extra
+    };
+    return this.update(columns);
+  }
+
+  /**
+   * 根据给定的值自减字段
+   * @param column 
+   * @param amount 
+   * @param extra 
+   */
+  async decrement(column: string, amount = 1, extra?: Record<string, any>) {
+    const wrapedColumn = this.parser.wrapColum(column, this);
+    const columns = {
+      [`${column}`]: `${wrapedColumn} - ${amount}`,
+      ...extra
+    };
+    return this.update(columns);
   }
 
   /**

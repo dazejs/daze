@@ -276,15 +276,15 @@ export class Model<TEntity = {}> {
    * convert data to repository instance
    * @param data 
    */
-  async resultToRepository(parentRepos: Repository, data: Record<string, any>, isFromCollection = false): Promise<Repository<TEntity> & TEntity> {
-    const repos =  this.createRepository()
+  async resultToRepository(parentRepos: Repository, data: Record<string, any>, isFromCollection = false): Promise<(Repository<TEntity> & TEntity)> {
+    const repos = this.createRepository()
       .setExists(true)
       .fill(data);
     // Eager loading
     if (!isFromCollection && parentRepos.getWiths().size > 0) {
       await repos.eagerly(parentRepos.getWiths(), repos);
     }
-    return repos as Repository<TEntity> & TEntity;
+    return repos as (Repository<TEntity> & TEntity);
   }
 
   /**‘

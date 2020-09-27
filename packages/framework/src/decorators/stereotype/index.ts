@@ -7,3 +7,4 @@ export * from './injectable';
 export * from './middleware';
 export * from './resourcer';
 export * from './validator';
+export * from './job';
