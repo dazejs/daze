@@ -531,7 +531,7 @@ export class Application extends Container {
   /**
    * close server
    */
-  close() {
+  close(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this._server) return reject(new Error('app does not running!'));
       return this._server.close((error: any) => {

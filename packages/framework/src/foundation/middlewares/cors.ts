@@ -87,7 +87,11 @@ export class CORSMiddleware extends BaseMiddleware {
         response.setHeader('Access-Control-Allow-Methods', this.allowMethods);
       }
 
-      response.setHeader('Access-Control-Allow-Headers', this.allowHeaders || request.getHeader('Access-Control-Request-Headers'));
+      const allowHeaders = this.allowHeaders || request.getHeader('Access-Control-Request-Headers');
+
+      if (allowHeaders) {
+        response.setHeader('Access-Control-Allow-Headers', this.allowHeaders || request.getHeader('Access-Control-Request-Headers'));
+      }
       return response.NoContent();
     }
 
