@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.7](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.6...@dazejs/framework@4.2.7) (2021-03-25)
+
+
+### Bug Fixes
+
+* 修复 entity 基础类缺少 attach 方法的问题 ([430da8b](https://github.com/dazejs/daze/commit/430da8bdbd17b2c2b913815b0328738796698a4f))
+
+
+
+
+
 ## [4.2.6](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.5...@dazejs/framework@4.2.6) (2020-09-23)
 
 **Note:** Version bump only for package @dazejs/framework
