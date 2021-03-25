@@ -17,7 +17,6 @@ const defaultOptions = {
   maxAge: 5,
   credentials: true,
   allowMethods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
 };
 
 @middleware()
@@ -57,11 +56,11 @@ export class CORSMiddleware extends BaseMiddleware {
   }
 
   get allowMethods() {
-    return this.options.allowMethods || ['GET', 'POST', 'DELETE', 'PATCH', 'PUT', 'OPTIONS'];
+    return this.options.allowMethods;
   }
 
   get allowHeaders() {
-    return this.options.allowHeaders || ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'];
+    return this.options.allowHeaders;
   }
 
   async resolve(request: Request, next: Next): Promise<Response> {
@@ -87,10 +86,10 @@ export class CORSMiddleware extends BaseMiddleware {
         response.setHeader('Access-Control-Allow-Methods', this.allowMethods);
       }
 
-      const allowHeaders = this.allowHeaders || request.getHeader('Access-Control-Request-Headers');
+      const allowHeaders = this.allowHeaders?.length ? this.allowHeaders : request.getHeader('Access-Control-Request-Headers');
 
       if (allowHeaders) {
-        response.setHeader('Access-Control-Allow-Headers', this.allowHeaders || request.getHeader('Access-Control-Request-Headers'));
+        response.setHeader('Access-Control-Allow-Headers', allowHeaders);
       }
       return response.NoContent();
     }
