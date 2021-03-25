@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.10](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.9...@dazejs/framework@4.2.10) (2021-03-25)
+
+
+### Bug Fixes
+
+* 修复模型自动识别保存后的存在状态不正确的问题 ([5453de3](https://github.com/dazejs/daze/commit/5453de33b591fcf6437177c53028929ee66d8bf4))
+* 修复响应头的大小写风格 ([e9de882](https://github.com/dazejs/daze/commit/e9de882aa910f00c694c793fa82b65dab165f620))
+
+
+
+
+
 ## [4.2.9](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.8...@dazejs/framework@4.2.9) (2021-03-25)
 
 
