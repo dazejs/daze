@@ -36,9 +36,9 @@ export class BaseEntity {
   async save() {
     const repos = (new Model(this.constructor as any)).createRepository();
     repos.fill(this);
-    const res = await repos.save();
+    await repos.save();
     Object.assign(this, repos.getAttributes());
-    return res;
+    return repos;
   }
 
   /**
@@ -57,25 +57,5 @@ export class BaseEntity {
   async destroy(...ids: (number | string)[]) {
     const repos = (new Model(this.constructor as any)).createRepository();
     return repos.destroy(...ids);
-  }
-
-  /**
-   * 设置关联关系
-   * @param relation
-   * @param ids
-   */
-  async attach(relation: string, ...ids: (number | string)[]) {
-    const repos = (new Model(this.constructor as any)).createRepository();
-    return repos.attach(relation, ...ids);
-  }
-
-  /**
-   * 取消关联关系
-   * @param relation
-   * @param ids
-   */
-  async detach(relation: string, ...ids: (number | string)[]) {
-    const repos = (new Model(this.constructor as any)).createRepository();
-    return repos.detach(relation, ...ids);
   }
 }
