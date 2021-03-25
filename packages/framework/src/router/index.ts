@@ -32,7 +32,7 @@ export class Router {
     return async (request: Request) => {
       const metchedRoute = this.trie.match(request);
       const dispatcher = new Dispatcher(request, metchedRoute);
-      return await dispatcher.resolve();  
+      return await dispatcher.resolve();
     };
   }
 

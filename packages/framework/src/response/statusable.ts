@@ -88,7 +88,7 @@ export abstract class Statusable {
 
   /**
    * 100 - Continue
-   * @param data 
+   * @param data
    */
   Continue(data?: any) {
     return this.success(data || 'Continue', 100);
@@ -96,7 +96,7 @@ export abstract class Statusable {
 
   /**
    * 100 - Continue
-   * @param data 
+   * @param data
    */
   continue(data?: any) {
     return this.Continue(data);
@@ -104,7 +104,7 @@ export abstract class Statusable {
 
   /**
    * 101 - SwitchingProtocols
-   * @param data 
+   * @param data
    */
   SwitchingProtocols(data?: any) {
     return this.success(data || 'Switching Protocols', 101);
@@ -112,7 +112,7 @@ export abstract class Statusable {
 
   /**
    * 101 - SwitchingProtocols
-   * @param data 
+   * @param data
    */
   switchingProtocols(data?: any) {
     return this.SwitchingProtocols(data);
@@ -120,7 +120,7 @@ export abstract class Statusable {
 
   /**
    * 102 - Processing
-   * @param data 
+   * @param data
    */
   Processing(data?: any) {
     return this.success(data || 'Processing', 102);
@@ -128,7 +128,7 @@ export abstract class Statusable {
 
   /**
    * 102 - Processing
-   * @param data 
+   * @param data
    */
   processing(data?: any) {
     return this.Processing(data);
@@ -136,7 +136,7 @@ export abstract class Statusable {
 
   /**
    * 103 - EarlyHints
-   * @param data 
+   * @param data
    */
   EarlyHints(data?: any) {
     return this.success(data || 'Early Hints', 103);
@@ -144,7 +144,7 @@ export abstract class Statusable {
 
   /**
    * 103 - EarlyHints
-   * @param data 
+   * @param data
    */
   earlyHints(data?: any) {
     return this.EarlyHints(data);
@@ -152,7 +152,7 @@ export abstract class Statusable {
 
   /**
    * 200 - OK
-   * @param data 
+   * @param data
    */
   OK(data?: any) {
     return this.success(data || 'OK', 200);
@@ -160,7 +160,7 @@ export abstract class Statusable {
 
   /**
    * 200 - OK
-   * @param data 
+   * @param data
    */
   ok(data?: any) {
     return this.OK(data);
@@ -168,7 +168,7 @@ export abstract class Statusable {
 
   /**
    * 201 - Created
-   * @param data 
+   * @param data
    */
   Created(data?: any) {
     return this.success(data || 'Created', 201);
@@ -176,7 +176,7 @@ export abstract class Statusable {
 
   /**
    * 201 - Created
-   * @param data 
+   * @param data
    */
   created(data?: any) {
     return this.Created(data);
@@ -184,7 +184,7 @@ export abstract class Statusable {
 
   /**
    * 202 - Accepted
-   * @param data 
+   * @param data
    */
   Accepted(data?: any) {
     return this.success(data || 'Accepted', 202);
@@ -192,7 +192,7 @@ export abstract class Statusable {
 
   /**
    * 202 - Accepted
-   * @param data 
+   * @param data
    */
   accepted(data?: any) {
     return this.Accepted(data);
@@ -200,7 +200,7 @@ export abstract class Statusable {
 
   /**
    * 203 - Non Authoritative Information
-   * @param data 
+   * @param data
    */
   NonAuthoritativeInformation(data?: any) {
     return this.success(data || 'Non Authoritative Information', 203);
@@ -208,7 +208,7 @@ export abstract class Statusable {
 
   /**
    * 203 - Non Authoritative Information
-   * @param data 
+   * @param data
    */
   nonAuthoritativeInformation(data?: any) {
     return this.NonAuthoritativeInformation(data);
@@ -230,7 +230,7 @@ export abstract class Statusable {
 
   /**
    * 205 - Reset Content
-   * @param data 
+   * @param data
    */
   ResetContent(data?: any) {
     return this.success(data || 'Reset Content', 205);
@@ -238,7 +238,7 @@ export abstract class Statusable {
 
   /**
    * 205 - Reset Content
-   * @param data 
+   * @param data
    */
   resetContent(data?: any) {
     return this.ResetContent(data);
@@ -246,7 +246,7 @@ export abstract class Statusable {
 
   /**
    * 206 - Partial Content
-   * @param data 
+   * @param data
    */
   PartialContent(data?: any) {
     return this.success(data || 'Partial Content', 206);
@@ -254,7 +254,7 @@ export abstract class Statusable {
 
   /**
    * 206 - Partial Content
-   * @param data 
+   * @param data
    */
   partialContent(data?: any) {
     return this.PartialContent(data);
@@ -262,7 +262,7 @@ export abstract class Statusable {
 
   /**
    * 207 - MultiStatus
-   * @param data 
+   * @param data
    */
   MultiStatus(data?: any) {
     return this.success(data || 'Multi Status', 207);
@@ -270,7 +270,7 @@ export abstract class Statusable {
 
   /**
    * 207 - MultiStatus
-   * @param data 
+   * @param data
    */
   multiStatus(data?: any) {
     return this.MultiStatus(data);
@@ -278,7 +278,7 @@ export abstract class Statusable {
 
   /**
    * 208 - Already Reported
-   * @param data 
+   * @param data
    */
   AlreadyReported(data?: any) {
     return this.success(data || 'Already Reported', 208);
@@ -286,7 +286,7 @@ export abstract class Statusable {
 
   /**
    * 208 - Already Reported
-   * @param data 
+   * @param data
    */
   alreadyReported(data?: any) {
     return this.AlreadyReported(data);
@@ -294,7 +294,7 @@ export abstract class Statusable {
 
   /**
    * 226 - IM Used
-   * @param data 
+   * @param data
    */
   IMUsed(data?: any) {
     return this.success(data || 'IM Used', 226);
@@ -302,7 +302,7 @@ export abstract class Statusable {
 
   /**
    * 226 - IM Used
-   * @param data 
+   * @param data
    */
   imUsed(data?: any) {
     return this.IMUsed(data);
@@ -310,7 +310,7 @@ export abstract class Statusable {
 
   /**
    * 300 - Multiple Choices
-   * @param data 
+   * @param data
    */
   MultipleChoices(data?: any) {
     return this.success(data || 'Multiple Choices', 300);
@@ -318,7 +318,7 @@ export abstract class Statusable {
 
   /**
    * 300 - Multiple Choices
-   * @param data 
+   * @param data
    */
   multipleChoices(data?: any) {
     return this.MultipleChoices(data);
@@ -326,7 +326,7 @@ export abstract class Statusable {
 
   /**
    * 301 - MovedPermanently
-   * @param data 
+   * @param data
    */
   MovedPermanently(data?: any) {
     return this.success(data || 'Moved Permanently', 301);
@@ -334,7 +334,7 @@ export abstract class Statusable {
 
   /**
    * 301 - MovedPermanently
-   * @param data 
+   * @param data
    */
   movedPermanently(data?: any) {
     return this.MovedPermanently(data);
@@ -342,7 +342,7 @@ export abstract class Statusable {
 
   /**
    * 302 - Found
-   * @param data 
+   * @param data
    */
   Found(data?: any) {
     return this.success(data || 'Found', 302);
@@ -350,7 +350,7 @@ export abstract class Statusable {
 
   /**
    * 302 - Found
-   * @param data 
+   * @param data
    */
   found(data?: any) {
     return this.Found(data);
@@ -358,7 +358,7 @@ export abstract class Statusable {
 
   /**
    * 303 - See Other
-   * @param data 
+   * @param data
    */
   SeeOther(data?: any) {
     return this.success(data || 'See Other', 303);
@@ -366,7 +366,7 @@ export abstract class Statusable {
 
   /**
    * 303 - See Other
-   * @param data 
+   * @param data
    */
   seeOther(data?: any) {
     return this.SeeOther(data);
@@ -374,7 +374,7 @@ export abstract class Statusable {
 
   /**
    * 304 - 'Not Modified
-   * @param data 
+   * @param data
    */
   NotModified(data?: any) {
     return this.success(data || 'Not Modified', 304);
@@ -382,7 +382,7 @@ export abstract class Statusable {
 
   /**
    * 304 - 'Not Modified
-   * @param data 
+   * @param data
    */
   notModified(data?: any) {
     return this.NotModified(data);
@@ -390,7 +390,7 @@ export abstract class Statusable {
 
   /**
    * 305 - Use Proxy
-   * @param data 
+   * @param data
    */
   UseProxy(data?: any) {
     return this.success(data || 'Use Proxy', 305);
@@ -398,7 +398,7 @@ export abstract class Statusable {
 
   /**
    * 305 - Use Proxy
-   * @param data 
+   * @param data
    */
   useProxy(data?: any) {
     return this.UseProxy(data);
@@ -406,7 +406,7 @@ export abstract class Statusable {
 
   /**
    * 306 - Unused
-   * @param data 
+   * @param data
    */
   Unused(data?: any) {
     return this.success(data || 'Unused', 306);
@@ -414,7 +414,7 @@ export abstract class Statusable {
 
   /**
    * 306 - Unused
-   * @param data 
+   * @param data
    */
   unused(data?: any) {
     return this.Unused(data);
@@ -422,7 +422,7 @@ export abstract class Statusable {
 
   /**
    * 307 - Temporary Redirect
-   * @param data 
+   * @param data
    */
   TemporaryRedirect(data?: any) {
     return this.success(data || 'Temporary Redirect', 307);
@@ -430,7 +430,7 @@ export abstract class Statusable {
 
   /**
    * 307 - Temporary Redirect
-   * @param data 
+   * @param data
    */
   temporaryRedirect(data?: any) {
     return this.TemporaryRedirect(data);
@@ -438,7 +438,7 @@ export abstract class Statusable {
 
   /**
    * 308 - Permanent Redirect
-   * @param data 
+   * @param data
    */
   PermanentRedirect(data?: any) {
     return this.success(data || 'Permanent Redirect', 308);
@@ -446,7 +446,7 @@ export abstract class Statusable {
 
   /**
    * 308 - Permanent Redirect
-   * @param data 
+   * @param data
    */
   permanentRedirect(data?: any) {
     return this.PermanentRedirect(data);
@@ -456,7 +456,7 @@ export abstract class Statusable {
 
   /**
    * 400 - Bad Request
-   * @param data 
+   * @param data
    */
   BadRequest(data?: any) {
     return this.error(data || 'Bad Request', 400);
@@ -464,7 +464,7 @@ export abstract class Statusable {
 
   /**
    * 400 - Bad Request
-   * @param data 
+   * @param data
    */
   badRequest(data?: any) {
     return this.BadRequest(data);
@@ -472,7 +472,7 @@ export abstract class Statusable {
 
   /**
    * 401 - Unauthorized
-   * @param data 
+   * @param data
    */
   Unauthorized(data?: any) {
     return this.error(data || 'Unauthorized', 401);
@@ -480,7 +480,7 @@ export abstract class Statusable {
 
   /**
    * 401 - Unauthorized
-   * @param data 
+   * @param data
    */
   unauthorized(data?: any) {
     return this.Unauthorized(data);
@@ -488,7 +488,7 @@ export abstract class Statusable {
 
   /**
    * 402 - Payment Required
-   * @param data 
+   * @param data
    */
   PaymentRequired(data?: any) {
     return this.error(data || 'Payment Required', 402);
@@ -496,7 +496,7 @@ export abstract class Statusable {
 
   /**
    * 402 - Payment Required
-   * @param data 
+   * @param data
    */
   paymentRequired(data?: any) {
     return this.PaymentRequired(data);
@@ -504,7 +504,7 @@ export abstract class Statusable {
 
   /**
    * 403 - Forbidden
-   * @param data 
+   * @param data
    */
   Forbidden(data?: any) {
     return this.error(data || 'Forbidden', 403);
@@ -512,7 +512,7 @@ export abstract class Statusable {
 
   /**
    * 403 - Forbidden
-   * @param data 
+   * @param data
    */
   forbidden(data?: any) {
     return this.Forbidden(data);
@@ -520,7 +520,7 @@ export abstract class Statusable {
 
   /**
    * 404 - Not Found
-   * @param data 
+   * @param data
    */
   NotFound(data?: any) {
     return this.error(data || 'Not Found', 404);
@@ -528,7 +528,7 @@ export abstract class Statusable {
 
   /**
    * 404 - Not Found
-   * @param data 
+   * @param data
    */
   notFound(data?: any) {
     return this.NotFound(data);
@@ -536,7 +536,7 @@ export abstract class Statusable {
 
   /**
    * 405 - Method Not Allowed
-   * @param data 
+   * @param data
    */
   MethodNotAllowed(data?: any) {
     return this.error(data || 'Method Not Allowed', 405);
@@ -544,7 +544,7 @@ export abstract class Statusable {
 
   /**
    * 405 - Method Not Allowed
-   * @param data 
+   * @param data
    */
   methodNotAllowed(data?: any) {
     return this.MethodNotAllowed(data);
@@ -552,7 +552,7 @@ export abstract class Statusable {
 
   /**
    * 406 - Not Acceptable
-   * @param data 
+   * @param data
    */
   NotAcceptable(data?: any) {
     return this.error(data || 'Not Acceptable', 406);
@@ -560,7 +560,7 @@ export abstract class Statusable {
 
   /**
    * 406 - Not Acceptable
-   * @param data 
+   * @param data
    */
   notAcceptable(data?: any) {
     return this.NotAcceptable(data);
@@ -568,7 +568,7 @@ export abstract class Statusable {
 
   /**
    * 407 - Proxy Authentication Required
-   * @param data 
+   * @param data
    */
   ProxyAuthenticationRequired(data?: any) {
     return this.error(data || 'Proxy Authentication Required', 407);
@@ -576,7 +576,7 @@ export abstract class Statusable {
 
   /**
    * 407 - Proxy Authentication Required
-   * @param data 
+   * @param data
    */
   proxyAuthenticationRequired(data?: any) {
     return this.ProxyAuthenticationRequired(data);
@@ -584,7 +584,7 @@ export abstract class Statusable {
 
   /**
    * 408 -Request Timeout
-   * @param data 
+   * @param data
    */
   RequestTimeout(data?: any) {
     return this.error(data || 'Request Timeout', 408);
@@ -592,7 +592,7 @@ export abstract class Statusable {
 
   /**
    * 408 -Request Timeout
-   * @param data 
+   * @param data
    */
   requestTimeout(data?: any) {
     return this.RequestTimeout(data);
@@ -600,7 +600,7 @@ export abstract class Statusable {
 
   /**
    * 409 - Conflict
-   * @param data 
+   * @param data
    */
   Conflict(data?: any) {
     return this.error(data || 'Conflict', 409);
@@ -608,7 +608,7 @@ export abstract class Statusable {
 
   /**
    * 409 - Conflict
-   * @param data 
+   * @param data
    */
   conflict(data?: any) {
     return this.Conflict(data);
@@ -616,7 +616,7 @@ export abstract class Statusable {
 
   /**
    * 410 - Gone
-   * @param data 
+   * @param data
    */
   Gone(data?: any) {
     return this.error(data || 'Gone', 410);
@@ -624,7 +624,7 @@ export abstract class Statusable {
 
   /**
    * 410 - Gone
-   * @param data 
+   * @param data
    */
   gone(data?: any) {
     return this.Gone(data);
@@ -632,7 +632,7 @@ export abstract class Statusable {
 
   /**
    * 411 - Length Required
-   * @param data 
+   * @param data
    */
   LengthRequired(data?: any) {
     return this.error(data || 'Length Required', 411);
@@ -640,7 +640,7 @@ export abstract class Statusable {
 
   /**
    * 411 - Length Required
-   * @param data 
+   * @param data
    */
   lengthRequired(data?: any) {
     return this.LengthRequired(data);
@@ -648,7 +648,7 @@ export abstract class Statusable {
 
   /**
    * 412 - Precondition Failed
-   * @param data 
+   * @param data
    */
   PreconditionFailed(data?: any) {
     return this.error(data || 'Precondition Failed', 412);
@@ -656,7 +656,7 @@ export abstract class Statusable {
 
   /**
    * 412 - Precondition Failed
-   * @param data 
+   * @param data
    */
   preconditionFailed(data?: any) {
     return this.PreconditionFailed(data);
@@ -664,7 +664,7 @@ export abstract class Statusable {
 
   /**
    * 413 - Payload TooLarge
-   * @param data 
+   * @param data
    */
   PayloadTooLarge(data?: any) {
     return this.error(data || 'Payload TooLarge', 413);
@@ -672,7 +672,7 @@ export abstract class Statusable {
 
   /**
    * 413 - Payload TooLarge
-   * @param data 
+   * @param data
    */
   payloadTooLarge(data?: any) {
     return this.PayloadTooLarge(data);
@@ -680,7 +680,7 @@ export abstract class Statusable {
 
   /**
    * 414 - URI Too Long
-   * @param data 
+   * @param data
    */
   URITooLong(data?: any) {
     return this.error(data || 'URI Too Long', 414);
@@ -688,7 +688,7 @@ export abstract class Statusable {
 
   /**
    * 414 - URI Too Long
-   * @param data 
+   * @param data
    */
   uriTooLong(data?: any) {
     return this.URITooLong(data);
@@ -696,7 +696,7 @@ export abstract class Statusable {
 
   /**
    * 415 - Unsupported Media Type
-   * @param data 
+   * @param data
    */
   UnsupportedMediaType(data?: any) {
     return this.error(data || 'Unsupported Media Type', 415);
@@ -704,7 +704,7 @@ export abstract class Statusable {
 
   /**
    * 415 - Unsupported Media Type
-   * @param data 
+   * @param data
    */
   unsupportedMediaType(data?: any) {
     return this.UnsupportedMediaType(data);
@@ -712,7 +712,7 @@ export abstract class Statusable {
 
   /**
    * 416 - Range Not Satisfiable
-   * @param data 
+   * @param data
    */
   RangeNotSatisfiable(data?: any) {
     return this.error(data || 'Range Not Satisfiable', 416);
@@ -720,7 +720,7 @@ export abstract class Statusable {
 
   /**
    * 416 - Range Not Satisfiable
-   * @param data 
+   * @param data
    */
   rangeNotSatisfiable(data?: any) {
     return this.RangeNotSatisfiable(data);
@@ -728,7 +728,7 @@ export abstract class Statusable {
 
   /**
    * 417 - Expectation Failed
-   * @param data 
+   * @param data
    */
   ExpectationFailed(data?: any) {
     return this.error(data || 'Expectation Failed', 417);
@@ -736,7 +736,7 @@ export abstract class Statusable {
 
   /**
    * 417 - Expectation Failed
-   * @param data 
+   * @param data
    */
   expectationFailed(data?: any) {
     return this.ExpectationFailed(data);
@@ -744,7 +744,7 @@ export abstract class Statusable {
 
   /**
    * 418 - Im A Teapot
-   * @param data 
+   * @param data
    */
   ImATeapot(data?: any) {
     return this.error(data || 'Im A Teapot', 418);
@@ -752,7 +752,7 @@ export abstract class Statusable {
 
   /**
    * 418 - Im A Teapot
-   * @param data 
+   * @param data
    */
   imATeapot(data?: any) {
     return this.ImATeapot(data);
@@ -760,7 +760,7 @@ export abstract class Statusable {
 
   /**
    * 421 - Misdirected Request
-   * @param data 
+   * @param data
    */
   MisdirectedRequest(data?: any) {
     return this.error(data || 'Misdirected Request', 421);
@@ -768,7 +768,7 @@ export abstract class Statusable {
 
   /**
    * 421 - Misdirected Request
-   * @param data 
+   * @param data
    */
   misdirectedRequest(data?: any) {
     return this.MisdirectedRequest(data);
@@ -776,7 +776,7 @@ export abstract class Statusable {
 
   /**
    * 422 - Unprocessable Entity
-   * @param data 
+   * @param data
    */
   UnprocessableEntity(data?: any) {
     return this.error(data || 'Unprocessable Entity', 422);
@@ -784,7 +784,7 @@ export abstract class Statusable {
 
   /**
    * 422 - Unprocessable Entity
-   * @param data 
+   * @param data
    */
   unprocessableEntity(data?: any) {
     return this.UnprocessableEntity(data);
@@ -792,7 +792,7 @@ export abstract class Statusable {
 
   /**
    * 423 - Locked
-   * @param data 
+   * @param data
    */
   Locked(data?: any) {
     return this.error(data || 'Locked', 423);
@@ -800,7 +800,7 @@ export abstract class Statusable {
 
   /**
    * 423 - Locked
-   * @param data 
+   * @param data
    */
   locked(data?: any) {
     return this.Locked(data);
@@ -808,7 +808,7 @@ export abstract class Statusable {
 
   /**
    * 424 - Failed Dependency
-   * @param data 
+   * @param data
    */
   FailedDependency(data?: any) {
     return this.error(data || 'Failed Dependency', 424);
@@ -816,7 +816,7 @@ export abstract class Statusable {
 
   /**
    * 424 - Failed Dependency
-   * @param data 
+   * @param data
    */
   failedDependency(data?: any) {
     return this.FailedDependency(data);
@@ -824,7 +824,7 @@ export abstract class Statusable {
 
   /**
    * 425 - Unordered Collection
-   * @param data 
+   * @param data
    */
   UnorderedCollection(data?: any) {
     return this.error(data || 'Unordered Collection', 425);
@@ -832,7 +832,7 @@ export abstract class Statusable {
 
   /**
    * 425 - Unordered Collection
-   * @param data 
+   * @param data
    */
   unorderedCollection(data?: any) {
     return this.UnorderedCollection(data);
@@ -840,7 +840,7 @@ export abstract class Statusable {
 
   /**
    * 426 - Upgrade Required
-   * @param data 
+   * @param data
    */
   UpgradeRequired(data?: any) {
     return this.error(data || 'Upgrade Required', 426);
@@ -848,7 +848,7 @@ export abstract class Statusable {
 
   /**
    * 426 - Upgrade Required
-   * @param data 
+   * @param data
    */
   upgradeRequired(data?: any) {
     return this.UpgradeRequired(data);
@@ -856,7 +856,7 @@ export abstract class Statusable {
 
   /**
    * 428 - Precondition Required
-   * @param data 
+   * @param data
    */
   PreconditionRequired(data?: any) {
     return this.error(data || 'Precondition Required', 428);
@@ -864,7 +864,7 @@ export abstract class Statusable {
 
   /**
    * 428 - Precondition Required
-   * @param data 
+   * @param data
    */
   preconditionRequired(data?: any) {
     return this.PreconditionRequired(data);
@@ -872,7 +872,7 @@ export abstract class Statusable {
 
   /**
    * 429 - Too Many Requests
-   * @param data 
+   * @param data
    */
   TooManyRequests(data?: any) {
     return this.error(data || 'Too Many Requests', 429);
@@ -880,7 +880,7 @@ export abstract class Statusable {
 
   /**
    * 429 - Too Many Requests
-   * @param data 
+   * @param data
    */
   tooManyRequests(data?: any) {
     return this.TooManyRequests(data);
@@ -888,7 +888,7 @@ export abstract class Statusable {
 
   /**
    * 431 - Request Header Fields Too Large
-   * @param data 
+   * @param data
    */
   RequestHeaderFieldsTooLarge(data?: any) {
     return this.error(data || 'Request Header Fields Too Large', 431);
@@ -896,7 +896,7 @@ export abstract class Statusable {
 
   /**
    * 431 - Request Header Fields Too Large
-   * @param data 
+   * @param data
    */
   requestHeaderFieldsTooLarge(data?: any) {
     return this.RequestHeaderFieldsTooLarge(data);
@@ -904,7 +904,7 @@ export abstract class Statusable {
 
   /**
    * 451 - Unavailable For Legal Reasons
-   * @param data 
+   * @param data
    */
   UnavailableForLegalReasons(data?: any) {
     return this.error(data || 'Unavailable For Legal Reasons', 451);
@@ -912,7 +912,7 @@ export abstract class Statusable {
 
   /**
    * 451 - Unavailable For Legal Reasons
-   * @param data 
+   * @param data
    */
   unavailableForLegalReasons(data?: any) {
     return this.UnavailableForLegalReasons(data);
@@ -920,7 +920,7 @@ export abstract class Statusable {
 
   /**
    * 500 - Internal Server Error
-   * @param data 
+   * @param data
    */
   InternalServerError(data?: any) {
     return this.error(data || 'Internal Server Error', 500);
@@ -928,7 +928,7 @@ export abstract class Statusable {
 
   /**
    * 500 - Internal Server Error
-   * @param data 
+   * @param data
    */
   internalServerError(data?: any) {
     return this.InternalServerError(data);
@@ -936,7 +936,7 @@ export abstract class Statusable {
 
   /**
    * 501 - Not Implemented
-   * @param data 
+   * @param data
    */
   NotImplemented(data?: any) {
     return this.error(data || 'Not Implemented', 501);
@@ -944,7 +944,7 @@ export abstract class Statusable {
 
   /**
    * 501 - Not Implemented
-   * @param data 
+   * @param data
    */
   notImplemented(data?: any) {
     return this.NotImplemented(data);
@@ -952,7 +952,7 @@ export abstract class Statusable {
 
   /**
    * 502 - Bad Gateway
-   * @param data 
+   * @param data
    */
   BadGateway(data?: any) {
     return this.error(data || 'Bad Gateway', 502);
@@ -960,7 +960,7 @@ export abstract class Statusable {
 
   /**
    * 502 - Bad Gateway
-   * @param data 
+   * @param data
    */
   badGateway(data?: any) {
     return this.BadGateway(data);
@@ -968,7 +968,7 @@ export abstract class Statusable {
 
   /**
    * 503 - Service Unavailable
-   * @param data 
+   * @param data
    */
   ServiceUnavailable(data?: any) {
     return this.error(data || 'Service Unavailable', 503);
@@ -976,7 +976,7 @@ export abstract class Statusable {
 
   /**
    * 503 - Service Unavailable
-   * @param data 
+   * @param data
    */
   serviceUnavailable(data?: any) {
     return this.ServiceUnavailable(data);
@@ -984,7 +984,7 @@ export abstract class Statusable {
 
   /**
    * 504 - Gateway Timeout
-   * @param data 
+   * @param data
    */
   GatewayTimeout(data?: any) {
     return this.error(data || 'Gateway Timeout', 504);
@@ -992,7 +992,7 @@ export abstract class Statusable {
 
   /**
    * 504 - Gateway Timeout
-   * @param data 
+   * @param data
    */
   gatewayTimeout(data?: any) {
     return this.GatewayTimeout(data);
@@ -1000,7 +1000,7 @@ export abstract class Statusable {
 
   /**
    * 505 - HTTP Version Not Supported
-   * @param data 
+   * @param data
    */
   HTTPVersionNotSupported(data?: any) {
     return this.error(data || 'HTTP Version Not Supported', 505);
@@ -1008,7 +1008,7 @@ export abstract class Statusable {
 
   /**
    * 505 - HTTP Version Not Supported
-   * @param data 
+   * @param data
    */
   httpVersionNotSupported(data?: any) {
     return this.HTTPVersionNotSupported(data);
@@ -1016,7 +1016,7 @@ export abstract class Statusable {
 
   /**
    * 506 - Variant Also Negotiates
-   * @param data 
+   * @param data
    */
   VariantAlsoNegotiates(data?: any) {
     return this.error(data || 'Variant Also Negotiates', 506);
@@ -1024,7 +1024,7 @@ export abstract class Statusable {
 
   /**
    * 506 - Variant Also Negotiates
-   * @param data 
+   * @param data
    */
   variantAlsoNegotiates(data?: any) {
     return this.VariantAlsoNegotiates(data);
@@ -1032,7 +1032,7 @@ export abstract class Statusable {
 
   /**
    * 507 - Insufficient Storage
-   * @param data 
+   * @param data
    */
   InsufficientStorage(data?: any) {
     return this.error(data || 'Insufficient Storage', 507);
@@ -1040,7 +1040,7 @@ export abstract class Statusable {
 
   /**
    * 507 - Insufficient Storage
-   * @param data 
+   * @param data
    */
   insufficientStorage(data?: any) {
     return this.InsufficientStorage(data);
@@ -1048,7 +1048,7 @@ export abstract class Statusable {
 
   /**
    * 508 - Loop Detected
-   * @param data 
+   * @param data
    */
   LoopDetected(data?: any) {
     return this.error(data || 'Loop Detected', 508);
@@ -1056,7 +1056,7 @@ export abstract class Statusable {
 
   /**
    * 508 - Loop Detected
-   * @param data 
+   * @param data
    */
   loopDetected(data?: any) {
     return this.LoopDetected(data);
@@ -1064,7 +1064,7 @@ export abstract class Statusable {
 
   /**
    * 509 - Bandwidth Limit Exceeded
-   * @param data 
+   * @param data
    */
   BandwidthLimitExceeded(data?: any) {
     return this.error(data || 'Bandwidth Limit Exceeded', 509);
@@ -1072,7 +1072,7 @@ export abstract class Statusable {
 
   /**
    * 509 - Bandwidth Limit Exceeded
-   * @param data 
+   * @param data
    */
   bandwidthLimitExceeded(data?: any) {
     return this.BandwidthLimitExceeded(data);
@@ -1080,7 +1080,7 @@ export abstract class Statusable {
 
   /**
    * 510 - Not Extended
-   * @param data 
+   * @param data
    */
   NotExtended(data?: any) {
     return this.error(data || 'Not Extended', 510);
@@ -1088,7 +1088,7 @@ export abstract class Statusable {
 
   /**
    * 510 - Not Extended
-   * @param data 
+   * @param data
    */
   notExtended(data?: any) {
     return this.NotExtended(data);
@@ -1096,7 +1096,7 @@ export abstract class Statusable {
 
   /**
    * 511 - Network Authentication Required
-   * @param data 
+   * @param data
    */
   NetworkAuthenticationRequired(data?: any) {
     return this.error(data || 'Network Authentication Required', 511);
@@ -1104,7 +1104,7 @@ export abstract class Statusable {
 
   /**
    * 511 - Network Authentication Required
-   * @param data 
+   * @param data
    */
   networkAuthenticationRequired(data?: any) {
     return this.NetworkAuthenticationRequired(data);

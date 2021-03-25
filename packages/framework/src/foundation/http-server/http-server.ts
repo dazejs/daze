@@ -76,16 +76,16 @@ export class HttpServer {
     } else {
       this.server = http.createServer(callback);
     }
-    
+
     return this.server;
   }
 
   /**
    * listen
-   * @param port 
-   * @param hostname 
-   * @param backlog 
-   * @param listeningListener 
+   * @param port
+   * @param hostname
+   * @param backlog
+   * @param listeningListener
    */
   listen(
     port?: number | undefined,

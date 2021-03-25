@@ -160,7 +160,14 @@ export class Parser {
     if (builder._aggregate) return '';
     const select = builder._distinct ? 'select distinct' : 'select';
     if (!builder._columns.length) return `${select} *`;
-    return `${select} ${this.columnDelimite(builder._columns, builder)}`;
+    const str = builder._columns.map(({
+      type,
+      column
+    }) => {
+      if (type === 'raw') return column;
+      return this.wrapColum(column, builder);
+    }).join(', ');
+    return `${select} ${str}`;
   }
 
   /**

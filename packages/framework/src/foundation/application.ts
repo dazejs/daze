@@ -155,8 +155,8 @@ export class Application extends Container {
 
   /**
    * Create Application Instance
-   * @param rootPath 
-   * @param paths 
+   * @param rootPath
+   * @param paths
    */
   constructor(rootPath?: string, paths: ApplicationPathsOptions = {}) {
     super();
@@ -171,7 +171,7 @@ export class Application extends Container {
     } else {
       this.rootPath = rootPath;
     }
-    
+
     this.setPaths(paths);
 
     this.initialContainer();

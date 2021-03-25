@@ -128,10 +128,16 @@ export class Repository<TEntity = any> {
    * 获取仓库数据属性
    */
   getAttributes() {
-    const columns = this.model.getColumns().keys();
     const attributes: Record<string, any> = {};
+
+    const columns = this.model.getColumns().keys();
     for (const column of columns) {
       attributes[column] = (this as any)[column];
+    }
+
+    const customs = this.model.getCustomColumns().keys();
+    for (const custom of customs) {
+      attributes[custom] = (this as any)[custom];
     }
 
     const relationMap = this.model.getRelationMap();
@@ -145,6 +151,8 @@ export class Repository<TEntity = any> {
         }
       }
     }
+
+
 
     return attributes;
   }
@@ -171,7 +179,11 @@ export class Repository<TEntity = any> {
    */
   getAttribute(key: string) {
     if (!key) return;
-    if (this.model.getColumns().has(key)) return (this as any)[key];
+    if (
+      this.model.getColumns().has(key) ||
+      this.model.getCustomColumns().includes(key) ||
+      this.model.getRelationMap().has(key)
+    ) return (this as any)[key];
   }
 
   /**

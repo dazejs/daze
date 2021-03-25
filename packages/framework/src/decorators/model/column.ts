@@ -29,6 +29,25 @@ export const column = function (type = 'varchar', length = 255): PropertyDecorat
  */
 export const Column = column;
 
+/**
+ * Column
+ *
+ * @returns {PropertyDecorator}
+ */
+export const customColumn = function (): PropertyDecorator {
+  return function(target: Record<string, any>, propertyKey: string | symbol) {
+    if (typeof propertyKey !== 'string') return;
+    const columns: string[] = Reflect.getMetadata('customColumns', target.constructor) ?? [];
+    columns.push(propertyKey);
+    Reflect.defineMetadata('customColumns', columns, target.constructor);
+  };
+};
+
+/**
+ * Alias
+ */
+export const CustomColumn = customColumn;
+
 
 /**
  * Primary Column

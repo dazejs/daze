@@ -7,6 +7,11 @@ export type TSymlink = 'and' | 'or' | ''
 
 export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
 
+export interface ColumnDescribeOption {
+  type: 'column' | 'raw';
+  column: string;
+}
+
 interface WhereDescribeOption {
   type: 'value' | 'column' | 'sql' | 'in' | 'notIn' | 'null' | 'notNull';
   column?: string;
@@ -54,7 +59,7 @@ export class Builder {
   /**
    * The columns
    */
-  _columns: string[] = [];
+  _columns: ColumnDescribeOption[] = [];
   
   /**
    * the table name
@@ -171,14 +176,51 @@ export class Builder {
    * show columns
    * @param columns 
    */
-  columns(...columns: (string | string[])[]) {
+  select(...columns: (string | string[])[]) {
     for (const column of columns) {
       if (typeof column === 'string') {
-        this._columns.push(column);
+        this._columns.push({
+          type: 'column',
+          column,
+        });
       } else if (Array.isArray(column)) {
-        this._columns.push(...column);
+        for (const item of column) {
+          this._columns.push({
+            type: 'column',
+            column: item,
+          });
+        }
       }
     }
+    return this;
+  }
+
+  /**
+   * select sub query
+   * @param query 
+   * @param as 
+   */
+  selectSub(query: Builder | ((query: Builder) => Builder | void), as: string) {
+    const _query = new Builder(this.actuator, this.parser);
+    if (typeof query === 'function') {
+      query(_query);
+    }
+    const sql = _query.toSql();
+    this.selectRaw(`(${sql}) \`${as}\``, _query.getBindings());
+    return this;
+  }
+
+  /**
+   * select raw
+   * @param raw 
+   * @param bindings 
+   */
+  selectRaw(raw: string, bindings: any[] = []) {
+    this._columns.push({
+      type: 'raw',
+      column: raw,
+    });
+    this.addBinding('select', bindings);
     return this;
   }
 
@@ -187,7 +229,15 @@ export class Builder {
    * @param columns 
    */
   fields(...columns: (string | string[])[]) {
-    return this.columns(...columns);
+    return this.select(...columns);
+  }
+
+  /**
+   * alias colums
+   * @param columns 
+   */
+  columns(...columns: (string | string[])[]) {
+    return this.select(...columns);
   }
 
   /**

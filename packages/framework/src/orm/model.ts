@@ -36,6 +36,11 @@ export class Model<TEntity = {}> {
   private _columns: Map<string, ColumnDescription>;
 
   /**
+   * _customColumns
+   */
+  private _customColumns: string[];
+
+  /**
    * primary key
    */
   private _primaryKey: string;
@@ -74,6 +79,7 @@ export class Model<TEntity = {}> {
     this._table = Reflect.getMetadata('table', Entity);
     this._connection = Reflect.getMetadata('connection', Entity) ?? 'default';
     this._columns = Reflect.getMetadata('columns', Entity) ?? new Map();
+    this._customColumns = Reflect.getMetadata('customColumns', Entity) ?? [];
     this._primaryKey = Reflect.getMetadata('primaryKey', Entity) ?? 'id';
     this._incrementing = Reflect.getMetadata('incrementing', Entity) ?? true;
     this._softDeleteKey = Reflect.getMetadata('softDeleteKey', Entity);
@@ -119,6 +125,13 @@ export class Model<TEntity = {}> {
    */
   getColumns() {
     return this._columns;
+  }
+
+  /**
+   * get columns map
+   */
+  getCustomColumns() {
+    return this._customColumns;
   }
 
   /**

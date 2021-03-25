@@ -52,10 +52,30 @@ export class BaseEntity {
 
   /**
    * 根据主键 id 删除记录
-   * @param ids 
+   * @param ids
    */
   async destroy(...ids: (number | string)[]) {
     const repos = (new Model(this.constructor as any)).createRepository();
     return repos.destroy(...ids);
+  }
+
+  /**
+   * 设置关联关系
+   * @param relation
+   * @param ids
+   */
+  async attach(relation: string, ...ids: (number | string)[]) {
+    const repos = (new Model(this.constructor as any)).createRepository();
+    return repos.attach(relation, ...ids);
+  }
+
+  /**
+   * 取消关联关系
+   * @param relation
+   * @param ids
+   */
+  async detach(relation: string, ...ids: (number | string)[]) {
+    const repos = (new Model(this.constructor as any)).createRepository();
+    return repos.detach(relation, ...ids);
   }
 }

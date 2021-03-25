@@ -17,11 +17,12 @@ import { Application } from '../foundation/application';
 import { Session } from '../session';
 import { Validate } from '../validate';
 import { parseBody } from './utils/parse-body';
+import { Files } from 'formidable';
 
 
 export interface BodyData {
   fields?: { [key: string]: any } | string;
-  files?: { [key: string]: any };
+  files?: Files;
 }
 
 export class Request {
@@ -98,7 +99,6 @@ export class Request {
     if (this.app.needsParseBody) {
       this._body = await parseBody(this);
     };
-    
     // init session
     if (this.app.needsSession) {
       await this.session().loadSession();
