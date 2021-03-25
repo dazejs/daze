@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.9](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.8...@dazejs/framework@4.2.9) (2021-03-25)
+
+
+### Bug Fixes
+
+* cors allow headers ([bd15b9b](https://github.com/dazejs/daze/commit/bd15b9b5b3a6c1633e78c778939e22a0547ac15a))
+
+
+
+
+
 ## [4.2.8](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.7...@dazejs/framework@4.2.8) (2021-03-25)
 
 **Note:** Version bump only for package @dazejs/framework
