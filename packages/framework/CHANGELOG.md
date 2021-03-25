@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.11](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.10...@dazejs/framework@4.2.11) (2021-03-25)
+
+**Note:** Version bump only for package @dazejs/framework
+
+
+
+
+
 ## [4.2.10](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.9...@dazejs/framework@4.2.10) (2021-03-25)
 
 
