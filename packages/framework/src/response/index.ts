@@ -79,7 +79,7 @@ export class Response extends Statusable {
      * http headers
      * @type
      */
-    this._header = this.parseHeaders(header);
+    this._header = header;
 
     /**
      * init data
@@ -131,19 +131,6 @@ export class Response extends Statusable {
   }
 
   /**
-   * parse init headers
-   * @param headers
-   */
-  private parseHeaders(headers: OutgoingHttpHeaders) {
-    const keys = Object.keys(headers);
-    const _headers: OutgoingHttpHeaders = {};
-    for (const key of keys) {
-      _headers[key.toLocaleLowerCase()] = headers[key];
-    }
-    return _headers;
-  }
-
-  /**
    * throw http exception with code and message
    * @param message exception message
    * @param code exception code
@@ -169,7 +156,13 @@ export class Response extends Statusable {
    * get http header
    */
   getHeader(name: string) {
-    return this._header[name.toLowerCase()];
+    const keys = Object.keys(this._header);
+    for (const key of keys) {
+      if (key.toLowerCase() === name.toLowerCase()) {
+        return this._header[key];
+      }
+    }
+    return;
   }
 
   /**
@@ -180,16 +173,22 @@ export class Response extends Statusable {
    * @param value Response header parameter value
    */
   setHeader(name: any, value: any) {
-    this._header[name.toLowerCase()] = value;
+    this._header[name] = value;
     return this;
   }
 
   /**
    * remove header from response
-   * @param name 
+   * @param name
    */
   removeHeader(name: any) {
-    delete this._header[name.toLowerCase()];
+    const keys = Object.keys(this._header);
+    for (const key of keys) {
+      if (key.toLowerCase() === name.toLowerCase()) {
+        delete this._header[key];
+        return this;
+      }
+    }
     return this;
   }
 
@@ -206,10 +205,10 @@ export class Response extends Statusable {
    * @public
    */
   setHeaders(headers: any) {
-    const keys = Object.keys(headers);
-    for (const key of keys) {
-      this.setHeader(key.toLowerCase(), headers[key]);
-    }
+    this._header = {
+      ...this._header,
+      ...headers
+    };
     return this;
   }
 
