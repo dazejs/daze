@@ -79,7 +79,7 @@ export class Response extends Statusable {
      * http headers
      * @type
      */
-    this._header = header;
+    this._header = this.parseHeaders(header);
 
     /**
      * init data
@@ -131,6 +131,19 @@ export class Response extends Statusable {
   }
 
   /**
+   * parse init headers
+   * @param headers
+   */
+  private parseHeaders(headers: OutgoingHttpHeaders) {
+    const keys = Object.keys(headers);
+    const _headers: OutgoingHttpHeaders = {};
+    for (const key of keys) {
+      _headers[key.toLocaleLowerCase()] = headers[key];
+    }
+    return _headers;
+  }
+
+  /**
    * throw http exception with code and message
    * @param message exception message
    * @param code exception code
@@ -156,13 +169,7 @@ export class Response extends Statusable {
    * get http header
    */
   getHeader(name: string) {
-    const keys = Object.keys(this._header);
-    for (const key of keys) {
-      if (key.toLowerCase() === name.toLowerCase()) {
-        return this._header[key];
-      }
-    }
-    return;
+    return this._header[name.toLowerCase()];
   }
 
   /**
@@ -173,7 +180,7 @@ export class Response extends Statusable {
    * @param value Response header parameter value
    */
   setHeader(name: any, value: any) {
-    this._header[name] = value;
+    this._header[name.toLowerCase()] = value;
     return this;
   }
 
@@ -182,13 +189,7 @@ export class Response extends Statusable {
    * @param name
    */
   removeHeader(name: any) {
-    const keys = Object.keys(this._header);
-    for (const key of keys) {
-      if (key.toLowerCase() === name.toLowerCase()) {
-        delete this._header[key];
-        return this;
-      }
-    }
+    delete this._header[name.toLowerCase()];
     return this;
   }
 
@@ -205,10 +206,10 @@ export class Response extends Statusable {
    * @public
    */
   setHeaders(headers: any) {
-    this._header = {
-      ...this._header,
-      ...headers
-    };
+    const keys = Object.keys(headers);
+    for (const key of keys) {
+      this.setHeader(key.toLowerCase(), headers[key]);
+    }
     return this;
   }
 
