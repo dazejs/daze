@@ -1,0 +1,30 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.28
+    - 14.14.31
+    - 14.14.32
+    - 14.14.35
+    - 14.14.37
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: winston-daily-rotate-file
+    versions:
+    - 4.5.0
+    - 4.5.1
+  - dependency-name: "@types/mysql"
+    versions:
+    - 2.15.17
+  - dependency-name: urijs
+    versions:
+    - 1.19.5
