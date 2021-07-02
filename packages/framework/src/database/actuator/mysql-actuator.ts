@@ -1,4 +1,4 @@
-import { Pool } from 'mysql2';
+import { Pool } from 'mysql';
 import { Actuator } from './actuator';
 
 export class MysqlActuator extends Actuator {

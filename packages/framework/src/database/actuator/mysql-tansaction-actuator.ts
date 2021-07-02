@@ -1,4 +1,4 @@
-import { PoolConnection } from 'mysql2';
+import { PoolConnection } from 'mysql';
 import { Actuator } from './actuator';
 
 export class MysqlTransactionActuator extends Actuator {
@@ -83,8 +83,9 @@ export class MysqlTransactionActuator extends Actuator {
    * rollback transaction
    */
   rollback(): Promise<void> {
-    return new Promise((resolve) => {
-      this.connection.rollback(() => {
+    return new Promise((resolve, reject) => {
+      this.connection.rollback((err) => {
+        if (err) return reject(err);
         this.connection.release();
         return resolve();
       });

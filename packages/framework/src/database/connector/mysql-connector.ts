@@ -1,4 +1,4 @@
-import { createPool, PoolOptions } from 'mysql2';
+import { ConnectionConfig, createPool } from 'mysql';
 import { Connector } from './connector';
 
 export class MysqlConnector extends Connector {
@@ -6,7 +6,7 @@ export class MysqlConnector extends Connector {
    * connect to mysql use pool
    * @param options 
    */
-  connect(options: PoolOptions) {
+  connect(options: string | ConnectionConfig) {
     const pool = createPool(options);
     return pool;
   }
