@@ -68,9 +68,10 @@ export class Database {
    * @param config database connection options
    */
   createConnection(config: any) {
-    switch (config.type) {
+    const { type, ...restConfig } = config
+    switch (type) {
       case 'mysql':
-        const pool = (new MysqlConnector()).connect(config);
+        const pool = (new MysqlConnector()).connect(restConfig);
         return new MysqlManager(pool);
     }
     throw new IllegalArgumentError(`Unsupported database type [${config.type}]`);
