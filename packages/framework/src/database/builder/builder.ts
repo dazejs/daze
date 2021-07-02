@@ -475,7 +475,9 @@ export class Builder {
     const sql = this.toSql();
     const params = this.getBindings();
     const results = await this.actuator.select(sql, params);
-    return results[0]?.aggregate;
+    const aggregate = results[0]?.aggregate;
+    if (aggregate === undefined) return
+    return Number(aggregate)
   }
 
   /**
@@ -483,7 +485,8 @@ export class Builder {
    * @param column 
    */
   async count(column = '*') {
-    return this.aggregate('count', column);
+    const res = await this.aggregate('count', column);
+    return res ?? 0
   }
 
   /**
