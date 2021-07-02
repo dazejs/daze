@@ -1,4 +1,4 @@
-import * as mysql from 'mysql2';
+import * as mysql from 'mysql';
 
 async function dropTable(connection: mysql.Connection, table: string) {
   await new Promise((resolve, reject) => {
