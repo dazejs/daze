@@ -1,4 +1,4 @@
-import { Pool, PoolConnection } from 'mysql';
+import { Pool, PoolConnection } from 'mysql2';
 import { MysqlParser } from '../parser';
 import { Manager } from './manager';
 import { MysqlActuator, MysqlTransactionActuator } from '../actuator';

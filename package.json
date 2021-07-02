@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "lerna run dev --parallel",
+    "install": "lerna bootstrap",
     "build": "sh scripts/build.sh",
     "publish": "npm run build && lerna publish",
     "next": "npm run build && lerna publish --dist-tag next",
