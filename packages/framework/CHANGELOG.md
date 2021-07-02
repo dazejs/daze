@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.12](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.11...@dazejs/framework@4.2.12) (2021-07-02)
+
+
+### Bug Fixes
+
+* mysql->mysql2 ([fe7d649](https://github.com/dazejs/daze/commit/fe7d6497b0116a6bf248d0888b49988295760c64))
+
+
+
+
+
 ## [4.2.11](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.10...@dazejs/framework@4.2.11) (2021-03-25)
 
 **Note:** Version bump only for package @dazejs/framework
