@@ -2,7 +2,7 @@ import { Builder } from '../builder';
 
 
 export class Parser {
-  components: string[] = [
+  selectComponents: string[] = [
     'aggregate',
     'columns',
     'from',
@@ -28,7 +28,7 @@ export class Parser {
     }
 
     // select sql
-    const sql = this.parseComponents(builder);
+    const sql = this.parseSelectComponents(builder);
 
     // 当使用了 union, 将 union sql 合并
     if (builder._unions.length) {
@@ -91,9 +91,9 @@ export class Parser {
    * parser query components
    * @param builder 
    */
-  parseComponents(builder: Builder): string {
+  parseSelectComponents(builder: Builder): string {
     const sqls: string[] = [];
-    for (const component of this.components) {
+    for (const component of this.selectComponents) {
       const sql = this.parseComponent(builder, component);
       if (sql) {
         sqls.push(sql);
@@ -247,7 +247,7 @@ export class Parser {
    * @param builder 
    */
   parseOrders(builder: Builder) {
-    if (!builder._orders.length) return '';
+    if (!builder._orders.length || builder._aggregate) return '';
     const flatOrders = builder._orders.map(order => `${order.column} ${order.direction}`);
     return `order by ${flatOrders.join(', ')}`;
   }
