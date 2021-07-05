@@ -70,7 +70,7 @@
     "debug": "4.1.1",
     "formidable": "1.2.2",
     "fp-ts": "2.7.1",
-    "glob": "7.1.6",
+    "glob": "7.1.7",
     "keygrip": "1.1.0",
     "mime-types": "2.1.27",
     "minimatch": "3.0.4",
