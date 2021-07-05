@@ -35,7 +35,7 @@
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.20.2",
     "express": "4.17.1",
-    "filesize": "6.1.0",
+    "filesize": "6.4.0",
     "husky": "4.2.5",
     "jest": "25.5.4",
     "koa": "2.11.0",
