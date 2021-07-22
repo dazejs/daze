@@ -39,8 +39,9 @@ interface UnionOption {
 }
 
 interface OrderOption {
+  type: 'column' | 'raw';
   column: string;
-  direction: string;
+  direction?: string;
 }
 
 type BindingKeys = 'select' | 'from' | 'join' | 'where' | 'having' | 'order' | 'union'
@@ -531,8 +532,22 @@ export class Builder {
     const _direction = direction.toLowerCase();
     if (!['asc', 'desc'].includes(_direction)) throw new IllegalArgumentError('Order direction must be "asc" or "desc"');
     this._orders.push({
+      type: 'column',
       column,
       direction: _direction,
+    });
+    return this;
+  }
+
+  /**
+   * order by raw
+   * @param raw 
+   * @returns 
+   */
+  orderByRaw(raw: string) {
+    this._orders.push({
+      type: 'raw',
+      column: raw,
     });
     return this;
   }

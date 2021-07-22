@@ -248,7 +248,12 @@ export class Parser {
    */
   parseOrders(builder: Builder) {
     if (!builder._orders.length || builder._aggregate) return '';
-    const flatOrders = builder._orders.map(order => `${order.column} ${order.direction}`);
+    const flatOrders = builder._orders.map(order => {
+      if (order.type === 'column') {
+        return `${order.column} ${order.direction}`
+      }
+      return order.column;
+    });
     return `order by ${flatOrders.join(', ')}`;
   }
 
