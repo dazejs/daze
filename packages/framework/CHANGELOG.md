@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.16](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.15...@dazejs/framework@4.2.16) (2021-07-22)
+
+
+### Bug Fixes
+
+* 修复 order 无法使用 raw 的问题 ([8bf0dac](https://github.com/dazejs/daze/commit/8bf0dac9398bc0a0784616eacdd05f2860d93ac0))
+
+
+
+
+
 ## [4.2.15](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.14...@dazejs/framework@4.2.15) (2021-07-03)
 
 
