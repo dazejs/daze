@@ -203,7 +203,7 @@ export class Route {
     const controller = this.app.get(this.controller, [request]);
     const routeParams = this.getParams(request.path);
     const res = await controller[this.action](...routeParams);
-    if (res instanceof Response) return res;
-    return (new Response()).setData(res);
+    if (res instanceof Response) return res.encrypt(this.enctypt);
+    return (new Response()).setData(res).encrypt(this.enctypt);
   }
 }
