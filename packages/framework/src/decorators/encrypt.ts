@@ -1,0 +1,16 @@
+
+
+export const encryptResponse: MethodDecorator = function (...args: any[]) {
+    // decorator class
+    if (args.length === 1) {
+        const [target] = args;
+        Reflect.defineMetadata('encrypt', true, target);
+    }
+    // decorator method
+    else {
+        const [target, name] = args;
+        Reflect.defineMetadata('encrypt', true, target, name);
+    }
+  };
+
+export const EncryptResponse = encryptResponse;

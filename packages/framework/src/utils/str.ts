@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import * as _ from 'underscore.string';
+import crypto from 'crypto';
 
 export class Str {
   
@@ -21,6 +22,13 @@ export class Str {
   
   static encodeBASE64(body: any) {
     return Buffer.from(JSON.stringify(body)).toString('base64');
+  }
+
+  static aesEncrypt(val: string, key: string, iv: string | null = null) {
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(val, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
   }
 
   // https://github.com/esamattis/underscore.string

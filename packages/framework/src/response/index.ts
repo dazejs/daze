@@ -20,6 +20,7 @@ import { View } from '../view';
 import { ViewFactory } from '../view/factory';
 import { Statusable } from './statusable';
 import { Paginator } from '../pagination';
+import { Str } from '../utils/str'
 
 const encodingMethods = {
   gzip: zlib.createGzip,
@@ -62,6 +63,11 @@ export class Response extends Statusable {
    * need to response force
    */
   protected _isForce = false
+
+  /**
+   * 需要加密
+   */
+  protected _needEncrypt = false;
 
   /**
    * patched methods
@@ -498,16 +504,32 @@ export class Response extends Statusable {
     return this;
   }
 
+
+
+  /**
+   * 加密
+   * @returns 
+   */
+  encrypt(encrypt = true) {
+    this._needEncrypt = encrypt;
+    return this;
+  }
+
   /**
    * prepare response
    * @param request 
    */
   prepare(request: Request) {
     
-    const data = this.transformData(request);
+    let data = this.transformData(request);
 
+    if (this._needEncrypt) {
+      const config = this.app.get('config')
+      const key = config.get('app.key', 'dazejs')
+      const iv = config.get('app.iv', null)
+      data = Str.aesEncrypt(JSON.stringify(data), key, iv)
+    }
     const shouldSetType = !this.getHeader('content-type');
-
     // if no content
     if (data === null || typeof data === 'undefined') {
       this.setCode(204);

@@ -25,6 +25,7 @@ export * from './provider';
 export * from './rest';
 export * from './singleton';
 export * from './use';
+export * from './encrypt';
 export * from './validates';
 export * from './create-decorator';
 export const http = {

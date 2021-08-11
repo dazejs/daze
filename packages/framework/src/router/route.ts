@@ -58,6 +58,11 @@ export class Route {
   middleware: MiddlewareService;
 
   /**
+   * 响应数据是否加密
+   */
+  enctypt: boolean = false;
+
+  /**
    * Create Route
    * @param uri route URI
    * @param methods route methods

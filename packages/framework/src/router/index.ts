@@ -49,6 +49,10 @@ export class Router {
     } else if (routeCrossOrigin[action]) {
       route.addMethod('OPTIONS').registerMiddleware(CORSMiddleware, [routeCrossOrigin[action]]);
     }
+    // 路由响应是否加密
+    const enctypt = Reflect.getMetadata('enctypt', controller, action) || Reflect.getMetadata('enctypt', controller);
+    if (enctypt) route.enctypt = true;
+
     this.trie.add(route);
     return route;
   }
