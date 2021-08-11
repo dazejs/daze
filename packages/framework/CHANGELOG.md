@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.16...@dazejs/framework@4.3.0) (2021-08-11)
+
+
+### Features
+
+* **response:** 添加响应加密功能 ([5218ce2](https://github.com/dazejs/daze/commit/5218ce207c134a46f8382a92f118ee310891330a))
+
+
+
+
+
 ## [4.2.16](https://github.com/dazejs/daze/compare/@dazejs/framework@4.2.15...@dazejs/framework@4.2.16) (2021-07-22)
 
 
