@@ -50,7 +50,7 @@ export class Router {
       route.addMethod('OPTIONS').registerMiddleware(CORSMiddleware, [routeCrossOrigin[action]]);
     }
     // 路由响应是否加密
-    const enctypt = Reflect.getMetadata('enctypt', controller, action) || Reflect.getMetadata('enctypt', controller);
+    const enctypt = Reflect.getMetadata('encrypt', controller, action) || Reflect.getMetadata('encrypt', controller);
     if (enctypt) route.enctypt = true;
 
     this.trie.add(route);
