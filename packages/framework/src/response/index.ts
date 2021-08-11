@@ -528,6 +528,7 @@ export class Response extends Statusable {
       const key = config.get('app.key', 'dazejs')
       const iv = config.get('app.iv', null)
       data = Str.aesEncrypt(JSON.stringify(data), key, iv)
+      this.setHeader('encrypted', true)
     }
     const shouldSetType = !this.getHeader('content-type');
     // if no content

@@ -9,7 +9,7 @@ export const encryptResponse: MethodDecorator = function (...args: any[]) {
     // decorator method
     else {
         const [target, name] = args;
-        Reflect.defineMetadata('encrypt', true, target, name);
+        Reflect.defineMetadata('encrypt', true, target.constructor, name);
     }
   };
 
