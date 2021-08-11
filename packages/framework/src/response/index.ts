@@ -523,7 +523,7 @@ export class Response extends Statusable {
     
     let data = this.transformData(request);
 
-    if (this._needEncrypt) {
+    if (this._needEncrypt || request.needEncrypt) {
       const config = this.app.get('config')
       const key = config.get('app.key', 'dazejs')
       const iv = config.get('app.iv', null)

@@ -1,6 +1,6 @@
 
 
-export const encryptResponse: MethodDecorator = function (...args: any[]) {
+export const encryptResponse: MethodDecorator | ClassDecorator = function (...args: any[]) {
     // decorator class
     if (args.length === 1) {
         const [target] = args;
