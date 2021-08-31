@@ -82,7 +82,10 @@ export class Repository<TEntity = any> {
    * @param key 
    */
   private addUpdateAttributeColumn(key: string) {
-    this.updateAttributeColumns.add(key);
+    const columns = [...this.model.getColumns().keys()];
+    if (columns.includes(key)) {
+      this.updateAttributeColumns.add(key);
+    }
     return this;
   }
 
@@ -168,10 +171,7 @@ export class Repository<TEntity = any> {
     // 模型已存在的情况下配置更新字段
     // Configure update fields if the model already exists
     if (this.isExists()) {
-      const columns = [...this.model.getColumns().keys()];
-      if (columns.includes(key)) {
-        this.addUpdateAttributeColumn(key);
-      }
+      this.addUpdateAttributeColumn(key);
     }
     return this;
   }
