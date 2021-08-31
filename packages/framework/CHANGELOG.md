@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.4](https://github.com/dazejs/daze/compare/@dazejs/framework@4.3.3...@dazejs/framework@4.3.4) (2021-08-31)
+
+
+### Bug Fixes
+
+* **orm:** 修复关联查询后保存数据的问题 ([f7a26c5](https://github.com/dazejs/daze/commit/f7a26c50e8419bf32919a86c626f380c1f34348e))
+
+
+
+
+
 ## [4.3.3](https://github.com/dazejs/daze/compare/@dazejs/framework@4.3.2...@dazejs/framework@4.3.3) (2021-08-11)
 
 **Note:** Version bump only for package @dazejs/framework
