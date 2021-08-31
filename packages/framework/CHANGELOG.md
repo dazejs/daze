@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.5](https://github.com/dazejs/daze/compare/@dazejs/framework@4.3.4...@dazejs/framework@4.3.5) (2021-08-31)
+
+
+### Bug Fixes
+
+* **orm:** 修复一些错误 ([36b7899](https://github.com/dazejs/daze/commit/36b7899861f78aa3f002a0f84784708924d93b31))
+
+
+
+
+
 ## [4.3.4](https://github.com/dazejs/daze/compare/@dazejs/framework@4.3.3...@dazejs/framework@4.3.4) (2021-08-31)
 
 
