@@ -357,7 +357,7 @@ export class Parser {
    */
   columnDelimiteForUpdate(columns: string[], builder: Builder) {
     if (!columns) return '';
-    return columns.map(column => `${this.wrapColum(column, builder)} = ${this.parameter()}`);
+    return columns.map(column => `${this.wrapColum(column, builder)} = ${this.parameter()}`).join(', ');
   }
 
   /**
