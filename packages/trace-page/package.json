@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "code-prettify": "0.1.0",
-    "nunjucks": "3.2.1",
+    "nunjucks": "3.2.3",
     "stack-trace": "0.0.10",
     "zepto": "1.2.0"
   },
