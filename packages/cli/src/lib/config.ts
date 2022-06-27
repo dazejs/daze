@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path';
 import fs from 'fs';
-import { TigerConfigInterface } from '../config.interface';
+import { DazeConfigInterface } from '../config.interface';
 
 /**
  * 注入默认值
@@ -14,14 +14,14 @@ function resolveDefaultValues(target: Record<any, any> = {}) {
 
 /**
  * 加载用户自定义配置
- * tiger.config.ts
+ * daze.config.ts
  * @returns
  */
 export async function loadCustomConfig() {
   const cwd = process.cwd();
-  const ts = path.resolve(cwd, 'tiger.config.ts');
-  const js = path.resolve(cwd, 'tiger.config.js');
-  let deflector: { new(): TigerConfigInterface } | TigerConfigInterface | undefined;
+  const ts = path.resolve(cwd, 'daze.config.ts');
+  const js = path.resolve(cwd, 'daze.config.js');
+  let deflector: { new(): DazeConfigInterface } | DazeConfigInterface | undefined;
   if (fs.existsSync(ts)) {
     deflector = (await import(ts)).default;
   } else if (fs.existsSync(js)) {

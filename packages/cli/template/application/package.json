@@ -2,12 +2,12 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "dev": "tiger dev --spa",
-    "build": "tiger build --spa"
+    "dev": "daze dev --spa",
+    "build": "daze build --spa"
   },
   "repository": {
     "type": "git",
-    "url": "git@git.yx.netease.com:node-common/tiger-template.git"
+    "url": "https://github.com/dazejs/daze"
   },
   "keywords": [],
   "author": "",

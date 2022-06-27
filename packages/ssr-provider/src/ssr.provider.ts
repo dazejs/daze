@@ -86,8 +86,6 @@ export class SSRProvider {
           extractor: webExtractor,
           jsOrder: [],
           cssOrder: [],
-          // jsOrder: [`runtime~__tiger_entry.js`, `manifest.js`, `__tiger_entry.js`],
-          // cssOrder: [`manifest.css`, `__tiger_entry.css`],
           isMpa: this.isMpa,
           Layout
         });

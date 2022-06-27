@@ -1,4 +1,4 @@
-import { Middleware, MiddlewareInterface, Request, Next } from '@tiger/common';
+import { Middleware, MiddlewareInterface, Request, Next } from '@dazejs/framework';
 
 @Middleware()
 export class {{ name | firstUpperCase }} implements MiddlewareInterface {

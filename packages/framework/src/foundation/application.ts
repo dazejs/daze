@@ -30,7 +30,7 @@ import { MiddlewareService } from '../http/middleware';
 import debuger from 'debug';
 import { DAZE_PROCESS_TYPE } from '../cluster/const';
 
-const debug = debuger('@tiger/core:application');
+const debug = debuger('@dazejs/framework:application');
 
 const DEFAULT_PORT = 8080;
 
@@ -574,7 +574,7 @@ export class Application extends Container {
     // 在集群模式下，主进程不运行业务代码
     if (!this.isCluster || !cluster.isMaster) {
       // 独立工作进程
-      if (this.isCluster && process.env.TIGER_PROCESS_TYPE === 'agent') {
+      if (this.isCluster && process.env.DAZE_PROCESS_TYPE === 'agent') {
         // 注册初始化提供者
         await this.registerInitProviders();
         // 注册 agent 使用的第三方服务提供者

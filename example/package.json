@@ -3,10 +3,10 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@git.yx.netease.com:node-common/tiger-template.git"
+    "url": "https://github.com/dazejs/daze"
   },
   "scripts": {
-    "dev": "cross-env DEBUG=@tiger/* nodemon --signal SIGTERM --exec ts-node src/index.ts --source-map --preserve-symlinks"
+    "dev": "cross-env DEBUG=@dazejs/* nodemon --signal SIGTERM --exec ts-node src/index.ts --source-map --preserve-symlinks"
   },
   "keywords": [],
   "author": "",

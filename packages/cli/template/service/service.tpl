@@ -1,4 +1,4 @@
-import { Service } from '@tiger/common';
+import { Service } from '@dazejs/framework';
 
 @Service()
 export class {{ name | firstUpperCase }} {

@@ -1,8 +1,8 @@
-import { Controller, GetMapping } from '@tiger/common';
+import { Controller, http } from '@dazejs/framework';
 
 @Controller('/{{ name | plural | lower }}')
 export class {{ name | firstUpperCase }} {
-    @GetMapping()
+    @http.get()
     index() {
         // TODO
     }

@@ -1,4 +1,4 @@
-import { Rest } from '@tiger/common';
+import { Rest } from '@dazejs/framework';
 
 @Rest('/{{ name | plural | lower }}')
 export class {{ name | firstUpperCase }} {

@@ -1,4 +1,3 @@
-import { BaseProvider } from '@tiger/base-provider';
 import { BootProvider } from '../provider/boot';
 
 export default {
@@ -71,7 +70,6 @@ export default {
      * 扩展服务提供者
      */
     providers: [
-        BaseProvider,
         BootProvider
     ]
 };

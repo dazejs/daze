@@ -1,4 +1,4 @@
-import { Application } from '@tiger/common';
+import { Application } from '@dazejs/framework';
 
 const app = new Application();
 

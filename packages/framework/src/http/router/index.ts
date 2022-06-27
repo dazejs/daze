@@ -20,7 +20,7 @@ import debuger from 'debug';
 
 const OPTIONAL_PARAM_REGEXP = /(\/:[^/()]*?)\?(\/?)/;
 
-const debug = debuger('@tiger/common:router');
+const debug = debuger('@dazejs/framework:router');
 
 export class Router {
   /**

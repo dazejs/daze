@@ -1,8 +1,8 @@
-import { Controller, GetMapping, View } from '@tiger/common';
+import { Controller, http, View } from '@dazejs/framework';
 
 @Controller()
 export default class {
-    @GetMapping()
+    @http.get()
     index() {
         return new View('hello.html');
     }

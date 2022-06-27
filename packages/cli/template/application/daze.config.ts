@@ -1,9 +1,9 @@
-import { TigerConfigInterface, Webpack, WebpackChain } from '@tiger/cli';
+import { DazeConfigInterface, Webpack, WebpackChain } from '@dazejs/cli';
 
 /**
  * Tiger 编译时配置
  */
-export default class implements TigerConfigInterface {
+export default class implements DazeConfigInterface {
     /**
      * 是否开启异步路由（按路由拆分代码）
      */
