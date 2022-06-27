@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+try {
+  require.resolve('@dazejs/cli')
+} catch (err) {
+  throw new Error('未安装 @dazejs/cli 依赖')
+}
+
+const daze = require('@dazejs/cli')
+
+daze.terminate(process.argv)

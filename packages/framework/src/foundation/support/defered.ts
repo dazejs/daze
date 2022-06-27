@@ -15,7 +15,7 @@ export class Deferred<T> {
   /**
    * resolve func
    */
-  private _resolve: (value?: T | PromiseLike<T>) => void
+  private _resolve: (value: T | PromiseLike<T>) => void
 
   /**
    * reject func
@@ -43,7 +43,7 @@ export class Deferred<T> {
    * resolve promise
    * @param value 
    */
-  resolve (value?: T | PromiseLike<T>): void {
+  resolve(value: T | PromiseLike<T>): void {
     this._resolve(value);
   }
 
@@ -51,7 +51,7 @@ export class Deferred<T> {
    * reject promise
    * @param reason 
    */
-  reject (reason?: any): void {
+  reject(reason?: any): void {
     this._reject(reason);
   }
 }

@@ -5,7 +5,7 @@ import 'reflect-metadata';
 import '../../../daze/src/app/controller/example';
 import '../../../daze/src/provider/app';
 import { Application } from '../../../../src/foundation/application';
-import RedisSessionStore from '../../../../src/session/stores/redis';
+import RedisSessionStore from '../../../../src/http/session/stores/redis';
 
 const app = new Application(path.resolve(__dirname, '../../../daze/src'));
 

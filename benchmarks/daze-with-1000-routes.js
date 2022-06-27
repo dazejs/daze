@@ -17,7 +17,7 @@ class RoutesProvider extends BaseProvider {
       for (let index2 = 0; index2 < 10; index2++) {
         for (let index3 = 0; index3 < 10; index3++) {
           const url = `/uuid${index1}/uuid${index2}/uuid${index3}`
-          router.register(url, ['GET'], Hello, 'index', [])
+          router.register(url, ['GET'], {}, Hello, 'index', [])
         }
       }
     }

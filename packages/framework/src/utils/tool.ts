@@ -17,7 +17,7 @@ export class Tool {
    */
   static defer<T>() {
     const result: any = {};
-    result.promise = new Promise<T>((resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
+    result.promise = new Promise<T>((resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
       result.resolve = resolve;
       result.reject = reject;
     });

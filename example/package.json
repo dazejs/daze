@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dazejs/daze"
+  },
+  "scripts": {
+    "dev": "cross-env DEBUG=@dazejs/* nodemon --signal SIGTERM --exec ts-node src/index.ts --source-map --preserve-symlinks"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSE",
+  "dependencies": {
+    "antd": "^4.17.3",
+    "reflect-metadata": "^0.1.13",
+    "serialize-javascript": "^5.0.1"
+  }
+}

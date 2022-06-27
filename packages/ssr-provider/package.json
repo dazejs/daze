@@ -1,0 +1,33 @@
+{
+  "name": "@dazejs/ssr-provider",
+  "version": "0.0.1",
+  "description": "dazejs ssr provider",
+  "author": "czewail <chanzewail@gmail.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "copy": "copyfiles -u 1 src/**/*.html dist",
+    "dev": "npm run clean && npm run copy && tsc -w",
+    "clean": "rimraf dist/*",
+    "build": "npm run clean && npm run copy && tsc"
+  },
+  "dependencies": {
+    "@loadable/server": "^5.15.2",
+    "jsdom": "^16.6.0",
+    "react-ssr-prepass": "^1.4.0",
+    "serialize-javascript": "^5.0.1"
+  },
+  "devDependencies": {
+    "@dazejs/framework": "4.3.5",
+    "@types/jsdom": "^16.2.13",
+    "@types/loadable__server": "^5.12.6",
+    "@types/serialize-javascript": "^5.0.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16",
+    "reflect-metadata": ">=0.1.13"
+  }
+}

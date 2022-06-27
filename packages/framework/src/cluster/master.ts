@@ -9,8 +9,9 @@ import debuger from 'debug';
 import * as net from 'net';
 import hash from 'string-hash';
 import { Deferred } from '../foundation/support/defered';
-import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
+import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING, DAZE_PROCESS_TYPE } from './const';
 import { getAlivedWorkers, parseMasterOpts } from './helpers';
+import { Application } from '../foundation/application';
 
 const debug = debuger('daze-framework:cluster');
 
@@ -41,7 +42,10 @@ export class Master {
     [key: string]: net.Socket;
   } = {};
 
-  constructor(opts: MasterOptions) {
+  app: Application;
+
+  constructor(app: Application, opts: MasterOptions) {
+    this.app = app;
     this.options = Object.assign({}, defaultOptions, parseMasterOpts(opts));
   }
 
@@ -50,6 +54,7 @@ export class Master {
    */
   forkWorker(env = {}) {
     const worker = cluster.fork(env);
+    (worker as any)[DAZE_PROCESS_TYPE] = 'worker';
     debug(`worker is forked, use pid: ${worker.process.pid}`);
     const deferred = new Deferred<cluster.Worker>();
     // Accepts the disconnection service signal sent by the work process,
@@ -125,6 +130,7 @@ export class Master {
       DAZE_PROCESS_TYPE: 'agent'
     };
     const agent = cluster.fork(env);
+    (agent as any)[DAZE_PROCESS_TYPE] = 'agent';
     debug(`agent is forked, use pid: ${agent.process.pid}`);
     return agent;
   }
@@ -204,6 +210,11 @@ export class Master {
     const workers = serverPromise.then((res) => {
       // do something
       this.catchSignalToReload();
+      if (this.app.listenerCount('ready') > 0) {
+        this.app.emit('ready');
+      } else {
+        console.log(`服务已启动, 监听端口号为: ${this.app.port}`);
+      }
       return res;
     });
     return workers;

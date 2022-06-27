@@ -30,6 +30,11 @@ export class Container extends EventEmitter {
   tags: any = {};
 
   /**
+    * 绑定的路径
+    */
+  paths = new Map();
+
+  /**
    * static instance
    */
   static instance: any;
@@ -72,6 +77,27 @@ export class Container extends EventEmitter {
    */
   exists(abstract: any) {
     return this.instances.has(abstract);
+  }
+
+  /**
+   * 绑定路径
+   * @param abstract
+   * @param path
+   * @returns
+   */
+  public bindPath(abstract: any, path: string) {
+    if (!abstract || !path) return;
+    this.paths.set(abstract, path);
+  }
+
+  /**
+  * 获取绑定的路径
+  * @param abstract
+  * @returns
+  */
+  public getPath(abstract: any) {
+    if (!abstract) return;
+    return this.paths.get(abstract);
   }
 
   /**
@@ -163,16 +189,16 @@ export class Container extends EventEmitter {
     const { concrete: Concrete } = this.binds.get(abstract);
     const that = this;
     const ConcreteProxy = new Proxy(Concrete, {
-      construct(target: any, targetArgArray: any[] = [], newTarget?: any) { 
+      construct(target: any, targetArgArray: any[] = [], newTarget?: any) {
         const params = that.bindConstructorParams(Concrete, args, targetArgArray);
         const instance = Reflect.construct(target, [...params], newTarget);
         instance.__context__ = args;
         return new Proxy(instance, {
-          get(instanceTarget: any, propertyKey: string | number | symbol, receiver: any) { 
+          get(instanceTarget: any, propertyKey: string | number | symbol, receiver: any) {
             if (propertyKey === 'constructor') return Reflect.get(instanceTarget, propertyKey, receiver);
             if (typeof instanceTarget[propertyKey] === 'function') { // Method
               return new Proxy(instanceTarget[propertyKey], {
-                apply(methodTarget: any, thisArg: any, argArray?: any) { 
+                apply(methodTarget: any, thisArg: any, argArray?: any) {
                   const methodParams = that.bindMethodParams(Concrete, propertyKey.toString(), args, argArray);
                   return Reflect.apply(methodTarget, thisArg, [...methodParams]);
                 }
@@ -191,7 +217,7 @@ export class Container extends EventEmitter {
    * 内建类型
    * @param type 
    */
-  private isBuildInType(type: any) { 
+  private isBuildInType(type: any) {
     return type === Number ||
       type === String ||
       type === Object ||
@@ -206,7 +232,7 @@ export class Container extends EventEmitter {
    * @param args 
    * @param vars 
    */
-  private bindConstructorParams(Concrete: any, args: any[] = [], vars: any[] = []) { 
+  private bindConstructorParams(Concrete: any, args: any[] = [], vars: any[] = []) {
     const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete);
     if (disableInject) return vars;
     const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete) ?? [];
@@ -222,7 +248,7 @@ export class Container extends EventEmitter {
    * @param args 
    * @param vars 
    */
-  private bindMethodParams(Concrete: any, key: string | symbol, args: any[] = [], vars: any[] = []) { 
+  private bindMethodParams(Concrete: any, key: string | symbol, args: any[] = [], vars: any[] = []) {
     const disableInject = Reflect.getMetadata(symbols.DISABLE_INJECT, Concrete, key);
     if (disableInject) return vars;
     const injectParams: InjectParamsOption[] = Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Concrete, key) ?? [];
@@ -237,12 +263,12 @@ export class Container extends EventEmitter {
    * @param args 
    * @param key 
    */
-  private bindProperty(Concrete: any, args: any[] = [], key: string | symbol) { 
+  private bindProperty(Concrete: any, args: any[] = [], key: string | symbol) {
     const injects: InjectParamsOption[] = Reflect.getMetadata(
       symbols.INJECTTYPE_METADATA, Concrete, key
     ) ?? [];
     const typeParam: any = Reflect.getMetadata(symbols.PROPERTYTYPE_METADATA, Concrete, key);
-    if (injects[0]) { 
+    if (injects[0]) {
       const { abstract, params, handler } = injects[0];
       const injectedParam = this.make(abstract, [...params ?? [], ...args]);
       if (typeof handler === 'function') {
@@ -263,7 +289,7 @@ export class Container extends EventEmitter {
    * @param args 
    * @param vars 
    */
-  private bindParams(argsLength: number, injectParams: InjectParamsOption[], typeParams: any[], args: any[], vars: any[]) { 
+  private bindParams(argsLength: number, injectParams: InjectParamsOption[], typeParams: any[], args: any[], vars: any[]) {
     const params: any[] = [];
     // 未确认位置的手动注入的参数数组
     const unPositionInjectParams = [];
@@ -272,11 +298,11 @@ export class Container extends EventEmitter {
     for (const item of injectParams) {
       if (item.index !== undefined) {
         positionInjectParams.push(item);
-      } else { 
+      } else {
         unPositionInjectParams.push(item);
       }
     }
-    for (let index = 0; index < argsLength; index++) { 
+    for (let index = 0; index < argsLength; index++) {
       // 找到手动注入的匹配参数
       const injectParam = positionInjectParams.find(item => item.index === index);
       // 当前位置的类型参数

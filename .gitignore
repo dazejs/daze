@@ -32,3 +32,10 @@ DEPRECATED_*
 
 # dev example
 __example__
+__dev_*
+/example/public/ssr/
+/example/public/static/
+/example/build
+/example/logs
+.idea
+.temp

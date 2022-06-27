@@ -13,14 +13,14 @@ beforeAll(() => app.initialize());
 
 describe('Config', () => {
   it('Config#get', async () => {
-    const configInstance = app.get(Config);
-    await configInstance.initialize();
+    const configInstance = app.get<Config>(Config);
+    await configInstance.initialize(app.configPath);
     expect(configInstance.get('app')).toEqual({
       ...appConfig,
       ...appConfig2,
     });
     expect(configInstance.get('custom')).toEqual(customConfig);
-    expect(configInstance.get()).toEqual(configInstance._items);
+    expect(configInstance.get()).toEqual(configInstance.get());
     expect(configInstance.get('app.port')).toBe(0);
     expect(configInstance.get('app.workers')).toBe(0);
     expect(configInstance.get('custom.a.b.c')).toBe('c');
@@ -29,8 +29,8 @@ describe('Config', () => {
   });
 
   it('Config#has', async () => {
-    const configInstance = app.get(Config);
-    await configInstance.initialize();
+    const configInstance = app.get<Config>(Config);
+    await configInstance.initialize(app.configPath);
     expect(configInstance.has('app')).toBeTruthy();
     expect(configInstance.has('app.workers')).toBeTruthy();
     expect(configInstance.has('app.undefineProp')).toBeFalsy();
@@ -40,8 +40,8 @@ describe('Config', () => {
   });
 
   it('Config#set', async () => {
-    const configInstance = app.get(Config);
-    await configInstance.initialize();
+    const configInstance = app.get<Config>(Config);
+    await configInstance.initialize(app.configPath);
     configInstance.set('app.port', 9999);
     configInstance.set('custom.a.b.d', 'd');
     configInstance.set('custom.a.b.e', 'e');
@@ -51,8 +51,8 @@ describe('Config', () => {
   });
 
   it('Config#prop', async () => {
-    const configInstance = app.get(Config);
-    await configInstance.initialize();
+    const configInstance = app.get<Config>(Config);
+    await configInstance.initialize(app.configPath);
     expect(configInstance.app.port).toBe(0);
   });
   

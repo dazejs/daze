@@ -1,0 +1,27 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "daze dev --spa",
+    "build": "daze build --spa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dazejs/daze"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSE",
+  "dependencies": {
+    {% for dep, version in depensMap %}
+    "{{ dep }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
+    {% endfor %}
+  },
+  "devDependencies": {
+    {% for dep, version in devDepensMap %}
+    "{{ dep }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
+    {% endfor %}
+  }
+}

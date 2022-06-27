@@ -1,0 +1,150 @@
+variables:
+  SERVICE_CODE: '{{serviceCode}}'
+  ARTIFACT_PATH: $CI_PROJECT_NAME.zip
+
+image: $CI_IMAGE_FRONT_NODE_14
+
+stages:
+  - package
+  - upload
+
+################################
+#    前置检查
+################################
+before_script:
+  - preCheck
+
+################################
+#    编译打包(test)
+################################
+package-fed-test:
+  stage: package
+  script:
+    - pwd && node -v && npm -v
+    - sh scripts/install-ci.sh
+    - sh scripts/build.sh
+    - cp deploy/setenv_test.sh build/setenv.sh
+    - cd build && zip -rq ../$ARTIFACT_PATH ./*
+  tags:
+    - ci-front
+  artifacts:
+    paths:
+      - $ARTIFACT_PATH
+    expire_in: 1d
+  cache:
+    key: '$CI_PROJECT_NAME'
+    paths:
+      - node_modules/
+  only:
+    - /^(dev|feature).*$/
+
+################################
+# 测试环境镜像制品构建、上传及自动发布 --  --autoDeploy=true --clusterId=44 --ldcCode=cluster1
+################################
+test_image_upload:
+  stage: upload
+  script:
+    - version_tools time && CURRENT_TIMESTAMP=$(version_tools result)
+    - version_tools version && PROJECT_VERSION=$(version_tools result)
+    - IMAGE_TAG="${PROJECT_VERSION}-${CI_COMMIT_REF_NAME##*/}-${CURRENT_TIMESTAMP}-${CI_PIPELINE_ID}"
+    - IMAGE_NAME="${HARBOR_URL}/${HARBOR_APP_DIRECTOR}/${SERVICE_CODE}:${IMAGE_TAG}"
+    - rm -rf target && mkdir target && unzip $ARTIFACT_PATH -d target && mv target/setenv.sh .
+    - docker build --pull -t ${IMAGE_NAME}  .
+    - eval opera docker $OPERA_ARGS --env=test --imageName=${IMAGE_NAME} --imageTag=${IMAGE_TAG}
+  tags:
+    - ci-front
+  only:
+    - /^(dev|feature).*$/
+  dependencies:
+    - package-fed-test
+
+
+################################
+#    编译打包(online)
+################################
+package-fed-online:
+  stage: package
+  script:
+    - pwd
+    - sh scripts/install-ci.sh
+    - sh scripts/build.sh
+    - cp deploy/setenv_online.sh build/setenv.sh
+    - cd build && zip -rq ../$ARTIFACT_PATH ./*
+  tags:
+    - ci-front
+  artifacts:
+    paths:
+      - $ARTIFACT_PATH
+    expire_in: 1d
+  cache:
+    key: '$CI_PROJECT_NAME'
+    paths:
+      - node_modules/
+  only:
+    - master
+
+################################
+# online环境镜像制品构建、上传及自动发布 --  --autoDeploy=true --clusterId=44 --ldcCode=cluster1
+################################
+online_image_upload:
+  stage: upload
+  script:
+    - version_tools time && CURRENT_TIMESTAMP=$(version_tools result)
+    - version_tools version && PROJECT_VERSION=$(version_tools result)
+    - IMAGE_TAG="${PROJECT_VERSION}-${CI_COMMIT_REF_NAME##*/}-${CURRENT_TIMESTAMP}-${CI_PIPELINE_ID}"
+    - IMAGE_NAME="${HARBOR_URL}/${HARBOR_APP_DIRECTOR}/${SERVICE_CODE}:${IMAGE_TAG}"
+    - rm -rf target && mkdir target && unzip $ARTIFACT_PATH -d target && mv target/setenv.sh .
+    - docker build --pull -t ${IMAGE_NAME}  .
+    - eval opera docker $OPERA_ARGS --env=online --imageName=${IMAGE_NAME} --imageTag=${IMAGE_TAG}
+  tags:
+    - ci-front
+  only:
+    - master
+  dependencies:
+    - package-fed-online
+
+
+################################
+#    编译打包(betayun)
+################################
+package-fed-betayun:
+  stage: package
+  script:
+    - pwd
+    - sh scripts/install-ci.sh
+    - sh scripts/build.sh
+    - cp deploy/setenv_online.sh build/setenv.sh
+    - cd build && zip -rq ../$ARTIFACT_PATH ./*
+  tags:
+    - ci-front
+  artifacts:
+    paths:
+      - $ARTIFACT_PATH
+    expire_in: 1d
+  cache:
+    key: '$CI_PROJECT_NAME'
+    paths:
+      - node_modules/
+  only:
+    - master
+
+################################
+# betayun 环境镜像制品构建、上传及自动发布 --  --autoDeploy=true --clusterId=44 --ldcCode=cluster1
+################################
+betayun_image_upload:
+  stage: upload
+  script:
+    - version_tools time && CURRENT_TIMESTAMP=$(version_tools result)
+    - version_tools version && PROJECT_VERSION=$(version_tools result)
+    - IMAGE_TAG="${PROJECT_VERSION}-${CI_COMMIT_REF_NAME##*/}-${CURRENT_TIMESTAMP}-${CI_PIPELINE_ID}"
+    - IMAGE_NAME="${HARBOR_URL}/${HARBOR_APP_DIRECTOR}/${SERVICE_CODE}:${IMAGE_TAG}"
+    - rm -rf target && mkdir target && unzip $ARTIFACT_PATH -d target && mv target/setenv.sh .
+    - docker build --pull -f Dockerfile.beta -t ${IMAGE_NAME}  .
+    - eval opera docker $OPERA_ARGS --env=online --imageName=${IMAGE_NAME} --imageTag=${IMAGE_TAG}
+  tags:
+    - betayun-runner
+  only:
+    - /^(betayun).*$/
+  dependencies:
+    - package-fed-betayun
+

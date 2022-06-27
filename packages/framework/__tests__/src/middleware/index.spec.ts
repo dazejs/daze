@@ -9,7 +9,7 @@ import {
   ExampleMiddlewareOrderMax1,
   ExampleMiddlewareOrderMin
 } from '../../daze/src/app/middleware/example-order';
-import { MiddlewareService } from '../../../src/middleware';
+import { MiddlewareService } from '../../../src/http/middleware';
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 

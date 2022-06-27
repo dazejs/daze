@@ -15,7 +15,7 @@ export const WORKER_DYING = 'daze-worker-dying';
 
 // After the main process reforks the worker process,
 // it notifies the corresponding worker process to terminate the service
-// 主进程重新 fork 工作进程后通知对应工作进程让其结束服务的信号
+// 主进程重新 fork 工作进程后通知对应工作进程让其结束服务的信号
 export const WORKER_DID_FORKED = 'daze-worker-did-fork';
 
 // Signal that the work process is about to stop providing service to the main process
@@ -24,3 +24,6 @@ export const WORKER_DISCONNECT = 'daze-worker-disconnect';
 
 // sticky sessions for websocket communication
 export const STIKCY_CONNECTION = 'daze-sticky-connection';
+
+// daze process type
+export const DAZE_PROCESS_TYPE = 'daze:process:type';

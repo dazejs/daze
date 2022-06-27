@@ -128,7 +128,7 @@ describe('one to one relation', () => {
 
     const res = await user.with('profile').get(1);
     const res2 = await profile.with('user').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       name: 'dazejs',
       age: 10,
@@ -139,7 +139,7 @@ describe('one to one relation', () => {
         user_id: 1,
       }
     });
-    expect(res2.getAttributes()).toEqual({
+    expect(res2?.getAttributes()).toEqual({
       id: 1,
       motto: 'test1',
       user_id: 1,
@@ -277,7 +277,7 @@ describe('one to many relation', () => {
     });
 
     const res = await user.with('comments').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       name: 'dazejs',
       age: 10,
@@ -356,7 +356,7 @@ describe('one to many relation', () => {
     });
 
     const res = await comment.with('user').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       comment: 'test1',
       user_id: 1,
@@ -448,7 +448,7 @@ describe('many to many relation', () => {
       role_id: 2
     }]);
     const res = await user.with('roles').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       name: 'dazejs',
       age: 10,
@@ -557,7 +557,7 @@ describe('many to many relation', () => {
     const user1 = await user.get(1);
     await user1.attach('roles', 1, 2);
     const res = await user.with('roles').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       name: 'dazejs',
       age: 10,
@@ -599,7 +599,7 @@ describe('many to many relation', () => {
     await user1.attach('roles', 1, 2);
     await user1.detach('roles', 1);
     const res = await user.with('roles').get(1);
-    expect(res.getAttributes()).toEqual({
+    expect(res?.getAttributes()).toEqual({
       id: 1,
       name: 'dazejs',
       age: 10,

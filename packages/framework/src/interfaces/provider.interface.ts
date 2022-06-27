@@ -1,6 +1,7 @@
-
+import { Application } from '../foundation/application';
 
 export interface ProviderInterface {
-  register?(): void | Promise<void>;
-  launch?(): void | Promise<void>;
+  register?: (app: Application) => any;
+  launch?: (app: Application) => any;
+  [key: string]: any;
 }
