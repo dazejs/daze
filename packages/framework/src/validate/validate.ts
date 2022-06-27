@@ -137,7 +137,7 @@ export class Validate {
       const validated = handler(property, ...args);
       if (validated) return true;
       this._message.add(field, this.replaceSpecialMessageFields(property, rule));
-    } catch (err) {
+    } catch (err: any) {
       this._message.add(field, err.message);
     }
     return false;

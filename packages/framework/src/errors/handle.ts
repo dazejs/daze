@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import tracePage from '@dazejs/trace-page';
+// import tracePage from '@dazejs/trace-page';
 import statuses from 'statuses';
 import * as typeis from 'type-is';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { Request } from '../request';
-import { Response } from '../response';
-import { Redirect } from '../response/redirect';
+import { Request } from '../http/request';
+import { Response } from '../http/response';
+import { Redirect } from '../http/response/redirect';
 import { View } from '../view';
 import { HttpError } from './http-error';
 import { ValidateHttpError } from './validate-http-error';
@@ -27,8 +27,8 @@ const defaultHttpErrorTemplate = {
 
 const renderTypes = ['html', 'text', 'json'];
 
-export interface ErrorOptionProperty { 
-  render?: Function; 
+export interface ErrorOptionProperty {
+  render?: Function;
   report?: Function;
 }
 
@@ -142,9 +142,9 @@ export class ErrorHandler {
       return (new Redirect()).back();
     }
     if (!(this.error instanceof HttpError)) {
-      if (this.app.isDebug) {
-        return this.renderTracePage(this.error);
-      }
+      // if (this.app.isDebug) {
+      //   return this.renderTracePage(this.error);
+      // }
       return this.renderErrorPage(this.error);
     }
     return this.renderHttpErrorPage(this.error);
@@ -154,10 +154,10 @@ export class ErrorHandler {
    * render trace page for debug
    * @private
    */
-  private renderTracePage(error: Error & ErrorOptionProperty) {
-    const page = tracePage(error, this.request);
-    return new Response(page, 500).setType('html');
-  }
+  // private renderTracePage(error: Error & ErrorOptionProperty) {
+  //   const page = tracePage(error, this.request);
+  //   return new Response(page, 500).setType('html');
+  // }
 
   /**
    * render error page

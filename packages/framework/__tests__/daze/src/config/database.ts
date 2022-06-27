@@ -4,7 +4,7 @@ export default {
     host: 'localhost',
     user: 'root',
     password: 'root',
-    port: 13306,
+    port: 3306,
     database: 'daze'
   },
   session: {

@@ -1,0 +1,27 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "tiger dev --spa",
+    "build": "tiger build --spa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.yx.netease.com:node-common/tiger-template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSE",
+  "dependencies": {
+    {% for dep, version in depensMap %}
+    "{{ dep }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
+    {% endfor %}
+  },
+  "devDependencies": {
+    {% for dep, version in devDepensMap %}
+    "{{ dep }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
+    {% endfor %}
+  }
+}

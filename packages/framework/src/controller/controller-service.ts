@@ -6,7 +6,7 @@
  */
 import { BaseController } from '../base';
 import { Application } from '../foundation/application';
-import { Router } from '../router';
+import { Router } from '../http/router';
 import { UseMiddlewareOption } from '../decorators/use/interface';
 
 export class ControllerService {
@@ -57,7 +57,7 @@ export class ControllerService {
       for (const route of routes[key]) {
         const { uri, method } = route;
         const actionMiddlewareOptions = routeMiddlewares[key] ?? [];
-        router.register(`${prefix}${uri}`, [method], controller, key, [...controllerMiddlewareOptions, ...actionMiddlewareOptions]);
+        router.register(`${prefix}${uri}`, [method], {}, controller, key, [...controllerMiddlewareOptions, ...actionMiddlewareOptions]);
       }
     }
   }

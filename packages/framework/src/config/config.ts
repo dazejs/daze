@@ -51,22 +51,20 @@ export class Config {
   /**
    * async initialize
    */
-  async initialize() {
-    await this.parse();
+  async initialize(dirpath: string) {
+    await this.parse(dirpath);
   }
 
   /**
    * Parses configuration files to instance properties
    */
-  private async parse() {
-    if (!fs.existsSync(this._app.configPath)) return;
+  private async parse(dirpath: string) {
+    if (!fs.existsSync(dirpath)) return;
     const currentEnv = this.env;
-    // const files = fs.readdirSync(this._app.configPath);
-    const filePaths = glob.sync(path.join(this._app.configPath, '**/*.@(js|ts)'), {
+    const filePaths = glob.sync(path.join(dirpath, '**/*.@(js|ts)'), {
       nodir: true,
       matchBase: true
     });
-
     for (const file of filePaths) {
       const extname = path.extname(file);
       const normalBasename = path.basename(file, extname);

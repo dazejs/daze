@@ -15,9 +15,11 @@ import {
 
 const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
+beforeAll(() => app.initialize());
+
 describe('Loader', () => {
   it('should parse module each type', () => {
-    const loader = new Loader(app);
+    const loader = new Loader();
 
     @controller()
     class ExampleController extends BaseController { }
@@ -45,18 +47,18 @@ describe('Loader', () => {
     @component('example')
     class ExampleComponent { }
 
-    loader.load(ExampleController);
-    loader.load(ExampleService);
-    loader.load(ExampleResource);
-    loader.load(ExampleMiddleware);
-    loader.load(ExampleValidator);
-    loader.load(ExampleComponent);
+    loader.load(ExampleController, '');
+    loader.load(ExampleService, '');
+    loader.load(ExampleResource, '');
+    loader.load(ExampleMiddleware, '');
+    loader.load(ExampleValidator, '');
+    loader.load(ExampleComponent, '');
 
-    expect(loader.loadedComponents.get('controller')?.includes(ExampleController)).toBeTruthy();
-    expect(loader.loadedComponents.get('middleware')?.includes(ExampleMiddleware)).toBeTruthy();
-    expect(loader.loadedComponents.get('service')?.includes(ExampleService)).toBeTruthy();
-    expect(loader.loadedComponents.get('resource')?.includes(ExampleResource)).toBeTruthy();
-    expect(loader.loadedComponents.get('validator')?.includes(ExampleValidator)).toBeTruthy();
-    expect(loader.loadedComponents.get('component')?.includes(ExampleComponent)).toBeTruthy();
+    expect(loader.loadedComponents.get('controller')?.findIndex(e => e.target === ExampleController)).toBeGreaterThan(-1);
+    expect(loader.loadedComponents.get('middleware')?.findIndex(e => e.target === ExampleMiddleware)).toBeGreaterThan(-1);
+    expect(loader.loadedComponents.get('service')?.findIndex(e => e.target === ExampleService)).toBeGreaterThan(-1);
+    expect(loader.loadedComponents.get('resource')?.findIndex(e => e.target === ExampleResource)).toBeGreaterThan(-1);
+    expect(loader.loadedComponents.get('validator')?.findIndex(e => e.target === ExampleValidator)).toBeGreaterThan(-1);
+    expect(loader.loadedComponents.get('component')?.findIndex(e => e.target === ExampleComponent)).toBeGreaterThan(-1);
   });
 });

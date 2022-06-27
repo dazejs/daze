@@ -6,7 +6,7 @@
  */
 
 import { useMiddleware } from './use/use-middleware';
-import { VerifyCsrfToken } from '../foundation/middlewares/verify-csrf-token';
+import { VerifyCsrfToken } from '../foundation/buildin-app/middlewares/verify-csrf-token';
 
 export const csrf = function () {
   return useMiddleware(VerifyCsrfToken);

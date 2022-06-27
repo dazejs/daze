@@ -11,9 +11,9 @@ import { Database } from '../database';
 import { Application } from '../foundation/application';
 import { MessengerService } from '../messenger';
 import { Model } from '../orm/model';
-import { Response } from '../response';
+import { Response } from '../http/response';
 import { Validate } from '../validate';
-import { Redirect } from '../response/redirect';
+import { Redirect } from '../http/response/redirect';
 import { Resource } from '../resource';
 // import { Entity } from '../orm/entity';
 

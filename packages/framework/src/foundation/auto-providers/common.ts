@@ -4,21 +4,38 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as providers from './providers';
-import { provide, depends } from '../../decorators';
-// import { Application } from '../application';
-import { MessengerService } from '../../messenger';
+import * as providers from './depends';
+import { depends, appendAgent, appendMaster, provide } from '../../decorators';
+import { Application } from '../application';
 import { BaseProvider } from '../../base/provider';
+import { Loader } from '../../loader';
+import path from 'path';
+import Tokens from 'csrf';
 
 @depends([
-  providers.ConfigProvider,
-  providers.LoaderProvider,
+  providers.RouterProvider,
   providers.StereotypeProvider,
+  providers.MessengerProvider,
+  providers.LoggerProvider,
+  providers.DatabaseProvider,
+  providers.MailerProvider,
+  providers.RedisProvider,
+  providers.CacheProvider,
 ])
+@appendAgent()
+@appendMaster()
 export class CommonProvider extends BaseProvider {
+  @provide('csrf')
+  _csrf() {
+    return new Tokens();
+  }
 
-  @provide('messenger')
-  _mssenger() {
-    return new MessengerService();
+
+  async register(app: Application) {
+    const loader = app.get<Loader>('loader');
+    await loader.scan(
+      path.resolve(__dirname, '../buildin-app')
+    );
+    await loader.autoScanApp();
   }
 }

@@ -5,12 +5,10 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { ProviderType } from '../../symbol';
+import { ProviderType, ProcessType } from '../../symbol';
 
 /**
  * depends providers
- * 
- * @param providers 
  */
 export const depends = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
@@ -26,16 +24,10 @@ export const depends = function (...providers: Function[] | Function[][]) {
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 };
-
-/**
- * Alias
- */
 export const Depends = depends;
 
 /**
  * imports providers
- * 
- * @param providers 
  */
 export const imports = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
@@ -51,17 +43,11 @@ export const imports = function (...providers: Function[] | Function[][]) {
     Reflect.defineMetadata(ProviderType.PROVIDER, option, constructor);
   };
 };
-
-/**
- * Alias
- */
 export const Imports = imports;
 
 
 /**
  * auto scan components
- * 
- * @param componentScans 
  */
 export const autoScan = function (...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
@@ -78,9 +64,11 @@ export const autoScan = function (...componentScans: string[] | string[][]) {
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 };
-
 export const AutoScan = autoScan;
 
+/**
+ * provider Type
+ */
 export const provider = function (providerOption?: ProviderOption): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('type', 'provider', constructor);
@@ -115,8 +103,48 @@ export const provider = function (providerOption?: ProviderOption): ClassDecorat
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 };
-
 export const Provider = provider;
+
+
+/**
+ * loaded only in the Agent process
+ */
+export const onlyAgent = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.ONLY_AGENT, true, constructor);
+  };
+};
+export const OnlyAgent = onlyAgent;
+
+/**
+ * also loaded in the Agent process
+ */ 
+export const appendAgent = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.APPEND_AGENT, true, constructor);
+  };
+};
+export const AppendAgent = appendAgent;
+
+/**
+ * loaded only in the Agent process
+ */
+export const onlyMaster = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.ONLY_MASTER, true, constructor);
+  };
+};
+export const OnlyMaster = onlyMaster;
+
+/**
+ * also loaded in the Agent process
+ */
+export const appendMaster = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.APPEND_MASTER, true, constructor);
+  };
+};
+export const AppendMaster = appendMaster;
 
 
 export interface ProviderOption {

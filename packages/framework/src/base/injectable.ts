@@ -1,4 +1,4 @@
-import { Request } from '../request';
+import { Request } from '../http/request';
 import { Base } from './base';
 import { INJECTABLE } from '../symbol';
 

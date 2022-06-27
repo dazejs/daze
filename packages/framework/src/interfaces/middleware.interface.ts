@@ -5,10 +5,9 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { Response } from '../response';
-import { Request } from '../request';
-import { Next } from '../middleware';
+import { Request } from '../http/request';
+import { Next } from '../http/middleware';
 
 export interface MiddlewareInterface {
-  resolve(request: Request, next: Next): Promise<Response> | Response;
+  resolve(request: Request, next: Next): Promise<any>;
 }

@@ -17,8 +17,5 @@ export const conf = (key?: string, defaultValue?: any) =>
   });
 export const Conf = conf;
 
-export const app = () => decoratorFactory('app');
-export const App = app;
-
 export const messenger = () => decoratorFactory('messenger');
 export const Messenger = messenger;

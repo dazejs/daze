@@ -3,14 +3,14 @@ import 'reflect-metadata';
 import { Container, injectable } from '../../../src';
 import * as symbols from '../../../src/symbol';
 
-it('Container.setInstance', () => {
+it('Container.setInstance', () => {
   const App = class { };
   Container.setInstance(App);
   expect(Container.instance).toBe(App);
 });
 
 
-it('Container.bind and Container.get', () => {
+it('Container.bind and Container.get', () => {
   Container.setInstance(null);
   const App = class { };
   Container.bind(App, App);
@@ -19,7 +19,7 @@ it('Container.bind and Container.get', () => {
   expect(Container.get(App)).toBeInstanceOf(App);
 });
 
-it('Container.has', () => {
+it('Container.has', () => {
   Container.setInstance(null);
   const App = class { };
   const Non = class { };
@@ -29,7 +29,7 @@ it('Container.has', () => {
 });
 
 
-it('Container#bound', () => {
+it('Container#bound', () => {
   Container.setInstance(null);
   const App = class { };
   const Non = class { };
@@ -39,7 +39,7 @@ it('Container#bound', () => {
   expect(ContainerInstance.bound(Non)).toBeFalsy();
 });
 
-it('Container#exists', () => {
+it('Container#exists', () => {
   Container.setInstance(null);
   const App = class { };
   const AppInstance = new App();
@@ -48,7 +48,7 @@ it('Container#exists', () => {
   expect(ContainerInstance.exists(AppInstance)).toBeTruthy();
 });
 
-it('Container.get', () => {
+it('Container.get', () => {
   Container.setInstance(null);
   const fn = () => {
     //
@@ -67,7 +67,7 @@ it('Container.get', () => {
   Container.bind('f', fn);
 });
 
-it('singleton and multiton', () => {
+it('singleton and multiton', () => {
   Container.setInstance(null);
   const Singleton = class { };
   const Multiton = class { };
