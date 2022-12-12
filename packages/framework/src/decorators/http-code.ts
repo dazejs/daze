@@ -6,9 +6,8 @@
  */
 import { HTTP_CODE } from '../symbol';
 
-export const httpCode = function (code = 200): MethodDecorator {
+export const HttpCode = function (code = 200): MethodDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     target[propertyKey.toString()][HTTP_CODE] = code;
   };
 };
-export const HttpCode = httpCode;

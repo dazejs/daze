@@ -1,16 +1,16 @@
-import { provide, disable } from '../../../decorators';
+import { Provide, Disable } from '../../../decorators';
 import { Logger } from '../../../logger/logger';
 import { Application } from '../../application';
 
 export class LoggerProvider {
-  @provide(Logger)
-  @disable
+  @Provide(Logger)
+  @Disable
   _logger(app: Application) {
     return new Logger(app);
   }
 
-  @provide('logger')
-  @disable
+  @Provide('logger')
+  @Disable
   _loggerAlias(app: Application) {
     return app.get(Logger);
   }

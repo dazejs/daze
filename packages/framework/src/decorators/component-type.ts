@@ -9,14 +9,9 @@
  * set type for component
  * @param type 
  */
-export const componentType = function (type: any): ClassDecorator {
+export const ComponentType = function (type: any): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('type', type, constructor);
     return constructor;
   };
 };
-
-/**
- * Alias
- */
-export const ComponentType = componentType;

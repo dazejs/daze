@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 import { BaseProvider } from '../../base/provider';
-import { provide } from '../../decorators';
+import { Provide } from '../../decorators';
 import { HttpServer } from './http-server';
 
 export class HttpServerProvider extends BaseProvider {
-  @provide('httpServer')
+  @Provide('httpServer')
   httpServer() {
     return new HttpServer();
   }

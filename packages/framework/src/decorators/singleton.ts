@@ -7,10 +7,9 @@
 import { MULTITON, SINGLETON } from '../symbol';
 
 
-export const singleton: ClassDecorator = function (target: any) {
+export const Singleton: ClassDecorator = function (target: any) {
   Reflect.defineMetadata(MULTITON, false, target);
   Reflect.defineMetadata(SINGLETON, true, target);
 };
 
-export const Singleton = singleton;
 

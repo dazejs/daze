@@ -6,9 +6,9 @@
  */
 import { View } from '../view';
 import { Injectable } from './injectable';
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 
-@componentType('controller')
+@ComponentType('controller')
 export abstract class BaseController extends Injectable {
   /**
    * view instance cache

@@ -9,7 +9,7 @@ import { INJECTTYPE_METADATA, INJECTABLE } from '../../symbol';
 export interface InjectParamsOption { 
   abstract: any;
   params?: any[];
-  handler?: Function;
+  handler?: (...args: any[]) => any;
   index?: number; // 参数的位置信息
 }
 

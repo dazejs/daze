@@ -5,12 +5,10 @@ import { ProviderType } from '../symbol';
  * 
  * @param value Priority, the smaller the higher the priority
  */
-export const order = function (value: number = Number.MAX_SAFE_INTEGER): ClassDecorator {
-  return function (target: Function) {
+export const Order = function (value: number = Number.MAX_SAFE_INTEGER): ClassDecorator {
+  return function (target: any) {
     Reflect.defineMetadata(ProviderType.ORDER, value, target);
   };
 };
 
-export const Order = order;
-export const priority = order;
-export const Priority = order;
+export const Priority = Order;

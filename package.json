@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "lerna run dev --parallel",
+    "dev:trace-page": "lerna run --scope @dazejs/trace-page dev",
     "install": "lerna bootstrap",
     "build": "sh scripts/build.sh",
     "publish": "npm run build && lerna publish",
@@ -26,14 +27,14 @@
     "@types/type-is": "1.6.3",
     "@types/uuid": "7.0.2",
     "@types/validator": "12.0.1",
-    "@typescript-eslint/eslint-plugin": "2.34.0",
-    "@typescript-eslint/parser": "2.29.0",
+    "@typescript-eslint/eslint-plugin": "5.46.0",
+    "@typescript-eslint/parser": "5.46.0",
     "autocannon": "4.6.0",
     "copyfiles": "2.2.0",
     "cross-env": "6.0.0",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.20.2",
+    "eslint": "8.29.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.26.0",
     "express": "4.17.1",
     "filesize": "6.1.0",
     "husky": "4.2.5",
@@ -45,8 +46,8 @@
     "rimraf": "3.0.2",
     "supertest": "4.0.2",
     "ts-jest": "25.2.1",
-    "ts-node": "8.6.2",
-    "typescript": "3.8.2"
+    "ts-node": "10.9.1",
+    "typescript": "4.9.4"
   },
   "dependencies": {
     "reflect-metadata": "0.1.13"

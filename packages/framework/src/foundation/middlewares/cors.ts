@@ -9,7 +9,7 @@ import { BaseMiddleware } from '../../base/middleware';
 import { Next } from '../../middleware';
 import { Request } from '../../request';
 import { Response } from '../../response';
-import { order, middleware } from '../../decorators';
+import { Priority, Middleware } from '../../decorators';
 
 
 const defaultOptions = {
@@ -19,8 +19,8 @@ const defaultOptions = {
   allowMethods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT', 'OPTIONS'],
 };
 
-@middleware()
-@order(Number.MIN_SAFE_INTEGER)
+@Middleware()
+@Priority(Number.MIN_SAFE_INTEGER)
 export class CORSMiddleware extends BaseMiddleware {
   options: any;
   constructor(options: any) {

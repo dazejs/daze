@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { Resource } from '../resource';
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 import { Injectable } from './injectable';
 
-@componentType('resource')
+@ComponentType('resource')
 export abstract class BaseResource extends Injectable {
 
   collection(data: any): Resource {

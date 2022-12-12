@@ -1,5 +1,5 @@
 import { BaseProvider } from '../../../base';
-import { provide } from '../../../decorators';
+import { Provide } from '../../../decorators';
 import { ProviderInterface } from '../../../interfaces';
 import { Loader } from '../../../loader';
 // import { Str } from '../../../utils/str';
@@ -12,7 +12,7 @@ import { Job } from '../../../job';
 export class StereotypeProvider extends BaseProvider implements ProviderInterface {
   // @inject() loader: Loader;
 
-  @provide(ControllerService)
+  @Provide(ControllerService)
   _controllerService(app: Application) {
     return new ControllerService(app);
   }
@@ -21,26 +21,26 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
    * auto provide MiddlewareService
    * @param app 
    */
-  @provide(MiddlewareService)
+  @Provide(MiddlewareService)
   _middleware(app: Application) {
     return new MiddlewareService(app);
   }
 
   /**
-   * provide MiddlewareService alias
+   * Provide MiddlewareService alias
    * @param app 
    */
-  @provide('middleware')
+  @Provide('middleware')
   _middlewareAlias(app: Application) {
     return app.get(MiddlewareService);
   }
 
-  @provide(Job)
+  @Provide(Job)
   _database(app: Application) {
     return new Job(app);
   }
 
-  @provide('job')
+  @Provide('job')
   _databaseAlias(app: Application) {
     return app.get(Job);
   }
@@ -79,7 +79,7 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
   }
 
   private loadMiddlewares() {
-    const middlewares: Function[] = this.app.get<Loader>('loader').getComponentsByType('middleware') || [];
+    const middlewares: any[] = this.app.get<Loader>('loader').getComponentsByType('middleware') || [];
     for (const middleware of middlewares) {
       Reflect.defineMetadata(symbols.DISABLE_INJECT, true, middleware, 'resolve');
       this.bindStereotype(middleware, true);
@@ -122,7 +122,7 @@ export class StereotypeProvider extends BaseProvider implements ProviderInterfac
       if (this.app.has(injectionName)) {
         const type: string | undefined = Reflect.getMetadata('type', Concrete);
         throw new Error(`specified ${type} name ${injectionName} conflicts with existing!`);
-      };
+      }
       this.app.bind(injectionName, (...args: any[]) => {
         return this.app.get(Concrete, args);
       }, isShare, true);

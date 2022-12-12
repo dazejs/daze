@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Copyright (c) 2020 Chan Zewail
  *
@@ -13,7 +14,7 @@ import { ProvideMetaData } from './provide';
  * 
  * @param key 
  */
-export const provideOnConfig = function (key: string): ClassDecorator | MethodDecorator | any {
+export const ProvideOnConfig = function (key: string): ClassDecorator | MethodDecorator | any {
   return function (
     target: Function | object, 
     name?: string | symbol | undefined,
@@ -47,8 +48,3 @@ export const provideOnConfig = function (key: string): ClassDecorator | MethodDe
     }
   };
 };
-
-/**
- * Alias
- */
-export const ProvideOnConfig = provideOnConfig;

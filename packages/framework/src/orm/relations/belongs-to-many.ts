@@ -1,10 +1,11 @@
-import { BasePivotEntity } from '../../base';
-import { HasRelations } from './has-relations.abstract';
-import { Model } from '../model';
-import { Repository } from '../repository';
 import pluralize from 'pluralize';
-import { Join } from '../../database/builder/join';
 import { Builder } from '../../database/builder';
+import { Join } from '../../database/builder/join';
+import { ModelBuilder } from '../builder';
+import { Model } from '../model';
+import { PivotEntity } from '../pivot-model';
+import { Repository } from '../repository';
+import { HasRelations } from './has-relations.abstract';
 
 export class BelongsToMany extends HasRelations {
   /**
@@ -24,13 +25,13 @@ export class BelongsToMany extends HasRelations {
 
   /**
    * 创建多对多关联关系
-   * @param parent 
-   * @param model 
-   * @param Pivot 
-   * @param foreignPivotKey 
-   * @param relatedPivotKey 
+   * @param parent
+   * @param model
+   * @param Pivot
+   * @param foreignPivotKey
+   * @param relatedPivotKey
    */
-  constructor(parent: Model, model: Model, Pivot?: any, foreignPivotKey?: string, relatedPivotKey?: string) {
+  constructor(parent: Model<any>, model: Model, Pivot?: any, foreignPivotKey?: string, relatedPivotKey?: string) {
     super();
     this.parent = parent;
     this.model = model;
@@ -60,7 +61,7 @@ export class BelongsToMany extends HasRelations {
    * 新建中间表实体实例
    */
   newPivot(Pivot?: any) {
-    const _class = Pivot ?? BasePivotEntity;
+    const _class = Pivot ?? PivotEntity;
     const _pivot = new Model(_class);
     const table = _pivot.getTable() ?? `${pluralize.singular(this.parent.getTable())}_${pluralize.singular(this.model.getTable())}`;
     _pivot.setTable(`${table} as pivot`);
@@ -72,7 +73,7 @@ export class BelongsToMany extends HasRelations {
    * @param resultModel 需要被加载的模型
    * @param relation 关联名
    */
-  async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: Builder) => void) {
+  async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
     // 需要被加载的模型主键值
@@ -86,9 +87,14 @@ export class BelongsToMany extends HasRelations {
     // 获取中间表与当前模型的关联数据
 
     const model = this.model.createRepository();
-    const query = model.createQueryBuilder().getBuilder();
+    const [currentRelation, ...restRelation] = relation.split('.');
+    if (restRelation.length) {
+      model.with(restRelation.join('.'));
+    }
+    const query = model.createQueryBuilder();
     if (queryCallback) queryCallback(query);
     const records: Record<string, any>[] = await query
+      .getBuilder()
       .alias('relate')
       .join((join: Join) => {
         return join.table(this.pivot.getTable(), 'pivot')
@@ -99,7 +105,7 @@ export class BelongsToMany extends HasRelations {
     // 添加关联数据到需要被加载的模型中
     if (records) {
       resultRepos.setAttribute(
-        relation,
+        currentRelation,
         await this.model.resultToRepositories(model, records)
       );
     }
@@ -110,10 +116,10 @@ export class BelongsToMany extends HasRelations {
    * @param resultModels 
    * @param relation 
    */
-  async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: Builder) => void) {
+  async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void) {
     const foreignPivotKey = this.foreignPivotKey;
     const relatedPivotKey = this.relatedPivotKey;
-    // 查询范围 - foreignPivotKey
+    // 查询范围 - foreignPivotKey
     const range = new Set();
     for (const repos of resultReposes) {
       const id = repos.getPrimaryValue();
@@ -129,12 +135,16 @@ export class BelongsToMany extends HasRelations {
       // 获取中间表与当前模型的关联数据
 
       const model = this.model.createRepository();
-      const query = model.createQueryBuilder().getBuilder();
+      const [currentRelation, ...restRelation] = relation.split('.');
+      if (restRelation.length) {
+        model.with(restRelation.join('.'));
+      }
+      const query = model.createQueryBuilder();
       
       if (queryCallback) queryCallback(query);
       const records: Record<string, any>[] = await query
+        .getBuilder()
         .alias('relate')
-        .columns(`pivot.${foreignPivotKey}`)
         .join((join: Join) => {
           return join.table(this.pivot.getTable(), 'pivot')
             .on(`pivot.${relatedPivotKey}`, `relate.${this.model.getPrimaryKey()}`)
@@ -153,7 +163,7 @@ export class BelongsToMany extends HasRelations {
         const items = map.get(repos.getPrimaryValue());
         if (items) {
           repos.setAttribute(
-            relation,
+            currentRelation,
             await this.model.resultToRepositories(model, items)
           );
         }

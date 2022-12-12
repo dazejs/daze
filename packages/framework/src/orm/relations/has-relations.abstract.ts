@@ -1,45 +1,46 @@
-import { Model } from '../model';
+import { Builder } from '../../database/builder';
 import { Application } from '../../foundation/application';
 import { Container } from '../../container';
+import { ModelBuilder } from '../builder';
+import { Model } from '../model';
 import { Repository } from '../repository';
-import { Builder } from '../../database/builder';
 
 export abstract class HasRelations {
   /**
-   * application
-   */
-  protected app: Application = Container.get('app')
+     * application
+     */
+  protected app: Application = Container.get('app');
 
   /**
-   * 父模型
-   */
+     * 父模型
+     */
   protected parent: Model;
 
   /**
-   * 当前关联模型
-   */
+     * 当前关联模型
+     */
   protected model: Model;
 
   /**
-   * 外键
-   */
+     * 外键
+     */
   protected foreignKey: string;
 
   /**
-   * 关联主键
-   */
+     * 关联主键
+     */
   protected localKey: string;
 
   /**
-   * 渴求式加载单个模型关联数据
-   * @param result 
-   * @param relation 
-   */
-  abstract eagerly(result: Repository, relation: string, queryCallback?: (query: Builder) => void): Promise<void>
+     * 渴求式加载单个模型关联数据
+     * @param result
+     * @param relation
+     */
+  abstract eagerly(result: Repository, relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void): Promise<void>
   /**
-   * 渴求式加载多个模型关联数据
-   * @param results 
-   * @param relation 
-   */
-  abstract eagerlyMap(results: Repository[], relation: string, queryCallback?: (query: Builder) => void): Promise<void>
+     * 渴求式加载多个模型关联数据
+     * @param results
+     * @param relation
+     */
+  abstract eagerlyMap(results: Repository[], relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void): Promise<void>
 }

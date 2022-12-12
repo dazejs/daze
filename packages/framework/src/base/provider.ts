@@ -1,7 +1,7 @@
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 import { Base } from './base';
 
-@componentType('provider')
+@ComponentType('provider')
 export class BaseProvider extends Base {
   
 }

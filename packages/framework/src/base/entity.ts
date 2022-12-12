@@ -1,10 +1,10 @@
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 import { Model } from '../orm/model';
 import { Repository } from '../orm/repository';
 import { ModelBuilder } from '../orm/builder';
 import { Builder } from '../database/builder';
 
-@componentType('entity')
+@ComponentType('entity')
 @Reflect.metadata('connection', 'default')
 export class BaseEntity {
   /**

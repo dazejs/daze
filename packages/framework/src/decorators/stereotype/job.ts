@@ -4,11 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { component } from './component';
+import { Component } from './component';
 
-export const job = function (name?: string): ClassDecorator {
+export const Job = function (name?: string): ClassDecorator {
   return function (constructor) {
-    component(name, 'job')(constructor);
+    Component(name, 'job')(constructor);
   };
 };
-export const Job = job;

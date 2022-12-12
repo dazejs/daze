@@ -5,19 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 import * as providers from './providers';
-import { provide, depends } from '../../decorators';
+import { Provide, Depends } from '../../decorators';
 // import { Application } from '../application';
 import { MessengerService } from '../../messenger';
 import { BaseProvider } from '../../base/provider';
 
-@depends([
+@Depends([
   providers.ConfigProvider,
   providers.LoaderProvider,
   providers.StereotypeProvider,
 ])
 export class CommonProvider extends BaseProvider {
 
-  @provide('messenger')
+  @Provide('messenger')
   _mssenger() {
     return new MessengerService();
   }

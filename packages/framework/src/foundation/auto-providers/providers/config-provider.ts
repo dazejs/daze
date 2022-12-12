@@ -1,16 +1,16 @@
-import { provide, disable } from '../../../decorators';
+import { Provide, Disable } from '../../../decorators';
 import { Config } from '../../../config/config';
 import { Application } from '../../application';
 
 export class ConfigProvider {
-  @provide(Config)
-  @disable
+  @Provide(Config)
+  @Disable
   _config(app: Application) {
     return new Config(app);
   }
 
-  @provide('config')
-  @disable
+  @Provide('config')
+  @Disable
   _configAlias(app: Application) {
     return app.get(Config);
   }

@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 import { Validate } from '../validate';
 
-@componentType('validator')
+@ComponentType('validator')
 export abstract class BaseValidator {
   check(data: Record<string, any>) { 
     return new Validate(this.constructor as any).check(data);

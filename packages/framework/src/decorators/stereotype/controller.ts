@@ -6,14 +6,11 @@
  */
 
 import { Str } from '../../utils';
-import { component } from './component';
+import { Component } from './component';
 
-export const controller = function (...prefixs: string[]): ClassDecorator {
+export const Controller = function (...prefixs: string[]): ClassDecorator {
   return function (constructor) {
-    component('', 'controller')(constructor);
+    Component('', 'controller')(constructor);
     Reflect.defineMetadata('prefixs', prefixs.length > 0 ? prefixs.map(prefix => Str.formatPrefix(prefix)) : [Str.formatPrefix()], constructor);
   };
 };
-export const Controller = controller;
-export const route = controller;
-export const Route = controller;

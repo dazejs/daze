@@ -22,24 +22,25 @@ const config: webpack.Configuration = {
       },
       {
         test: /\.less$/,
-        loader: [
+        use: [
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              hmr: process.env.NODE_ENV === 'development',
+              // hmr: process.env.NODE_ENV === 'development',
             },
           },
           'css-loader',
           {
             loader: 'postcss-loader',
             options: {
-              sourceMap: 'inline',
-              plugins: () => [
-                autoprefixer({
-                  overrideBrowserslist: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8', 'iOS >= 8', 'Android >= 4']
-                }),
-                // require('cssnano')()
-              ],
+              sourceMap: true,
+              postcssOptions: {
+                plugins: [
+                  [ "autoprefixer", {
+                    overrideBrowserslist: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8', 'iOS >= 8', 'Android >= 4']
+                  }]
+                ]
+              },
             },
           },
           'less-loader'
@@ -47,18 +48,16 @@ const config: webpack.Configuration = {
       },
       {
         test: require.resolve('zepto'),
-        loader: 'exports-loader?window.Zepto!script-loader'
+        use: ['exports-loader?window.Zepto','script-loader']
       },
       {
         test: require.resolve('code-prettify'),
-        loader: 'exports-loader?window.PR!script-loader'
+        use: ['exports-loader?window.PR','script-loader']
       }
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'style.css'
-    }),
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: './template/index.html',
       filename: './view/index.html',

@@ -7,8 +7,6 @@
 
 import { INJECTABLE } from '../../symbol';
 
-export const injectable: ClassDecorator = function (constructor: any) {
+export const Injectable: ClassDecorator = function (constructor: any) {
   Reflect.defineMetadata(INJECTABLE, true, constructor);
 };
-
-export const Injectable = injectable;

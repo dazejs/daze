@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-export const crossOrigin = function (options: any = {}) {
+export const CrossOrigin = function (options: any = {}) {
   return function (...args: any[]) {
     // class decorator
     if (args.length === 1) {
@@ -25,4 +25,3 @@ export const crossOrigin = function (options: any = {}) {
     }
   };
 };
-export const CrossOrigin = crossOrigin;

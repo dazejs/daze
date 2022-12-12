@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { Base } from './base';
-import { componentType } from '../decorators/component-type';
+import { ComponentType } from '../decorators/component-type';
 
-@componentType('middleware')
+@ComponentType('middleware')
 export class BaseMiddleware extends Base {
 
 }

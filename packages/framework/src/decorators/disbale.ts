@@ -6,7 +6,7 @@
  */
 import { DISABLE_INJECT } from '../symbol';
 
-export const disable = (target: any, propertyKey?: string | symbol) => {
+export const Disable = (target: any, propertyKey?: string | symbol) => {
   if (!propertyKey) { // Class
     Reflect.defineMetadata(DISABLE_INJECT, true, target);
   } else {
@@ -14,4 +14,3 @@ export const disable = (target: any, propertyKey?: string | symbol) => {
   }
 };
 
-export const Disable = disable;

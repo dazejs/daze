@@ -5,94 +5,94 @@
  * https://opensource.org/licenses/MIT
  */
 import Tokens from 'csrf';
-import { autoScan, depends, provide, disable } from '../../decorators';
+import { AutoScan, Depends, Provide, Disable } from '../../decorators';
 import { Request } from '../../request';
 import { Response } from '../../response';
 import { Router } from '../../router';
 import * as symbols from '../../symbol';
 import * as providers from './providers';
 
-@depends([
+@Depends([
   // providers.StereotypeProvider,
   providers.DatabaseProvider,
   providers.LoggerProvider,
   providers.TemplateProvider,
   providers.HttpServerProvider
 ])
-@autoScan('./app')
+@AutoScan('./app')
 export class AppProvider {
-  @provide('csrf')
+  @Provide('csrf')
   _csrf() {
     return new Tokens();
   }
 
-  @provide('router')
+  @Provide('router')
   _router() {
     return new Router();
   }
 
-  @provide(Request, false)
-  @disable
+  @Provide(Request, false)
+  @Disable
   _requestInstance(request: Request) {
     return request;
   }
 
-  @provide(symbols.INJECTORS.REQUEST, false)
-  @disable
+  @Provide(symbols.INJECTORS.REQUEST, false)
+  @Disable
   _request(request: Request) {
     return request;
   }
 
-  @provide(Response, false)
-  @disable
+  @Provide(Response, false)
+  @Disable
   _responseInstance() {
     return new Response();
   }
 
-  @provide(symbols.INJECTORS.REQ, false)
-  @disable
+  @Provide(symbols.INJECTORS.REQ, false)
+  @Disable
   _req(request: Request) {
     return request.req;
   }
 
-  @provide(symbols.INJECTORS.RES, false)
-  @disable
+  @Provide(symbols.INJECTORS.RES, false)
+  @Disable
   _res(request: Request) {
     return request.res;
   }
 
-  @provide(symbols.INJECTORS.QUERY, false)
-  @disable
+  @Provide(symbols.INJECTORS.QUERY, false)
+  @Disable
   _query(request: Request) {
     return request.getQuery();
   }
 
-  @provide(symbols.INJECTORS.PARAMS, false)
-  @disable
+  @Provide(symbols.INJECTORS.PARAMS, false)
+  @Disable
   _params(request: Request) {
     return request.getParams();
   }
 
-  @provide(symbols.INJECTORS.HEADERS, false)
-  @disable
+  @Provide(symbols.INJECTORS.HEADERS, false)
+  @Disable
   _headers(request: Request) {
     return request.getHeaders();
   }
 
-  @provide(symbols.INJECTORS.BODY, false)
-  @disable
+  @Provide(symbols.INJECTORS.BODY, false)
+  @Disable
   _body(request: Request) {
     return request.getBody();
   }
 
-  @provide(symbols.INJECTORS.COOKIE, false)
-  @disable
+  @Provide(symbols.INJECTORS.COOKIE, false)
+  @Disable
   _cookie(request: Request) {
     return request.cookies;
   }
 
-  @provide(symbols.INJECTORS.SESSION, false)
-  @disable
+  @Provide(symbols.INJECTORS.SESSION, false)
+  @Disable
   _session(request: Request) {
     return request.session();
   }

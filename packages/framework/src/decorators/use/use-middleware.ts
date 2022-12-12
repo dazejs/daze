@@ -12,7 +12,7 @@ import { UseMiddlewareOption } from './interface';
  * 
  * @param middleware 
  */
-export const useMiddleware = function (middleware: any, middlewareArgs: any[] = []) {
+export const UseMiddleware = function (middleware: any, middlewareArgs: any[] = []) {
   return function (...args: any[]) {
     // decorator class
     if (args.length === 1) {
@@ -40,11 +40,6 @@ export const useMiddleware = function (middleware: any, middlewareArgs: any[] = 
     }
   };
 };
-
-/**
- * Alias
- */
-export const UseMiddleware = useMiddleware;
 
 
 

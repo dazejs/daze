@@ -1,16 +1,16 @@
-import { provide, disable } from '../../../decorators';
+import { Provide, Disable } from '../../../decorators';
 import { Database } from '../../../database/database';
 import { Application } from '../../application';
 
 export class DatabaseProvider{
-  @provide(Database)
-  @disable
+  @Provide(Database)
+  @Disable
   _database(app: Application) {
     return new Database(app);
   }
 
-  @provide('db')
-  @disable
+  @Provide('db')
+  @Disable
   _databaseAlias(app: Application) {
     return app.get(Database);
   }

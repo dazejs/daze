@@ -21,7 +21,7 @@ export interface ProvideMetaData {
  * @param name 
  * @param isShared 
  */
-export const provide = function (name?: any, isShared = true): MethodDecorator {
+export const Provide = function (name?: any, isShared = true): MethodDecorator {
   return function (target: object, key: string | symbol) {
     const metaMap: Map<any, ProvideMetaData> = 
       Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
@@ -37,10 +37,5 @@ export const provide = function (name?: any, isShared = true): MethodDecorator {
     Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
 };
-
-/**
- * Alias
- */
-export const Provide = provide;
 
 

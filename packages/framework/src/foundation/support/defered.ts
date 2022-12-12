@@ -5,22 +5,22 @@
  * https://opensource.org/licenses/MIT
  */
 
-export class Deferred<T> {
+export class Deferred<T = any> {
   /**
    * promise
    */
-  private _promise: Promise<T>
+  private _promise: Promise<T>;
 
 
   /**
    * resolve func
    */
-  private _resolve: (value?: T | PromiseLike<T>) => void
+  private _resolve: (value: T | PromiseLike<T>) => void;
 
   /**
    * reject func
    */
-  private _reject: (reason?: any) => void
+  private _reject: (reason?: any) => void;
 
   /**
    * Create Deferred
@@ -43,7 +43,7 @@ export class Deferred<T> {
    * resolve promise
    * @param value 
    */
-  resolve (value?: T | PromiseLike<T>): void {
+  resolve (value: T | PromiseLike<T>): void {
     this._resolve(value);
   }
 

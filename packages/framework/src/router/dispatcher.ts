@@ -100,7 +100,7 @@ export class Dispatcher {
     let stats;
     try {
       stats = await promisify(fs.stat)(staticPath);
-    } catch (err) {
+    } catch (err: any) {
       if (['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].includes(err.code)) {
         return this.dispatchToRoute();
       }

@@ -11,7 +11,7 @@ $(function () {
   PR.prettyPrint();
   // eslint-disable-next-line
   // @ts-ignore
-  $('.frame').on('click', function (e) {
+  $('.frame').on('click', function () {
     // eslint-disable-next-line
     // @ts-ignore
     const index = $(this).data('index');
@@ -24,7 +24,7 @@ $(function () {
   });
   // eslint-disable-next-line
   // @ts-ignore
-  $('.frame-code').each(function (e) {
+  $('.frame-code').each(function () {
     // eslint-disable-next-line
     // @ts-ignore
     const ele = $(this);

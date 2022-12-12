@@ -4,12 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { component } from './component';
+import { Component } from './component';
 
-export const validator = function (name = ''): ClassDecorator {
+export const Validator = function (name = ''): ClassDecorator {
   return function (constructor) {
-    component(name, 'validator')(constructor);
+    Component(name, 'validator')(constructor);
   };
 };
-
-export const Validator = validator;

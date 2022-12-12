@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { component } from './component';
+import { Component } from './component';
 
-export const entity = function (name?: string): ClassDecorator {
+export const Entity = function (name: string): ClassDecorator {
   return function (constructor) {
-    component(name, 'entity')(constructor);
+    Component(undefined, 'entity')(constructor);
+    Reflect.defineMetadata('table', name, constructor);
   };
 };
-export const Entity = entity;

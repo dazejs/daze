@@ -12,7 +12,7 @@ import { ColumnDescription } from '../../orm/model';
  *
  * @returns {PropertyDecorator}
  */
-export const column = function (type = 'varchar', length = 255): PropertyDecorator {
+export const Column = function (type = 'varchar', length = 255): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -25,16 +25,11 @@ export const column = function (type = 'varchar', length = 255): PropertyDecorat
 };
 
 /**
- * Alias
- */
-export const Column = column;
-
-/**
  * Column
  *
  * @returns {PropertyDecorator}
  */
-export const customColumn = function (): PropertyDecorator {
+export const CustomColumn = function (): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: string[] = Reflect.getMetadata('customColumns', target.constructor) ?? [];
@@ -43,18 +38,13 @@ export const customColumn = function (): PropertyDecorator {
   };
 };
 
-/**
- * Alias
- */
-export const CustomColumn = customColumn;
-
 
 /**
  * Primary Column
  *
  * @returns {PropertyDecorator}
  */
-export const primaryColumn = function (type = 'int', length = 11): PropertyDecorator {
+export const PrimaryColumn = function (type = 'int', length = 11): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -69,16 +59,11 @@ export const primaryColumn = function (type = 'int', length = 11): PropertyDecor
 };
 
 /**
- * Alias
- */
-export const PrimaryColumn = primaryColumn;
-
-/**
  * Auto Increment Primary Column
  *
  * @returns {PropertyDecorator}
  */
-export const autoIncrementPrimaryColumn = function (type = 'int', length = 11): PropertyDecorator {
+export const AutoIncrementPrimaryColumn = function (type = 'int', length = 11): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -93,16 +78,11 @@ export const autoIncrementPrimaryColumn = function (type = 'int', length = 11): 
 };
 
 /**
- * Alias
- */
-export const AutoIncrementPrimaryColumn = autoIncrementPrimaryColumn;
-
-/**
  * Soft Delete Column
  *
  * @returns {PropertyDecorator}
  */
-export const softDeleteColumn = function (type = 'int', length = 11): PropertyDecorator {
+export const SoftDeleteColumn = function (type = 'int', length = 11): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -116,16 +96,11 @@ export const softDeleteColumn = function (type = 'int', length = 11): PropertyDe
 };
 
 /**
- * Alias
- */
-export const SoftDeleteColumn = softDeleteColumn;
-
-/**
  * Create Timestamp Column
  *
  * @returns {PropertyDecorator}
  */
-export const createTimestampColumn = function (type = 'int', length = 11): PropertyDecorator {
+export const CreateTimestampColumn = function (type = 'int', length = 11): PropertyDecorator {
   return function(target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -139,16 +114,11 @@ export const createTimestampColumn = function (type = 'int', length = 11): Prope
 };
 
 /**
- * Alias
- */
-export const CreateTimestampColumn = createTimestampColumn;
-
-/**
  * Update Timestamp Column
  *
  * @returns {PropertyDecorator}
  */
-export const updateTimestampColumn = function (type = 'int', length = 11): PropertyDecorator {
+export const UpdateTimestampColumn = function (type = 'int', length = 11): PropertyDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol) {
     if (typeof propertyKey !== 'string') return;
     const columns: Map<string, ColumnDescription> = Reflect.getMetadata('columns', target.constructor) ?? new Map();
@@ -160,8 +130,3 @@ export const updateTimestampColumn = function (type = 'int', length = 11): Prope
     Reflect.defineMetadata('updateTimestampKey', propertyKey, target.constructor);
   };
 };
-
-/**
- * Alias
- */
-export const UpdateTimestampColumn = updateTimestampColumn;

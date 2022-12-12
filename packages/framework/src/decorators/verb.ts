@@ -22,42 +22,34 @@ function verb(methods: any[], uri = '/'): MethodDecorator {
   };
 }
 
-export const get = function (uri = '') {
+export const Get = function (uri = '') {
   return verb(['GET'], uri);
 };
-export const Get = get;
 
-export const post = function (uri = '') {
+export const Post = function (uri = '') {
   return verb(['POST'], uri);
 };
-export const Post = post;
 
-export const put = function (uri = '') {
+export const Put = function (uri = '') {
   return verb(['PUT'], uri);
 };
-export const Put = put;
 
-export const patch = function (uri = '') {
+export const Patch = function (uri = '') {
   return verb(['PATCH'], uri);
 };
-export const Patch = patch;
 
-export const options = function (uri = '') {
+export const Options = function (uri = '') {
   return verb(['OPTIONS'], uri);
 };
-export const Options = options;
 
-export const head = function (uri = '') {
+export const Head = function (uri = '') {
   return verb(['HEAD'], uri);
 };
-export const Head = head;
 
-export const del = function (uri = '') {
+export const Del = function (uri = '') {
   return verb(['DELETE'], uri);
 };
-export const Del = del;
 
-export const all = function (uri = '', methods: any[] = http.METHODS) {
+export const All = function (uri = '', methods: any[] = http.METHODS) {
   return verb(methods, uri);
 };
-export const All = all;

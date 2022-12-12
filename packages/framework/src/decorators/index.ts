@@ -11,12 +11,10 @@ import * as verbs from './verb';
 export * from './stereotype';
 export * from './disbale';
 export * from './component-type';
-export * from './contexts';
 export * from './cross-origin';
 export * from './csrf';
 export * from './http-code';
 export * from './ignore';
-export * from './inject';
 export * from './autowired';
 export * from './model';
 export * from './multiton';
@@ -32,5 +30,5 @@ export const http = {
   ...verbs,
   ...httpContext
 };
-export const Http = http;
+export * from './verb';
 

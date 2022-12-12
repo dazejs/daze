@@ -165,7 +165,7 @@ export class Container extends EventEmitter {
     const ConcreteProxy = new Proxy(Concrete, {
       construct(target: any, targetArgArray: any[] = [], newTarget?: any) { 
         const params = that.bindConstructorParams(Concrete, args, targetArgArray);
-        const instance = Reflect.construct(target, [...params], newTarget);
+        const instance: any = Reflect.construct(target, [...params], newTarget);
         instance.__context__ = args;
         return new Proxy(instance, {
           get(instanceTarget: any, propertyKey: string | number | symbol, receiver: any) { 

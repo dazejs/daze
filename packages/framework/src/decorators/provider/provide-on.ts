@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Copyright (c) 2020 Chan Zewail
  *
@@ -13,7 +14,7 @@ import { ProvideMetaData } from './provide';
  * 
  * @param provider 
  */
-export const provideOn = function (provider: string | Function): MethodDecorator {
+export const ProvideOn = function (provider: string | Function): MethodDecorator {
   return function (target: object, key: string | symbol) {
     const metaMap: Map<string | symbol, ProvideMetaData> =
       Reflect.getMetadata(ProviderType.PROVIDE, target.constructor) ?? new Map();
@@ -28,8 +29,3 @@ export const provideOn = function (provider: string | Function): MethodDecorator
     Reflect.defineMetadata(ProviderType.PROVIDE, metaMap, target.constructor);
   };
 };
-
-/**
- * Alias
- */
-export const ProvideOn = provideOn;

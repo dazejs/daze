@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Copyright (c) 2020 Chan Zewail
  *
@@ -12,7 +13,7 @@ import { ProviderType } from '../../symbol';
  * 
  * @param providers 
  */
-export const depends = function (...providers: Function[] | Function[][]) {
+export const Depends = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
 
@@ -28,16 +29,11 @@ export const depends = function (...providers: Function[] | Function[][]) {
 };
 
 /**
- * Alias
- */
-export const Depends = depends;
-
-/**
  * imports providers
  * 
  * @param providers 
  */
-export const imports = function (...providers: Function[] | Function[][]) {
+export const Imports = function (...providers: Function[] | Function[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
 
@@ -52,18 +48,13 @@ export const imports = function (...providers: Function[] | Function[][]) {
   };
 };
 
-/**
- * Alias
- */
-export const Imports = imports;
-
 
 /**
  * auto scan components
  * 
  * @param componentScans 
  */
-export const autoScan = function (...componentScans: string[] | string[][]) {
+export const AutoScan = function (...componentScans: string[] | string[][]) {
   return function (constructor: Function) {
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
 
@@ -79,9 +70,7 @@ export const autoScan = function (...componentScans: string[] | string[][]) {
   };
 };
 
-export const AutoScan = autoScan;
-
-export const provider = function (providerOption?: ProviderOption): ClassDecorator {
+export const Provider = function (providerOption?: ProviderOption): ClassDecorator {
   return function (constructor) {
     Reflect.defineMetadata('type', 'provider', constructor);
     const option: ProviderOption = Reflect.getMetadata(ProviderType.PROVIDER, constructor) ?? { depends: [], imports: [], componentScan: [] };
@@ -115,8 +104,6 @@ export const provider = function (providerOption?: ProviderOption): ClassDecorat
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
   };
 };
-
-export const Provider = provider;
 
 
 export interface ProviderOption {
