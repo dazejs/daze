@@ -1,5 +1,5 @@
-import { Application } from '../../packages/common/dist';
+import { Application } from '../../packages/framework/dist';
 
-export const app = new Application();
+const app = new Application();
 
-app.start(80);
+app.run(8080);

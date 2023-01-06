@@ -1,0 +1,26 @@
+{
+  "name": "@dazejs/create-app",
+  "version": "0.0.1",
+  "description": "create dazejs app",
+  "author": "czewail <chanzewail@gmail.com>",
+  "homepage": "",
+  "license": "UNLICENSE",
+  "files": [
+    "lib"
+  ],
+  "bin": {
+    "create-app": "dist/create.js"
+  },
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "build": "npm run clean && tsc",
+    "test": "node -v",
+    "test:coverage": "node -v",
+    "dev": "npm run clean &&  tsc -w"
+  },
+  "dependencies": {
+    "@dazejs/cli": "0.0.1",
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0"
+  }
+}

@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { ColumnDescription } from '../../orm/model';
+import { ColumnDescription } from '../../supports/orm/model';
 
 /**
  * Column

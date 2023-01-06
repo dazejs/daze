@@ -1,11 +1,14 @@
-import { Schedule, corntab } from '../../../packages/common/dist';
+// import { Schedule, Corntab } from '../../../packages/framework/dist';
 
+
+// @Schedule()
 export class ExampleSchedule {
-    myname() {
-        console.log('runrunrun======');
-    }
+//   @Corntab.everyFifteenSeconds()
+  myname() {
+    console.log('runrunrun======');
+  }
 
-    myass() {
-        console.log('assassin');
-    }
+  myass() {
+    console.log('assassin');
+  }
 }

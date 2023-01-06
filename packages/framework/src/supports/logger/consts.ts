@@ -1,0 +1,1 @@
+export const LOGGER_PROCESS_MESSAGE = 'tiger:process_logger_message';

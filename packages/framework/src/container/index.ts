@@ -29,6 +29,12 @@ export class Container extends EventEmitter {
    */
   tags: any = {};
 
+
+  /**
+   * 绑定的路径
+   */
+  public paths = new Map();
+
   /**
    * static instance
    */
@@ -312,6 +318,27 @@ export class Container extends EventEmitter {
     // 将多余的实参附加上去
     params.push(...vars);
     return params;
+  }
+
+  /**
+   * 绑定路径
+   * @param abstract
+   * @param path
+   * @returns
+   */
+  public bindPath(abstract: any, path: string) {
+    if (!abstract || !path) return;
+    this.paths.set(abstract, path);
+  }
+
+  /**
+   * 获取绑定的路径
+   * @param abstract
+   * @returns
+   */
+  public getPath(abstract: any) {
+    if (!abstract) return;
+    return this.paths.get(abstract);
   }
 
   /**

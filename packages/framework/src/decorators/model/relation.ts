@@ -5,7 +5,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { RelationDesc } from '../../orm/model';
+import { RelationDesc } from '../../supports/orm/model';
 
 interface ManyRealtionOptions {
   pivot?: any;

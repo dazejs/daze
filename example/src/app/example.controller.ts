@@ -1,5 +1,4 @@
-import { Controller, http, app, Request, Autowired, Logger, View,  } from '../../../packages/framework/dist';
-import { ExampleEntity } from './example.entity';
+import { app, Autowired, Controller, http, Logger } from '../../../packages/framework/dist';
 
 @Controller()
 export class Example {
@@ -12,7 +11,7 @@ export class Example {
   //     });
   // }
 
-  @http.Get('/*/set')
+  @http.Get('set')
   async set() {
     return 'set';
   }

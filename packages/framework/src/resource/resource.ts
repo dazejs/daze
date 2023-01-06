@@ -8,7 +8,7 @@
 import { Container } from '../container';
 import { Application } from '../foundation/application';
 import { ResourceInterface } from '../interfaces';
-import { Repository } from '../orm/repository';
+import { Repository } from '../supports/orm/repository';
 import { Paginator } from '../pagination';
 
 const DEFAULT_KEY = 'data';

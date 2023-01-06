@@ -1,22 +1,22 @@
-import { Entity, BaseEntity, autoIncrementPrimaryColumn, column, createTimestampColumn, updateTimestampColumn } from '../../../packages/framework/dist';
+import { Entity, BaseEntity, AutoIncrementPrimaryColumn, Column, CreateTimestampColumn, UpdateTimestampColumn } from '../../../packages/framework/dist';
 
 @Entity('packages')
 export class ExampleEntity extends BaseEntity {
-  @autoIncrementPrimaryColumn()
+  @AutoIncrementPrimaryColumn()
     id: number;
 
-  @column()
+  @Column()
     author: string;
 
-  @column()
+  @Column()
     name: string;
 
-  @column()
+  @Column()
     description: string;
 
-  @createTimestampColumn('datetime')
+  @CreateTimestampColumn('datetime')
     created_at: number;
 
-  @updateTimestampColumn('datetime')
+  @UpdateTimestampColumn('datetime')
     updated_at: number;
 }

@@ -46,6 +46,14 @@ export const ProviderType = {
   ORDER: Symbol("DAZE#ORDER"),
 };
 
+// 进程类型标示
+export const ProcessType  = {
+  ONLY_AGENT: Symbol("DAZE#only-agent"),
+  APPEND_AGENT: Symbol("DAZE#append-agent"),
+  ONLY_MASTER: Symbol("DAZE#only-master"),
+  APPEND_MASTER: Symbol("DAZE#append-master"),
+};
+
 // 禁用依赖注入标记
 export const DISABLE_INJECT = 'daze:disable_inject';
 // 可注入的标记
@@ -57,3 +65,6 @@ export const PARAMTYPES_METADATA = 'design:paramtypes';
 export const PROPERTYTYPE_METADATA = 'daze:property_type_metadata';
 // 手动依赖注入
 export const INJECTTYPE_METADATA = 'daze:inject_type_metadata';
+
+// Async hook 的 local stroage
+export const ASYNC_LOCAL_STORAGE = 'daze:async_local_storage';

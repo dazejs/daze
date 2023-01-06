@@ -1,0 +1,48 @@
+{
+  "name": "@dazejs/cli",
+  "version": "0.0.1",
+  "description": "Node 服务端 WEB 框架",
+  "main": "dist/index.js",
+  "bin": {
+    "daze": "dist/bin/daze.js"
+  },
+  "scripts": {
+    "copy": "copyfiles -u 1 src/**/*.njk dist && copyfiles  -u 1 src/*.json dist",
+    "clean": "rimraf dist/*",
+    "build": "npm run clean && npm run copy && tsc",
+    "test": "node -v",
+    "test:coverage": "node -v",
+    "dev": "npm run clean && npm run copy &&  tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSE",
+  "dependencies": {
+    "@dazejs/framework": "4.3.5",
+    "ascii-table": "^0.0.9",
+    "chalk": "^4.1.0",
+    "chokidar": "^3.5.3",
+    "commander": "^7.2.0",
+    "concurrently": "^6.2.0",
+    "fs-extra": "^9.1.0",
+    "glob": "^7.1.6",
+    "inquirer": "^8.0.0",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.7",
+    "nunjucks": "^3.2.3",
+    "ora": "^5.4.0",
+    "pluralize": "^8.0.0",
+    "reflect-metadata": "0.1.13",
+    "table": "^6.7.1",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/concurrently": "^6.2.0",
+    "@types/fs-extra": "^9.0.11",
+    "@types/inquirer": "^7.3.1",
+    "@types/node-fetch": "^2.5.10",
+    "@types/nodemon": "^1.19.0",
+    "@types/pluralize": "0.0.29"
+  }
+}

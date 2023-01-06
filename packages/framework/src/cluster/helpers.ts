@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as cluster from 'cluster';
-import * as os from 'os';
+import cluster, { Worker } from 'cluster';
+import os from 'os';
 
 import { WORKER_DYING } from './const';
 import { MasterOptions } from './master';
@@ -21,18 +21,18 @@ const cpus = os.cpus().length;
 export function parseMasterOpts(opts: MasterOptions) {
   opts.workers = opts.workers || cpus;
   return opts;
-};
+}
 
 
 /**
  * Determine if the work process is alive
  * 判断工作进程是否存活状态
  */
-export function isAliveWorker(worker: cluster.Worker) {
+export function isAliveWorker(worker: Worker) {
   if (!worker.isConnected() || worker.isDead()) return false;
   if (Reflect.getMetadata(WORKER_DYING, worker)) return false;
   return true;
-};
+}
 
 /**
  * Capture the surviving work process
@@ -40,8 +40,8 @@ export function isAliveWorker(worker: cluster.Worker) {
  * 获取存活的工作进程
  * 返回一个数组
  */
-export function getAlivedWorkers(): cluster.Worker[] {
-  const workers: cluster.Worker[] = [];
+export function getAlivedWorkers(): Worker[] {
+  const workers: Worker[] = [];
   for (const id in cluster.workers) {
     if (Object.prototype.hasOwnProperty.call(cluster.workers, id)) {
       const worker: any = cluster.workers[id];
@@ -51,5 +51,5 @@ export function getAlivedWorkers(): cluster.Worker[] {
     }
   }
   return workers;
-};
+}
 

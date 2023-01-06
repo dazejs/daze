@@ -6,7 +6,7 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import { ProviderType } from '../../symbol';
+import { ProviderType, ProcessType } from '../../symbol';
 
 /**
  * depends providers
@@ -102,6 +102,45 @@ export const Provider = function (providerOption?: ProviderOption): ClassDecorat
       }
     }
     Reflect.defineMetadata(ProviderType.PROVIDER, option ?? {}, constructor);
+  };
+};
+
+
+/**
+ * 设置只在Agent进程加载
+ */
+export const OnlyAgent = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.ONLY_AGENT, true, constructor);
+  };
+};
+
+/**
+* 设置在Agent进程也加载
+*/
+export const AppendAgent = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.APPEND_AGENT, true, constructor);
+  };
+};
+
+
+/**
+* 设置只在Agent进程加载
+*/
+export const OnlyMaster = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.ONLY_MASTER, true, constructor);
+  };
+};
+
+
+/**
+* 设置在Agent进程也加载
+*/
+export const AppendMaster = function (): ClassDecorator {
+  return function (constructor) {
+    Reflect.defineMetadata(ProcessType.APPEND_MASTER, true, constructor);
   };
 };
 

@@ -6,10 +6,9 @@
  */
 import { Resource } from '../resource';
 import { ComponentType } from '../decorators/component-type';
-import { Injectable } from './injectable';
 
 @ComponentType('resource')
-export abstract class BaseResource extends Injectable {
+export abstract class BaseResource {
 
   collection(data: any): Resource {
     return new Resource(this.constructor as any).collection(data);

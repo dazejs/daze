@@ -1,3 +1,3 @@
 export default {
-    cluster: true,
+  cluster: false,
 };

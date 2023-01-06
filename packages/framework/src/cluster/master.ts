@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import cluster from 'cluster';
+import cluster, { Worker as ClusterWorker } from 'cluster';
 import debuger from 'debug';
-import * as net from 'net';
+import net from 'net';
 import hash from 'string-hash';
-import { Deferred } from '../foundation/support/defered';
-import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
+import { Deferred } from '../utils/defered';
+import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING, DAZE_PROCESS_TYPE } from './const';
 import { getAlivedWorkers, parseMasterOpts } from './helpers';
 
 const debug = debuger('daze-framework:cluster');
@@ -51,7 +51,8 @@ export class Master {
   forkWorker(env = {}) {
     const worker = cluster.fork(env);
     debug(`worker is forked, use pid: ${worker.process.pid}`);
-    const deferred = new Deferred<cluster.Worker>();
+    (worker as any)[DAZE_PROCESS_TYPE] = 'worker';
+    const deferred = new Deferred<ClusterWorker>();
     // Accepts the disconnection service signal sent by the work process,
     // indicating that the work process is about to
     // stop the service and needs to be replaced by a new work process
@@ -125,8 +126,27 @@ export class Master {
       DAZE_PROCESS_TYPE: 'agent'
     };
     const agent = cluster.fork(env);
-    debug(`agent is forked, use pid: ${agent.process.pid}`);
-    return agent;
+    (agent as any)[DAZE_PROCESS_TYPE] = 'agent';
+    // 在工作服务断开后触发
+    // 检测到工作服务断开后，自动 fork 新的工作进程
+    agent.once('disconnect', () => {
+      if (Reflect.getMetadata(WORKER_DYING, agent)) return;
+      // if (worker[WORKER_DYING]) return;
+      debug(`agent disconnect: ${agent.process.pid}`);
+      Reflect.defineMetadata(WORKER_DYING, true, agent);
+      // worker[WORKER_DYING] = true;
+      debug('agent will fork');
+      this.forkAgent();
+    });
+    // 当任何工作进程关闭时，群集模块将触发 'exit' 事件
+    agent.once('exit', (code: number, signal: string) => {
+      // if (worker[WORKER_DYING]) return;
+      if (Reflect.getMetadata(WORKER_DYING, agent)) return;
+      debug(`agent exit, code: ${code}, signal: ${signal}`);
+      Reflect.defineMetadata(WORKER_DYING, true, agent);
+      // worker[WORKER_DYING] = true;
+      cluster.fork(env);
+    });
   }
 
   /**
@@ -135,7 +155,7 @@ export class Master {
    * reference https://github.com/uqee/sticky-cluster
    */
   cteateStickyServer()  {
-    const deferred = new Deferred<cluster.Worker[]>();
+    const deferred = new Deferred<ClusterWorker[]>();
     const server = net.createServer({ pauseOnConnect: true }, (connection) => {
       const signature = `${connection.remoteAddress}:${connection.remotePort}`;
       this.connections[signature] = connection;

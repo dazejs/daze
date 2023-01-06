@@ -1,4 +1,4 @@
-export * from './common';
-export * from './app';
+export * from './common.provider';
+export * from './worker.provider';
 
 

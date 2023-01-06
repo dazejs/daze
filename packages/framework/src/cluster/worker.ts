@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import * as cluster from 'cluster';
+import cluster from 'cluster';
 import debuger from 'debug';
 import * as http from 'http';
 import * as net from 'net';
-import { Deferred } from '../foundation/support/defered';
+import { Deferred } from '../utils/defered';
 import { RELOAD_SIGNAL, STIKCY_CONNECTION, WORKER_DID_FORKED, WORKER_DISCONNECT, WORKER_DYING } from './const';
 
 
@@ -50,6 +50,7 @@ export class Worker {
   // disconnect worker
   disconnect(refork = true) {
     const { worker } = cluster;
+    if (!worker) return;
     if (Reflect.getMetadata(WORKER_DYING, worker)) return;
     Reflect.defineMetadata(WORKER_DYING, true, worker);
     debug('worker disconnect');
@@ -88,6 +89,7 @@ export class Worker {
       }, killTimeout);
     }
     const { worker } = cluster;
+    if (!worker) return;
     debug((`start close server, pid: ${process.pid}`));
     this.server.close(() => {
       debug(`server closed, pid: ${process.pid}`);
@@ -123,7 +125,7 @@ export class Worker {
         debug(`Request handled by worker: ${process.pid}`);
       });
     } else {
-      process.on('message', (message, connection) => {
+      process.on('message', (message, connection: any) => {
         if (message !== STIKCY_CONNECTION) return;
         debug('WORKER #%d  got conn from %s', process.pid, connection.remoteAddress);
         // emulate a connection event on the server by emitting the

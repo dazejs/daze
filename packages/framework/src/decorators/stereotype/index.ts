@@ -8,3 +8,5 @@ export * from './middleware';
 export * from './resourcer';
 export * from './validator';
 export * from './job';
+export * from './agent';
+export * from './schedule';

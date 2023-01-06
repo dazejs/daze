@@ -1,8 +1,8 @@
 import { ComponentType } from '../decorators/component-type';
-import { Model } from '../orm/model';
-import { Repository } from '../orm/repository';
-import { ModelBuilder } from '../orm/builder';
-import { Builder } from '../database/builder';
+import { Model } from '../supports/orm/model';
+import { Repository } from '../supports/orm/repository';
+import { ModelBuilder } from '../supports/orm/builder';
+import { Builder } from '../supports/database/builder';
 
 @ComponentType('entity')
 @Reflect.metadata('connection', 'default')

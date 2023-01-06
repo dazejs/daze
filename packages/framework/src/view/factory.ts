@@ -7,7 +7,7 @@
 import { View } from '.';
 import { Container } from '../container';
 import { Application } from '../foundation/application';
-import { Request } from '../request';
+import { Request } from '../http/request';
 
 export class ViewFactory {
   /**
