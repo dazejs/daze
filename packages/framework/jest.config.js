@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+const { defaults: tsjPreset } = require('ts-jest/presets');
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
@@ -56,11 +58,16 @@ module.exports = {
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
-  globals: {
-    "ts-jest": {
-      diagnostics: false,
-      tsConfig: "tsconfig.json"
-    }
+  // globals: {
+  //   "ts-jest": {
+  //     diagnostics: false,
+  //     tsConfig: "tsconfig.json"
+  //   }
+  // },
+
+  transform: {
+    ...tsjPreset.transform,
+    // [...]
   },
 
   // An array of directory names to be searched recursively up from the requiring module's location

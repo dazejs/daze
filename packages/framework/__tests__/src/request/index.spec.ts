@@ -5,7 +5,9 @@ import Cookies from 'cookies';
 import { Request, Application } from '../../../src';
 import { context } from '../../common/context';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 beforeAll(() => app.initialize());
 
 describe('Request', () => {
@@ -501,7 +503,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      expect(instance.accepts).toBeInstanceOf(Accepts);
+      expect(instance.accept).toBeInstanceOf(Accepts);
     });
 
     it('when Accept type is populated', () => {
@@ -570,7 +572,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -602,7 +604,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -622,7 +624,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -639,7 +641,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -656,7 +658,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -677,7 +679,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -700,7 +702,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -717,7 +719,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -734,7 +736,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -755,7 +757,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },
@@ -778,7 +780,7 @@ describe('Request', () => {
       };
       const { req, res } = context(request);
       const instance = new Request(req, res);
-      instance._body = {
+      (instance as any)._body = {
         fields: {
           name: 'dazejs',
         },

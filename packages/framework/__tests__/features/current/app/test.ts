@@ -1,8 +1,8 @@
-import { BaseController, http, controller } from '../../../../src';
+import { Get, Controller } from '../../../../src';
 
-@controller('/features/current')
-export class App extends BaseController {
-  @http.get()
+@Controller('/features/current')
+export class App {
+  @Get()
   index() {
     return 'hello current';
   }

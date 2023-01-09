@@ -1,45 +1,45 @@
 import {
-  BaseController, controller, http, autowired
+  Controller, Get, Autowired, Post, request, View
 } from '../../../../../src';
 import ExampleService from '../service/example';
 
 
-@controller('/example')
-export default class extends BaseController {
-  @autowired
-  exampleService: ExampleService;
+@Controller('/example')
+export default class {
+  @Autowired
+    exampleService: ExampleService;
 
-  @http.get('/template')
+  @Get('/template')
   template() {
-    return this.render('hello', {
+    return new View('hello', {
       name: 'dazejs'
     });
   }
 
-  @http.get()
+  @Get()
   index() {
     return this.exampleService.sayHello();
   }
 
-  @http.post('post')
+  @Post('post')
   store() {
     return {
-      body: this.request.body,
-      files: this.request.files,
+      body: request().body,
+      files: request().files,
     };
   }
 
-  @http.get('/null')
+  @Get('/null')
   sayNull() {
     return null;
   }
 
-  @http.get('/number')
+  @Get('/number')
   sayNumber(): number {
     return 0;
   }
 
-  @http.get('/boolean')
+  @Get('/boolean')
   sayBoolean(): boolean {
     return true;
   }

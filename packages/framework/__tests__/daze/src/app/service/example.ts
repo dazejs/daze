@@ -1,7 +1,7 @@
-import { BaseService, service } from '../../../../../src';
+import { Service } from '../../../../../src';
 
-@service('example-service')
-export default class extends BaseService {
+@Service('example-service')
+export default class {
   sayHello() {
     return 'Hello Dazejs';
   }

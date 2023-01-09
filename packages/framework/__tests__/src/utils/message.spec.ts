@@ -1,4 +1,4 @@
-import { Message } from '../../../../src/utils/message';
+import { Message } from '../../../src/utils/message';
 
 describe('Message', () => {
   describe('Message#add', () => {

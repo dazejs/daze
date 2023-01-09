@@ -1,10 +1,12 @@
 import 'reflect-metadata';
 import path from 'path';
-import { Application, BaseValidator as ValidatorBase, isEmail, validator } from '../../../src';
+import { Application, BaseValidator as ValidatorBase, IsEmail, Validator } from '../../../src';
 import { Validate } from '../../../src/validate';
 import * as validators from '../../../src/validate/validators';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 
@@ -33,11 +35,13 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is Validator instance', () => {
-      @validator() class Validator extends ValidatorBase {
-        @isEmail()
-        field: string;
-      };
-      const instance: any = new Validate(Validator).make({
+      @Validator()
+      class TestValidator extends ValidatorBase {
+        @IsEmail()
+          field: string;
+      }
+
+      const instance: any = new Validate(TestValidator).make({
         field: 'xxx@xxx.com',
       });
       expect(instance._rules).toEqual([{
@@ -51,12 +55,12 @@ describe('Validate', () => {
     });
 
     it('should return structuring object array when rules is string', () => {
-      @validator() class Validator extends ValidatorBase {
-        @isEmail()
-        field: string;
-      };
+      @Validator() class TestValidator extends ValidatorBase {
+        @IsEmail()
+          field: string;
+      }
 
-      app.bind('exampleResource1', Validator);
+      app.bind('exampleResource1', TestValidator);
       const instance: any = new Validate('exampleResource1').make({
         field: 'xxx@xxx.com',
       });
@@ -80,16 +84,16 @@ describe('Validate', () => {
     });
 
     it('should return empty array when rules is Validator instance without rules', () => {
-      @validator() class Validator extends ValidatorBase {};
-      const instance: any = new Validate(Validator).make({
+      @Validator() class TestValidator extends ValidatorBase {}
+      const instance: any = new Validate(TestValidator).make({
         field: 'xxx@xxx.com',
       });
       expect(instance._rules).toEqual([]);
     });
 
     it('should return empty array when rules is conatiner instance without rules', () => {
-      @validator() class Validator {};
-      app.bind('validator.example2', Validator);
+      @Validator() class TestValidator {}
+      app.bind('validator.example2', TestValidator);
       const instance: any = new Validate('validator.example2').make({
         field: 'xxx@xxx.com',
       });

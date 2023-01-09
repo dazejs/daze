@@ -1,12 +1,15 @@
 
-import { Application }  from './foundation/application';
-import { Container } from './container';
-import { Config } from './config';
 import { AsyncLocalStorage } from 'async_hooks';
-import { ASYNC_LOCAL_STORAGE } from './symbol';
+import { OutgoingHttpHeaders } from 'http';
+import { Config } from './config';
+import { Container } from './container';
+import { Application } from './foundation/application';
 import { Request } from './http/request';
-import { Redis } from './supports/redis';
+import { Response } from './http/response';
 import { Cache } from './supports/cache';
+import { Redis } from './supports/redis';
+import { ASYNC_LOCAL_STORAGE } from './symbol';
+import { View } from './view';
 
 export function app(): Application
 export function app<T = any>(name: any): T
@@ -74,4 +77,19 @@ export function redis(name?: string) {
  */
 export function cache(name?: 'memory' | 'redis', connection?: string) {
   return app().get<Cache>('cache').store(name, connection);
+}
+
+/**
+ * 生成模板视图
+ * @param template 
+ * @param vars 
+ * @returns 
+ */
+export function view(template = '', vars: object = {}) {
+  return new View(template, vars);
+}
+
+
+export function response(data?: any, code = 200, header: OutgoingHttpHeaders = {}) {
+  return new Response(data, code, header);
 }

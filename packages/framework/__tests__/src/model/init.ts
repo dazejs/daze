@@ -35,7 +35,7 @@ export async function initDb() {
     user: 'root',
     password: 'root',
     database: 'daze',
-    port: 13306
+    port: 3306
   });
 
   connection.connect();
@@ -64,27 +64,27 @@ export async function initDb() {
       \`user_id\` int(11) NOT NULL,
       \`motto\` varchar(11) NOT NULL DEFAULT '',
       PRIMARY KEY (\`id\`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;`);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
   // 创建 comments 表
   await createTable(connection, `CREATE TABLE \`comments\` (
       \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
       \`user_id\` int(11) NOT NULL,
       \`comment\` varchar(11) NOT NULL DEFAULT '',
       PRIMARY KEY (\`id\`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;`);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
   // 创建 roles 表
   await createTable(connection, `CREATE TABLE \`roles\` (
       \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
       \`description\` varchar(11) NOT NULL DEFAULT '',
       PRIMARY KEY (\`id\`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;`);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
   // 创建 user_role 表
   await createTable(connection, `CREATE TABLE \`user_role\` (
       \`id\` int(11) unsigned NOT NULL AUTO_INCREMENT,
       \`user_id\` int(11) NOT NULL,
       \`role_id\` int(11) NOT NULL,
       PRIMARY KEY (\`id\`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;`);
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`);
 
   connection.end();
 }

@@ -1,28 +1,18 @@
-import { depends, provide, provideOn, provideOnMissing } from "../../../../src/decorators";
-import { conf } from "../../../../src/decorators";
+import { Depends, Provide, ProvideOn, ProvideOnMissing } from "../../../../src/decorators";
+import { config } from "../../../../src";
 import { TestLogger, TestLogger2 } from "../app/component/TestLogger";
 
-@depends()
+@Depends()
 export class TestLoggerProvider {
-
-  @conf("custom.a.b.c")
-  private testConfig = "testConfig";
-
-  @conf("custom.a.b.c1")
-  testConfig2 = "testConfig2";
-
-  @conf("custom.a.b.c1", "defaultConfig")
-  testConfig3 = "testConfig3";
-
-  @provide()
-  @provideOnMissing('testLogger')
+  @Provide()
+  @ProvideOnMissing('testLogger')
   testLogger() {
-    return new TestLogger(this.testConfig);
+    return new TestLogger(config("custom.a.b.c", 'testConfig'));
   }
 
-  @provide()
-  @provideOn("not-exists")
+  @Provide()
+  @ProvideOn("not-exists")
   testLogger2() {
-    return new TestLogger2(this.testConfig2);
+    return new TestLogger2(config("custom.a.b.c1", "testConfig2"));
   }
 }

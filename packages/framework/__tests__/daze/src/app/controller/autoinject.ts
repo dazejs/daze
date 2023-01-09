@@ -1,11 +1,11 @@
 import {
-  controller, http
+  Controller, Get
 } from '../../../../../src';
 import ExampleService from '../service/example';
 
-@controller('autoinject')
+@Controller('autoinject')
 export default class {
-  @http.get()
+  @Get()
   index(example: ExampleService) {
     return example.sayHello();
   }

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { BaseController, rest } from '../../../src';
+import { Rest } from '../../../src';
 
 describe('Rest Decorator', () => {
   it('should patch rest routes and prefix by @Rest', () => {
-    @rest('example')
-    class Example extends BaseController { }
+    @Rest('example')
+    class Example { }
     expect(Reflect.getMetadata('routes', Example)).toEqual({
       index: [{ uri: '/', method: 'get' }],
       create: [{ uri: '/create', method: 'get' }],

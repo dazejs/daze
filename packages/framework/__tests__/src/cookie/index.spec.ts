@@ -2,7 +2,9 @@ import path from 'path';
 import 'reflect-metadata';
 import { Application, Cookie } from '../../../src';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 

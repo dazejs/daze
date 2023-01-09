@@ -1,10 +1,10 @@
-import { BaseMiddleware, Request, Next, middleware } from '../../../../../src';
+import { Request, Next, Middleware, Response } from '../../../../../src';
 
-@middleware()
-export class Example1 extends BaseMiddleware {
+@Middleware()
+export class Example1 {
   resolve(request: Request, next: Next) {
     if (request.getQuery('name') === 'example1') {
-      return this.response().success('Hello Example1');
+      return new Response().success('Hello Example1');
     }
     return next();
   }

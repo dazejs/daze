@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import {
-  controller, http,
+  Controller, Get, Post, Put, Options, Head, Del
 } from '../../../src';
 
 
 describe('verb Decorator', () => {
   it('should patch get route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.get()
+      @Get()
       index() {
         //
       }
@@ -23,9 +23,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch post route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.post(':id')
+      @Post(':id')
       store() {
         //
       }
@@ -40,9 +40,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch put route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.put(':id')
+      @Put(':id')
       put() {
         //
       }
@@ -57,9 +57,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch options route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.options(':id')
+      @Options(':id')
       options() {
         //
       }
@@ -74,9 +74,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch head route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.head(':id')
+      @Head(':id')
       head() {
         //
       }
@@ -91,9 +91,9 @@ describe('verb Decorator', () => {
   });
 
   it('should patch delete route', () => {
-    @controller('users')
+    @Controller('users')
     class Example {
-      @http.del(':id')
+      @Del(':id')
       del() {
         //
       }

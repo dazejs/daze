@@ -2,7 +2,9 @@ import 'reflect-metadata';
 import path from 'path';
 import { Application, View } from '../../../src';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 

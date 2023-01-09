@@ -162,10 +162,11 @@ export class Parser {
     if (!builder._columns.length) return `${select} *`;
     const str = builder._columns.map(({
       type,
-      column
+      column,
+      as
     }) => {
       if (type === 'raw') return column;
-      return this.wrapColum(column, builder);
+      return this.wrapColum(column, builder, as);
     }).join(', ');
     return `${select} ${str}`;
   }
@@ -250,7 +251,7 @@ export class Parser {
     if (!builder._orders.length || builder._aggregate) return '';
     const flatOrders = builder._orders.map(order => {
       if (order.type === 'column') {
-        return `${order.column} ${order.direction}`
+        return `${order.column} ${order.direction}`;
       }
       return order.column;
     });
@@ -364,16 +365,16 @@ export class Parser {
    * wrapColum
    * @param column 
    */
-  wrapColum(column: string, builder: Builder) {
+  wrapColum(column: string, builder: Builder, as?: string) {
     if (~column.indexOf('.')) {
       const [_alias, _column] = column.split('.');
       if (_column === '*') return _column;
-      return `\`${_alias}\`.\`${_column}\``;
+      return `\`${_alias}\`.\`${_column}\`${as ? ` as ${as}` : ''}`;
     }
     if (builder._alias) {
-      return `\`${builder._alias}\`.\`${column}\``;
+      return `\`${builder._alias}\`.\`${column}\`${as ? ` as ${as}` : ''}`;
     }
-    return `\`${builder._table}\`.\`${column}\``;
+    return `\`${builder._table}\`.\`${column}\`${as ? ` as ${as}` : ''}`;
   }
 
   /**

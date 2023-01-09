@@ -1,29 +1,28 @@
-import { BaseEntity, table, autoIncrementPrimaryColumn, column, hasOne, hasMany, belongsToMany, entity } from '../../../../../src';
+import { BaseEntity, AutoIncrementPrimaryColumn, Column, BelongsToMany, HasOne, Entity, HasMany } from '../../../../../src';
 import Profile from './profile';
 import Comment from './comment';
 import Role from './role';
 
-@table('users')
-@entity()
+@Entity('users')
 export default class extends BaseEntity {
-  @autoIncrementPrimaryColumn()
-  id: number;
+  @AutoIncrementPrimaryColumn()
+    id: number;
 
-  @column()
-  name: string;
+  @Column()
+    name: string;
 
-  @column()
-  age: number;
+  @Column()
+    age: number;
 
-  @column()
-  description: string;
+  @Column()
+    description: string;
 
-  @hasOne(() => Profile)
-  profile: Profile;
+  @HasOne(() => Profile)
+    profile: Profile;
 
-  @hasMany(() => Comment)
-  comments: Comment[];
+  @HasMany(() => Comment)
+    comments: Comment[];
 
-  @belongsToMany(() => Role)
-  roles: Role[];
+  @BelongsToMany(() => Role)
+    roles: Role[];
 }

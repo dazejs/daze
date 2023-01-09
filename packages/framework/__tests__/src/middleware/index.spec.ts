@@ -11,20 +11,22 @@ import {
 } from '../../daze/src/app/middleware/example-order';
 import { MiddlewareService } from '../../../src/http/middleware';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.run());
 afterAll(() => app.close());
 
 describe('Middleware', () => {
   it('should use method middleware message when pass name query', async () => {
-    await request(app._server).get('/middleware/example1').expect(200, 'Hello Dazejs');
-    await request(app._server).get('/middleware/example1?name=example1').expect(200, 'Hello Example1');
+    await request((app as any)._server).get('/middleware/example1').expect(200, 'Hello Dazejs');
+    await request((app as any)._server).get('/middleware/example1?name=example1').expect(200, 'Hello Example1');
   });
 
   it('should use class middleware message when pass name query', async () => {
-    await request(app._server).get('/middleware/example1').expect(200, 'Hello Dazejs');
-    await request(app._server).get('/middleware/example1?name=example2').expect(200, 'Hello Example2');
+    await request((app as any)._server).get('/middleware/example1').expect(200, 'Hello Dazejs');
+    await request((app as any)._server).get('/middleware/example1?name=example2').expect(200, 'Hello Example2');
   });
   
   it('test middleware with order', async () => {

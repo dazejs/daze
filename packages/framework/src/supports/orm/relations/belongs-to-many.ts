@@ -11,7 +11,7 @@ export class BelongsToMany extends HasRelations {
   /**
    * 中间表实体实例
    */
-  pivot: any;
+  pivot: Model<PivotEntity>;
 
   /**
    * 关联外键
@@ -70,7 +70,7 @@ export class BelongsToMany extends HasRelations {
 
   /**
    * 渴求式加载单条记录的关联数据
-   * @param resultModel 需要被加载的模型
+   * @param resultRepos 需要被加载的模型
    * @param relation 关联名
    */
   async eagerly(resultRepos: Repository, relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void) {
@@ -95,6 +95,7 @@ export class BelongsToMany extends HasRelations {
     if (queryCallback) queryCallback(query);
     const records: Record<string, any>[] = await query
       .getBuilder()
+      .columns([...this.model.getColumns().keys()], `pivot.${relatedPivotKey}`, `pivot.${foreignPivotKey}`)
       .alias('relate')
       .join((join: Join) => {
         return join.table(this.pivot.getTable(), 'pivot')
@@ -113,7 +114,7 @@ export class BelongsToMany extends HasRelations {
 
   /**
    * 渴求式加载多个模型的关联数据
-   * @param resultModels 
+   * @param resultReposes 
    * @param relation 
    */
   async eagerlyMap(resultReposes: Repository[], relation: string, queryCallback?: (query: ModelBuilder<any> & Builder) => void) {
@@ -134,7 +135,7 @@ export class BelongsToMany extends HasRelations {
       // const query = this.pivot.newModelBuilderInstance();
       // 获取中间表与当前模型的关联数据
 
-      const model = this.model.createRepository();
+      const model: Repository = this.model.createRepository();
       const [currentRelation, ...restRelation] = relation.split('.');
       if (restRelation.length) {
         model.with(restRelation.join('.'));
@@ -144,6 +145,7 @@ export class BelongsToMany extends HasRelations {
       if (queryCallback) queryCallback(query);
       const records: Record<string, any>[] = await query
         .getBuilder()
+        .columns([...this.model.getColumns().keys()], `pivot.${relatedPivotKey}`, `pivot.${foreignPivotKey}`)
         .alias('relate')
         .join((join: Join) => {
           return join.table(this.pivot.getTable(), 'pivot')

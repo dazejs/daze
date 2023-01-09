@@ -1,17 +1,17 @@
 import {
-  controller, http, csrf,
+  Controller, Post, Get, Csrf,
 } from '../../../../../src';
 
-@controller('/csrf')
+@Controller('/csrf')
 export default class {
-  @http.post()
-  @csrf()
+  @Post()
+  @Csrf()
   store() {
     return 'hello';
   }
 
-  @http.get('/get')
-  @csrf()
+  @Get('/get')
+  @Csrf()
   show() {
     return 'hello';
   }

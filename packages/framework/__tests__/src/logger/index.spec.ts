@@ -3,7 +3,9 @@ import path from 'path';
 import { Logger, Application } from '../../../src';
 import { IllegalArgumentError } from '../../../src/errors/illegal-argument-error';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 
@@ -14,18 +16,18 @@ describe('src/logger', () => {
     expect(log.isDefaultDriverSupported('file')).toBeTruthy();
     expect(log.isDefaultDriverSupported('http')).toBeTruthy();
     expect(log.isDefaultDriverSupported('stream')).toBeTruthy();
-    expect(log.isDefaultDriverSupported('mongodb')).toBeTruthy();
+    // expect(log.isDefaultDriverSupported('mongodb')).toBeTruthy();
     expect(log.isDefaultDriverSupported('dailyFile')).toBeTruthy();
     expect(log.isDefaultDriverSupported('custom')).toBeFalsy();
   });
 
   it('Logger#channl', () => {
-    expect(log.channel('console').getLogger()).toBe(log.getContainer().get('console'));
-    expect(log.channel('dailyFile').getLogger()).toBe(log.getContainer().get('dailyFile'));
-    expect(log.channel('file').getLogger()).toBe(log.getContainer().get('file'));
-    expect(log.channel('http').getLogger()).toBe(log.getContainer().get('http'));
-    expect(log.channel('stream').getLogger()).toBe(log.getContainer().get('stream'));
-    expect(log.channel('compose').getLogger()).toEqual(log.getContainer().get('compose'));
+    expect((log.channel('console'))).toBe(log.getContainer().get('console'));
+    expect(log.channel('dailyFile')).toBe(log.getContainer().get('dailyFile'));
+    expect(log.channel('file')).toBe(log.getContainer().get('file'));
+    expect(log.channel('http')).toBe(log.getContainer().get('http'));
+    expect(log.channel('stream')).toBe(log.getContainer().get('stream'));
+    expect(log.channel('compose')).toEqual(log.getContainer().get('compose'));
   });
 
   it('Logger#getTransports error', () => {

@@ -1,10 +1,10 @@
-import { BaseService, http, service } from '../../../../../src';
+import { Query, Service } from '../../../../../src';
 
 
-@service('injectable-service')
-export default class extends BaseService {
+@Service('injectable-service')
+export default class {
   sayId(
-  @http.query('id') id: number
+  @Query('id') id: number
   ) {
     return id ?? 'Hello Dazejs';
   }

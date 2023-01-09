@@ -1,7 +1,7 @@
-import { validator, BaseValidator, isEmail } from '../../../../src';
+import { Validator, BaseValidator, IsEmail } from '../../../../src';
 
-@validator()
+@Validator()
 export class TestValidator extends BaseValidator {
-  @isEmail()
-  username: string;
+  @IsEmail()
+    username: string;
 }

@@ -1,5 +1,5 @@
 import * as path from 'path';
-import winston, { } from 'winston';
+import winston from 'winston';
 import { Application } from '../../foundation/application';
 import { IllegalArgumentError } from '../../errors/illegal-argument-error';
 import { ClusterTransport } from './cluster';

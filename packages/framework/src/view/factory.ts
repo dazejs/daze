@@ -37,7 +37,7 @@ export class ViewFactory {
   }
 
   output(request: Request) {
-    const template = this.app.get('daze-template');
+    const template = this.app.get('template');
     const vars = this.combineVars(request);
     return template.render(this.view.getTemplate(), vars);
   }

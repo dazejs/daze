@@ -60,6 +60,10 @@ export class Repository<TEntity = any> {
     return new Proxy(this, this.proxy());
   }
 
+  public getColumns() {
+    return this.model.getColumns().keys();
+  }
+
   /**
      * 代理器
      */
@@ -490,7 +494,7 @@ export class Repository<TEntity = any> {
   async create(attributes: Record<string, any>) {
     // 创建一个不存在记录的模型
     // Create a repos with no records
-    const repos = this.model.createRepository().fill(attributes).setExists(false);
+    const repos = this.model.createRepository().setExists(false).fill(attributes);
     await repos.save();
     return repos;
   }

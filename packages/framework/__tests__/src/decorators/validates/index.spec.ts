@@ -7,7 +7,7 @@ describe('validate decrators', () => {
     const options = {};
     class Example {
       @Decrators.Passed()
-      example: any;
+        example: any;
     }
     expect(Reflect.getMetadata('rules', Example)).toEqual([
       {
@@ -26,7 +26,7 @@ describe('validate decrators', () => {
     const options = {};
     class Example {
       @Decrators.Accepted(options)
-      example: any;
+        example: any;
     }
     expect(Reflect.getMetadata('rules', Example)).toEqual([
       {

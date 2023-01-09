@@ -331,8 +331,9 @@ export class Request {
      * 获取解析的查询字符串, 当没有查询字符串时，返回一个空对象
      * @returns 
      */
-  getQuery() {
-    return this.query;
+  getQuery(name?: string) {
+    if (!name) return this.query;
+    return this.query[name];
   }
 
   /**

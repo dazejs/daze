@@ -3,7 +3,9 @@ import 'reflect-metadata';
 import { Application, Database } from '../../../src';
 import { initDb } from './init';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 beforeEach(() => initDb());
@@ -24,7 +26,7 @@ describe('Database Common', () => {
       host: 'localhost',
       user: 'root',
       password: 'root',
-      port: 13306,
+      port: 3306,
       database: 'daze'
     });
   });

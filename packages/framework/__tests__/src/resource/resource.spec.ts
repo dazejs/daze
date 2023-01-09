@@ -1,18 +1,19 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import * as path from 'path';
 import request from 'supertest';
 import { Application } from '../../../src';
 import { Resource } from '../../../src/resource/resource';
 
 
-const app = new Application(path.resolve(__dirname, './'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, './')
+});
 
 beforeAll(() => app.run(7777));
 afterAll(() => app.close());
 
 describe('Resource Feature', () => {
   it('should return resource when return resource instance in controller (item)', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .get('/resource/item')
       .expect(200);
 
@@ -25,7 +26,7 @@ describe('Resource Feature', () => {
   });
 
   it('should return resource when return resource instance in controller (collection)', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .get('/resource/collection')
       .expect(200);
     expect(res.text).toBe(JSON.stringify({
@@ -41,7 +42,7 @@ describe('Resource Feature', () => {
 
 
   it('should return resource when nest resource in controller', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .get('/resource/wrap')
       .expect(200);
     expect(res.text).toBe(JSON.stringify({

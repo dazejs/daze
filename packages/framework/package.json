@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist/*",
-    "test": "../../node_modules/.bin/jest --verbose  --forceExit --runInBand --detectOpenHandles",
+    "test": "../../node_modules/.bin/jest --verbose  --forceExit --detectOpenHandles",
     "copy": "copyfiles -u 1 src/**/*.njk dist",
     "build": "npm run clean && npm run copy && tsc",
     "dev": "npm run clean && npm run copy &&  tsc -w",
@@ -99,9 +99,9 @@
     "uuid": "7.0.3",
     "validator": "12.0.0",
     "vary": "1.1.2",
-    "winston": "3.2.1",
-    "winston-daily-rotate-file": "4.1.0",
-    "winston-mongodb": "5.0.1"
+    "winston": "3.8.2",
+    "winston-daily-rotate-file": "4.7.1",
+    "winston-mongodb": "5.1.0"
   },
   "devDependencies": {
     "@types/accepts": "1.3.5",

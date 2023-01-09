@@ -3,7 +3,9 @@ import { HttpError } from '../../../src/errors/http-error';
 import { Application } from '../../../src';
 import * as path from 'path';
 
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../daze/src')
+});
 
 beforeAll(() => app.initialize());
 

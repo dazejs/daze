@@ -1,17 +1,17 @@
-import { controller, BaseController, http } from '../../../../src';
+import { Controller, Get } from '../../../../src';
 import { TestResource } from './test.resource';
 import { WrapResource } from './wrap.resource';
 
-@controller('/resource')
-export class TestController extends BaseController {
-  @http.get('/item')
+@Controller('/resource')
+export class TestController {
+  @Get('/item')
   itemAction() {
     return TestResource.item({
       name: 'dazejs'
     });
   }
 
-  @http.get('/collection')
+  @Get('/collection')
   collectionAction() {
     return TestResource.collection([
       {
@@ -24,7 +24,7 @@ export class TestController extends BaseController {
   }
 
 
-  @http.get('/wrap')
+  @Get('/wrap')
   wrapAction() {
     return new WrapResource().item({
       name: 'dazejs',

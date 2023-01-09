@@ -1,15 +1,15 @@
 import {
-  controller, http,
+  Controller, Get,
 } from '../../../../../src';
 
-@controller('routes')
+@Controller('routes')
 export default class {
-  @http.get('*')
+  @Get('*')
   all1() {
     return 'all1';
   }
 
-  @http.get('all2')
+  @Get('all2')
   all2() {
     return 'all2';
   }

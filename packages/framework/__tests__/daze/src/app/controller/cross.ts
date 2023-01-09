@@ -1,11 +1,11 @@
 import {
-  crossOrigin, controller, http,
+  CrossOrigin, Controller, Post,
 } from '../../../../../src';
 
-@controller('cross')
+@Controller('cross')
 export default class {
-  @http.post()
-  @crossOrigin()
+  @Post()
+  @CrossOrigin()
   store() {
     return 'hello';
   }

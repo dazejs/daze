@@ -1,16 +1,15 @@
-import { BaseEntity, table, autoIncrementPrimaryColumn, column, belongsToMany, entity } from '../../../../../src'; 
+import { BaseEntity, AutoIncrementPrimaryColumn, Column, BelongsToMany, Entity } from '../../../../../src';
 import User from './user';
 
 
-@table('roles')
-@entity()
+@Entity('roles')
 export default class extends BaseEntity {
-  @autoIncrementPrimaryColumn()
-  id: number;
+  @AutoIncrementPrimaryColumn()
+    id: number;
 
-  @column()
-  description: string;
+  @Column()
+    description: string;
 
-  @belongsToMany(() => User)
-  users: User[];
+  @BelongsToMany(() => User)
+    users: User[];
 }

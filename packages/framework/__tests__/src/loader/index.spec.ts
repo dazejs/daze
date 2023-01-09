@@ -1,62 +1,54 @@
 import 'reflect-metadata';
-import path from 'path';
 import {
   Loader,
-  Application,
-  BaseController,
-  BaseMiddleware,
-  BaseService,
   BaseValidator,
-  BaseResource,
-  controller,
-  component,
-  service, resourcer, middleware, validator
+  Controller,
+  Component,
+  Service, Resourcer, Middleware, Validator
 } from '../../../src';
-
-const app = new Application(path.resolve(__dirname, '../../daze/src'));
 
 describe('Loader', () => {
   it('should parse module each type', () => {
-    const loader = new Loader(app);
+    const loader = new Loader();
 
-    @controller()
-    class ExampleController extends BaseController { }
+    @Controller()
+    class ExampleController { }
 
-    @service('example')
-    class ExampleService extends BaseService { }
+    @Service('example')
+    class ExampleService{ }
 
-    @resourcer('example')
-    class ExampleResource extends BaseResource {
+    @Resourcer('example')
+    class ExampleResource {
       resolve(data: any) {
         return data;
       }
     }
 
-    @validator('example')
+    @Validator('example')
     class ExampleValidator extends BaseValidator { }
 
-    @middleware('example')
-    class ExampleMiddleware extends BaseMiddleware {
+    @Middleware('example')
+    class ExampleMiddleware {
       resolve(_request: any, next: any) {
         return next();
       }
     }
 
-    @component('example')
+    @Component('example')
     class ExampleComponent { }
 
-    loader.load(ExampleController);
-    loader.load(ExampleService);
-    loader.load(ExampleResource);
-    loader.load(ExampleMiddleware);
-    loader.load(ExampleValidator);
-    loader.load(ExampleComponent);
+    loader.load(ExampleController, '');
+    loader.load(ExampleService, '');
+    loader.load(ExampleResource, '');
+    loader.load(ExampleMiddleware, '');
+    loader.load(ExampleValidator, '');
+    loader.load(ExampleComponent, '');
 
-    expect(loader.loadedComponents.get('controller')?.includes(ExampleController)).toBeTruthy();
-    expect(loader.loadedComponents.get('middleware')?.includes(ExampleMiddleware)).toBeTruthy();
-    expect(loader.loadedComponents.get('service')?.includes(ExampleService)).toBeTruthy();
-    expect(loader.loadedComponents.get('resource')?.includes(ExampleResource)).toBeTruthy();
-    expect(loader.loadedComponents.get('validator')?.includes(ExampleValidator)).toBeTruthy();
-    expect(loader.loadedComponents.get('component')?.includes(ExampleComponent)).toBeTruthy();
+    expect(loader.loadedComponents.get('controller')?.map(t => t.target)?.includes(ExampleController)).toBeTruthy();
+    expect(loader.loadedComponents.get('middleware')?.map(t => t.target)?.includes(ExampleMiddleware)).toBeTruthy();
+    expect(loader.loadedComponents.get('service')?.map(t => t.target)?.includes(ExampleService)).toBeTruthy();
+    expect(loader.loadedComponents.get('resource')?.map(t => t.target)?.includes(ExampleResource)).toBeTruthy();
+    expect(loader.loadedComponents.get('validator')?.map(t => t.target)?.includes(ExampleValidator)).toBeTruthy();
+    expect(loader.loadedComponents.get('component')?.map(t => t.target)?.includes(ExampleComponent)).toBeTruthy();
   });
 });

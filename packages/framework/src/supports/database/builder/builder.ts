@@ -10,6 +10,7 @@ export type TJoinType = 'inner' | 'left' | 'right' | 'cross'
 export interface ColumnDescribeOption {
   type: 'column' | 'raw';
   column: string;
+  as?: string;
 }
 
 interface WhereDescribeOption {
@@ -110,7 +111,7 @@ export class Builder {
   /**
    * The Having
    */
-  _havings: HavingDescribeOption[] = []
+  _havings: HavingDescribeOption[] = [];
 
   /**
    * The unions
@@ -179,16 +180,28 @@ export class Builder {
    */
   select(...columns: (string | string[])[]) {
     for (const column of columns) {
-      if (typeof column === 'string') {
+      let _column = column;
+      let _as;
+      if (typeof _column === 'string') {
+        if (~column.indexOf(` as `)) {
+          [_column, _as] = _column.split(` as `);
+        }
         this._columns.push({
           type: 'column',
-          column,
+          column: _column,
+          as: _as
         });
-      } else if (Array.isArray(column)) {
-        for (const item of column) {
+      } else if (Array.isArray(_column)) {
+        for (const item of _column) {
+          let _item = item;
+          let _item_as;
+          if (~_item.indexOf(` as `)) {
+            [_item, _item_as] = _item.split(` as `);
+          }
           this._columns.push({
             type: 'column',
-            column: item,
+            column: _item,
+            as: _item_as
           });
         }
       }
@@ -477,8 +490,8 @@ export class Builder {
     const params = this.getBindings();
     const results = await this.actuator.select(sql, params);
     const aggregate = results[0]?.aggregate;
-    if (aggregate === undefined) return
-    return Number(aggregate)
+    if (aggregate === undefined) return;
+    return Number(aggregate);
   }
 
   /**
@@ -487,7 +500,7 @@ export class Builder {
    */
   async count(column = '*') {
     const res = await this.aggregate('count', column);
-    return res ?? 0
+    return res ?? 0;
   }
 
   /**

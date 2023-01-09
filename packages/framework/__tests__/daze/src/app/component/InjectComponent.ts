@@ -1,7 +1,7 @@
-import { component } from '../../../../../src/decorators/stereotype';
-import { Injectable } from '../../../../../src/base/injectable';
+import { Component, Injectable } from '../../../../../src';
 
-@component()
-export class InjectComponent extends Injectable {
+@Component()
+@Injectable
+export class InjectComponent {
   
 }

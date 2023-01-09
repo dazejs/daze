@@ -1,6 +1,7 @@
 
-import { BaseProvider } from '../../../../src';
+import { Provider } from '../../../../src';
 
-export default class extends BaseProvider {
+@Provider()
+export default class {
 
 }

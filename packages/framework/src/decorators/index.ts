@@ -5,8 +5,8 @@
  * https: //opensource.org/licenses/MIT
  */
 
-import * as httpContext from './contexts-http';
-import * as verbs from './verb';
+// import * as httpContext from './contexts-http';
+// import * as verbs from './verb';
 
 export * from './stereotype';
 export * from './disbale';
@@ -15,6 +15,7 @@ export * from './cross-origin';
 export * from './csrf';
 export * from './http-code';
 export * from './ignore';
+export * from './inject';
 export * from './autowired';
 export * from './model';
 export * from './multiton';
@@ -26,10 +27,11 @@ export * from './use';
 export * from './encrypt';
 export * from './validates';
 export * from './create-decorator';
-export const http = {
-  ...verbs,
-  ...httpContext
-};
+// export const http = {
+//   ...verbs,
+//   ...httpContext
+// };
 export * from './verb';
+export * from './contexts-http';
 export * from './schedule';
 

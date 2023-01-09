@@ -1,6 +1,6 @@
 
 
-import { Response } from '../../../src/response';
+import { Response } from '../../../src/http/response';
 
 describe('Response', () => {
   describe('Response#code', () => {

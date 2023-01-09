@@ -1,12 +1,12 @@
 import {
-  BaseController, controller, http,
+  Controller, Get, Redirect
 } from '../../../../../src';
 
 
-@controller('/redirect')
-export default class extends BaseController {
-  @http.get()
+@Controller('/redirect')
+export default class {
+  @Get()
   show() {
-    return this.redirect().go('https://www.google.com');
+    return new Redirect().go('https://www.google.com');
   }
 }

@@ -21,12 +21,12 @@ export class Paginator {
   /**
    * 总数属性名 - 静态全局属性
    */
-  static totalkey = 'total'
+  static totalkey = 'total';
 
   /**
    * 数据属性名
    */
-  static dataKey = 'data'
+  static dataKey = 'data';
 
   /**
    * 每页长度

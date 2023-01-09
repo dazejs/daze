@@ -11,7 +11,7 @@ describe('Descrators/factory/create-inject-decorator', () => {
         constructor() {
           this.testname = '';
         }
-      };
+      }
       expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
       expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass)).toEqual([
         {
@@ -27,8 +27,8 @@ describe('Descrators/factory/create-inject-decorator', () => {
     it('should patch injectable and types in property', () => {
       class Klass {
         @decoratorFactory('request', ['a', 'b'])
-        testname = '';
-      };
+          testname = '';
+      }
       expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
       expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass, 'testname')).toEqual([
         {
@@ -47,7 +47,7 @@ describe('Descrators/factory/create-inject-decorator', () => {
         index() {
           //
         }
-      };
+      }
       expect(Reflect.getMetadata(symbols.INJECTABLE, Klass)).toBeTruthy();
       expect(Reflect.getMetadata(symbols.INJECTTYPE_METADATA, Klass, 'index')).toEqual([
         {

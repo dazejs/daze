@@ -2,7 +2,9 @@ import path from 'path';
 import request from 'supertest';
 import { Application } from '../../../../src';
 
-const app = new Application(path.resolve(__dirname, '../../../daze/src'));
+const app = new Application({
+  rootPath: path.resolve(__dirname, '../../../daze/src')
+});
 
 
 beforeAll(() => app.run());
@@ -10,7 +12,7 @@ afterAll(() => app.close());
 
 describe('Request#utils#parse-body', () => {
   it('should parse body when type is json', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .post('/example/post')
       .type('json')
       .send({ foo: 'bar' });
@@ -21,7 +23,7 @@ describe('Request#utils#parse-body', () => {
   });
 
   it('should parse files when type is imultipart', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .post('/example/post')
       .field('name', 'dazejs')
       .attach('example', '__tests__/common/assets/example.txt');
@@ -32,7 +34,7 @@ describe('Request#utils#parse-body', () => {
   });
 
   it('should parse files when type is imultipart and multi same param', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .post('/example/post')
       .field('name', 'dazejs')
       .field('name', 'dazejs2')
@@ -44,7 +46,7 @@ describe('Request#utils#parse-body', () => {
   });
 
   it('should parse files when type is imultipart and array type param', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .post('/example/post')
       .field('name', ['dazejs'])
       .field('name', 'dazejs2')
@@ -56,7 +58,7 @@ describe('Request#utils#parse-body', () => {
   });
 
   it('should parse files when type is imultipart and multi array type param', async () => {
-    const res = await request(app._server)
+    const res = await request((app as any)._server)
       .post('/example/post')
       .field('name', ['dazejs'])
       .field('name', ['dazejs2', 'dazejs3'])
