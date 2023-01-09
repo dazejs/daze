@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/trace-page",
-  "version": "1.0.3",
+  "version": "2.0.0-alpha.0",
   "description": "trace page for daze.js",
   "keywords": [
     "trace",
@@ -53,6 +53,7 @@
     "@types/mini-css-extract-plugin": "2.5.1",
     "@types/stack-trace": "0.0.30",
     "@types/webpack": "5.28.0",
+    "acorn": "8.8.1",
     "autoprefixer": "10.4.13",
     "concurrently": "7.6.0",
     "css-loader": "6.7.2",
@@ -68,7 +69,6 @@
     "script-loader": "0.7.2",
     "ts-loader": "9.4.2",
     "tsconfig-paths": "4.1.1",
-    "acorn": "8.8.1",
     "webpack": "5.75.0",
     "webpack-cli": "5.0.1"
   }

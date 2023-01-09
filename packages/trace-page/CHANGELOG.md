@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.0](https://github.com/dazejs/daze/compare/@dazejs/trace-page@1.0.3...@dazejs/trace-page@2.0.0-alpha.0) (2023-01-09)
+
+**Note:** Version bump only for package @dazejs/trace-page
+
+
+
+
+
 ## [1.0.3](https://github.com/dazejs/daze/compare/@dazejs/trace-page@1.0.2...@dazejs/trace-page@1.0.3) (2020-09-21)
 
 

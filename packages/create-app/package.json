@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/create-app",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "description": "create dazejs app",
   "author": "czewail <chanzewail@gmail.com>",
   "homepage": "",
@@ -19,7 +19,7 @@
     "dev": "npm run clean &&  tsc -w"
   },
   "dependencies": {
-    "@dazejs/cli": "0.0.1",
+    "@dazejs/cli": "1.0.0-alpha.0",
     "chalk": "^4.1.1",
     "commander": "^7.2.0"
   }
