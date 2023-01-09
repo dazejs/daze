@@ -13,7 +13,9 @@
         {% endfor %}
     },
     "devDependencies": {
-
+      {% for pkg, version in devDepensMap %}
+        "{{ pkg }}": "{{ version }}",
+        {% endfor %}
     }
   }
   
