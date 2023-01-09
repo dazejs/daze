@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const tiger = require('../packages/cli/dist');
+const daze = require('../packages/cli/dist');
 
-tiger.terminate(process.argv);
+daze.terminate(process.argv);

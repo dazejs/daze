@@ -9,7 +9,7 @@
     "publish": "npm run build && lerna publish",
     "next": "npm run build && lerna publish --dist-tag next",
     "bootstrap": "lerna bootstrap",
-    "test": "lerna run test",
+    "test": "lerna run test --stream",
     "test:coverage": "lerna run test:coverage --stream",
     "benchmarks": "ts-node tools/benchmarks/benchmarks.ts",
     "commitlint": "commitlint -e $GIT_PARAMS"

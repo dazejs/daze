@@ -6,21 +6,6 @@ export class Question {
   private promptList: inquirer.QuestionCollection[] = [];
 
   projectType() {
-    this.promptList.push({
-      type: 'list',
-      name: 'projectType',
-      message: '请选择工程类型',
-      choices: [{
-        name: 'Node 工程',
-        value: 'node',
-      }, {
-        name: 'SSR 工程',
-        value: 'ssr'
-      }, {
-        name: 'B 端业务 SSR 工程',
-        value: 'business'
-      }]
-    });
     return this;
   }
 
@@ -36,8 +21,8 @@ export class Question {
         name: 'yarn',
         value: 'yarn'
       }, {
-        name: 'ppnpm',
-        value: 'ppnpm'
+        name: 'pnpm',
+        value: 'pnpm'
       }, {
         name: '自行安装依赖',
         value: 'disable'
@@ -45,25 +30,6 @@ export class Question {
     });
     return this;
   }
-
-  productCode() {
-    this.promptList.push({
-      type: 'input',
-      name: 'productCode',
-      message: '请输入产品标识（productCode）:',
-    });
-    return this;
-  }
-
-  serviceCode() {
-    this.promptList.push({
-      type: 'input',
-      name: 'serviceCode',
-      message: '请输入服务标识（serviceCode）:',
-    });
-    return this;
-  }
-
   async ask() {
     return this.inquirer.prompt(this.promptList);
   }

@@ -7,7 +7,7 @@ export class Example {
   // @Get()
   // async index(request: Request, @Query('name') anme = '') {
   //     return new View('hello', {
-  //         name: anme || 'tiger'
+  //         name: anme || 'daze'
   //     });
   // }
 

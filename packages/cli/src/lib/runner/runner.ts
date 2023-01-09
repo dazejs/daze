@@ -2,7 +2,7 @@ import { ChildProcess, spawn, SpawnOptions } from 'child_process';
 import chalk from 'chalk';
 import * as path from 'path';
 
-type RunnerBinary = 'npm' | 'yarn' | 'ppnpm'
+type RunnerBinary = 'npm' | 'yarn' | 'pnpm'
 
 export class Runner {
 

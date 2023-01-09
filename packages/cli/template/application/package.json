@@ -1,0 +1,19 @@
+{
+    "private": true,
+    "scripts": {
+      "dev": "daze dev",
+      "build": "daze build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "UNLICENSE",
+    "dependencies": {
+        {% for pkg, version in depensMap %}
+        "{{ pkg }}": "{{ version }}",
+        {% endfor %}
+    },
+    "devDependencies": {
+
+    }
+  }
+  

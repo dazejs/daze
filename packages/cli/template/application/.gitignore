@@ -7,9 +7,6 @@ node_modules/
 /.vscode
 *.code-workspace
 
-# dist
-packages/*/dist
-
 
 # logs
 logs/*.log
@@ -23,13 +20,5 @@ yarn-error.log
 packages/*/__debug__
 .clinic
 
-# test
-packages/*/coverage
-
-# future and deprecated
-FUTURE_*
-DEPRECATED_*
-
-# dev example
-__example__
-example/dist
+# custom
+/dist

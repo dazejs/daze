@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import fetch from 'node-fetch';
 
 export type SourceType = 'application' | 'controller' | 'service' | 'middleware' | 'entity' | 'schedule'
-export type ExtSourceType = 'application_ssr_extra' | 'application_business_extra'
+export type ExtSourceType = string;
 
 export class Render {
   private _sourcePath: SourceType;
@@ -17,9 +17,6 @@ export class Render {
 
   private _env: nunjucks.Environment;
   private _templatePath = path.resolve(__dirname, '../../template');
-
-  private _isSSr = false;
-  private _isBusiness = false;
 
   private _assigns: any = {
     fetch,
@@ -50,25 +47,6 @@ export class Render {
     if (!this._sourceExtPaths) this._sourceExtPaths = [];
     if (this._sourceExtPaths.includes(sourcePath)) return this;
     this._sourceExtPaths.push(sourcePath);
-    return this;
-  }
-
-  /**
-     * SSR 模式
-     * @returns 
-     */
-  public ssr() {
-    this._isSSr = true;
-    return this;
-  }
-
-  /**
-     * 业务工程
-     * @returns 
-     */
-  public business() {
-    this._isSSr = true;
-    this._isBusiness = true;
     return this;
   }
 
@@ -146,59 +124,33 @@ export class Render {
 
     const depens = [
       'reflect-metadata',
-      '@tiger/common',
-      '@tiger/base-provider'
+      '@dazejs/framework'
     ];
 
     const devDepens = [
-      '@tiger/cli',
+      '@dazejs/cli',
       '@types/node',
       '@typescript-eslint/eslint-plugin',
       '@typescript-eslint/parser',
       'eslint',
       'ts-node'
     ];
+
     // 用来存储一些特殊的版本的依赖
     const specifiedDepensMap: Record<string, string> = {};
-    // ssr 模式需要的依赖
-    if (this._isSSr) {
-      depens.push('@tiger/ssr-provider');
-      depens.push('react');
-      depens.push('react-dom');
-      devDepens.push('@types/react-router');
-      devDepens.push('@types/react-router-dom');
-
-      // 对于 react-router 很多组件不支持
-      // 所以这边先写死了 5 的版本
-      specifiedDepensMap['react-router'] = '^5.2.1';
-      specifiedDepensMap['react-router-dom'] = '^5.3.0';
-      // depens.push('react-router');
-      // depens.push('react-router-dom');
-    }
-
-    // 业务模式需要的依赖
-    if (this._isBusiness) {
-      depens.push('@eagler/authorizion');
-      depens.push('@ant-design/icons');
-      depens.push('@eagler/icac-bu');
-      depens.push('@sharkr/components');
-      depens.push('@sharkr/util');
-      depens.push('antd');
-      depens.push('process');
-    }
-       
+    // 这里可以处理一些特殊的版本
     const depensMap: Record<string, string> = {
       ...specifiedDepensMap
     };
     for (const dep of depens) {
-      const version = await fetch(`http://npm.mail.netease.com/registry/-/package/${dep}/dist-tags`)
+      const version = await fetch(`https://registry.npmjs.com/-/package/${dep}/dist-tags`)
         .then(res => res.json()).then((tags) => tags.latest);
       depensMap[dep] = version;
     }
 
     const devDepensMap: Record<string, string> = {};
     for (const dep of devDepens) {
-      const version = await fetch(`http://npm.mail.netease.com/registry/-/package/${dep}/dist-tags`).then(res => res.json()).then((tags) => tags.latest);
+      const version = await fetch(`https://registry.npmjs.com/-/package/${dep}/dist-tags`).then(res => res.json()).then((tags) => tags.latest);
       devDepensMap[dep] = version;
     }
 
