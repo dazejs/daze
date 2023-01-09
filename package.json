@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "dev": "lerna run dev --parallel",
+    "dev": "lerna run dev --parallel --stream",
     "dev:trace-page": "lerna run --scope @dazejs/trace-page dev",
     "install": "lerna bootstrap",
     "build": "sh scripts/build.sh",
@@ -10,7 +10,7 @@
     "next": "npm run build && lerna publish --dist-tag next",
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
-    "test:coverage": "lerna run test:coverage",
+    "test:coverage": "lerna run test:coverage --stream",
     "benchmarks": "ts-node tools/benchmarks/benchmarks.ts",
     "commitlint": "commitlint -e $GIT_PARAMS"
   },
