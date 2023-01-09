@@ -9,12 +9,12 @@
     "license": "UNLICENSE",
     "dependencies": {
         {% for pkg, version in depensMap %}
-        "{{ pkg }}": "{{ version }}",
+        "{{ pkg }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
         {% endfor %}
     },
     "devDependencies": {
       {% for pkg, version in devDepensMap %}
-        "{{ pkg }}": "{{ version }}",
+        "{{ pkg }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
         {% endfor %}
     }
   }
