@@ -15,7 +15,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [14]
+        node-version: [14, 16]
 
     # container: node:12
 
@@ -35,7 +35,9 @@ jobs:
       with:
         fetch-depth: 1
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
+      with:
+          node-version: ${{ matrix.node }}
     - name: Dependences Install
       run: |
         npm install
