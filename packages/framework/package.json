@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/framework",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Daze.js - A powerful web framework for Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -57,7 +57,7 @@
     "reflect-metadata": ">=0.1.13"
   },
   "dependencies": {
-    "@dazejs/trace-page": "2.0.0",
+    "@dazejs/trace-page": "2.0.1",
     "@types/http-proxy": "^1.17.9",
     "@types/is-glob": "^4.0.2",
     "@types/micromatch": "^4.0.2",
