@@ -6,10 +6,14 @@ import { Container } from './container';
 import { Application } from './foundation/application';
 import { Request } from './http/request';
 import { Response } from './http/response';
+import { Redirect } from './http/response/redirect';
 import { Cache } from './supports/cache';
 import { Redis } from './supports/redis';
 import { ASYNC_LOCAL_STORAGE } from './symbol';
+import { Validate } from './validate';
+import { Resource } from './resource';
 import { View } from './view';
+import { Model } from './supports/orm';
 
 export function app(): Application
 export function app<T = any>(name: any): T
@@ -92,4 +96,27 @@ export function view(template = '', vars: object = {}) {
 
 export function response(data?: any, code = 200, header: OutgoingHttpHeaders = {}) {
   return new Response(data, code, header);
+}
+
+export function redirect(url?: string, code = 200, header: OutgoingHttpHeaders = {}) {
+  return new Redirect(url, code, header);
+}
+
+export function validate(validator: any) {
+  return new Validate(validator);
+}
+
+export function resource(formater?: any) {
+  return {
+    item: (data: Record<string, any>) => {
+      return new Resource(formater).item(data);
+    },
+    collection: (data: Record<string, any>[]) => {
+      return new Resource(formater).collection(data);
+    }
+  };
+}
+
+export function model<TEntity>(_Entity: { new(): TEntity }) {
+  return (new Model(_Entity)).createRepository();
 }
