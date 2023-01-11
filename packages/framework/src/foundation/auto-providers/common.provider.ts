@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import path from 'path';
-import { Depends, Provider } from '../../decorators';
+import { Depends, Provider, AppendAgent, AppendMaster } from '../../decorators';
 import { app } from '../../helpers';
 import { Loader } from '../../loader';
 import * as providers from './depends';
@@ -22,6 +22,8 @@ import * as providers from './depends';
   providers.MailerProvider,
   providers.ScheduleProvider,
 ])
+@AppendAgent()
+@AppendMaster()
 @Provider()
 export class CommonProvider {
   async register() {
