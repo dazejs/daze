@@ -37,7 +37,7 @@
     "eslint-plugin-import": "2.26.0",
     "express": "4.17.1",
     "filesize": "6.1.0",
-    "husky": "4.2.5",
+    "husky": "4.3.8",
     "jest": "29.3.1",
     "koa": "2.11.0",
     "koa-router": "8.0.8",
