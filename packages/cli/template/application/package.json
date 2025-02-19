@@ -10,11 +10,13 @@
     "dependencies": {
         {% for pkg, version in depensMap %}
         "{{ pkg }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
         {% endfor %}
     },
     "devDependencies": {
-      {% for pkg, version in devDepensMap %}
+        {% for pkg, version in devDepensMap %}
         "{{ pkg }}": "{{ version }}"{% if loop.last %}{% else %},{% endif %}
+
         {% endfor %}
     }
   }

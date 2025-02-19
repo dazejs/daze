@@ -11,7 +11,6 @@ const packageJson = require('../package.json');
 const program = new Command(packageJson.name);
 
 program
-// eslint-disable-next-line @typescript-eslint/no-var-requires
   .version(packageJson.version, '-v, --version')
   .arguments('<project-directory>')
   .usage(`${chalk.green('<project-directory>')}`)

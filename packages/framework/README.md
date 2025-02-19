@@ -35,18 +35,12 @@
 
 ## 快速开始
 
-##### 安装工具
-
-```bash
-$ npm install -g @dazejs/cli
-```
-
 ##### 创建工程
 
 ```bash
-$ daze create example
-$ cd example
-$ npm start
+$ npm init @dazejs/app project_name
+$ cd project_name
+$ npm run dev
 ```
 
 访问 `http://localhost:8080` 进行预览
