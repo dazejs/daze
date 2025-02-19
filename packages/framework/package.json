@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/framework",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Daze.js - A powerful web framework for Node.js",
   "main": "dist/index.js",
   "scripts": {

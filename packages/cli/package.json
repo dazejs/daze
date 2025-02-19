@@ -1,6 +1,6 @@
 {
   "name": "@dazejs/cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node 服务端 WEB 框架",
   "main": "dist/index.js",
   "bin": {
@@ -18,7 +18,7 @@
   "author": "",
   "license": "UNLICENSE",
   "dependencies": {
-    "@dazejs/framework": "5.0.1",
+    "@dazejs/framework": "5.0.2",
     "ascii-table": "^0.0.9",
     "chalk": "^4.1.0",
     "chokidar": "^3.5.3",
