@@ -44,5 +44,6 @@
     "@types/node-fetch": "^2.5.10",
     "@types/nodemon": "^1.19.0",
     "@types/pluralize": "0.0.29"
-  }
+  },
+  "gitHead": "4d87844d5c3483689a94a63ac992c98ab9ff1224"
 }

@@ -22,5 +22,6 @@
     "@dazejs/cli": "1.0.2",
     "chalk": "^4.1.1",
     "commander": "^7.2.0"
-  }
+  },
+  "gitHead": "4d87844d5c3483689a94a63ac992c98ab9ff1224"
 }

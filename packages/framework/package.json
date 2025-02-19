@@ -123,5 +123,6 @@
     "@types/statuses": "1.5.0",
     "@types/string-hash": "1.1.1",
     "@types/underscore.string": "0.0.38"
-  }
+  },
+  "gitHead": "4d87844d5c3483689a94a63ac992c98ab9ff1224"
 }
